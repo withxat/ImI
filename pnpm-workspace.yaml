@@ -1,4 +1,7 @@
 shellEmulator: true
 trustPolicy: no-downgrade
+
+trustPolicyIgnoreAfter: 535600
+
 allowBuilds:
   lefthook: true

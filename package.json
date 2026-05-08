@@ -25,7 +25,7 @@
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^6.0.1",
-		"@withxat/eslint-config": "^1.1.2",
+		"@withxat/eslint-config": "^1.1.4",
 		"@withxat/tsconfig": "^1.0.4",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"eslint": "^10.3.0",
