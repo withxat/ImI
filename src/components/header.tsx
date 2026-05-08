@@ -7,11 +7,21 @@ export function Header() {
 		<header className="border-b bg-transparent">
 			<Container className="flex items-center justify-between py-4">
 				<h2 className="text-sm font-semibold tracking-[0.18em] text-(--color-foreground) uppercase">
-					<Link className="transition-colors duration-150 hover:text-black" to="/">
+					<Link
+						className="
+							transition-colors duration-150
+							hover:text-black
+						"
+						to="/"
+					>
 						IMI
 					</Link>
 				</h2>
-				<p className="hidden text-sm text-(--color-muted-foreground) sm:block">
+				<p className="
+					hidden text-sm text-muted-foreground
+					sm:block
+				"
+				>
 					Design engineer portfolio in progress
 				</p>
 			</Container>

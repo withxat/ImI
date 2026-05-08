@@ -11,7 +11,11 @@ export function Container({
 }: { children: ReactNode } & ComponentPropsWithoutRef<'div'>) {
 	return (
 		<div
-			className={cn('mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8', className)}
+			className={cn(`
+				mx-auto w-full max-w-6xl px-4
+				sm:px-6
+				lg:px-8
+			`, className)}
 			{...props}
 		>
 			{children}
@@ -27,7 +31,7 @@ export function SurfacePanel({
 	return (
 		<div
 			className={cn(
-				'rounded-[var(--radius-lg)] border bg-(--color-surface) text-(--color-surface-foreground) shadow-[var(--shadow-soft)]',
+				`rounded-lg border bg-surface text-(--color-surface-foreground) shadow-(--shadow-soft)`,
 				className,
 			)}
 			{...props}
@@ -45,7 +49,7 @@ export function Eyebrow({
 	return (
 		<p
 			className={cn(
-				'text-xs font-semibold uppercase tracking-[0.22em] text-(--color-muted-foreground)',
+				`text-xs font-semibold tracking-[0.22em] text-muted-foreground uppercase`,
 				className,
 			)}
 			{...props}
@@ -64,7 +68,11 @@ export function TextLink({
 	return (
 		<Link
 			className={cn(
-				'inline-flex items-center gap-2 text-sm font-medium text-(--color-foreground) underline decoration-(--color-border) underline-offset-4 transition-colors duration-150 hover:text-black hover:decoration-current',
+				`
+					inline-flex items-center gap-2 text-sm font-medium text-(--color-foreground) underline decoration-border underline-offset-4 transition-colors
+					duration-150
+					hover:text-black hover:decoration-current
+				`,
 				className,
 			)}
 			to={to}

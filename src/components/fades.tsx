@@ -13,7 +13,7 @@ export function BottomFade({
 		<div
 			className={cn(
 				'pointer-events-none fixed inset-x-0 bottom-0 z-10 backdrop-blur-[6px]',
-				'bg-linear-to-b from-transparent to-(--color-background)',
+				'bg-linear-to-b from-transparent to-background',
 				'mask-[linear-gradient(to_top,var(--color-background)_18%,transparent)]',
 				className,
 			)}

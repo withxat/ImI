@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { Footer } from '../components/footer'
 import { Header } from '../components/header'
 
-import '../styles.css'
+import '../styles/globals.css'
 
 interface RootLayoutProps { children: ReactNode }
 
@@ -13,16 +13,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 	return (
 		<div className="min-h-screen font-['Manrope',sans-serif]">
 			<meta content={data.description} name="description" />
-			<link href={data.icon} rel="icon" type="image/png" />
-			<link href="https://fonts.googleapis.com" rel="preconnect" />
-			<link crossOrigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-			<link
-				href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
-				precedence="font"
-				rel="stylesheet"
-			/>
+			<link href="/favicon.ico" rel="icon" sizes="32x32" />
+			<link href="/icon.svg" rel="icon" type="image/svg+xml" />
+			<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
 			<Header />
-			<main className="min-h-[calc(100vh-121px)]">
+			<main className="min-h-screen">
 				{children}
 			</main>
 			<Footer />
