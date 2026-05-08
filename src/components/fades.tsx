@@ -1,25 +1,26 @@
-type BottomFadeProps = {
-  height?: number;
-  className?: string;
-};
+interface BottomFadeProps {
+	className?: string
+	height?: number
+}
 
-const cx = (...classes: Array<string | false | null | undefined>) =>
-  classes.filter(Boolean).join(' ');
+function cx(...classes: Array<false | null | string | undefined>) {
+	return classes.filter(Boolean).join(' ')
+}
 
-export const BottomFade = ({
-  height = 112,
-  className,
-}: BottomFadeProps) => {
-  return (
-    <div
-      aria-hidden
-      className={cx(
-        'pointer-events-none absolute inset-x-0 bottom-0 z-20 backdrop-blur-[6px]',
-        'bg-linear-to-b from-transparent to-[var(--page-surface)]',
-        '[mask-image:linear-gradient(to_top,var(--page-surface)_18%,transparent)]',
-        className
-      )}
-      style={{ height }}
-    />
-  );
-};
+export function BottomFade({
+	className,
+	height = 112,
+}: BottomFadeProps) {
+	return (
+		<div
+			className={cx(
+				'pointer-events-none fixed inset-x-0 bottom-0 z-10 backdrop-blur-[6px]',
+				'bg-linear-to-b from-transparent to-(--page-bg)',
+				'mask-[linear-gradient(to_top,var(--page-bg)_18%,transparent)]',
+				className,
+			)}
+			style={{ height }}
+			aria-hidden
+		/>
+	)
+}
