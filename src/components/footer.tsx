@@ -1,13 +1,15 @@
+import { Container } from './ui/primitives'
+
 export function Footer() {
 	return (
-		<footer className="border-t border-(--page-border) bg-(--page-bg)">
-			<div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 text-sm text-(--page-muted) sm:px-6 lg:px-8">
+		<footer className="border-t bg-transparent">
+			<Container className="flex items-center justify-between py-4 text-sm text-(--color-muted-foreground)">
 				<span>Built with Waku and Tailwind</span>
 				<div>
 					visit
 					{' '}
 					<a
-						className="underline underline-offset-4 transition-colors duration-150 hover:text-(--page-ink)"
+						className="underline decoration-(--color-border) underline-offset-4 transition-colors duration-150 hover:text-(--color-foreground) hover:decoration-current"
 						href="https://waku.gg/"
 						rel="noreferrer"
 						target="_blank"
@@ -17,7 +19,7 @@ export function Footer() {
 					{' '}
 					to learn more
 				</div>
-			</div>
+			</Container>
 		</footer>
 	)
 }

@@ -1,30 +1,27 @@
-import { Link } from 'waku'
+import { Container, Eyebrow, SurfacePanel, TextLink } from '../components/ui/primitives'
 
 export default async function AboutPage() {
 	const data = await getData()
 
 	return (
-		<section className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 md:py-14 lg:px-8">
-			<div className="w-full rounded-2xl border border-[var(--page-border)] bg-[var(--page-surface)] p-6 sm:p-8">
-				<title>{data.title}</title>
-				<p className="mb-4 text-sm text-[var(--page-muted)]">
-					About
-				</p>
-				<h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-[var(--page-ink)] sm:text-4xl">
-					{data.headline}
-				</h1>
-				<p className="mt-6 max-w-2xl text-base leading-7 text-[var(--page-muted)]">
-					{data.body}
-				</p>
-				<div className="mt-8 flex flex-wrap gap-3">
-					<Link
-						className="inline-flex items-center text-sm font-medium text-[var(--page-ink)] underline underline-offset-4"
-						to="/"
-					>
-						Return home
-					</Link>
-				</div>
-			</div>
+		<section>
+			<Container className="max-w-4xl py-10 md:py-14">
+				<SurfacePanel className="w-full p-6 sm:p-8">
+					<title>{data.title}</title>
+					<Eyebrow className="mb-4">About</Eyebrow>
+					<h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-(--color-foreground) sm:text-4xl">
+						{data.headline}
+					</h1>
+					<p className="mt-6 max-w-2xl text-base leading-7 text-(--color-muted-foreground)">
+						{data.body}
+					</p>
+					<div className="mt-8 flex flex-wrap gap-3">
+						<TextLink to="/">
+							Return home
+						</TextLink>
+					</div>
+				</SurfacePanel>
+			</Container>
 		</section>
 	)
 }

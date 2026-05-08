@@ -1,24 +1,31 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-page-bg: #f7f7f5;
-	--color-page-surface: #ffffff;
-	--color-page-border: rgba(15, 23, 42, 0.08);
-	--color-page-ink: #111827;
-	--color-page-muted: #6b7280;
+	--color-background: oklch(0.98 0.006 95);
+	--color-foreground: oklch(0.24 0.018 252);
+	--color-surface: oklch(0.995 0.004 95);
+	--color-surface-foreground: oklch(0.24 0.018 252);
+	--color-muted: oklch(0.92 0.01 90);
+	--color-muted-foreground: oklch(0.54 0.018 252);
+	--color-border: color-mix(in oklab, oklch(0.24 0.018 252) 9%, transparent);
+	--color-accent: oklch(0.88 0.03 85);
+	--color-accent-foreground: oklch(0.2 0.02 252);
+	--color-selection: oklch(0.9 0.035 232);
+
+	--radius-sm: 0.75rem;
+	--radius-md: 1.125rem;
+	--radius-lg: 1.5rem;
+	--shadow-soft: 0 20px 60px -30px color-mix(in srgb, #111827 18%, transparent);
 }
 
 @layer base {
 	:root {
-		--page-bg: var(--color-page-bg);
-		--page-surface: var(--color-page-surface);
-		--page-border: var(--color-page-border);
-		--page-ink: var(--color-page-ink);
-		--page-muted: var(--color-page-muted);
+		color-scheme: light;
 	}
 
 	* {
 		box-sizing: border-box;
+		border-color: var(--color-border);
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		text-rendering: optimizeLegibility;
@@ -31,13 +38,15 @@
 
 	body {
 		min-height: 100vh;
-		background: var(--page-bg);
-		color: var(--page-ink);
+		background:
+			radial-gradient(circle at top, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 36%),
+			linear-gradient(180deg, color-mix(in oklab, white 80%, var(--color-background)), var(--color-background) 32%);
+		color: var(--color-foreground);
 	}
 
 	::selection {
-		background: #dbeafe;
-		color: var(--page-ink);
+		background: var(--color-selection);
+		color: var(--color-foreground);
 	}
 
 	a,

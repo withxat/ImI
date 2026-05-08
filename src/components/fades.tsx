@@ -1,10 +1,8 @@
+import { cn } from '../lib/cn'
+
 interface BottomFadeProps {
 	className?: string
 	height?: number
-}
-
-function cx(...classes: Array<false | null | string | undefined>) {
-	return classes.filter(Boolean).join(' ')
 }
 
 export function BottomFade({
@@ -13,10 +11,10 @@ export function BottomFade({
 }: BottomFadeProps) {
 	return (
 		<div
-			className={cx(
+			className={cn(
 				'pointer-events-none fixed inset-x-0 bottom-0 z-10 backdrop-blur-[6px]',
-				'bg-linear-to-b from-transparent to-(--page-bg)',
-				'mask-[linear-gradient(to_top,var(--page-bg)_18%,transparent)]',
+				'bg-linear-to-b from-transparent to-(--color-background)',
+				'mask-[linear-gradient(to_top,var(--color-background)_18%,transparent)]',
 				className,
 			)}
 			style={{ height }}
