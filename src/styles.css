@@ -1,1 +1,47 @@
 @import 'tailwindcss';
+
+@theme {
+	--color-page-bg: #f7f7f5;
+	--color-page-surface: #ffffff;
+	--color-page-border: rgba(15, 23, 42, 0.08);
+	--color-page-ink: #111827;
+	--color-page-muted: #6b7280;
+}
+
+@layer base {
+	:root {
+		--page-bg: var(--color-page-bg);
+		--page-surface: var(--color-page-surface);
+		--page-border: var(--color-page-border);
+		--page-ink: var(--color-page-ink);
+		--page-muted: var(--color-page-muted);
+	}
+
+	* {
+		box-sizing: border-box;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+	}
+
+	html {
+		scroll-behavior: smooth;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		min-height: 100vh;
+		background: var(--page-bg);
+		color: var(--page-ink);
+	}
+
+	::selection {
+		background: #dbeafe;
+		color: var(--page-ink);
+	}
+
+	a,
+	button {
+		-webkit-tap-highlight-color: transparent;
+	}
+}

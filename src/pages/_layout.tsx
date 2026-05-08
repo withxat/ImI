@@ -1,45 +1,46 @@
-import '../styles.css';
+import type { ReactNode } from 'react'
 
-import type { ReactNode } from 'react';
-import { Footer } from '../components/footer';
-import { Header } from '../components/header';
+import { Footer } from '../components/footer'
+import { Header } from '../components/header'
 
-type RootLayoutProps = { children: ReactNode };
+import '../styles.css'
+
+interface RootLayoutProps { children: ReactNode }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const data = await getData();
+	const data = await getData()
 
-  return (
-    <div className="font-['Nunito']">
-      <meta name="description" content={data.description} />
-      <link rel="icon" type="image/png" href={data.icon} />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-        precedence="font"
-      />
-      <Header />
-      <main className="m-6 flex items-center *:min-h-64 *:min-w-64 lg:m-0 lg:min-h-svh lg:justify-center">
-        {children}
-      </main>
-      <Footer />
-    </div>
-  );
+	return (
+		<div className="min-h-screen font-['Manrope',_sans-serif]">
+			<meta content={data.description} name="description" />
+			<link href={data.icon} rel="icon" type="image/png" />
+			<link href="https://fonts.googleapis.com" rel="preconnect" />
+			<link crossOrigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+			<link
+				href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+				precedence="font"
+				rel="stylesheet"
+			/>
+			<Header />
+			<main className="min-h-[calc(100vh-121px)]">
+				{children}
+			</main>
+			<Footer />
+		</div>
+	)
 }
 
-const getData = async () => {
-  const data = {
-    description: 'An internet website!',
-    icon: '/images/favicon.png',
-  };
+async function getData() {
+	const data = {
+		description: 'A simple responsive page built with Waku and Tailwind.',
+		icon: '/images/favicon.png',
+	}
 
-  return data;
-};
+	return data
+}
 
-export const getConfig = async () => {
-  return {
-    render: 'static',
-  } as const;
-};
+export async function getConfig() {
+	return {
+		render: 'static',
+	} as const
+}
