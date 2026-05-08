@@ -1,1 +1,53 @@
 @import 'tailwindcss';
+
+@theme {
+  --color-page-bg: #f6f6f2;
+  --color-page-surface: #fffef8;
+  --color-page-border: rgba(24, 30, 28, 0.08);
+  --color-page-ink: #101714;
+  --color-page-muted: #56625c;
+  --color-page-accent: #7ee7dc;
+  --color-page-accent-strong: #34c3b4;
+}
+
+@layer base {
+  :root {
+    --page-bg: var(--color-page-bg);
+    --page-surface: var(--color-page-surface);
+    --page-border: var(--color-page-border);
+    --page-ink: var(--color-page-ink);
+    --page-muted: var(--color-page-muted);
+    --page-accent: var(--color-page-accent);
+    --page-accent-strong: var(--color-page-accent-strong);
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top, rgba(126, 231, 220, 0.28), transparent 34%),
+      linear-gradient(180deg, #fbfbf8 0%, var(--page-bg) 38%, #efefe8 100%);
+    color: var(--page-ink);
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--page-accent) 65%, white);
+    color: var(--page-ink);
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
