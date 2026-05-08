@@ -1,7 +1,18 @@
 {
 	"extends": "@withxat/tsconfig",
 	"compilerOptions": {
+		"ignoreDeprecations": "6.0",
 		"jsx": "react-jsx",
+		"rootDir": ".",
+		"paths": {
+			"collections/*": ["./.source/*"]
+		},
 		"noEmit": true
-	}
+	},
+	"include": [
+		".source",
+		"source.config.ts",
+		"src",
+		"waku.config.ts"
+	]
 }

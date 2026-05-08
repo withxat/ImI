@@ -3,7 +3,7 @@ import { xat } from '@withxat/eslint-config'
 const config = xat()
 
 config.append({
-	ignores: ['src/pages.gen.ts'],
+	ignores: ['.source/**', 'dist/**', 'src/pages.gen.ts'],
 })
 
 config.append({
