@@ -1,8 +1,8 @@
 import type { PageProps } from 'waku/router'
 
-import { ArticleBody } from '../../components/article-body'
-import { Container, Eyebrow, TextLink } from '../../components/ui/primitives'
-import { formatPostDate, getCategoryBySlug, getPostBySlug, getPostSlugs } from '../../lib/blog'
+import { ArticleBody } from '@/components/article-body'
+import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
+import { formatPostDate, getCategoryBySlug, getPostBySlug, getPostSlugs } from '@/lib/blog'
 
 export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
 	const post = getPostBySlug(slug)
@@ -11,7 +11,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 		throw new Error(`Post not found: ${slug}`)
 	}
 
-	const MDX = post.body
+	const MDX = post.mdx
 	const category = getCategoryBySlug(post.category)
 
 	return (
@@ -44,7 +44,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 					</div>
 				</div>
 
-				<ArticleBody MDX={MDX} />
+				<ArticleBody content={MDX} />
 			</Container>
 		</section>
 	)

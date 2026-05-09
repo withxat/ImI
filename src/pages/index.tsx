@@ -1,9 +1,9 @@
 import { Link } from 'waku'
 
-import { NameAudioButton } from '../components/name-audio-button'
-import { Container, Eyebrow } from '../components/ui/primitives'
-import { getAllPosts } from '../lib/blog'
-import { getProjects } from '../lib/projects'
+import { NameAudioButton } from '@/components/name-audio-button'
+import { Container, Eyebrow } from '@/components/ui/primitives'
+import { getAllPosts } from '@/lib/blog'
+import { getProjects } from '@/lib/projects'
 
 export default async function HomePage() {
 	const data = await getData()
@@ -72,7 +72,7 @@ export default async function HomePage() {
 						</div>
 						<div className="space-y-6">
 							{posts.map((post) => {
-								const slug = post.info.path.replace(/\.mdx?$/, '')
+								const slug = post.slug
 
 								return (
 									<Link
@@ -101,7 +101,7 @@ export default async function HomePage() {
 										hover:text-black
 									"
 									href={project.link}
-									key={project.id}
+									key={project.link}
 									rel="noreferrer"
 									target="_blank"
 								>

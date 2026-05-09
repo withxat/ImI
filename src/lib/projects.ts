@@ -1,12 +1,5 @@
-import projects from '../../content/projects.json'
-
-export interface Project {
-	description: string
-	id: string
-	link: string
-	title: string
-}
+import { config } from 'content-collections'
 
 export function getProjects() {
-	return projects satisfies Project[]
+	return config.projects
 }

@@ -1,14 +1,16 @@
 import type { ComponentType } from 'react'
 
-import { cn } from '../lib/cn'
+import { MDXContent } from '@content-collections/mdx/react'
+
+import { cn } from '@/lib/cn'
 
 interface ArticleBodyProps {
 	className?: string
 	components?: Record<string, ComponentType<any>>
-	MDX: ComponentType<any>
+	content: string
 }
 
-export function ArticleBody({ className, components, MDX }: ArticleBodyProps) {
+export function ArticleBody({ className, components, content }: ArticleBodyProps) {
 	return (
 		<div
 			className={cn(`
@@ -27,7 +29,7 @@ export function ArticleBody({ className, components, MDX }: ArticleBodyProps) {
 				[&_ol]:space-y-2 [&_ol]:pl-5
 				[&_p]:text-muted-foreground
 				[&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:bg-[#16171d] [&_pre]:p-4 [&_pre]:font-ui [&_pre]:text-[13px]/6 [&_pre]:wrap-normal [&_pre]:text-white
-				[&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:break-normal [&_pre_code]:[overflow-wrap:normal] [&_pre_code]:text-inherit
+				[&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:break-normal [&_pre_code]:wrap-normal [&_pre_code]:text-inherit
 				[&_strong]:font-semibold [&_strong]:text-foreground
 				[&_table]:block [&_table]:w-full [&_table]:max-w-full [&_table]:border-collapse [&_table]:overflow-x-auto
 				[&_td]:border [&_td]:px-3 [&_td]:py-2
@@ -35,7 +37,7 @@ export function ArticleBody({ className, components, MDX }: ArticleBodyProps) {
 				[&_ul]:space-y-2 [&_ul]:pl-5
 			`, className)}
 		>
-			<MDX components={components} />
+			<MDXContent code={content} components={components} />
 		</div>
 	)
 }

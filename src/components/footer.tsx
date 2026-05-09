@@ -1,4 +1,4 @@
-import { Container } from './ui/primitives'
+import { Container } from '@/components/ui/primitives'
 
 export function Footer() {
 	return (

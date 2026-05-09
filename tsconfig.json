@@ -5,12 +5,12 @@
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"rootDir": ".",
 		"paths": {
-			"collections/*": ["./.source/*"]
+			"@/*": ["./src/*"],
+			"content-collections": ["./.content-collections/generated"]
 		},
 		"noEmit": true
 	},
 	"include": [
-		".source",
 		"src"
 	]
 }

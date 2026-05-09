@@ -1,23 +1,17 @@
-import { blog } from 'collections/server'
+import { allPosts, config } from 'content-collections'
 
-import categories from '../../content/categories.json'
-
-export type BlogPost = (typeof blog)[number]
-export type BlogCategory = (typeof categories)[number]
-export type BlogCategorySlug = BlogCategory['slug']
-
-export const BLOG_CATEGORIES = categories
+export const BLOG_CATEGORIES = config.categories
 
 export function getAllPosts() {
-	return [...blog].sort((a, b) => b.date.getTime() - a.date.getTime())
+	return allPosts.sort((a, b) => b.date.getTime() - a.date.getTime())
 }
 
 export function getPostSlugs() {
-	return getAllPosts().map(post => post.info.path.replace(/\.mdx?$/, ''))
+	return getAllPosts().map(post => post.slug)
 }
 
 export function getPostBySlug(slug: string) {
-	return getAllPosts().find(post => post.info.path.replace(/\.mdx?$/, '') === slug)
+	return getAllPosts().find(post => post.slug === slug)
 }
 
 export function getCategoryBySlug(slug: string) {

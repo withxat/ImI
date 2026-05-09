@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react'
 
 import { Link } from 'waku'
 
-import { cn } from '../../lib/cn'
+import { cn } from '@/lib/cn'
 
 export function Container({
 	children,

@@ -1,7 +1,7 @@
 import { Link } from 'waku'
 
-import { Container, Eyebrow, TextLink } from '../../components/ui/primitives'
-import { getPostsByCategory } from '../../lib/blog'
+import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
+import { getPostsByCategory } from '@/lib/blog'
 
 export default async function BlogIndexPage() {
 	const groups = getPostsByCategory()
@@ -36,7 +36,7 @@ export default async function BlogIndexPage() {
 
 							<div className="space-y-6">
 								{group.posts.map((post) => {
-									const slug = post.info.path.replace(/\.mdx?$/, '')
+									const slug = post.slug
 
 									return (
 										<Link

@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 
-import { BottomFade } from '../components/fades'
-import { Footer } from '../components/footer'
+import { BottomFade } from '@/components/fades'
+import { Footer } from '@/components/footer'
 
-import '../styles/globals.css'
+import '@/styles/globals.css'
 
 interface RootLayoutProps { children: ReactNode }
 
