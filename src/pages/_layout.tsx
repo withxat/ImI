@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { BottomFade } from '@/components/fades'
 import { Footer } from '@/components/footer'
+import { RouteTransition } from '@/components/route-transition'
 import { RSS_FEED_URL, RSS_TITLE } from '@/lib/rss'
 
 import '@/styles/globals.css'
@@ -23,7 +24,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<link href="/icon.svg" rel="icon" type="image/svg+xml" />
 			<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
 			<main className="min-h-screen">
-				{children}
+				<RouteTransition>{children}</RouteTransition>
 			</main>
 			<Footer />
 			<BottomFade />
