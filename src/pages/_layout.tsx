@@ -10,7 +10,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 	const data = await getData()
 
 	return (
-		<div className="min-h-screen font-['Manrope',sans-serif]">
+		<div className="min-h-screen">
 			<meta content={data.description} name="description" />
 			<meta content="Hi, Xat!" property="og:title" />
 			<meta content={data.description} property="og:description" />

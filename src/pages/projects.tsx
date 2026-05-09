@@ -1,4 +1,4 @@
-import { Container, Eyebrow, SurfacePanel } from '../components/ui/primitives'
+import { Container } from '../components/ui/primitives'
 import { getProjects } from '../lib/projects'
 
 export default async function ProjectsPage() {
@@ -8,50 +8,34 @@ export default async function ProjectsPage() {
 		<section>
 			<title>Project</title>
 			<Container className="
-				py-10
-				md:py-14
+				py-16
+				md:py-28
 			"
 			>
-				<div className="mb-10 space-y-4">
-					<Eyebrow>Project</Eyebrow>
-					<h1 className="
-						text-4xl font-semibold tracking-tight text-(--color-foreground)
-						sm:text-5xl
-					"
-					>
-						Project
-					</h1>
-					<p className="text-base/7 text-muted-foreground">
-						Check out my creations below!
-					</p>
+				<div className="space-y-0">
+					<p className="font-medium text-foreground">Projects</p>
+					<p className="text-muted-foreground">Check out my creations below!</p>
 				</div>
 
-				<div className="grid gap-3">
+				<div className="
+					mt-28 space-y-7
+					md:mt-32
+				"
+				>
 					{projects.map(project => (
-						<SurfacePanel
+						<a
 							className="
-								transition-transform duration-150
-								hover:-translate-y-0.5
+								block transition-colors duration-150
+								hover:text-black
 							"
+							href={project.link}
 							key={project.id}
+							rel="noreferrer"
+							target="_blank"
 						>
-							<a
-								className="
-									block h-full space-y-4 p-5
-									sm:p-6
-								"
-								href={project.link}
-								rel="noreferrer"
-								target="_blank"
-							>
-								<div className="space-y-2">
-									<h2 className="text-xl font-semibold tracking-tight text-(--color-foreground)">
-										{project.title}
-									</h2>
-									<p className="text-sm/6 text-muted-foreground">{project.description}</p>
-								</div>
-							</a>
-						</SurfacePanel>
+							<h2 className="font-medium text-foreground">{project.title}</h2>
+							<p className="mt-1 text-base/6 text-muted-foreground">{project.description}</p>
+						</a>
 					))}
 				</div>
 			</Container>

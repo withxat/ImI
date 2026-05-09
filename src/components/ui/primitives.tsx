@@ -22,24 +22,6 @@ export function Container({
 	)
 }
 
-export function SurfacePanel({
-	children,
-	className,
-	...props
-}: { children: ReactNode } & ComponentPropsWithoutRef<'div'>) {
-	return (
-		<div
-			className={cn(
-				`rounded-lg border bg-surface text-(--color-surface-foreground) shadow-(--shadow-soft)`,
-				className,
-			)}
-			{...props}
-		>
-			{children}
-		</div>
-	)
-}
-
 export function Eyebrow({
 	children,
 	className,
@@ -48,7 +30,7 @@ export function Eyebrow({
 	return (
 		<p
 			className={cn(
-				`text-xs font-semibold tracking-[0.22em] text-muted-foreground uppercase`,
+				`font-ui text-base font-medium text-foreground`,
 				className,
 			)}
 			{...props}
@@ -68,7 +50,7 @@ export function TextLink({
 		<Link
 			className={cn(
 				`
-					inline-flex items-center gap-2 text-sm font-medium text-(--color-foreground) underline decoration-border underline-offset-4 transition-colors
+					inline-flex items-center gap-2 font-ui text-sm text-foreground underline decoration-border underline-offset-4 transition-colors
 					duration-150
 					hover:text-black hover:decoration-current
 				`,

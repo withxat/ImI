@@ -1,7 +1,7 @@
 import { Link } from 'waku'
 
-import { Container, Eyebrow, SurfacePanel } from '../../components/ui/primitives'
-import { formatPostDate, getPostsByCategory } from '../../lib/blog'
+import { Container, Eyebrow } from '../../components/ui/primitives'
+import { getPostsByCategory } from '../../lib/blog'
 
 export default async function BlogIndexPage() {
 	const groups = getPostsByCategory()
@@ -10,66 +10,43 @@ export default async function BlogIndexPage() {
 		<section>
 			<title>All Writings</title>
 			<Container className="
-				py-10
-				md:py-14
+				py-16
+				md:py-28
 			"
 			>
-				<div className="mb-10 space-y-4">
-					<Eyebrow>Archive - Texts just sparkle in my mind</Eyebrow>
-					<h1 className="
-						text-4xl font-semibold tracking-tight text-(--color-foreground)
-						sm:text-5xl
-					"
-					>
-						All Writings
-					</h1>
-					<p className="text-base/7 text-muted-foreground">
-						All writings written by Xat
-					</p>
+				<div className="space-y-0">
+					<p className="font-medium text-foreground">All Writings</p>
+					<p className="text-muted-foreground">Archive - Texts just sparkle in my mind</p>
 				</div>
 
-				<div className="space-y-8">
+				<div className="
+					mt-28 space-y-20
+					md:mt-32
+				"
+				>
 					{groups.map(group => (
-						<section key={group.category.slug}>
-							<div className="mb-3 flex items-end justify-between gap-4">
-								<div>
-									<h2 className="text-xl font-semibold tracking-tight text-(--color-foreground)">
-										{group.category.name}
-									</h2>
-									<p className="text-sm text-muted-foreground">{group.category.description}</p>
-								</div>
+						<section className="space-y-7" key={group.category.slug}>
+							<div>
+								<Eyebrow>{group.category.name}</Eyebrow>
+								<p className="mt-1 text-base/6 text-muted-foreground">{group.category.description}</p>
 							</div>
 
-							<div className="space-y-3">
+							<div className="space-y-6">
 								{group.posts.map((post) => {
 									const slug = post.info.path.replace(/\.mdx?$/, '')
 
 									return (
-										<SurfacePanel
+										<Link
 											className="
-												transition-transform duration-150
-												hover:-translate-y-0.5
+												block transition-colors duration-150
+												hover:text-black
 											"
 											key={slug}
+											to={`/blog/${slug}`}
 										>
-											<Link
-												className="
-													block space-y-3 p-5
-													sm:p-6
-												"
-												to={`/blog/${slug}`}
-											>
-												<p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
-													{formatPostDate(post.date)}
-												</p>
-												<div className="space-y-2">
-													<h3 className="text-xl font-semibold tracking-tight text-(--color-foreground)">
-														{post.title}
-													</h3>
-													<p className="text-sm/6 text-muted-foreground">{post.summary}</p>
-												</div>
-											</Link>
-										</SurfacePanel>
+											<h3 className="font-medium text-foreground">{post.title}</h3>
+											<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
+										</Link>
 									)
 								})}
 							</div>

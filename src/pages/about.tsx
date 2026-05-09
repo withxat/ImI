@@ -1,4 +1,4 @@
-import { Container, Eyebrow, SurfacePanel, TextLink } from '../components/ui/primitives'
+import { Container, TextLink } from '../components/ui/primitives'
 
 export default async function AboutPage() {
 	const data = await getData()
@@ -6,35 +6,29 @@ export default async function AboutPage() {
 	return (
 		<section>
 			<Container className="
-				py-10
-				md:py-14
+				py-16
+				md:py-28
 			"
 			>
-				<SurfacePanel className="
-					w-full p-6
-					sm:p-8
+				<title>{data.title}</title>
+				<div className="space-y-0">
+					<p className="font-medium text-foreground">About</p>
+					<p className="text-muted-foreground">{data.headline}</p>
+				</div>
+				<div className="
+					mt-28 space-y-5 text-base/7 text-muted-foreground
+					md:mt-32
 				"
 				>
-					<title>{data.title}</title>
-					<Eyebrow className="mb-4">About</Eyebrow>
-					<h1 className="
-						text-3xl font-semibold tracking-tight text-(--color-foreground)
-						sm:text-4xl
-					"
-					>
-						{data.headline}
-					</h1>
-					<div className="mt-6 space-y-4 text-base/7 text-muted-foreground">
-						{data.body.map(paragraph => (
-							<p key={paragraph}>{paragraph}</p>
-						))}
-					</div>
-					<div className="mt-8 flex flex-wrap gap-3">
-						<TextLink to="/">
-							Return home
-						</TextLink>
-					</div>
-				</SurfacePanel>
+					{data.body.map(paragraph => (
+						<p key={paragraph}>{paragraph}</p>
+					))}
+				</div>
+				<div className="mt-8 flex flex-wrap gap-3">
+					<TextLink to="/">
+						Return home
+					</TextLink>
+				</div>
 			</Container>
 		</section>
 	)

@@ -18,32 +18,25 @@ export default async function BlogPostPage({ slug }: PageProps<'/blog/[slug]'>) 
 		<section>
 			<title>{post.title}</title>
 			<Container className="
-				py-10
-				md:py-14
+				py-16
+				md:py-28
 			"
 			>
-				<div className="mb-10 space-y-5">
+				<div className="mb-20 space-y-8">
 					<TextLink to="/">Go to home</TextLink>
 					<div className="space-y-3">
 						<Eyebrow>
 							{category ? `${category.name} - ${category.description}` : post.category}
 						</Eyebrow>
-						<h1 className="
-							text-4xl font-semibold tracking-tight text-(--color-foreground)
-							sm:text-5xl
-						"
-						>
-							{post.title}
-						</h1>
+						<h1 className="text-3xl font-medium text-foreground">{post.title}</h1>
 						<p className="text-base/7 text-muted-foreground">{post.summary}</p>
 					</div>
-					<div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-						<span className="font-semibold text-(--color-foreground)">PROPERTIES</span>
+					<div className="flex flex-wrap items-center gap-3 font-ui text-sm text-muted-foreground">
 						<span>{formatPostDate(post.date)}</span>
-						<span className="text-border">/</span>
+						<span>/</span>
 						<div className="flex flex-wrap gap-2">
 							{post.tags.map(tag => (
-								<span className="rounded-full border bg-surface px-2.5 py-1 text-xs font-medium" key={tag}>
+								<span key={tag}>
 									{tag}
 								</span>
 							))}

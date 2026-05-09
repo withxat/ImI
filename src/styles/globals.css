@@ -1,16 +1,20 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-background: oklch(0.98 0.006 95);
-	--color-foreground: oklch(0.24 0.018 252);
-	--color-surface: oklch(0.995 0.004 95);
-	--color-surface-foreground: oklch(0.24 0.018 252);
-	--color-muted: oklch(0.92 0.01 90);
-	--color-muted-foreground: oklch(0.54 0.018 252);
-	--color-border: color-mix(in oklab, oklch(0.24 0.018 252) 9%, transparent);
-	--color-accent: oklch(0.88 0.03 85);
-	--color-accent-foreground: oklch(0.2 0.02 252);
-	--color-selection: oklch(0.9 0.035 232);
+	--font-display: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-text: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-ui: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+	--color-background: oklch(1 0 0);
+	--color-foreground: oklch(0.17 0.003 260);
+	--color-surface: oklch(1 0 0);
+	--color-surface-foreground: oklch(0.18 0.004 260);
+	--color-muted: oklch(0.94 0.002 260);
+	--color-muted-foreground: oklch(0.45 0.004 260);
+	--color-border: color-mix(in oklab, oklch(0.17 0.003 260) 12%, transparent);
+	--color-accent: oklch(0.9 0.02 92);
+	--color-accent-foreground: oklch(0.18 0.004 260);
+	--color-selection: oklch(0.88 0.018 92);
 
 	--radius-sm: 0.75rem;
 	--radius-md: 1.125rem;
@@ -38,10 +42,23 @@
 
 	body {
 		min-height: 100vh;
-		background:
-			radial-gradient(circle at top, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 36%),
-			linear-gradient(180deg, color-mix(in oklab, white 80%, var(--color-background)), var(--color-background) 32%);
+		background: white;
 		color: var(--color-foreground);
+		font-family: var(--font-text);
+		font-size: 16px;
+	}
+
+	h1,
+	h2,
+	h3 {
+		font-family: var(--font-display);
+		letter-spacing: 0;
+		text-wrap: balance;
+	}
+
+	p,
+	li {
+		text-wrap: pretty;
 	}
 
 	::selection {
