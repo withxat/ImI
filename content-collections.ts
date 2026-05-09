@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react'
+import type { MDXContent } from 'mdx/types'
 
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -18,7 +18,7 @@ async function createMdxImport(slug: string, content: string) {
 	await mkdir(dirname(outputPath), { recursive: true })
 	await writeFile(outputPath, String(compiled))
 
-	return createDefaultImport<ComponentType<any>>(`../mdx/${slug}.js`)
+	return createDefaultImport<MDXContent>(`../mdx/${slug}.js`)
 }
 
 const posts = defineCollection({
