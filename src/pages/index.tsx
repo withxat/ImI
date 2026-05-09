@@ -82,8 +82,8 @@ export default async function HomePage() {
 										key={slug}
 										to={`/post/${slug}`}
 									>
-										<h3 className="font-medium text-foreground">{post.title}</h3>
-										<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
+										<h3 className="text-sm font-medium text-foreground">{post.title}</h3>
+										<p className="mt-1 text-sm/6 text-muted-foreground">{post.summary}</p>
 									</Link>
 								)
 							})}
