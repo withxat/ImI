@@ -119,7 +119,7 @@ export default async function HomePage() {
 										)}
 										{cap.items.length === 0 && (
 											<CapabilityEmptyPlaceholder
-												description={cap.emptyState?.description ?? 'Public links appear here when this capability has something worth sharing.'}
+												description={cap.emptyState?.description ?? 'Links when there is something worth flexing.'}
 												title={cap.emptyState?.title ?? 'Work in progress'}
 											/>
 										)}
