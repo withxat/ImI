@@ -11,7 +11,7 @@ export function Footer() {
 						rel="noreferrer"
 						target="_blank"
 					>
-						Github
+						GitHub
 					</a>
 					<a
 						className="text-link"

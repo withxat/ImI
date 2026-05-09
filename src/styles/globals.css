@@ -102,14 +102,14 @@
 	}
 
 	.post-list-entry {
-		@apply relative block pt-8 first:pt-0;
+		@apply relative block pb-2 pt-8 first:pt-0;
 	}
 
 	.post-list-entry::after {
 		content: '';
 		display: block;
 		height: 0.625rem;
-		margin-top: 1.25rem;
+		margin-top: 0.75rem;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 10' width='48' height='10'%3E%3Cpath d='M0 5 Q6 0.5 12 5 T24 5 T36 5 T48 5' fill='none' stroke='%23c4c4cc' stroke-width='1.15' stroke-linecap='round'/%3E%3C/svg%3E");
 		background-repeat: repeat-x;
 		background-size: 48px 10px;
