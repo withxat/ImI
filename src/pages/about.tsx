@@ -6,7 +6,7 @@ export default async function AboutPage() {
 	return (
 		<section>
 			<Container className="
-				max-w-4xl py-10
+				py-10
 				md:py-14
 			"
 			>
@@ -18,13 +18,13 @@ export default async function AboutPage() {
 					<title>{data.title}</title>
 					<Eyebrow className="mb-4">About</Eyebrow>
 					<h1 className="
-						max-w-2xl text-3xl font-semibold tracking-tight text-(--color-foreground)
+						text-3xl font-semibold tracking-tight text-(--color-foreground)
 						sm:text-4xl
 					"
 					>
 						{data.headline}
 					</h1>
-					<div className="mt-6 max-w-2xl space-y-4 text-base/7 text-muted-foreground">
+					<div className="mt-6 space-y-4 text-base/7 text-muted-foreground">
 						{data.body.map(paragraph => (
 							<p key={paragraph}>{paragraph}</p>
 						))}

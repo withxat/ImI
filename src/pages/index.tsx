@@ -13,27 +13,22 @@ export default async function HomePage() {
 		<section>
 			<title>{data.title}</title>
 			<Container className="
-				max-w-5xl py-10
+				py-10
 				md:py-14
 			"
 			>
 				<div className="mb-10 space-y-5">
 					<Eyebrow>Design Engineer</Eyebrow>
 					<h1 className="
-						max-w-3xl text-4xl font-semibold tracking-tight text-(--color-foreground)
+						text-4xl font-semibold tracking-tight text-(--color-foreground)
 						sm:text-5xl
-						lg:text-6xl
 					"
 					>
 						I create clean design and build it to life
 					</h1>
 				</div>
 
-				<div className="
-					grid gap-6
-					lg:grid-cols-[1fr_1.1fr]
-				"
-				>
+				<div className="space-y-6">
 					<SurfacePanel className="
 						h-fit p-5
 						sm:p-6

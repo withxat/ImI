@@ -8,29 +8,25 @@ export default async function ProjectsPage() {
 		<section>
 			<title>Project</title>
 			<Container className="
-				max-w-5xl py-10
+				py-10
 				md:py-14
 			"
 			>
 				<div className="mb-10 space-y-4">
 					<Eyebrow>Project</Eyebrow>
 					<h1 className="
-						max-w-3xl text-4xl font-semibold tracking-tight text-(--color-foreground)
+						text-4xl font-semibold tracking-tight text-(--color-foreground)
 						sm:text-5xl
 					"
 					>
 						Project
 					</h1>
-					<p className="max-w-2xl text-base/7 text-muted-foreground">
+					<p className="text-base/7 text-muted-foreground">
 						Check out my creations below!
 					</p>
 				</div>
 
-				<div className="
-					grid gap-3
-					sm:grid-cols-2
-				"
-				>
+				<div className="grid gap-3">
 					{projects.map(project => (
 						<SurfacePanel
 							className="

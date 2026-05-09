@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 
 import { Footer } from '../components/footer'
-import { Header } from '../components/header'
 
 import '../styles/globals.css'
 
@@ -20,7 +19,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<link href="/favicon.ico" rel="icon" sizes="32x32" />
 			<link href="/icon.svg" rel="icon" type="image/svg+xml" />
 			<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
-			<Header />
 			<main className="min-h-screen">
 				{children}
 			</main>

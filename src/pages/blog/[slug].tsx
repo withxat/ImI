@@ -18,7 +18,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/blog/[slug]'>) 
 		<section>
 			<title>{post.title}</title>
 			<Container className="
-				max-w-3xl py-10
+				py-10
 				md:py-14
 			"
 			>
@@ -35,7 +35,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/blog/[slug]'>) 
 						>
 							{post.title}
 						</h1>
-						<p className="max-w-2xl text-base/7 text-muted-foreground">{post.summary}</p>
+						<p className="text-base/7 text-muted-foreground">{post.summary}</p>
 					</div>
 					<div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
 						<span className="font-semibold text-(--color-foreground)">PROPERTIES</span>

@@ -10,20 +10,20 @@ export default async function BlogIndexPage() {
 		<section>
 			<title>All Writings</title>
 			<Container className="
-				max-w-5xl py-10
+				py-10
 				md:py-14
 			"
 			>
 				<div className="mb-10 space-y-4">
 					<Eyebrow>Archive - Texts just sparkle in my mind</Eyebrow>
 					<h1 className="
-						max-w-3xl text-4xl font-semibold tracking-tight text-(--color-foreground)
+						text-4xl font-semibold tracking-tight text-(--color-foreground)
 						sm:text-5xl
 					"
 					>
 						All Writings
 					</h1>
-					<p className="max-w-2xl text-base/7 text-muted-foreground">
+					<p className="text-base/7 text-muted-foreground">
 						All writings written by Xat
 					</p>
 				</div>
