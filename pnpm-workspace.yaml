@@ -3,5 +3,8 @@ trustPolicy: no-downgrade
 
 trustPolicyIgnoreAfter: 535600
 
+packages:
+  - .
+
 allowBuilds:
   lefthook: true
