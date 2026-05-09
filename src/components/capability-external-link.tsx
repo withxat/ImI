@@ -35,6 +35,7 @@ export function CapabilityExternalLink({
 				`
 					h-auto min-h-0 w-full items-center justify-start gap-3 rounded-xl px-4 py-3.5 text-left
 					font-normal shadow-none
+					before:rounded-xl before:shadow-none
 				`,
 				'hover:text-foreground',
 			)}

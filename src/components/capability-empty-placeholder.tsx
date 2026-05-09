@@ -32,6 +32,7 @@ export function CapabilityEmptyPlaceholder({
 				`
 					pointer-events-none h-auto min-h-0 w-full cursor-default items-center justify-start gap-3 rounded-xl px-4
 					py-3.5 text-left font-normal whitespace-normal shadow-none
+					before:rounded-xl before:shadow-none
 				`,
 			)}
 			role="status"
