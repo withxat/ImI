@@ -15,7 +15,7 @@ export function Header() {
 							"
 							to="/"
 						>
-							IMI
+							Xat
 						</Link>
 					</h2>
 					<nav className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -53,7 +53,7 @@ export function Header() {
 					sm:block
 				"
 				>
-					Design engineer portfolio in progress
+					Design Engineer
 				</p>
 			</Container>
 		</header>

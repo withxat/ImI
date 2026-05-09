@@ -24,9 +24,11 @@ export default async function AboutPage() {
 					>
 						{data.headline}
 					</h1>
-					<p className="mt-6 max-w-2xl text-base/7 text-muted-foreground">
-						{data.body}
-					</p>
+					<div className="mt-6 max-w-2xl space-y-4 text-base/7 text-muted-foreground">
+						{data.body.map(paragraph => (
+							<p key={paragraph}>{paragraph}</p>
+						))}
+					</div>
 					<div className="mt-8 flex flex-wrap gap-3">
 						<TextLink to="/">
 							Return home
@@ -40,9 +42,12 @@ export default async function AboutPage() {
 
 async function getData() {
 	const data = {
-		body:
-      'This page now matches the simplified direction from the homepage instead of carrying the heavier presentation treatment.',
-		headline: 'A trimmed-down version of the page shell.',
+		body: [
+			`I'm a full-stack developer who also loves dabbling in design.`,
+			'My background is in Intelligent Transportation Systems, where I learned a ton about software engineering and design.',
+			`Right now, I'm a software engineer on the AI infra team at Central China Normal University.`,
+		],
+		headline: 'Hey, I\'m Xat!',
 		title: 'About',
 	}
 

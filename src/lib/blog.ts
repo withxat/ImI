@@ -1,22 +1,12 @@
 import { blog } from 'collections/server'
 
-export const BLOG_CATEGORIES = {
-	design: {
-		description: 'Satisfying my aesthetic',
-		name: 'Design',
-	},
-	life: {
-		description: 'Bubbles of simple life',
-		name: 'Life',
-	},
-	tech: {
-		description: 'Thoughts on technology',
-		name: 'Tech',
-	},
-} as const
+import categories from '../../content/categories.json'
 
-export type BlogCategorySlug = keyof typeof BLOG_CATEGORIES
 export type BlogPost = (typeof blog)[number]
+export type BlogCategory = (typeof categories)[number]
+export type BlogCategorySlug = BlogCategory['slug']
+
+export const BLOG_CATEGORIES = categories
 
 export function getAllPosts() {
 	return [...blog].sort((a, b) => b.date.getTime() - a.date.getTime())
@@ -30,16 +20,17 @@ export function getPostBySlug(slug: string) {
 	return getAllPosts().find(post => post.info.path.replace(/\.mdx?$/, '') === slug)
 }
 
+export function getCategoryBySlug(slug: string) {
+	return BLOG_CATEGORIES.find(category => category.slug === slug)
+}
+
 export function getPostsByCategory() {
 	const posts = getAllPosts()
 
-	return Object.entries(BLOG_CATEGORIES)
-		.map(([slug, category]) => ({
-			category: {
-				...category,
-				slug: slug as BlogCategorySlug,
-			},
-			posts: posts.filter(post => post.category === slug),
+	return BLOG_CATEGORIES
+		.map(category => ({
+			category,
+			posts: posts.filter(post => post.category === category.slug),
 		}))
 		.filter(group => group.posts.length > 0)
 }

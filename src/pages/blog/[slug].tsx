@@ -2,7 +2,7 @@ import type { PageProps } from 'waku/router'
 
 import { ArticleBody } from '../../components/article-body'
 import { Container, Eyebrow, TextLink } from '../../components/ui/primitives'
-import { BLOG_CATEGORIES, formatPostDate, getPostBySlug, getPostSlugs } from '../../lib/blog'
+import { formatPostDate, getCategoryBySlug, getPostBySlug, getPostSlugs } from '../../lib/blog'
 
 export default async function BlogPostPage({ slug }: PageProps<'/blog/[slug]'>) {
 	const post = getPostBySlug(slug)
@@ -12,7 +12,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/blog/[slug]'>) 
 	}
 
 	const MDX = post.body
-	const category = BLOG_CATEGORIES[post.category as keyof typeof BLOG_CATEGORIES]
+	const category = getCategoryBySlug(post.category)
 
 	return (
 		<section>
@@ -23,9 +23,11 @@ export default async function BlogPostPage({ slug }: PageProps<'/blog/[slug]'>) 
 			"
 			>
 				<div className="mb-10 space-y-5">
-					<TextLink to="/blog">Back to blog</TextLink>
+					<TextLink to="/">Go to home</TextLink>
 					<div className="space-y-3">
-						<Eyebrow>{category?.name ?? post.category}</Eyebrow>
+						<Eyebrow>
+							{category ? `${category.name} - ${category.description}` : post.category}
+						</Eyebrow>
 						<h1 className="
 							text-4xl font-semibold tracking-tight text-(--color-foreground)
 							sm:text-5xl
@@ -36,6 +38,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/blog/[slug]'>) 
 						<p className="max-w-2xl text-base/7 text-muted-foreground">{post.summary}</p>
 					</div>
 					<div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+						<span className="font-semibold text-(--color-foreground)">PROPERTIES</span>
 						<span>{formatPostDate(post.date)}</span>
 						<span className="text-border">/</span>
 						<div className="flex flex-wrap gap-2">

@@ -6,23 +6,23 @@ export default async function ProjectsPage() {
 
 	return (
 		<section>
-			<title>Projects</title>
+			<title>Project</title>
 			<Container className="
 				max-w-5xl py-10
 				md:py-14
 			"
 			>
 				<div className="mb-10 space-y-4">
-					<Eyebrow>Projects</Eyebrow>
+					<Eyebrow>Project</Eyebrow>
 					<h1 className="
 						max-w-3xl text-4xl font-semibold tracking-tight text-(--color-foreground)
 						sm:text-5xl
 					"
 					>
-						一些小而真实的工程痕迹。
+						Project
 					</h1>
 					<p className="max-w-2xl text-base/7 text-muted-foreground">
-						先迁入旧站的项目列表内容，保留每个项目最原始的标题、说明和外部链接。
+						Check out my creations below!
 					</p>
 				</div>
 
@@ -54,9 +54,6 @@ export default async function ProjectsPage() {
 									</h2>
 									<p className="text-sm/6 text-muted-foreground">{project.description}</p>
 								</div>
-								<p className="text-sm font-medium text-(--color-foreground) underline decoration-border underline-offset-4">
-									View project
-								</p>
 							</a>
 						</SurfacePanel>
 					))}

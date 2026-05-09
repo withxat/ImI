@@ -1,4 +1,6 @@
-import { Container, Eyebrow, SurfacePanel, TextLink } from '../../components/ui/primitives'
+import { Link } from 'waku'
+
+import { Container, Eyebrow, SurfacePanel } from '../../components/ui/primitives'
 import { formatPostDate, getPostsByCategory } from '../../lib/blog'
 
 export default async function BlogIndexPage() {
@@ -6,23 +8,23 @@ export default async function BlogIndexPage() {
 
 	return (
 		<section>
-			<title>Blog</title>
+			<title>All Writings</title>
 			<Container className="
 				max-w-5xl py-10
 				md:py-14
 			"
 			>
 				<div className="mb-10 space-y-4">
-					<Eyebrow>Writing</Eyebrow>
+					<Eyebrow>Archive - Texts just sparkle in my mind</Eyebrow>
 					<h1 className="
 						max-w-3xl text-4xl font-semibold tracking-tight text-(--color-foreground)
 						sm:text-5xl
 					"
 					>
-						旧内容先优雅落位，文章本身继续发光。
+						All Writings
 					</h1>
 					<p className="max-w-2xl text-base/7 text-muted-foreground">
-						这里先迁入原来 Astro content collection 里的文章内容，只保留清爽的归档和阅读体验。
+						All writings written by Xat
 					</p>
 				</div>
 
@@ -50,10 +52,12 @@ export default async function BlogIndexPage() {
 											"
 											key={slug}
 										>
-											<div className="
-												space-y-3 p-5
-												sm:p-6
-											"
+											<Link
+												className="
+													block space-y-3 p-5
+													sm:p-6
+												"
+												to={`/blog/${slug}`}
 											>
 												<p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
 													{formatPostDate(post.date)}
@@ -64,8 +68,7 @@ export default async function BlogIndexPage() {
 													</h3>
 													<p className="text-sm/6 text-muted-foreground">{post.summary}</p>
 												</div>
-												<TextLink to={`/blog/${slug}`}>Read article</TextLink>
-											</div>
+											</Link>
 										</SurfacePanel>
 									)
 								})}

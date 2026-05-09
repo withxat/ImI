@@ -13,6 +13,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 	return (
 		<div className="min-h-screen font-['Manrope',sans-serif]">
 			<meta content={data.description} name="description" />
+			<meta content="Hi, Xat!" property="og:title" />
+			<meta content={data.description} property="og:description" />
+			<meta content="summary_large_image" name="twitter:card" />
+			<meta content="Hi, Xat!" name="twitter:title" />
 			<link href="/favicon.ico" rel="icon" sizes="32x32" />
 			<link href="/icon.svg" rel="icon" type="image/svg+xml" />
 			<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
@@ -27,7 +31,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
 async function getData() {
 	const data = {
-		description: 'A simple responsive page built with Waku and Tailwind.',
+		description: 'Code with Love, Exploring the World.',
 		icon: '/images/favicon.png',
 	}
 

@@ -1,84 +1,154 @@
-import { BottomFade } from '../components/fades'
+import { Link } from 'waku'
+
 import { Container, Eyebrow, SurfacePanel, TextLink } from '../components/ui/primitives'
+import { formatPostDate, getAllPosts } from '../lib/blog'
+import { getProjects } from '../lib/projects'
 
 export default async function HomePage() {
 	const data = await getData()
+	const posts = getAllPosts().slice(0, 4)
+	const projects = getProjects()
 
 	return (
-		<section className="relative flex min-h-[calc(100vh-121px)] items-center">
+		<section>
 			<title>{data.title}</title>
 			<Container className="
-				flex flex-col items-center gap-10 py-10
+				max-w-5xl py-10
 				md:py-14
 			"
 			>
-				<div className="w-full max-w-3xl space-y-4 text-center">
-					<Eyebrow>Responsive layout</Eyebrow>
+				<div className="mb-10 space-y-5">
+					<Eyebrow>Design Engineer</Eyebrow>
 					<h1 className="
-						text-4xl font-semibold tracking-tight text-(--color-foreground)
+						max-w-3xl text-4xl font-semibold tracking-tight text-(--color-foreground)
 						sm:text-5xl
 						lg:text-6xl
 					"
 					>
-						{data.headline}
+						I create clean design and build it to life
 					</h1>
-					<p className="mx-auto max-w-xl text-base/7 text-muted-foreground">
-						{data.body}
-					</p>
 				</div>
 
-				<div className="flex w-full flex-col items-center space-y-4">
-					<SurfacePanel className="w-full max-w-2xl overflow-hidden">
-						<div className="
-							space-y-6 p-5
-							sm:p-6
-						"
-						>
-							{data.sections.map(section => (
-								<div
-									className="
-										space-y-2 border-b pb-6
-										last:border-b-0 last:pb-0
-									"
-									key={section.title}
+				<div className="
+					grid gap-6
+					lg:grid-cols-[1fr_1.1fr]
+				"
+				>
+					<SurfacePanel className="
+						h-fit p-5
+						sm:p-6
+					"
+					>
+						<div className="space-y-4 text-base/7 text-muted-foreground">
+							<p className="text-(--color-foreground)">Hey, I'm Xat!</p>
+							<p>I'm a full-stack developer who also loves dabbling in design.</p>
+							<p>
+								My background is in
+								{' '}
+								<i>Intelligent Transportation Systems</i>
+								, where I learned a ton about software engineering and design.
+							</p>
+							<p>
+								Right now, I'm a software engineer on the AI infra team at
+								{' '}
+								<a
+									className="text-(--color-foreground) underline decoration-border underline-offset-4"
+									href="https://en.wikipedia.org/wiki/Central_China_Normal_University"
+									rel="noreferrer"
+									target="_blank"
 								>
-									<h2 className="text-lg font-medium text-(--color-foreground)">{section.title}</h2>
-									<p className="text-sm/6 text-muted-foreground">{section.body}</p>
-								</div>
-							))}
+									Central China Normal University
+								</a>
+								.
+							</p>
+							<p>Check out my creations below!</p>
+							<audio preload="auto" src="/xat.mp3" controls>
+								Say My Name
+							</audio>
 						</div>
 					</SurfacePanel>
 
-					<TextLink to="/about">
-						About page
-					</TextLink>
+					<div className="space-y-6">
+						<section>
+							<div className="mb-3 flex items-center justify-between gap-4">
+								<h2 className="text-xl font-semibold tracking-tight text-(--color-foreground)">Writing</h2>
+								<TextLink to="/blog">View All</TextLink>
+							</div>
+							<div className="space-y-3">
+								{posts.map((post) => {
+									const slug = post.info.path.replace(/\.mdx?$/, '')
+
+									return (
+										<SurfacePanel
+											className="
+												transition-transform duration-150
+												hover:-translate-y-0.5
+											"
+											key={slug}
+										>
+											<Link
+												className="
+													block space-y-2 p-5
+													sm:p-6
+												"
+												to={`/blog/${slug}`}
+											>
+												<p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
+													{formatPostDate(post.date)}
+												</p>
+												<h3 className="text-lg font-semibold tracking-tight text-(--color-foreground)">
+													{post.title}
+												</h3>
+												<p className="text-sm/6 text-muted-foreground">{post.summary}</p>
+											</Link>
+										</SurfacePanel>
+									)
+								})}
+							</div>
+						</section>
+
+						<section>
+							<div className="mb-3 flex items-center justify-between gap-4">
+								<h2 className="text-xl font-semibold tracking-tight text-(--color-foreground)">Project</h2>
+								<TextLink to="/projects">View All</TextLink>
+							</div>
+							<div className="space-y-3">
+								{projects.map(project => (
+									<SurfacePanel
+										className="
+											transition-transform duration-150
+											hover:-translate-y-0.5
+										"
+										key={project.id}
+									>
+										<a
+											className="
+												block space-y-2 p-5
+												sm:p-6
+											"
+											href={project.link}
+											rel="noreferrer"
+											target="_blank"
+										>
+											<h3 className="text-lg font-semibold tracking-tight text-(--color-foreground)">
+												{project.title}
+											</h3>
+											<p className="text-sm/6 text-muted-foreground">{project.description}</p>
+										</a>
+									</SurfacePanel>
+								))}
+							</div>
+						</section>
+					</div>
 				</div>
 			</Container>
-			<BottomFade />
 		</section>
 	)
 }
 
 async function getData() {
 	return {
-		body:
-      'The layout now stays straightforward: stacked on small screens, two columns on large screens, with only a bottom blur fade added to the content panel.',
-		headline: 'A simple page with responsive structure.',
-		sections: [
-			{
-				body: 'Content stacks into a single column with tighter spacing and no decorative framing.',
-				title: 'Mobile',
-			},
-			{
-				body: 'The page switches to a two-column layout so the intro and content block can sit side by side.',
-				title: 'Desktop',
-			},
-			{
-				body: 'The fade is implemented as a small fixed-looking overlay inside the card using Tailwind gradients, blur, and mask-image.',
-				title: 'Bottom fade',
-			},
-		],
-		title: 'IMI',
+		title: 'Hi, Xat!',
 	}
 }
 
