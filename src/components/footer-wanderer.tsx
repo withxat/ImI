@@ -1,18 +1,8 @@
 import { CountryFlag } from '@/components/country-flag'
 import { getVisitorGeo } from '@/lib/visitor-geo'
 
-/**
- * Yield one macrotask so React can paint the Suspense fallback while geo resolves.
- * Keeps the shell streaming-friendly without moving geo back to the client.
- */
-function yieldMacrotask(): Promise<void> {
-	return new Promise((resolve) => {
-		setTimeout(resolve, 0)
-	})
-}
-
-export async function FooterWanderer() {
-	await yieldMacrotask()
+/** Sync RSC: `unstable_getContext()` must stay inside the same request turn as the layout (no macrotask gap). */
+export function FooterWanderer() {
 	const geo = getVisitorGeo()
 
 	if (geo.countryName) {
