@@ -42,7 +42,7 @@ export default async function BlogIndexPage() {
 												hover:text-black
 											"
 											key={slug}
-											to={`/blog/${slug}`}
+											to={`/post/${slug}`}
 										>
 											<h3 className="font-medium text-foreground">{post.title}</h3>
 											<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>

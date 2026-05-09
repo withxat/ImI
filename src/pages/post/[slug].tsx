@@ -4,7 +4,7 @@ import { ArticleBody } from '../../components/article-body'
 import { Container, Eyebrow, TextLink } from '../../components/ui/primitives'
 import { formatPostDate, getCategoryBySlug, getPostBySlug, getPostSlugs } from '../../lib/blog'
 
-export default async function BlogPostPage({ slug }: PageProps<'/blog/[slug]'>) {
+export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
 	const post = getPostBySlug(slug)
 
 	if (!post) {

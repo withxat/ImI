@@ -6,7 +6,7 @@ import { getProjects } from '../lib/projects'
 
 export default async function HomePage() {
 	const data = await getData()
-	const posts = getAllPosts()
+	const posts = getAllPosts().slice(0, 4)
 	const projects = getProjects()
 
 	return (
@@ -55,7 +55,41 @@ export default async function HomePage() {
 					</section>
 
 					<section className="space-y-7">
-						<Eyebrow>Projects</Eyebrow>
+						<div className="flex items-baseline justify-between gap-6">
+							<Eyebrow>Writing</Eyebrow>
+							<Link
+								className="
+									font-ui text-sm text-muted-foreground underline decoration-border underline-offset-4 transition-colors duration-150
+									hover:text-foreground hover:decoration-current
+								"
+								to="/post"
+							>
+								View All
+							</Link>
+						</div>
+						<div className="space-y-6">
+							{posts.map((post) => {
+								const slug = post.info.path.replace(/\.mdx?$/, '')
+
+								return (
+									<Link
+										className="
+											block transition-colors duration-150
+											hover:text-black
+										"
+										key={slug}
+										to={`/post/${slug}`}
+									>
+										<h3 className="font-medium text-foreground">{post.title}</h3>
+										<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
+									</Link>
+								)
+							})}
+						</div>
+					</section>
+
+					<section className="space-y-7">
+						<Eyebrow>Project</Eyebrow>
 						<div className="space-y-7">
 							{projects.map(project => (
 								<a
@@ -72,29 +106,6 @@ export default async function HomePage() {
 									<p className="mt-1 text-base/6 text-muted-foreground">{project.description}</p>
 								</a>
 							))}
-						</div>
-					</section>
-
-					<section className="space-y-7">
-						<Eyebrow>Writing</Eyebrow>
-						<div className="space-y-6">
-							{posts.map((post) => {
-								const slug = post.info.path.replace(/\.mdx?$/, '')
-
-								return (
-									<Link
-										className="
-											block transition-colors duration-150
-											hover:text-black
-										"
-										key={slug}
-										to={`/blog/${slug}`}
-									>
-										<h3 className="font-medium text-foreground">{post.title}</h3>
-										<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
-									</Link>
-								)
-							})}
 						</div>
 					</section>
 
