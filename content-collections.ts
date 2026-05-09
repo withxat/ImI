@@ -63,11 +63,6 @@ const config = defineSingleton({
 			name: z.string(),
 			slug: z.string(),
 		})),
-		lab: z.array(z.object({
-			description: z.string(),
-			link: z.string().url(),
-			title: z.string(),
-		})),
 	}),
 })
 

@@ -1,5 +1,6 @@
 import { Link } from 'waku'
 
+import { CapabilityExternalLink } from '@/components/capability-external-link'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
@@ -20,8 +21,8 @@ export default async function HomePage() {
 						<NameAudioButton />
 					</p>
 					<p className="text-muted-foreground">Design Engineer</p>
-					<p className="mt-3 max-w-prose text-base/7 text-foreground">
-						Building production-quality interfaces and AI-native products.
+					<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
+						Building production-quality interfaces and AI-native products
 					</p>
 				</div>
 
@@ -66,13 +67,13 @@ export default async function HomePage() {
 								View All
 							</Link>
 						</div>
-						<div className="space-y-6">
+						<div>
 							{posts.map((post) => {
 								const slug = post.slug
 
 								return (
 									<Link
-										className="entry-link"
+										className="post-list-entry entry-link"
 										key={slug}
 										to={`/post/${slug}`}
 									>
@@ -94,40 +95,29 @@ export default async function HomePage() {
 										<p className="mt-1 text-base/6 text-muted-foreground">{cap.summary}</p>
 									</div>
 									{cap.items.length > 0 && (
-										<div className="space-y-6">
-											{cap.items.map(item => (
+										<div className="space-y-3">
+											{cap.items.map(item =>
 												item.link
 													? (
-															<a
-																className="entry-link"
+															<CapabilityExternalLink
+																description={item.description}
 																href={item.link}
 																key={`${cap.title}-${item.title}`}
-																rel="noreferrer"
-																target="_blank"
-															>
-																<h4 className="font-medium text-foreground">{item.title}</h4>
-																<p className="mt-1 text-base/6 text-muted-foreground">{item.description}</p>
-															</a>
+																title={item.title}
+															/>
 														)
 													: (
 															<div className="space-y-1" key={`${cap.title}-${item.title}`}>
 																<h4 className="font-medium text-foreground">{item.title}</h4>
-																<p className="mt-1 text-base/6 text-muted-foreground">{item.description}</p>
+																<p className="truncate text-base/6 text-muted-foreground">{item.description}</p>
 															</div>
-														)
-											))}
+														),
+											)}
 										</div>
 									)}
 								</div>
 							))}
 						</div>
-						<p className="text-base/6 text-muted-foreground">
-							<Link className="text-link text-link-strong font-ui" to="/lab">
-								Lab
-							</Link>
-							{' '}
-							— AI UI experiments, motion studies, and small tools that do not belong in a case study.
-						</p>
 					</section>
 
 				</div>

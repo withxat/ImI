@@ -1,5 +1,3 @@
-import { Link } from 'waku'
-
 import { Container } from '@/components/ui/primitives'
 
 export function Footer() {
@@ -7,9 +5,6 @@ export function Footer() {
 		<footer>
 			<Container className="pt-16 pb-28 text-base/7 text-muted-foreground">
 				<nav className="flex flex-wrap gap-x-3 gap-y-1 font-ui text-sm">
-					<Link className="text-link" to="/lab">
-						Lab
-					</Link>
 					<a
 						className="text-link"
 						href="https://github.com/withxat"

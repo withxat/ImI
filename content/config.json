@@ -6,7 +6,7 @@
 			"items": [
 				{
 					"title": "OpenCat.app",
-					"description": "Site redesign for an AI chat product: layout, flows, and a calm product surface around model interactions.",
+					"description": "👨‍🎨 Redesign OpenCat website",
 					"link": "https://github.com/waylybaye/opencat.app"
 				}
 			]
@@ -16,8 +16,8 @@
 			"summary": "Architecture, performance budgets, and component systems that scale with the product.",
 			"items": [
 				{
-					"title": "Monorepo template",
-					"description": "Opinionated workspaces for shared UI packages, apps, and release flow.",
+					"title": "Monorepo Template",
+					"description": "🍤 Just a template",
 					"link": "https://github.com/withxat/monorepo-template"
 				}
 			]
@@ -28,7 +28,7 @@
 			"items": [
 				{
 					"title": "TSConfig",
-					"description": "Strict TypeScript baselines for modern JavaScript ecosystems.",
+					"description": "📒 A strict TypeScript configuration for modern project",
 					"link": "https://github.com/withxat/tsconfig"
 				}
 			]
@@ -37,18 +37,6 @@
 			"title": "Interface Craft",
 			"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
 			"items": []
-		}
-	],
-	"lab": [
-		{
-			"title": "ESLint config",
-			"description": "Personal preset playground—rules, flat config, and repo hygiene experiments.",
-			"link": "https://github.com/withxat/eslint-config"
-		},
-		{
-			"title": "MateBook 14 (2019) Hackintosh",
-			"description": "Deep hardware quirks and boot plumbing—fun lab, not client work.",
-			"link": "https://github.com/withxat/Matebook-14-2019-Hackintosh"
 		}
 	],
 	"categories": [

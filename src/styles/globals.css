@@ -6,6 +6,9 @@
 	--font-display: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-text: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-ui: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-serif:
+		ui-serif, 'New York', 'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman', 'Droid Serif', Times,
+		'Source Serif 4', Georgia, serif;
 
 	--color-background: oklch(1 0 0);
 	--color-foreground: oklch(0.17 0.003 260);
@@ -96,6 +99,21 @@
 
 	.entry-link {
 		@apply block transition-colors duration-150 hover:text-black;
+	}
+
+	.post-list-entry {
+		@apply relative block pt-8 first:pt-0;
+	}
+
+	.post-list-entry::after {
+		content: '';
+		display: block;
+		height: 0.625rem;
+		margin-top: 1.25rem;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 10' width='48' height='10'%3E%3Cpath d='M0 5 Q6 0.5 12 5 T24 5 T36 5 T48 5' fill='none' stroke='%23c4c4cc' stroke-width='1.15' stroke-linecap='round'/%3E%3C/svg%3E");
+		background-repeat: repeat-x;
+		background-size: 48px 10px;
+		background-position: 0 100%;
 	}
 
 	.page-shell {
