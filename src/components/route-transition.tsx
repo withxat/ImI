@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'waku'
 
@@ -10,6 +10,7 @@ interface RouteTransitionProps {
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
+/** Enter-only: AnimatePresence + exit breaks when layout `children` is already the next route. */
 export function RouteTransition({ children }: RouteTransitionProps) {
 	const { path, query, unstable_events } = useRouter()
 	const [pending, setPending] = useState(false)
@@ -63,21 +64,18 @@ export function RouteTransition({ children }: RouteTransitionProps) {
 			style={{ pointerEvents: pending ? 'none' : 'auto' }}
 			transition={shellTransition}
 		>
-			<AnimatePresence initial={false} mode="wait">
-				<motion.div
-					initial={
-						allowRouteTransition
-							? { opacity: 0, y: reduceMotion ? 0 : 10 }
-							: false
-					}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: reduceMotion ? 0 : -6 }}
-					key={routeKey}
-					transition={pageTransition}
-				>
-					{children}
-				</motion.div>
-			</AnimatePresence>
+			<motion.div
+				initial={
+					allowRouteTransition
+						? { opacity: 0, y: reduceMotion ? 0 : 10 }
+						: false
+				}
+				animate={{ opacity: 1, y: 0 }}
+				key={routeKey}
+				transition={pageTransition}
+			>
+				{children}
+			</motion.div>
 		</motion.div>
 	)
 }
