@@ -1,34 +1,54 @@
 {
-	"projects": [
+	"capabilities": [
 		{
-			"title": "Monorepo Template",
-			"id": "monorepo-template",
-			"description": "🍤 Just a template",
-			"link": "https://github.com/withxat/monorepo-template"
+			"title": "AI Product Experiences",
+			"summary": "Chat surfaces, agents, orchestration, and treating intelligence as UX—not a bolt-on.",
+			"items": [
+				{
+					"title": "OpenCat.app",
+					"description": "Site redesign for an AI chat product: layout, flows, and a calm product surface around model interactions.",
+					"link": "https://github.com/waylybaye/opencat.app"
+				}
+			]
 		},
 		{
-			"title": "TSConfig",
-			"id": "tsconfig",
-			"description": "📒 A strict TypeScript configuration for modern project",
-			"link": "https://github.com/withxat/tsconfig"
+			"title": "Frontend Systems",
+			"summary": "Architecture, performance budgets, and component systems that scale with the product.",
+			"items": [
+				{
+					"title": "Monorepo template",
+					"description": "Opinionated workspaces for shared UI packages, apps, and release flow.",
+					"link": "https://github.com/withxat/monorepo-template"
+				}
+			]
 		},
 		{
-			"title": "ESLint-Config",
-			"id": "eslint-config",
-			"description": "🧃 Xat's ESLint config preset",
+			"title": "Developer Experience",
+			"summary": "Strict defaults, lint rules, and workflows that keep teams shipping safely.",
+			"items": [
+				{
+					"title": "TSConfig",
+					"description": "Strict TypeScript baselines for modern JavaScript ecosystems.",
+					"link": "https://github.com/withxat/tsconfig"
+				}
+			]
+		},
+		{
+			"title": "Interface Craft",
+			"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
+			"items": []
+		}
+	],
+	"lab": [
+		{
+			"title": "ESLint config",
+			"description": "Personal preset playground—rules, flat config, and repo hygiene experiments.",
 			"link": "https://github.com/withxat/eslint-config"
 		},
 		{
-			"title": "Matebook-14-2019-Hackintosh",
-			"id": "matebook-14-2019-hackintosh",
-			"description": "🚀 Transform your MateBook 14 2019 into a Hackintosh",
+			"title": "MateBook 14 (2019) Hackintosh",
+			"description": "Deep hardware quirks and boot plumbing—fun lab, not client work.",
 			"link": "https://github.com/withxat/Matebook-14-2019-Hackintosh"
-		},
-		{
-			"title": "OpenCat.app",
-			"id": "opencat-app",
-			"description": "👨‍🎨 Redesign OpenCat website",
-			"link": "https://github.com/waylybaye/opencat.app"
 		}
 	],
 	"categories": [

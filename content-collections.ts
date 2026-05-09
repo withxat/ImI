@@ -49,14 +49,23 @@ const config = defineSingleton({
 	name: 'config',
 	parser: 'json',
 	schema: z.object({
+		capabilities: z.array(z.object({
+			items: z.array(z.object({
+				description: z.string(),
+				link: z.string().url().optional(),
+				title: z.string(),
+			})),
+			summary: z.string(),
+			title: z.string(),
+		})),
 		categories: z.array(z.object({
 			description: z.string(),
 			name: z.string(),
 			slug: z.string(),
 		})),
-		projects: z.array(z.object({
+		lab: z.array(z.object({
 			description: z.string(),
-			link: z.string(),
+			link: z.string().url(),
 			title: z.string(),
 		})),
 	}),

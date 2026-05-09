@@ -34,7 +34,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
 async function getData() {
 	const data = {
-		description: 'Code with Love, Exploring the World.',
+		description: 'Design Engineer building AI-native products, interfaces, and frontend systems.',
 		icon: '/images/favicon.png',
 	}
 

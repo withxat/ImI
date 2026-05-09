@@ -3,12 +3,12 @@ import { Link } from 'waku'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
-import { getProjects } from '@/lib/projects'
+import { getCapabilities } from '@/lib/projects'
 
 export default async function HomePage() {
 	const data = await getData()
 	const posts = getAllPosts().slice(0, 4)
-	const projects = getProjects()
+	const capabilities = getCapabilities()
 
 	return (
 		<section>
@@ -20,20 +20,26 @@ export default async function HomePage() {
 						<NameAudioButton />
 					</p>
 					<p className="text-muted-foreground">Design Engineer</p>
+					<p className="mt-3 max-w-prose text-base/7 text-foreground">
+						Building production-quality interfaces and AI-native products.
+					</p>
 				</div>
 
 				<div className="home-sections">
 					<section>
 						<div className="space-y-5 text-base/7 text-muted-foreground">
-							<p>I'm a full-stack developer who also loves dabbling in design.</p>
+							<p>
+								I design and ship applied AI—interfaces, workflows, and developer-facing
+								surfaces where intelligence is part of the UX, not a bolt-on.
+							</p>
 							<p>
 								My background is in
 								{' '}
 								<i>Intelligent Transportation Systems</i>
-								, where I learned a ton about software engineering and design.
+								: software and design where physical infrastructure meets digital systems.
 							</p>
 							<p>
-								Right now, I'm a software engineer on the AI infra team at
+								Today I work at
 								{' '}
 								<a
 									className="text-link text-link-strong"
@@ -43,9 +49,10 @@ export default async function HomePage() {
 								>
 									Central China Normal University
 								</a>
-								.
+								{' '}
+								on production AI products and intelligent experiences—exploring how models
+								reshape interfaces, collaboration, and tools.
 							</p>
-							<p>Check out my creations below!</p>
 						</div>
 					</section>
 
@@ -77,22 +84,50 @@ export default async function HomePage() {
 						</div>
 					</section>
 
-					<section className="space-y-7">
-						<Eyebrow className="font-semibold">Project</Eyebrow>
-						<div className="space-y-7">
-							{projects.map(project => (
-								<a
-									className="entry-link"
-									href={project.link}
-									key={project.link}
-									rel="noreferrer"
-									target="_blank"
-								>
-									<h3 className="font-medium text-foreground">{project.title}</h3>
-									<p className="mt-1 text-base/6 text-muted-foreground">{project.description}</p>
-								</a>
+					<section className="space-y-10">
+						<Eyebrow className="font-semibold">Capabilities</Eyebrow>
+						<div className="space-y-12">
+							{capabilities.map(cap => (
+								<div className="space-y-5" key={cap.title}>
+									<div>
+										<h3 className="font-medium text-foreground">{cap.title}</h3>
+										<p className="mt-1 text-base/6 text-muted-foreground">{cap.summary}</p>
+									</div>
+									{cap.items.length > 0 && (
+										<div className="space-y-6">
+											{cap.items.map(item => (
+												item.link
+													? (
+															<a
+																className="entry-link"
+																href={item.link}
+																key={`${cap.title}-${item.title}`}
+																rel="noreferrer"
+																target="_blank"
+															>
+																<h4 className="font-medium text-foreground">{item.title}</h4>
+																<p className="mt-1 text-base/6 text-muted-foreground">{item.description}</p>
+															</a>
+														)
+													: (
+															<div className="space-y-1" key={`${cap.title}-${item.title}`}>
+																<h4 className="font-medium text-foreground">{item.title}</h4>
+																<p className="mt-1 text-base/6 text-muted-foreground">{item.description}</p>
+															</div>
+														)
+											))}
+										</div>
+									)}
+								</div>
 							))}
 						</div>
+						<p className="text-base/6 text-muted-foreground">
+							<Link className="text-link text-link-strong font-ui" to="/lab">
+								Lab
+							</Link>
+							{' '}
+							— AI UI experiments, motion studies, and small tools that do not belong in a case study.
+						</p>
 					</section>
 
 				</div>
