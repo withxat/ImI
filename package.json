@@ -7,7 +7,6 @@
 		"content:gen": "fumadocs-mdx",
 		"dev": "waku dev",
 		"build": "waku build",
-		"postbuild": "node ./scripts/copy-root-index.mjs",
 		"start": "waku start",
 		"typegen": "pnpm run content:gen && waku router typegen",
 		"lint": "eslint",
