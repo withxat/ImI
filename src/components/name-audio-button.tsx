@@ -1,13 +1,19 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import type { NameVolumePhase } from '@/components/name-volume-icon'
+
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { NameVolumeIcon } from '@/components/name-volume-icon'
 import { Button } from '@/components/ui/button'
 
 export function NameAudioButton() {
 	const audioRef = useRef<HTMLAudioElement>(null)
-	const [playing, setPlaying] = useState(false)
+	const [phase, setPhase] = useState<NameVolumePhase>('idle')
+
+	const onFinishingComplete = useCallback(() => {
+		setPhase('idle')
+	}, [])
 
 	useEffect(() => {
 		const audio = audioRef.current
@@ -16,17 +22,28 @@ export function NameAudioButton() {
 			return
 		}
 
-		const onPlay = () => setPlaying(true)
-		const onStop = () => setPlaying(false)
+		const onPlay = () => setPhase('playing')
+
+		const onEnded = () => {
+			setPhase('finishing')
+		}
+
+		const onPause = () => {
+			if (audio.ended) {
+				setPhase('finishing')
+				return
+			}
+			setPhase('idle')
+		}
 
 		audio.addEventListener('play', onPlay)
-		audio.addEventListener('ended', onStop)
-		audio.addEventListener('pause', onStop)
+		audio.addEventListener('ended', onEnded)
+		audio.addEventListener('pause', onPause)
 
 		return () => {
 			audio.removeEventListener('play', onPlay)
-			audio.removeEventListener('ended', onStop)
-			audio.removeEventListener('pause', onStop)
+			audio.removeEventListener('ended', onEnded)
+			audio.removeEventListener('pause', onPause)
 		}
 	}, [])
 
@@ -51,7 +68,12 @@ export function NameAudioButton() {
 				type="button"
 				variant="ghost"
 			>
-				<NameVolumeIcon playing={playing} size={16} aria-hidden />
+				<NameVolumeIcon
+					onFinishingComplete={onFinishingComplete}
+					phase={phase}
+					size={16}
+					aria-hidden
+				/>
 			</Button>
 			<audio preload="auto" ref={audioRef} src="/xat.mp3" hidden />
 		</span>
