@@ -1,11 +1,45 @@
-import { CountryFlag } from '@/components/country-flag'
-import { getVisitorGeo } from '@/lib/visitor-geo'
+'use client'
 
-/** Sync RSC: `unstable_getContext()` must stay inside the same request turn as the layout (no macrotask gap). */
+import type { VisitorGeo } from '@/lib/visitor-geo'
+
+import { useEffect, useState } from 'react'
+
+import { isoAlpha2ToFlagEmoji } from '@/lib/visitor-geo'
+
 export function FooterWanderer() {
-	const geo = getVisitorGeo()
+	const [geo, setGeo] = useState<null | VisitorGeo>(null)
+
+	useEffect(() => {
+		let cancelled = false
+		void (async () => {
+			try {
+				const res = await fetch('/geo', { headers: { Accept: 'application/json' } })
+				if (!res.ok)
+					throw new Error(String(res.status))
+				const data = (await res.json()) as VisitorGeo
+				if (!cancelled)
+					setGeo(data)
+			}
+			catch {
+				if (!cancelled)
+					setGeo({ countryCode: null, countryName: null })
+			}
+		})()
+		return () => {
+			cancelled = true
+		}
+	}, [])
+
+	if (geo === null) {
+		return (
+			<p className="h-5 w-72 max-w-full animate-pulse rounded-md bg-muted text-transparent" aria-hidden>
+				&nbsp;
+			</p>
+		)
+	}
 
 	if (geo.countryName) {
+		const flag = geo.countryCode ? isoAlpha2ToFlagEmoji(geo.countryCode) : ''
 		return (
 			<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-foreground">
 				<span>
@@ -14,7 +48,13 @@ export function FooterWanderer() {
 					{geo.countryName}
 					.
 				</span>
-				<CountryFlag code={geo.countryCode} />
+				{flag
+					? (
+							<span className="text-lg leading-none" title={geo.countryCode ?? undefined} aria-hidden>
+								{flag}
+							</span>
+						)
+					: null}
 			</p>
 		)
 	}

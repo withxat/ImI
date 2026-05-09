@@ -43,6 +43,6 @@ async function getData() {
 
 export async function getConfig() {
 	return {
-		render: 'dynamic',
+		render: 'static',
 	} as const
 }
