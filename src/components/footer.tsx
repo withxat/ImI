@@ -1,15 +1,9 @@
-'use client'
-
 import { Dot } from 'lucide-react'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 
 import { CountryFlag } from '@/components/country-flag'
 import { Container } from '@/components/ui/primitives'
-
-interface VisitorPayload {
-	countryCode: null | string
-	countryName: null | string
-}
+import { getVisitorGeo } from '@/lib/visitor-geo'
 
 const LINKS = [
 	{ href: 'https://github.com/withxat', label: 'GitHub' },
@@ -19,59 +13,25 @@ const LINKS = [
 ] as const
 
 export function Footer() {
-	const [geo, setGeo] = useState<null | VisitorPayload>(null)
-	const [geoReady, setGeoReady] = useState(false)
+	const geo = getVisitorGeo()
 
-	useEffect(() => {
-		const ac = new AbortController()
-		void fetch('/visitor', { signal: ac.signal })
-			.then((r) => {
-				if (!r.ok) {
-					throw new Error('visitor')
-				}
-				return r.json() as Promise<VisitorPayload>
-			})
-			.then((data) => {
-				if (ac.signal.aborted) {
-					return
-				}
-				setGeo(data)
-			})
-			.catch(() => {
-				if (ac.signal.aborted) {
-					return
-				}
-				setGeo({ countryCode: null, countryName: null })
-			})
-			.finally(() => {
-				if (!ac.signal.aborted) {
-					setGeoReady(true)
-				}
-			})
-		return () => ac.abort()
-	}, [])
-
-	const wandererLine = !geoReady
+	const wandererLine = geo.countryName
 		? (
-				<p className="text-muted-foreground">Hi, wanderer—</p>
+				<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-foreground">
+					<span>
+						Hi, wanderer from
+						{' '}
+						{geo.countryName}
+						.
+					</span>
+					<CountryFlag code={geo.countryCode} />
+				</p>
 			)
-		: geo?.countryName
-			? (
-					<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-foreground">
-						<span>
-							Hi, wanderer from
-							{' '}
-							{geo.countryName}
-							.
-						</span>
-						<CountryFlag code={geo.countryCode} />
-					</p>
-				)
-			: (
-					<p className="text-foreground">
-						Hi, wanderer—glad you found your way here.
-					</p>
-				)
+		: (
+				<p className="text-foreground">
+					Hi, wanderer—glad you found your way here.
+				</p>
+			)
 
 	return (
 		<footer>
