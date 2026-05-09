@@ -119,7 +119,7 @@ export default async function HomePage() {
 										)}
 										{cap.items.length === 0 && (
 											<CapabilityEmptyPlaceholder
-												description={cap.emptyState?.description ?? '永远相信美好的事情即将发生。'}
+												description={cap.emptyState?.description ?? 'Public links appear here when this capability has something worth sharing.'}
 												title={cap.emptyState?.title ?? 'Work in progress'}
 											/>
 										)}
