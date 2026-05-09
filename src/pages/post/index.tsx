@@ -1,6 +1,6 @@
 import { Link } from 'waku'
 
-import { Container, Eyebrow } from '../../components/ui/primitives'
+import { Container, Eyebrow, TextLink } from '../../components/ui/primitives'
 import { getPostsByCategory } from '../../lib/blog'
 
 export default async function BlogIndexPage() {
@@ -14,9 +14,12 @@ export default async function BlogIndexPage() {
 				md:py-28
 			"
 			>
-				<div className="space-y-0">
-					<p className="font-medium text-foreground">All Writings</p>
-					<p className="text-muted-foreground">Archive - Texts just sparkle in my mind</p>
+				<div className="space-y-8">
+					<TextLink to="/">Go to home</TextLink>
+					<div className="space-y-0">
+						<p className="font-medium text-foreground">All Writings</p>
+						<p className="text-muted-foreground">Archive - Texts just sparkle in my mind</p>
+					</div>
 				</div>
 
 				<div className="
