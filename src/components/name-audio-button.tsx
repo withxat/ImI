@@ -1,6 +1,9 @@
 'use client'
 
+import { Volume2Icon } from 'lucide-react'
 import { useRef } from 'react'
+
+import { Button } from '@/components/ui/button'
 
 export function NameAudioButton() {
 	const audioRef = useRef<HTMLAudioElement>(null)
@@ -18,14 +21,16 @@ export function NameAudioButton() {
 
 	return (
 		<span className="inline-flex items-center">
-			<button
+			<Button
 				aria-label="Play name pronunciation"
-				className="text-link ml-2 inline-flex -translate-y-px items-center text-sm leading-none text-muted-foreground"
+				className="ml-2 -translate-y-px"
 				onClick={handlePlay}
+				size="icon-xs"
 				type="button"
+				variant="ghost"
 			>
-				🔊
-			</button>
+				<Volume2Icon aria-hidden="true" />
+			</Button>
 			<audio preload="auto" ref={audioRef} src="/xat.mp3" hidden />
 		</span>
 	)

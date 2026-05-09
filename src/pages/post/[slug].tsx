@@ -1,7 +1,9 @@
 import type { PageProps } from 'waku/router'
 
 import { ArticleBody } from '@/components/article-body'
+import { Badge } from '@/components/ui/badge'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
+import { Separator } from '@/components/ui/separator'
 import { formatPostDate, getCategoryBySlug, getPostBySlug, getPostSlugs } from '@/lib/blog'
 
 export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
@@ -28,12 +30,12 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 					</div>
 					<div className="flex flex-wrap items-center gap-3 font-ui text-sm text-muted-foreground">
 						<span>{formatPostDate(post.date)}</span>
-						<span>/</span>
+						<Separator className="h-4" orientation="vertical" />
 						<div className="flex flex-wrap gap-2">
 							{post.tags.map(tag => (
-								<span key={tag}>
+								<Badge key={tag} size="sm" variant="outline">
 									{tag}
-								</span>
+								</Badge>
 							))}
 						</div>
 					</div>

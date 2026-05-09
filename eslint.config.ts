@@ -25,4 +25,14 @@ config.append({
 	},
 })
 
+config.append({
+	files: ['src/components/ui/**/*.{ts,tsx}'],
+	rules: {
+		'react-refresh/only-export-components': [
+			'error',
+			{ allowExportNames: ['badgeVariants', 'buttonVariants'] },
+		],
+	},
+})
+
 export default config
