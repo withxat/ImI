@@ -20,13 +20,3 @@ export function readVisitorGeoFromRequest(req: Request): VisitorGeo {
 	}
 	return { countryCode, countryName: regionName(countryCode) }
 }
-
-/** ISO 3166-1 alpha-2 → regional-indicator flag emoji (no extra icon deps on the client). */
-export function isoAlpha2ToFlagEmoji(code: string): string {
-	if (!/^[A-Z]{2}$/i.test(code))
-		return ''
-	const A = 0x1F1E6
-	return [...code.toUpperCase()]
-		.map(c => String.fromCodePoint(A + c.charCodeAt(0) - 65))
-		.join('')
-}

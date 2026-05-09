@@ -4,7 +4,7 @@ import type { VisitorGeo } from '@/lib/visitor-geo'
 
 import { useEffect, useState } from 'react'
 
-import { isoAlpha2ToFlagEmoji } from '@/lib/visitor-geo'
+import { CountryFlag } from '@/components/country-flag'
 
 export function FooterWanderer() {
 	const [geo, setGeo] = useState<null | VisitorGeo>(null)
@@ -39,7 +39,6 @@ export function FooterWanderer() {
 	}
 
 	if (geo.countryName) {
-		const flag = geo.countryCode ? isoAlpha2ToFlagEmoji(geo.countryCode) : ''
 		return (
 			<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-foreground">
 				<span>
@@ -48,13 +47,7 @@ export function FooterWanderer() {
 					{geo.countryName}
 					.
 				</span>
-				{flag
-					? (
-							<span className="text-lg leading-none" title={geo.countryCode ?? undefined} aria-hidden>
-								{flag}
-							</span>
-						)
-					: null}
+				<CountryFlag code={geo.countryCode} />
 			</p>
 		)
 	}
