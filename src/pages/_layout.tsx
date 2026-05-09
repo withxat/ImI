@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { BottomFade } from '@/components/fades'
 import { Footer } from '@/components/footer'
+import { RSS_FEED_URL, RSS_TITLE } from '@/lib/rss'
 
 import '@/styles/globals.css'
 
@@ -17,6 +18,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<meta content={data.description} property="og:description" />
 			<meta content="summary_large_image" name="twitter:card" />
 			<meta content="Hi, Xat!" name="twitter:title" />
+			<link href={RSS_FEED_URL} rel="alternate" title={RSS_TITLE} type="application/rss+xml" />
 			<link href="/favicon.ico" rel="icon" sizes="32x32" />
 			<link href="/icon.svg" rel="icon" type="image/svg+xml" />
 			<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
