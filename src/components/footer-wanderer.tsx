@@ -45,22 +45,17 @@ export function FooterWanderer() {
 
 	if (geo.countryName) {
 		return (
-			<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-foreground">
-				<span>
-					Hi,
-					{' '}
-					<span className={wandererGradientClass}>wanderer</span>
-					{' '}
-					from
-					{' '}
-					<span className="inline-flex items-center gap-x-1.5">
-						<CountryFlag code={geo.countryCode} />
-						<span>
-							{geo.countryName}
-							.
-						</span>
-					</span>
-				</span>
+			<p className="text-foreground">
+				Hi,
+				{' '}
+				<span className={wandererGradientClass}>wanderer</span>
+				{' '}
+				from
+				{' '}
+				<CountryFlag code={geo.countryCode} />
+				{' '}
+				{geo.countryName}
+				.
 			</p>
 		)
 	}
