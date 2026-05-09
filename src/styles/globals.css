@@ -111,7 +111,9 @@
 	}
 
 	.article-body {
-		@apply max-w-full min-w-0 space-y-7 text-base/7 wrap-anywhere text-foreground;
+		/* avoid wrap-anywhere: it breaks between arbitrary characters (bad CJK on narrow screens) */
+		@apply max-w-full min-w-0 space-y-7 text-base/7 break-words text-foreground;
+		line-break: loose;
 	}
 
 	.article-body a {
@@ -153,6 +155,8 @@
 	.article-body li,
 	.article-body p {
 		@apply text-muted-foreground;
+		/* base layer uses text-wrap: pretty (Latin-oriented); normal wrap reads better for Chinese body copy */
+		text-wrap: wrap;
 	}
 
 	.article-body li::marker {
