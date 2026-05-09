@@ -2,13 +2,8 @@
 
 import { useRef } from 'react'
 
-interface PlayableAudio {
-	currentTime: number
-	play: () => Promise<void>
-}
-
 export function NameAudioButton() {
-	const audioRef = useRef<PlayableAudio>(null)
+	const audioRef = useRef<HTMLAudioElement>(null)
 
 	const handlePlay = () => {
 		const audio = audioRef.current
