@@ -11,3 +11,16 @@ index f36dc143a8e44e20705a56dcac3400c9b6ee8498..8aa7250d0f5789666a0591edce347a57
                  }
              });
          }
+diff --git a/dist/lib/vite-rsc/ssr.js b/dist/lib/vite-rsc/ssr.js
+index 555d2c0ca7fb8e9fda43411b2088f11b62e2aa53..6af8f5e423ed510a1e0272bcaa15a01388d01dbf 100644
+--- a/dist/lib/vite-rsc/ssr.js
++++ b/dist/lib/vite-rsc/ssr.js
+@@ -94,7 +94,7 @@ export const renderHtmlStream = async (rscStream, rscHtmlStream, options)=>{
+ };
+ export async function renderHtmlFallback() {
+     const bootstrapScriptContent = await loadBootstrapScriptContent();
+-    const html = fallbackHtml.replace('</body>', ()=>`<script>${bootstrapScriptContent}</script></body>`);
++    const html = fallbackHtml.replace('</body>', ()=>`<script type="module">${bootstrapScriptContent}</script></body>`);
+     return html;
+ }
+ function loadBootstrapScriptContent() {

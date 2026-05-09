@@ -1,5 +1,5 @@
 import { config } from 'content-collections'
 
-export function getProjects() {
-	return config.projects
+export function getCapabilities() {
+	return config.capabilities
 }

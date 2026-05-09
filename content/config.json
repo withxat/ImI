@@ -1,34 +1,51 @@
 {
-	"projects": [
+	"capabilities": [
 		{
-			"title": "Monorepo Template",
-			"id": "monorepo-template",
-			"description": "🍤 Just a template",
-			"link": "https://github.com/withxat/monorepo-template"
+			"title": "AI Product Experiences",
+			"summary": "Chat surfaces, agents, orchestration, and treating intelligence as UX—not a bolt-on.",
+			"items": [
+				{
+					"title": "OpenCat.app",
+					"description": "👨‍🎨 Redesign OpenCat website",
+					"link": "https://github.com/waylybaye/opencat.app"
+				}
+			]
 		},
 		{
-			"title": "TSConfig",
-			"id": "tsconfig",
-			"description": "📒 A strict TypeScript configuration for modern project",
-			"link": "https://github.com/withxat/tsconfig"
+			"title": "Frontend Systems",
+			"summary": "Architecture, performance budgets, and component systems that scale with the product.",
+			"items": [
+				{
+					"title": "Monorepo Template",
+					"description": "🍤 Just a template",
+					"link": "https://github.com/withxat/monorepo-template"
+				}
+			]
 		},
 		{
-			"title": "ESLint-Config",
-			"id": "eslint-config",
-			"description": "🧃 Xat's ESLint config preset",
-			"link": "https://github.com/withxat/eslint-config"
+			"title": "Developer Experience",
+			"summary": "Strict defaults, lint rules, and workflows that keep teams shipping safely.",
+			"items": [
+				{
+					"title": "TSConfig",
+					"description": "📒 A strict TypeScript configuration for modern project",
+					"link": "https://github.com/withxat/tsconfig"
+				},
+				{
+					"title": "ESLint-Config",
+					"description": "🧃 Xat's ESLint config preset",
+					"link": "https://github.com/withxat/eslint-config"
+				}
+			]
 		},
 		{
-			"title": "Matebook-14-2019-Hackintosh",
-			"id": "matebook-14-2019-hackintosh",
-			"description": "🚀 Transform your MateBook 14 2019 into a Hackintosh",
-			"link": "https://github.com/withxat/Matebook-14-2019-Hackintosh"
-		},
-		{
-			"title": "OpenCat.app",
-			"id": "opencat-app",
-			"description": "👨‍🎨 Redesign OpenCat website",
-			"link": "https://github.com/waylybaye/opencat.app"
+			"title": "Interface Craft",
+			"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
+			"items": [],
+			"emptyState": {
+				"title": "Work in progress",
+				"description": "Quiet motion R&D—links when it's showtime."
+			}
 		}
 	],
 	"categories": [
