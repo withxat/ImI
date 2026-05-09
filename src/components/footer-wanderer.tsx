@@ -53,10 +53,14 @@ export function FooterWanderer() {
 					{' '}
 					from
 					{' '}
-					{geo.countryName}
-					.
+					<span className="inline-flex items-center gap-x-1.5">
+						<CountryFlag code={geo.countryCode} />
+						<span>
+							{geo.countryName}
+							.
+						</span>
+					</span>
 				</span>
-				<CountryFlag code={geo.countryCode} />
 			</p>
 		)
 	}
