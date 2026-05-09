@@ -1,3 +1,4 @@
+import { cloudflare } from '@cloudflare/vite-plugin'
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
@@ -13,6 +14,13 @@ export default defineConfig({
 			tailwindcss(),
 			react(),
 			babel({ presets: [reactCompilerPreset()] }),
+			cloudflare({
+				inspectorPort: false,
+				viteEnvironment: {
+					childEnvironments: ['ssr'],
+					name: 'rsc',
+				},
+			}),
 		],
 		resolve: {
 			tsconfigPaths: true,

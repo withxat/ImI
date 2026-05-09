@@ -12,13 +12,15 @@
 		"typegen": "pnpm run content:gen && waku router typegen",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"typecheck": "pnpm run content:gen && tsc --noEmit"
+		"typecheck": "pnpm run content:gen && tsc --noEmit",
+		"deploy": "pnpm --filter imi... run build && wrangler deploy",
+		"preview": "pnpm --filter imi... run build && wrangler dev",
+		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
 		"@types/mdx": "^2.0.13",
 		"fumadocs-core": "^16.8.8",
 		"fumadocs-mdx": "^15.0.0",
-		"hono": "^4.12.18",
 		"react": "~19.2.6",
 		"react-dom": "~19.2.6",
 		"react-server-dom-webpack": "~19.2.6",
@@ -26,6 +28,7 @@
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
+		"@cloudflare/vite-plugin": "^1.36.3",
 		"@rolldown/plugin-babel": "^0.2.3",
 		"@tailwindcss/vite": "^4.3.0",
 		"@types/react": "^19.2.14",
@@ -35,6 +38,7 @@
 		"@withxat/tsconfig": "^1.0.4",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"eslint": "^10.3.0",
+		"hono": "^4.12.18",
 		"jiti": "^2.7.0",
 		"lefthook": "^2.1.6",
 		"tailwindcss": "^4.2.4",
