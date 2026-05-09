@@ -1,7 +1,5 @@
 'use client'
 
-import type { NameVolumePhase } from '@/components/name-volume-icon'
-
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { NameVolumeIcon } from '@/components/name-volume-icon'
@@ -9,10 +7,11 @@ import { Button } from '@/components/ui/button'
 
 export function NameAudioButton() {
 	const audioRef = useRef<HTMLAudioElement>(null)
-	const [phase, setPhase] = useState<NameVolumePhase>('idle')
+	const [playing, setPlaying] = useState(false)
+	const [endSync, setEndSync] = useState(false)
 
-	const onFinishingComplete = useCallback(() => {
-		setPhase('idle')
+	const onEndSyncComplete = useCallback(() => {
+		setEndSync(false)
 	}, [])
 
 	useEffect(() => {
@@ -22,18 +21,24 @@ export function NameAudioButton() {
 			return
 		}
 
-		const onPlay = () => setPhase('playing')
+		const onPlay = () => {
+			setPlaying(true)
+			setEndSync(false)
+		}
 
 		const onEnded = () => {
-			setPhase('finishing')
+			setPlaying(false)
+			setEndSync(true)
 		}
 
 		const onPause = () => {
 			if (audio.ended) {
-				setPhase('finishing')
+				setPlaying(false)
+				setEndSync(true)
 				return
 			}
-			setPhase('idle')
+			setPlaying(false)
+			setEndSync(false)
 		}
 
 		audio.addEventListener('play', onPlay)
@@ -69,8 +74,9 @@ export function NameAudioButton() {
 				variant="ghost"
 			>
 				<NameVolumeIcon
-					onFinishingComplete={onFinishingComplete}
-					phase={phase}
+					audioPlaying={playing}
+					endSync={endSync}
+					onEndSyncComplete={onEndSyncComplete}
 					size={16}
 					aria-hidden
 				/>
