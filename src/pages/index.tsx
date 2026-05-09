@@ -32,11 +32,11 @@ export default async function HomePage() {
 					</Avatar>
 					<div className="space-y-0">
 						<p className="
-							text-2xl font-medium tracking-tight text-foreground
+							inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
 							sm:text-3xl
 						"
 						>
-							Xat
+							<span className="font-xat-name font-normal">Xat</span>
 							<NameAudioButton />
 						</p>
 						<p className="text-muted-foreground">Design Engineer</p>

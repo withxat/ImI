@@ -1,5 +1,13 @@
 @import 'tailwindcss';
 
+@font-face {
+	font-family: 'Fugaz One Xat';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/fugaz-one-regular-subset.woff2') format('woff2');
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -99,6 +107,10 @@
 
 	.entry-link {
 		@apply block transition-colors duration-150 hover:text-black;
+	}
+
+	.font-xat-name {
+		font-family: 'Fugaz One Xat', var(--font-display);
 	}
 
 	.post-list-entry {
