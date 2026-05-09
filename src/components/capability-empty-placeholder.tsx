@@ -1,8 +1,11 @@
 'use client'
 
-import { Factory } from 'lucide-react'
+import type { ConstructionIconHandle } from '@/components/ui/construction'
+
+import { useEffect, useRef } from 'react'
 
 import { buttonVariants } from '@/components/ui/button'
+import { ConstructionIcon } from '@/components/ui/construction'
 import { cn } from '@/lib/cn'
 
 export function CapabilityEmptyPlaceholder({
@@ -12,6 +15,16 @@ export function CapabilityEmptyPlaceholder({
 	description: string
 	title: string
 }) {
+	const iconRef = useRef<ConstructionIconHandle>(null)
+
+	useEffect(() => {
+		const icon = iconRef.current
+		icon?.startAnimation()
+		return () => {
+			icon?.stopAnimation()
+		}
+	}, [])
+
 	return (
 		<div
 			className={cn(
@@ -27,7 +40,11 @@ export function CapabilityEmptyPlaceholder({
 				<span className="block text-sm font-medium text-foreground">{title}</span>
 				<span className="block truncate text-sm text-muted-foreground">{description}</span>
 			</span>
-			<Factory className="-mx-0.5 size-4 shrink-0 text-muted-foreground opacity-80" aria-hidden />
+			<ConstructionIcon
+				className="-mx-0.5 text-muted-foreground opacity-80"
+				ref={iconRef}
+				size={16}
+			/>
 		</div>
 	)
 }
