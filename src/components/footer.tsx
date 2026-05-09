@@ -3,8 +3,7 @@ import { Container } from './ui/primitives'
 export function Footer() {
 	return (
 		<footer>
-			<Container className="space-y-3 py-16 text-base/7 text-muted-foreground">
-				<p>Coding with Love, Exploring the World.</p>
+			<Container className="pt-16 pb-28 text-base/7 text-muted-foreground">
 				<nav className="flex flex-wrap gap-x-3 gap-y-1 font-ui text-sm">
 					<a
 						className="
@@ -48,8 +47,6 @@ export function Footer() {
 					>
 						Email
 					</a>
-					<span>CC BY-SA 4.0</span>
-					<span>not by AI</span>
 				</nav>
 			</Container>
 		</footer>
