@@ -33,6 +33,15 @@ export function Header() {
 								transition-colors duration-150
 								hover:text-(--color-foreground)
 							"
+							to="/projects"
+						>
+							Projects
+						</Link>
+						<Link
+							className="
+								transition-colors duration-150
+								hover:text-(--color-foreground)
+							"
 							to="/blog"
 						>
 							Blog
