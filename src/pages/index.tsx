@@ -16,7 +16,11 @@ export default async function HomePage() {
 			<title>{data.title}</title>
 			<Container className="page-shell">
 				<div className="space-y-0">
-					<p className="font-medium text-foreground">
+					<p className="
+						text-2xl font-medium tracking-tight text-foreground
+						sm:text-3xl
+					"
+					>
 						Xat
 						<NameAudioButton />
 					</p>

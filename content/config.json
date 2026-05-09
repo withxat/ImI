@@ -30,13 +30,13 @@
 					"title": "TSConfig",
 					"description": "📒 A strict TypeScript configuration for modern project",
 					"link": "https://github.com/withxat/tsconfig"
+				},
+				{
+					"title": "ESLint-Config",
+					"description": "🧃 Xat's ESLint config preset",
+					"link": "https://github.com/withxat/eslint-config"
 				}
 			]
-		},
-		{
-			"title": "Interface Craft",
-			"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
-			"items": []
 		}
 	],
 	"categories": [
