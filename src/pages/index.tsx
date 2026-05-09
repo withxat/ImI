@@ -27,8 +27,7 @@ export default async function HomePage() {
 					md:mt-32
 				"
 				>
-					<section className="space-y-7">
-						<Eyebrow>Today</Eyebrow>
+					<section>
 						<div className="space-y-5 text-base/7 text-muted-foreground">
 							<p>I'm a full-stack developer who also loves dabbling in design.</p>
 							<p>
@@ -56,7 +55,7 @@ export default async function HomePage() {
 
 					<section className="space-y-7">
 						<div className="flex items-baseline justify-between gap-6">
-							<Eyebrow>Writing</Eyebrow>
+							<Eyebrow className="font-semibold">Writing</Eyebrow>
 							<Link
 								className="
 									font-ui text-sm text-muted-foreground underline decoration-border underline-offset-4 transition-colors duration-150
@@ -89,7 +88,7 @@ export default async function HomePage() {
 					</section>
 
 					<section className="space-y-7">
-						<Eyebrow>Project</Eyebrow>
+						<Eyebrow className="font-semibold">Project</Eyebrow>
 						<div className="space-y-7">
 							{projects.map(project => (
 								<a
