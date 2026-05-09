@@ -4,5 +4,6 @@ dist
 .env*
 *.tsbuildinfo
 .cache
+.wrangler
 .DS_Store
 *.pem
