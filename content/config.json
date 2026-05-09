@@ -37,6 +37,15 @@
 					"link": "https://github.com/withxat/eslint-config"
 				}
 			]
+		},
+		{
+			"title": "Interface Craft",
+			"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
+			"items": [],
+			"emptyState": {
+				"title": "Work in progress",
+				"description": "永远相信美好的事情即将发生。"
+			}
 		}
 	],
 	"categories": [

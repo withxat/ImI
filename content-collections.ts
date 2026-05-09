@@ -50,6 +50,10 @@ const config = defineSingleton({
 	parser: 'json',
 	schema: z.object({
 		capabilities: z.array(z.object({
+			emptyState: z.object({
+				description: z.string(),
+				title: z.string(),
+			}).optional(),
 			items: z.array(z.object({
 				description: z.string(),
 				link: z.string().url().optional(),

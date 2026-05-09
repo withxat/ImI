@@ -1,5 +1,6 @@
 import { Link } from 'waku'
 
+import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
 import { CapabilityExternalLink } from '@/components/capability-external-link'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Container, Eyebrow } from '@/components/ui/primitives'
@@ -98,27 +99,31 @@ export default async function HomePage() {
 										<h3 className="font-medium text-foreground">{cap.title}</h3>
 										<p className="mt-1 text-base/6 text-muted-foreground">{cap.summary}</p>
 									</div>
-									{cap.items.length > 0 && (
-										<div className="space-y-3">
-											{cap.items.map(item =>
-												item.link
-													? (
-															<CapabilityExternalLink
-																description={item.description}
-																href={item.link}
-																key={`${cap.title}-${item.title}`}
-																title={item.title}
-															/>
-														)
-													: (
-															<div className="space-y-1" key={`${cap.title}-${item.title}`}>
-																<h4 className="font-medium text-foreground">{item.title}</h4>
-																<p className="truncate text-base/6 text-muted-foreground">{item.description}</p>
-															</div>
-														),
-											)}
-										</div>
-									)}
+									<div className="space-y-3">
+										{cap.items.map(item =>
+											item.link
+												? (
+														<CapabilityExternalLink
+															description={item.description}
+															href={item.link}
+															key={`${cap.title}-${item.title}`}
+															title={item.title}
+														/>
+													)
+												: (
+														<div className="space-y-1" key={`${cap.title}-${item.title}`}>
+															<h4 className="font-medium text-foreground">{item.title}</h4>
+															<p className="truncate text-base/6 text-muted-foreground">{item.description}</p>
+														</div>
+													),
+										)}
+										{cap.items.length === 0 && (
+											<CapabilityEmptyPlaceholder
+												description={cap.emptyState?.description ?? '永远相信美好的事情即将发生。'}
+												title={cap.emptyState?.title ?? 'Work in progress'}
+											/>
+										)}
+									</div>
 								</div>
 							))}
 						</div>
