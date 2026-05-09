@@ -6,6 +6,11 @@ import { useEffect, useState } from 'react'
 
 import { CountryFlag } from '@/components/country-flag'
 
+const wandererGradientClass = `
+	bg-linear-to-r from-violet-600 via-indigo-500 to-cyan-600 bg-clip-text font-bold text-transparent
+	dark:from-violet-300 dark:via-indigo-300 dark:to-cyan-300
+`
+
 export function FooterWanderer() {
 	const [geo, setGeo] = useState<null | VisitorGeo>(null)
 
@@ -42,7 +47,11 @@ export function FooterWanderer() {
 		return (
 			<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-foreground">
 				<span>
-					Hi, wanderer from
+					Hi,
+					{' '}
+					<span className={wandererGradientClass}>wanderer</span>
+					{' '}
+					from
 					{' '}
 					{geo.countryName}
 					.
@@ -54,7 +63,10 @@ export function FooterWanderer() {
 
 	return (
 		<p className="text-foreground">
-			Hi, wanderer—glad you found your way here.
+			Hi,
+			{' '}
+			<span className={wandererGradientClass}>wanderer</span>
+			—glad you found your way here.
 		</p>
 	)
 }
