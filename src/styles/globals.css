@@ -33,19 +33,6 @@
 	--radius-md: 1.125rem;
 	--radius-lg: 1.5rem;
 	--shadow-soft: 0 20px 60px -30px color-mix(in srgb, #111827 18%, transparent);
-
-	--animate-route-enter: route-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-
-	@keyframes route-enter {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
 }
 
 @layer base {
