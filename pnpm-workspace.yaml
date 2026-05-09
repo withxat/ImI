@@ -6,6 +6,8 @@ trustPolicyIgnoreAfter: 535600
 packages:
   - .
 
+patchedDependencies:
+  waku@1.0.0-alpha.10: patches/waku@1.0.0-alpha.10.patch
 allowBuilds:
   esbuild: false
   lefthook: true

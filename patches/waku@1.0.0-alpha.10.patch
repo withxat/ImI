@@ -1,0 +1,13 @@
+diff --git a/dist/lib/utils/render.js b/dist/lib/utils/render.js
+index f36dc143a8e44e20705a56dcac3400c9b6ee8498..8aa7250d0f5789666a0591edce347a57f9669f3c 100644
+--- a/dist/lib/utils/render.js
++++ b/dist/lib/utils/render.js
+@@ -35,7 +35,7 @@ export function createRenderUtils(temporaryReferences, renderToReadableStream, c
+             return new Response(htmlResult.stream, {
+                 status: htmlResult.status || options.status || 200,
+                 headers: {
+-                    'content-type': 'text/html'
++                    'content-type': 'text/html; charset=utf-8'
+                 }
+             });
+         }
