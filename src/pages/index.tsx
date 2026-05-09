@@ -1,5 +1,6 @@
 import { Link } from 'waku'
 
+import { NameAudioButton } from '../components/name-audio-button'
 import { Container, Eyebrow } from '../components/ui/primitives'
 import { getAllPosts } from '../lib/blog'
 import { getProjects } from '../lib/projects'
@@ -18,7 +19,10 @@ export default async function HomePage() {
 			"
 			>
 				<div className="space-y-0">
-					<p className="font-medium text-foreground">Xat</p>
+					<p className="font-medium text-foreground">
+						Xat
+						<NameAudioButton />
+					</p>
 					<p className="text-muted-foreground">Design Engineer</p>
 				</div>
 
@@ -108,15 +112,6 @@ export default async function HomePage() {
 						</div>
 					</section>
 
-					<section className="space-y-3">
-						<Eyebrow>More</Eyebrow>
-						<p className="text-base/7 text-muted-foreground">
-							You can hear my name pronunciation here.
-						</p>
-						<audio className="w-full max-w-xs" preload="auto" src="/xat.mp3" controls>
-							Say My Name
-						</audio>
-					</section>
 				</div>
 			</Container>
 		</section>
