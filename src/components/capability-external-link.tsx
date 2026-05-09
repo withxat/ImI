@@ -1,7 +1,12 @@
 'use client'
 
-import { ArrowUpRight } from 'lucide-react'
+import type { MouseEvent } from 'react'
 
+import type { ArrowUpRightIconHandle } from '@/components/ui/arrow-up-right'
+
+import { useCallback, useRef } from 'react'
+
+import { ArrowUpRightIcon } from '@/components/ui/arrow-up-right'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/cn'
 
@@ -14,6 +19,16 @@ export function CapabilityExternalLink({
 	href: string
 	title: string
 }) {
+	const arrowRef = useRef<ArrowUpRightIconHandle>(null)
+
+	const onRowEnter = useCallback((_e: MouseEvent) => {
+		arrowRef.current?.startAnimation()
+	}, [])
+
+	const onRowLeave = useCallback((_e: MouseEvent) => {
+		arrowRef.current?.stopAnimation()
+	}, [])
+
 	return (
 		<Button
 			className={cn(
@@ -23,6 +38,8 @@ export function CapabilityExternalLink({
 				`,
 				'hover:text-foreground',
 			)}
+			onMouseEnter={onRowEnter}
+			onMouseLeave={onRowLeave}
 			render={<a href={href} rel="noreferrer" target="_blank" />}
 			variant="outline"
 		>
@@ -30,7 +47,11 @@ export function CapabilityExternalLink({
 				<span className="block text-sm font-medium text-foreground">{title}</span>
 				<span className="block truncate text-sm text-muted-foreground">{description}</span>
 			</span>
-			<ArrowUpRight className="-mx-0.5 size-4 shrink-0 text-muted-foreground opacity-80" aria-hidden />
+			<ArrowUpRightIcon
+				className="-mx-0.5 text-muted-foreground opacity-80"
+				ref={arrowRef}
+				size={16}
+			/>
 		</Button>
 	)
 }
