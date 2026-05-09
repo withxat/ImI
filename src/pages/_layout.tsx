@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { BottomFade } from '../components/fades'
 import { Footer } from '../components/footer'
 
 import '../styles/globals.css'
@@ -23,6 +24,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				{children}
 			</main>
 			<Footer />
+			<BottomFade />
 		</div>
 	)
 }
