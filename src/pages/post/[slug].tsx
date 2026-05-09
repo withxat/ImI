@@ -16,11 +16,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 	return (
 		<section>
 			<title>{post.title}</title>
-			<Container className="
-				py-16
-				md:py-28
-			"
-			>
+			<Container className="page-shell">
 				<div className="mb-20 space-y-8">
 					<TextLink to="/">Go to home</TextLink>
 					<div className="space-y-3">

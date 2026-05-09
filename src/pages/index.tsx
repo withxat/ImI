@@ -13,11 +13,7 @@ export default async function HomePage() {
 	return (
 		<section>
 			<title>{data.title}</title>
-			<Container className="
-				py-16
-				md:py-28
-			"
-			>
+			<Container className="page-shell">
 				<div className="space-y-0">
 					<p className="font-medium text-foreground">
 						Xat
@@ -26,11 +22,7 @@ export default async function HomePage() {
 					<p className="text-muted-foreground">Design Engineer</p>
 				</div>
 
-				<div className="
-					mt-28 space-y-28
-					md:mt-32
-				"
-				>
+				<div className="home-sections">
 					<section>
 						<div className="space-y-5 text-base/7 text-muted-foreground">
 							<p>I'm a full-stack developer who also loves dabbling in design.</p>
@@ -44,7 +36,7 @@ export default async function HomePage() {
 								Right now, I'm a software engineer on the AI infra team at
 								{' '}
 								<a
-									className="text-foreground underline decoration-border underline-offset-4"
+									className="text-link text-link-strong"
 									href="https://en.wikipedia.org/wiki/Central_China_Normal_University"
 									rel="noreferrer"
 									target="_blank"
@@ -61,10 +53,7 @@ export default async function HomePage() {
 						<div className="flex items-baseline justify-between gap-6">
 							<Eyebrow className="font-semibold">Writing</Eyebrow>
 							<Link
-								className="
-									font-ui text-sm text-muted-foreground underline decoration-border underline-offset-4 transition-colors duration-150
-									hover:text-foreground hover:decoration-current
-								"
+								className="text-link font-ui text-sm text-muted-foreground"
 								to="/post"
 							>
 								View All
@@ -76,10 +65,7 @@ export default async function HomePage() {
 
 								return (
 									<Link
-										className="
-											block transition-colors duration-150
-											hover:text-black
-										"
+										className="entry-link"
 										key={slug}
 										to={`/post/${slug}`}
 									>
@@ -96,10 +82,7 @@ export default async function HomePage() {
 						<div className="space-y-7">
 							{projects.map(project => (
 								<a
-									className="
-										block transition-colors duration-150
-										hover:text-black
-									"
+									className="entry-link"
 									href={project.link}
 									key={project.link}
 									rel="noreferrer"

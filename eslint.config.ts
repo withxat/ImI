@@ -7,6 +7,15 @@ config.append({
 })
 
 config.append({
+	settings: {
+		'better-tailwindcss': {
+			detectComponentClasses: true,
+			entryPoint: 'src/styles/globals.css',
+		},
+	},
+})
+
+config.append({
 	files: ['src/pages/**/*.{ts,tsx}'],
 	rules: {
 		'react-refresh/only-export-components': [

@@ -19,12 +19,8 @@ export function NameAudioButton() {
 	return (
 		<span className="inline-flex items-center">
 			<button
-				className="
-					ml-2 inline-flex -translate-y-px items-center text-sm leading-none text-muted-foreground underline decoration-border underline-offset-4
-					transition-colors duration-150
-					hover:text-foreground hover:decoration-current
-				"
 				aria-label="Play name pronunciation"
+				className="text-link ml-2 inline-flex -translate-y-px items-center text-sm leading-none text-muted-foreground"
 				onClick={handlePlay}
 				type="button"
 			>

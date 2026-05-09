@@ -71,3 +71,107 @@
 		-webkit-tap-highlight-color: transparent;
 	}
 }
+
+@layer components {
+	.text-link {
+		@apply underline decoration-border underline-offset-4 transition-colors duration-150 hover:text-foreground hover:decoration-current;
+	}
+
+	.text-link-strong {
+		@apply text-foreground hover:text-black;
+	}
+
+	.entry-link {
+		@apply block transition-colors duration-150 hover:text-black;
+	}
+
+	.page-shell {
+		@apply py-16 md:py-28;
+	}
+
+	.home-sections {
+		@apply mt-28 space-y-28 md:mt-32;
+	}
+
+	.archive-sections {
+		@apply mt-28 space-y-20 md:mt-32;
+	}
+
+	.article-body {
+		@apply max-w-full min-w-0 space-y-7 text-base/7 wrap-anywhere text-foreground;
+	}
+
+	.article-body a {
+		@apply text-foreground underline decoration-border underline-offset-4;
+	}
+
+	.article-body blockquote {
+		@apply my-8 max-w-full min-w-0 pl-5 text-muted-foreground;
+	}
+
+	.article-body code {
+		@apply rounded-sm bg-accent px-1.5 py-0.5 font-mono text-[0.9em] break-all;
+	}
+
+	.article-body details {
+		@apply border-y py-3;
+	}
+
+	.article-body details summary {
+		@apply cursor-pointer font-medium;
+	}
+
+	.article-body h2 {
+		@apply mt-14 text-2xl font-medium;
+	}
+
+	.article-body h3 {
+		@apply mt-10 text-xl font-medium;
+	}
+
+	.article-body hr {
+		@apply border-border;
+	}
+
+	.article-body img {
+		@apply my-8 w-full;
+	}
+
+	.article-body li,
+	.article-body p {
+		@apply text-muted-foreground;
+	}
+
+	.article-body li::marker {
+		color: var(--color-muted-foreground);
+	}
+
+	.article-body ol,
+	.article-body ul {
+		@apply space-y-2 pl-5;
+	}
+
+	.article-body pre {
+		@apply max-w-full overflow-x-auto bg-[#16171d] p-4 font-ui text-[13px]/6 wrap-normal text-white;
+	}
+
+	.article-body pre code {
+		@apply bg-transparent p-0 break-normal wrap-normal text-inherit;
+	}
+
+	.article-body strong {
+		@apply font-semibold text-foreground;
+	}
+
+	.article-body table {
+		@apply block w-full max-w-full border-collapse overflow-x-auto;
+	}
+
+	.article-body td {
+		@apply border px-3 py-2;
+	}
+
+	.article-body th {
+		@apply border bg-surface px-3 py-2 text-left;
+	}
+}

@@ -9,11 +9,7 @@ export default async function BlogIndexPage() {
 	return (
 		<section>
 			<title>All Writings</title>
-			<Container className="
-				py-16
-				md:py-28
-			"
-			>
+			<Container className="page-shell">
 				<div className="space-y-8">
 					<TextLink to="/">Go to home</TextLink>
 					<div className="space-y-0">
@@ -22,11 +18,7 @@ export default async function BlogIndexPage() {
 					</div>
 				</div>
 
-				<div className="
-					mt-28 space-y-20
-					md:mt-32
-				"
-				>
+				<div className="archive-sections">
 					{groups.map(group => (
 						<section className="space-y-7" key={group.category.slug}>
 							<div>
@@ -40,10 +32,7 @@ export default async function BlogIndexPage() {
 
 									return (
 										<Link
-											className="
-												block transition-colors duration-150
-												hover:text-black
-											"
+											className="entry-link"
 											key={slug}
 											to={`/post/${slug}`}
 										>

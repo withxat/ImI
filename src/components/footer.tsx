@@ -6,10 +6,7 @@ export function Footer() {
 			<Container className="pt-16 pb-28 text-base/7 text-muted-foreground">
 				<nav className="flex flex-wrap gap-x-3 gap-y-1 font-ui text-sm">
 					<a
-						className="
-							underline decoration-border underline-offset-4 transition-colors duration-150
-							hover:text-foreground hover:decoration-current
-						"
+						className="text-link"
 						href="https://github.com/withxat"
 						rel="noreferrer"
 						target="_blank"
@@ -17,10 +14,7 @@ export function Footer() {
 						Github
 					</a>
 					<a
-						className="
-							underline decoration-border underline-offset-4 transition-colors duration-150
-							hover:text-foreground hover:decoration-current
-						"
+						className="text-link"
 						href="https://x.com/withxat"
 						rel="noreferrer"
 						target="_blank"
@@ -28,10 +22,7 @@ export function Footer() {
 						Twitter/X
 					</a>
 					<a
-						className="
-							underline decoration-border underline-offset-4 transition-colors duration-150
-							hover:text-foreground hover:decoration-current
-						"
+						className="text-link"
 						href="https://t.me/withxat"
 						rel="noreferrer"
 						target="_blank"
@@ -39,10 +30,7 @@ export function Footer() {
 						Telegram
 					</a>
 					<a
-						className="
-							underline decoration-border underline-offset-4 transition-colors duration-150
-							hover:text-foreground hover:decoration-current
-						"
+						className="text-link"
 						href="mailto:i@xat.sh"
 					>
 						Email

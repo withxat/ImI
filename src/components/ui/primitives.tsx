@@ -49,11 +49,7 @@ export function TextLink({
 	return (
 		<Link
 			className={cn(
-				`
-					inline-flex items-center gap-2 font-ui text-sm text-foreground underline decoration-border underline-offset-4 transition-colors
-					duration-150
-					hover:text-black hover:decoration-current
-				`,
+				`text-link text-link-strong inline-flex items-center gap-2 font-ui text-sm`,
 				className,
 			)}
 			to={to}
