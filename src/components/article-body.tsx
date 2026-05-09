@@ -1,16 +1,14 @@
 import type { ComponentType } from 'react'
 
-import { MDXContent } from '@content-collections/mdx/react'
-
 import { cn } from '@/lib/cn'
 
 interface ArticleBodyProps {
 	className?: string
 	components?: Record<string, ComponentType<any>>
-	content: string
+	mdx: ComponentType<{ components?: Record<string, ComponentType<any>> }>
 }
 
-export function ArticleBody({ className, components, content }: ArticleBodyProps) {
+export function ArticleBody({ className, components, mdx: MDXContent }: ArticleBodyProps) {
 	return (
 		<div
 			className={cn(`
@@ -37,7 +35,7 @@ export function ArticleBody({ className, components, content }: ArticleBodyProps
 				[&_ul]:space-y-2 [&_ul]:pl-5
 			`, className)}
 		>
-			<MDXContent code={content} components={components} />
+			<MDXContent components={components} />
 		</div>
 	)
 }

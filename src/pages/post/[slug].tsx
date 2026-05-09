@@ -11,7 +11,6 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 		throw new Error(`Post not found: ${slug}`)
 	}
 
-	const MDX = post.mdx
 	const category = getCategoryBySlug(post.category)
 
 	return (
@@ -44,7 +43,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 					</div>
 				</div>
 
-				<ArticleBody content={MDX} />
+				<ArticleBody mdx={post.mdx} />
 			</Container>
 		</section>
 	)

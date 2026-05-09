@@ -1,6 +1,25 @@
-import { defineCollection, defineConfig, defineSingleton } from '@content-collections/core'
-import { compileMDX } from '@content-collections/mdx'
+import type { ComponentType } from 'react'
+
+import { mkdir, writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
+
+import { createDefaultImport, defineCollection, defineConfig, defineSingleton } from '@content-collections/core'
+import { compile } from '@mdx-js/mdx'
 import { z } from 'zod'
+
+async function createMdxImport(slug: string, content: string) {
+	const outputPath = join('.content-collections', 'mdx', `${slug}.js`)
+	const compiled = await compile(content, {
+		development: false,
+		outputFormat: 'program',
+		providerImportSource: undefined,
+	})
+
+	await mkdir(dirname(outputPath), { recursive: true })
+	await writeFile(outputPath, String(compiled))
+
+	return createDefaultImport<ComponentType<any>>(`../mdx/${slug}.js`)
+}
 
 const posts = defineCollection({
 	directory: 'content/posts',
@@ -14,12 +33,13 @@ const posts = defineCollection({
 		tags: z.array(z.string()),
 		title: z.string(),
 	}),
-	transform: async (document, context) => {
-		const mdx = await compileMDX(context, document)
+	transform: async (document) => {
+		const mdx = await createMdxImport(document._meta.path, document.content)
+
 		return {
 			...document,
 			mdx,
-			slug: document._meta.fileName,
+			slug: document._meta.path,
 		}
 	},
 })
