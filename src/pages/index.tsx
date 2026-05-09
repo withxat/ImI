@@ -3,6 +3,7 @@ import { Link } from 'waku'
 import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
 import { CapabilityExternalLink } from '@/components/capability-external-link'
 import { NameAudioButton } from '@/components/name-audio-button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
 import { getCapabilities } from '@/lib/projects'
@@ -16,19 +17,33 @@ export default async function HomePage() {
 		<section>
 			<title>{data.title}</title>
 			<Container className="page-shell">
-				<div className="space-y-0">
-					<p className="
-						text-2xl font-medium tracking-tight text-foreground
-						sm:text-3xl
+				<div className="flex flex-col gap-4">
+					<Avatar className="
+						size-14 rounded-xl border border-border
+						sm:size-16
 					"
 					>
-						Xat
-						<NameAudioButton />
-					</p>
-					<p className="text-muted-foreground">Design Engineer</p>
-					<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
-						Building production-quality interfaces and AI-native products
-					</p>
+						<AvatarImage
+							alt="Xat"
+							referrerPolicy="no-referrer"
+							src="https://github.com/withxat.png"
+						/>
+						<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
+					</Avatar>
+					<div className="space-y-0">
+						<p className="
+							text-2xl font-medium tracking-tight text-foreground
+							sm:text-3xl
+						"
+						>
+							Xat
+							<NameAudioButton />
+						</p>
+						<p className="text-muted-foreground">Design Engineer</p>
+						<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
+							Building production-quality interfaces and AI-native products
+						</p>
+					</div>
 				</div>
 
 				<div className="home-sections">
