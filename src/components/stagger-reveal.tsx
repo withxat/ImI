@@ -89,6 +89,7 @@ export function StaggerReveal({
 			initial="hidden"
 			variants={container}
 		>
+			{/* eslint-disable-next-line react/no-children-map -- stagger wraps each valid element child */}
 			{Children.map(children, (child, index) => {
 				if (!isValidElement(child))
 					return null
