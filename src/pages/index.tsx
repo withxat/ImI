@@ -3,6 +3,7 @@ import { Link } from 'waku'
 import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
 import { CapabilityExternalLink } from '@/components/capability-external-link'
 import { NameAudioButton } from '@/components/name-audio-button'
+import { StaggerReveal } from '@/components/stagger-reveal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
@@ -17,49 +18,53 @@ export default async function HomePage() {
 		<section>
 			<title>{data.title}</title>
 			<Container className="page-shell">
-				<div className="flex flex-col gap-4">
-					<Avatar className="
-						size-14 rounded-xl border border-border
-						sm:size-16
-					"
-					>
-						<AvatarImage
-							alt="Xat"
-							referrerPolicy="no-referrer"
-							src="https://github.com/withxat.png"
-						/>
-						<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
-					</Avatar>
-					<div className="space-y-0">
-						<p className="
-							inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
-							sm:text-3xl
+				<StaggerReveal className="flex flex-col">
+					<div className="flex flex-col gap-4">
+						<Avatar className="
+							size-14 rounded-xl border border-border
+							sm:size-16
 						"
 						>
-							<span className="font-xat-name font-normal">Xat</span>
-							<NameAudioButton />
-						</p>
-						<p className="text-muted-foreground">Design Engineer</p>
-						<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
-							Building production-quality interfaces and AI-native products
-						</p>
+							<AvatarImage
+								alt="Xat"
+								referrerPolicy="no-referrer"
+								src="https://github.com/withxat.png"
+							/>
+							<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
+						</Avatar>
+						<div className="space-y-0">
+							<p className="
+								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
+								sm:text-3xl
+							"
+							>
+								<span className="font-xat-name font-normal">Xat</span>
+								<NameAudioButton />
+							</p>
+							<p className="text-muted-foreground">Design Engineer</p>
+							<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
+								Building production-quality interfaces and AI-native products
+							</p>
+						</div>
 					</div>
-				</div>
 
-				<div className="home-sections">
-					<section>
-						<div className="space-y-5 text-base/7 text-muted-foreground">
-							<p>
+					<section className="
+						mt-28
+						md:mt-32
+					"
+					>
+						<StaggerReveal delayChildren={0.03} staggerChildren={0.045}>
+							<p className="text-base/7 text-muted-foreground">
 								I design and ship applied AI—interfaces, workflows, and developer-facing
 								surfaces where intelligence is part of the UX, not a bolt-on.
 							</p>
-							<p>
+							<p className="text-base/7 text-muted-foreground">
 								My background is in
 								{' '}
 								<i>Intelligent Transportation Systems</i>
 								: software and design where physical infrastructure meets digital systems.
 							</p>
-							<p>
+							<p className="text-base/7 text-muted-foreground">
 								Today I work at
 								{' '}
 								<a
@@ -74,10 +79,10 @@ export default async function HomePage() {
 								on production AI products and intelligent experiences—exploring how models
 								reshape interfaces, collaboration, and tools.
 							</p>
-						</div>
+						</StaggerReveal>
 					</section>
 
-					<section className="space-y-7">
+					<section className="mt-28 space-y-7">
 						<div className="flex items-baseline justify-between gap-6">
 							<Eyebrow className="font-semibold">Writing</Eyebrow>
 							<Link
@@ -106,7 +111,7 @@ export default async function HomePage() {
 						</div>
 					</section>
 
-					<section className="space-y-10">
+					<section className="mt-28 space-y-10">
 						<Eyebrow className="font-semibold">Capabilities</Eyebrow>
 						<div className="space-y-12">
 							{capabilities.map(cap => (
@@ -144,8 +149,7 @@ export default async function HomePage() {
 							))}
 						</div>
 					</section>
-
-				</div>
+				</StaggerReveal>
 			</Container>
 		</section>
 	)

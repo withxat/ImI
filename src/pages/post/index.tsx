@@ -1,7 +1,9 @@
 import { Link } from 'waku'
 
+import { StaggerReveal } from '@/components/stagger-reveal'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
 import { getPostsByCategory } from '@/lib/blog'
+import { cn } from '@/lib/cn'
 
 export default async function BlogIndexPage() {
 	const groups = getPostsByCategory()
@@ -10,17 +12,28 @@ export default async function BlogIndexPage() {
 		<section>
 			<title>All Writings</title>
 			<Container className="page-shell">
-				<div className="space-y-8">
-					<TextLink to="/">Go to home</TextLink>
-					<div className="space-y-0">
-						<p className="font-medium text-foreground">All Writings</p>
-						<p className="text-muted-foreground">Archive - Texts just sparkle in my mind</p>
+				<StaggerReveal className="flex flex-col">
+					<div className="space-y-8">
+						<TextLink to="/">Go to home</TextLink>
+						<div className="space-y-0">
+							<p className="font-medium text-foreground">All Writings</p>
+							<p className="text-muted-foreground">Archive - Texts just sparkle in my mind</p>
+						</div>
 					</div>
-				</div>
 
-				<div className="archive-sections">
-					{groups.map(group => (
-						<section className="space-y-7" key={group.category.slug}>
+					{groups.map((group, index) => (
+						<section
+							className={cn(
+								'space-y-7',
+								index === 0
+									? `
+										mt-28
+										md:mt-32
+									`
+									: 'mt-20',
+							)}
+							key={group.category.slug}
+						>
 							<div>
 								<Eyebrow>{group.category.name}</Eyebrow>
 								<p className="mt-1 text-base/6 text-muted-foreground">{group.category.description}</p>
@@ -45,7 +58,7 @@ export default async function BlogIndexPage() {
 							</div>
 						</section>
 					))}
-				</div>
+				</StaggerReveal>
 			</Container>
 		</section>
 	)

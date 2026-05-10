@@ -7,12 +7,19 @@ interface ArticleBodyProps {
 	className?: string
 	components?: Record<string, ComponentType<any>>
 	mdx: MDXContent
+	/** Line stagger (blur + fade) on block-level MDX nodes; DOM order ≈ top → bottom */
+	reveal?: boolean
 }
 
-export function ArticleBody({ className, components, mdx: MDXContent }: ArticleBodyProps) {
+export function ArticleBody({
+	className,
+	components,
+	mdx: MDXContent,
+	reveal = true,
+}: ArticleBodyProps) {
 	return (
 		<div
-			className={cn('article-body', className)}
+			className={cn('article-body', reveal && 'article-reveal-lines', className)}
 		>
 			<MDXContent components={components} />
 		</div>

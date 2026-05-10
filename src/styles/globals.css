@@ -214,6 +214,156 @@
 		@apply block w-full max-w-full border-collapse overflow-x-auto;
 	}
 
+	/* Blur + fade-in, staggered top → bottom (nth-child order matches DOM). */
+	@keyframes article-line-reveal {
+		from {
+			opacity: 0;
+			filter: blur(10px);
+		}
+
+		to {
+			opacity: 1;
+			filter: blur(0);
+		}
+	}
+
+	.article-body.article-reveal-lines > * {
+		opacity: 0;
+		animation: article-line-reveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	}
+
+	.article-reveal-lines > *:nth-child(1) {
+		animation-delay: 0ms;
+	}
+	.article-reveal-lines > *:nth-child(2) {
+		animation-delay: 52ms;
+	}
+	.article-reveal-lines > *:nth-child(3) {
+		animation-delay: 104ms;
+	}
+	.article-reveal-lines > *:nth-child(4) {
+		animation-delay: 156ms;
+	}
+	.article-reveal-lines > *:nth-child(5) {
+		animation-delay: 208ms;
+	}
+	.article-reveal-lines > *:nth-child(6) {
+		animation-delay: 260ms;
+	}
+	.article-reveal-lines > *:nth-child(7) {
+		animation-delay: 312ms;
+	}
+	.article-reveal-lines > *:nth-child(8) {
+		animation-delay: 364ms;
+	}
+	.article-reveal-lines > *:nth-child(9) {
+		animation-delay: 416ms;
+	}
+	.article-reveal-lines > *:nth-child(10) {
+		animation-delay: 468ms;
+	}
+	.article-reveal-lines > *:nth-child(11) {
+		animation-delay: 520ms;
+	}
+	.article-reveal-lines > *:nth-child(12) {
+		animation-delay: 572ms;
+	}
+	.article-reveal-lines > *:nth-child(13) {
+		animation-delay: 624ms;
+	}
+	.article-reveal-lines > *:nth-child(14) {
+		animation-delay: 676ms;
+	}
+	.article-reveal-lines > *:nth-child(15) {
+		animation-delay: 728ms;
+	}
+	.article-reveal-lines > *:nth-child(16) {
+		animation-delay: 780ms;
+	}
+	.article-reveal-lines > *:nth-child(17) {
+		animation-delay: 832ms;
+	}
+	.article-reveal-lines > *:nth-child(18) {
+		animation-delay: 884ms;
+	}
+	.article-reveal-lines > *:nth-child(19) {
+		animation-delay: 936ms;
+	}
+	.article-reveal-lines > *:nth-child(20) {
+		animation-delay: 988ms;
+	}
+	.article-reveal-lines > *:nth-child(21) {
+		animation-delay: 1040ms;
+	}
+	.article-reveal-lines > *:nth-child(22) {
+		animation-delay: 1092ms;
+	}
+	.article-reveal-lines > *:nth-child(23) {
+		animation-delay: 1144ms;
+	}
+	.article-reveal-lines > *:nth-child(24) {
+		animation-delay: 1196ms;
+	}
+	.article-reveal-lines > *:nth-child(25) {
+		animation-delay: 1248ms;
+	}
+	.article-reveal-lines > *:nth-child(26) {
+		animation-delay: 1300ms;
+	}
+	.article-reveal-lines > *:nth-child(27) {
+		animation-delay: 1352ms;
+	}
+	.article-reveal-lines > *:nth-child(28) {
+		animation-delay: 1404ms;
+	}
+	.article-reveal-lines > *:nth-child(29) {
+		animation-delay: 1456ms;
+	}
+	.article-reveal-lines > *:nth-child(30) {
+		animation-delay: 1508ms;
+	}
+	.article-reveal-lines > *:nth-child(31) {
+		animation-delay: 1560ms;
+	}
+	.article-reveal-lines > *:nth-child(32) {
+		animation-delay: 1612ms;
+	}
+	.article-reveal-lines > *:nth-child(33) {
+		animation-delay: 1664ms;
+	}
+	.article-reveal-lines > *:nth-child(34) {
+		animation-delay: 1716ms;
+	}
+	.article-reveal-lines > *:nth-child(35) {
+		animation-delay: 1768ms;
+	}
+	.article-reveal-lines > *:nth-child(36) {
+		animation-delay: 1820ms;
+	}
+	.article-reveal-lines > *:nth-child(37) {
+		animation-delay: 1872ms;
+	}
+	.article-reveal-lines > *:nth-child(38) {
+		animation-delay: 1924ms;
+	}
+	.article-reveal-lines > *:nth-child(39) {
+		animation-delay: 1976ms;
+	}
+	.article-reveal-lines > *:nth-child(40) {
+		animation-delay: 2028ms;
+	}
+	.article-reveal-lines > *:nth-child(n + 41) {
+		animation-delay: 2080ms;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.article-body.article-reveal-lines > * {
+			animation: none;
+			opacity: 1;
+			filter: none;
+		}
+	}
+
 	.article-body td {
 		@apply border px-3 py-2;
 	}
