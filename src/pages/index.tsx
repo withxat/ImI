@@ -96,6 +96,7 @@ export default async function HomePage() {
 										className="post-list-entry entry-link"
 										key={slug}
 										to={`/post/${slug}`}
+										unstable_prefetchOnView
 									>
 										<h3 className="text-sm font-medium text-foreground">{post.title}</h3>
 										<p className="mt-1 text-sm/6 text-muted-foreground">{post.summary}</p>

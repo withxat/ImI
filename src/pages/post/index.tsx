@@ -35,6 +35,7 @@ export default async function BlogIndexPage() {
 											className="entry-link"
 											key={slug}
 											to={`/post/${slug}`}
+											unstable_prefetchOnView
 										>
 											<h3 className="font-medium text-foreground">{post.title}</h3>
 											<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
