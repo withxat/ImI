@@ -64,6 +64,8 @@ export interface Messages {
 		introAfterProducts: string
 		introBeforeSystems: string
 		introBetweenBadges: string
+		/** `<meta name="description">` and default JSON-LD site blurbs for the home page. */
+		metaDescription: string
 		role: string
 		tagline: string
 		title: string
@@ -160,6 +162,8 @@ const en: Messages = {
 		introAfterProducts: '.',
 		introBeforeSystems: 'A ',
 		introBetweenBadges: ' taught me to balance design intent, engineering constraints, and the messy realities of building ',
+		metaDescription:
+			'Design Engineer building AI-native products, interfaces, and frontend systems. Writing on frontend craft, design systems, and tools.',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',
 		title: 'Xat - Design Engineer',
@@ -263,6 +267,8 @@ const zh: Messages = {
 		introAfterProducts: '。',
 		introBeforeSystems: '',
 		introBetweenBadges: '让我学会在设计意图、工程约束与真实落地的混乱之间找平衡，去构建',
+		metaDescription:
+			'设计工程师，专注 AI 原生产品与前端系统。写作涵盖前端工程、设计系统、工具与实践笔记。',
 		role: '设计工程师',
 		tagline: 'Xat - 设计工程师',
 		title: 'Xat - 设计工程师',
@@ -371,6 +377,8 @@ const ja: Messages = {
 		introAfterProducts: 'を形にする。',
 		introBeforeSystems: '',
 		introBetweenBadges: 'という背景から、設計意図・実装制約・現場の複雑さのバランスを学び、',
+		metaDescription:
+			'デザインエンジニア。AI ネイティブなプロダクトとフロントエンドをつくる。フロントエンド、デザインシステム、ツールのメモ。',
 		role: 'デザインエンジニア',
 		tagline: 'Xat - デザインエンジニア',
 		title: 'Xat - デザインエンジニア',

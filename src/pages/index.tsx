@@ -16,7 +16,7 @@ import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { getCapabilities } from '@/lib/projects'
 import { Seo } from '@/lib/seo'
-import { DEFAULT_DESCRIPTION, personJsonLd, websiteJsonLd } from '@/lib/seo-data'
+import { personJsonLd, websiteJsonLd } from '@/lib/seo-data'
 
 export default async function HomePage() {
 	const locale = getRequestLocale()
@@ -30,9 +30,13 @@ export default async function HomePage() {
 	return (
 		<section>
 			<Seo
+				jsonLd={[
+					personJsonLd({ description: m.home.metaDescription }),
+					websiteJsonLd({ description: m.home.metaDescription }),
+				]}
 				canonicalPath="/"
-				description={DEFAULT_DESCRIPTION}
-				jsonLd={[personJsonLd(), websiteJsonLd()]}
+				description={m.home.metaDescription}
+				locale={locale}
 				title={m.home.title}
 				type="profile"
 			/>

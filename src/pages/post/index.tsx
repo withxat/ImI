@@ -28,6 +28,7 @@ export default async function BlogIndexPage() {
 			<Seo
 				canonicalPath="/post"
 				description={m.blog.pageDescription}
+				locale={locale}
 				title={m.blog.pageTitle}
 			/>
 			<Container className="page-shell">

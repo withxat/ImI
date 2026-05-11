@@ -9,7 +9,7 @@ import { formatPostDate, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { Seo } from '@/lib/seo'
-import { blogPostingJsonLd } from '@/lib/seo-data'
+import { articleBreadcrumbJsonLd, blogPostingJsonLd, SITE_NAME } from '@/lib/seo-data'
 
 export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
 	const locale = getRequestLocale()
@@ -29,19 +29,30 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 		: post.category
 
 	const canonicalPath = `/post/${post.slug}`
+	const articleSection = localizedCategory?.name
 
 	return (
 		<section>
 			<Seo
-				jsonLd={blogPostingJsonLd({
-					canonicalPath,
-					date: post.date,
-					description: post.summary,
-					tags: post.tags,
-					title: post.title,
-				})}
+				jsonLd={[
+					blogPostingJsonLd({
+						articleSection,
+						canonicalPath,
+						date: post.date,
+						description: post.summary,
+						locale,
+						tags: post.tags,
+						title: post.title,
+					}),
+					articleBreadcrumbJsonLd([
+						{ name: SITE_NAME, path: '/' },
+						{ name: m.blog.title, path: '/post' },
+						{ name: post.title, path: canonicalPath },
+					]),
+				]}
 				canonicalPath={canonicalPath}
 				description={post.summary}
+				locale={locale}
 				title={`${post.title} - Xat`}
 				type="article"
 			/>

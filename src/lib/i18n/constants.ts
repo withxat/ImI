@@ -34,3 +34,14 @@ export function htmlLangFor(locale: Locale): string {
 
 	return locale
 }
+
+/** Open Graph `og:locale` tag uses underscore form (e.g. `en_US`). */
+export function ogLocaleFor(locale: Locale): string {
+	if (locale === 'zh') {
+		return 'zh_CN'
+	}
+	if (locale === 'ja') {
+		return 'ja_JP'
+	}
+	return 'en_US'
+}
