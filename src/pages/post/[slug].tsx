@@ -57,7 +57,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 				type="article"
 			/>
 			<Container className="page-shell">
-				<StaggerReveal className="flex flex-col">
+				<StaggerReveal className="flex flex-col space-y-8">
 					<div className="space-y-8">
 						<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
 							<TextLink to="/">{m.blog.goHome}</TextLink>
@@ -81,9 +81,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 						)}
 					</div>
 
-					<div className="mt-20">
-						<ArticleBody mdx={post.mdx} />
-					</div>
+					<ArticleBody mdx={post.mdx} />
 				</StaggerReveal>
 			</Container>
 		</section>
