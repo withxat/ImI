@@ -212,8 +212,8 @@ export function CountryFlag({ code }: { code: null | string }) {
 		return null
 	return (
 		<Icon
-			className="inline-block h-[1em] w-auto shrink-0 align-middle text-foreground"
-			size={24}
+			className="inline-block h-[0.92em] w-auto shrink-0 align-middle text-foreground"
+			size={32}
 			aria-hidden
 		/>
 	)
