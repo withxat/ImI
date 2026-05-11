@@ -110,8 +110,26 @@
 	}
 
 	html {
-		scroll-behavior: smooth;
 		-webkit-text-size-adjust: 100%;
+		line-break: loose;
+		overflow-wrap: break-word;
+		scroll-behavior: smooth;
+		word-break: normal;
+	}
+
+	/* Japanese: stricter line-breaking rules (CSS Text / JLREQ-style behavior per UA). */
+	html:lang(ja) {
+		line-break: strict;
+	}
+
+	html:lang(en) {
+		hyphens: manual;
+	}
+
+	html:lang(ja),
+	html:lang(zh),
+	html:lang(zh-Hans) {
+		hyphens: none;
 	}
 
 	body {
@@ -128,7 +146,9 @@
 	h3 {
 		font-family: var(--font-display);
 		letter-spacing: 0;
+		overflow-wrap: break-word;
 		text-wrap: balance;
+		word-break: normal;
 	}
 
 	p,
@@ -165,15 +185,7 @@
 		font-family: 'Fugaz One Xat', var(--font-display);
 	}
 
-	/* Hero intro: full container width (not squeezed beside locale switcher). */
-	.home-bio-lead {
-		hyphens: none;
-		overflow-wrap: normal;
-		text-wrap: wrap;
-		word-break: normal;
-	}
-
-	/* Latin-only: allow pretty rag on this single line; avoid on CJK (global p/li rule). */
+	/* Hero intro: English serif line only — global html rules cover CJK breaking. */
 	.home-bio-lead:lang(en) {
 		text-wrap: pretty;
 	}
@@ -208,7 +220,6 @@
 	.article-body {
 		/* avoid wrap-anywhere: it breaks between arbitrary characters (bad CJK on narrow screens) */
 		@apply max-w-full min-w-0 space-y-7 text-base/7 break-words text-foreground;
-		line-break: loose;
 	}
 
 	.article-body a {
