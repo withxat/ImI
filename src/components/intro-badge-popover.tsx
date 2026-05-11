@@ -3,6 +3,8 @@
 import type { IconProps } from 'nucleo-ui-essential-fill-duo-18'
 import type { ComponentProps, FC, ReactNode } from 'react'
 
+import type { IntroBadgeKind } from '@/lib/i18n/intro-badges'
+
 import {
 	IconGraduationCapFillDuo18,
 	IconSuitcase3FillDuo18,
@@ -16,45 +18,10 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover'
 
-const INTRO_BADGES = {
-	products: {
-		description: (
-			<>
-				Today I work at
-				{' '}
-				<a
-					className="text-link text-link-strong"
-					href="https://en.wikipedia.org/wiki/Central_China_Normal_University"
-					rel="noreferrer"
-					target="_blank"
-				>
-					Central China Normal University
-				</a>
-				{' '}
-				on production AI products and intelligent experiences—exploring how models
-				reshape interfaces, collaboration, and tools.
-			</>
-		),
-		Icon: IconSuitcase3FillDuo18,
-		label: 'intelligent products',
-	},
-	systems: {
-		description: (
-			<>
-				My background is in
-				{' '}
-				<i>Intelligent Transportation Systems</i>
-				: software and design where physical infrastructure meets digital systems.
-			</>
-		),
-		Icon: IconGraduationCapFillDuo18,
-		label: 'systems background',
-	},
-} satisfies Record<string, {
-	description: ReactNode
-	Icon: FC<IconProps>
-	label: string
-}>
+const ICONS: Record<IntroBadgeKind, FC<IconProps>> = {
+	products: IconSuitcase3FillDuo18,
+	systems: IconGraduationCapFillDuo18,
+}
 
 type PopoverOpenChangeDetails = Parameters<NonNullable<ComponentProps<typeof Popover>['onOpenChange']>>[1]
 
@@ -72,8 +39,16 @@ function getHoverCapabilitySnapshot() {
 	return window.matchMedia(HOVER_QUERY).matches
 }
 
-export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES }) {
-	const { description, Icon, label } = INTRO_BADGES[kind]
+export function IntroBadgePopover({
+	description,
+	kind,
+	label,
+}: {
+	description: ReactNode
+	kind: IntroBadgeKind
+	label: string
+}) {
+	const Icon = ICONS[kind]
 	const [open, setOpen] = useState(false)
 	const closeTimeoutRef = useRef<number | undefined>(undefined)
 	const supportsHover = useSyncExternalStore(

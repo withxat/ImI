@@ -1,4 +1,8 @@
+import type { Locale } from '@/lib/i18n/constants'
+
 import { allPosts, config } from 'content-collections'
+
+import { intlLocaleFor } from '@/lib/i18n/constants'
 
 export const BLOG_CATEGORIES = config.categories
 
@@ -29,8 +33,8 @@ export function getPostsByCategory() {
 		.filter(group => group.posts.length > 0)
 }
 
-export function formatPostDate(date: Date) {
-	return new Intl.DateTimeFormat('zh-CN', {
+export function formatPostDate(date: Date, locale: Locale) {
+	return new Intl.DateTimeFormat(intlLocaleFor(locale), {
 		day: '2-digit',
 		month: 'short',
 		year: 'numeric',

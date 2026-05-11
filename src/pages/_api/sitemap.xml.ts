@@ -1,4 +1,6 @@
 import { getAllPosts } from '@/lib/blog'
+import { LOCALES } from '@/lib/i18n/constants'
+import { withLocale } from '@/lib/i18n/paths'
 import { absoluteUrl } from '@/lib/seo-data'
 
 interface SitemapEntry {
@@ -31,26 +33,27 @@ function createUrlEntry({ changefreq, lastmod, path, priority }: SitemapEntry) {
 export function GET() {
 	const posts = getAllPosts()
 	const latestPostDate = posts[0]?.date
-	const entries: SitemapEntry[] = [
-		{
-			changefreq: 'monthly',
-			lastmod: latestPostDate,
-			path: '/',
-			priority: 1,
-		},
-		{
-			changefreq: 'weekly',
-			lastmod: latestPostDate,
-			path: '/post',
-			priority: 0.8,
-		},
-		...posts.map(post => ({
+	const localeHomes = LOCALES.map(locale => ({
+		changefreq: 'monthly' as const,
+		lastmod: latestPostDate,
+		path: withLocale(locale, '/'),
+		priority: 1,
+	}))
+	const localeBlogIndexes = LOCALES.map(locale => ({
+		changefreq: 'weekly' as const,
+		lastmod: latestPostDate,
+		path: withLocale(locale, '/post'),
+		priority: 0.8,
+	}))
+	const postEntries = LOCALES.flatMap(locale =>
+		posts.map(post => ({
 			changefreq: 'yearly' as const,
 			lastmod: post.date,
-			path: `/post/${post.slug}`,
+			path: withLocale(locale, `/post/${post.slug}`),
 			priority: 0.7,
 		})),
-	]
+	)
+	const entries: SitemapEntry[] = [...localeHomes, ...localeBlogIndexes, ...postEntries]
 
 	return new Response([
 		'<?xml version="1.0" encoding="UTF-8"?>',

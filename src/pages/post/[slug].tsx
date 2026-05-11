@@ -1,72 +1,16 @@
 import type { PageProps } from 'waku/router'
 
-import { ArticleBody } from '@/components/article-body'
-import { StaggerReveal } from '@/components/stagger-reveal'
-import { Badge } from '@/components/ui/badge'
-import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
-import { Separator } from '@/components/ui/separator'
-import { formatPostDate, getCategoryBySlug, getPostBySlug, getPostSlugs } from '@/lib/blog'
-import { Seo } from '@/lib/seo'
-import { blogPostingJsonLd } from '@/lib/seo-data'
+import { unstable_redirect } from 'waku/router/server'
 
-export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
-	const post = getPostBySlug(slug)
+import { DEFAULT_LOCALE } from '@/lib/i18n/constants'
+import { withLocale } from '@/lib/i18n/paths'
 
-	if (!post) {
-		throw new Error(`Post not found: ${slug}`)
-	}
-
-	const category = getCategoryBySlug(post.category)
-
-	return (
-		<section>
-			<Seo
-				jsonLd={blogPostingJsonLd({
-					date: post.date,
-					description: post.summary,
-					slug: post.slug,
-					tags: post.tags,
-					title: post.title,
-				})}
-				canonicalPath={`/post/${post.slug}`}
-				description={post.summary}
-				title={`${post.title} - Xat`}
-				type="article"
-			/>
-			<Container className="page-shell">
-				<StaggerReveal className="flex flex-col">
-					<div className="mb-20 space-y-8">
-						<TextLink to="/">Go to home</TextLink>
-						<div className="space-y-3">
-							<Eyebrow>
-								{category ? `${category.name} - ${category.description}` : post.category}
-							</Eyebrow>
-							<h1 className="text-3xl font-medium text-foreground">{post.title}</h1>
-							<p className="text-base/7 text-muted-foreground">{post.summary}</p>
-						</div>
-						<div className="flex flex-wrap items-center gap-3 font-ui text-sm text-muted-foreground">
-							<span>{formatPostDate(post.date)}</span>
-							<Separator className="h-4" orientation="vertical" />
-							<div className="flex flex-wrap gap-2">
-								{post.tags.map(tag => (
-									<Badge key={tag} size="sm" variant="outline">
-										{tag}
-									</Badge>
-								))}
-							</div>
-						</div>
-					</div>
-
-					<ArticleBody mdx={post.mdx} />
-				</StaggerReveal>
-			</Container>
-		</section>
-	)
+export default function LegacyPostRedirect({ slug }: PageProps<'/post/[slug]'>) {
+	unstable_redirect(withLocale(DEFAULT_LOCALE, `/post/${slug}`))
 }
 
 export async function getConfig() {
 	return {
-		render: 'static',
-		staticPaths: getPostSlugs(),
+		render: 'dynamic',
 	} as const
 }

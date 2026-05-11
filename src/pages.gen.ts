@@ -4,6 +4,12 @@
 import type { PathsForPages, GetConfigResponse } from 'waku/router';
 
 // prettier-ignore
+import type { getConfig as File_LocaleIndex_getConfig } from './pages/[locale]/index';
+// prettier-ignore
+import type { getConfig as File_LocalePostSlug_getConfig } from './pages/[locale]/post/[slug]';
+// prettier-ignore
+import type { getConfig as File_LocalePostIndex_getConfig } from './pages/[locale]/post/index';
+// prettier-ignore
 import type { getConfig as File_Index_getConfig } from './pages/index';
 // prettier-ignore
 import type { getConfig as File_PostSlug_getConfig } from './pages/post/[slug]';
@@ -12,6 +18,9 @@ import type { getConfig as File_PostIndex_getConfig } from './pages/post/index';
 
 // prettier-ignore
 type Page =
+| ({ path: '/[locale]' } & GetConfigResponse<typeof File_LocaleIndex_getConfig>)
+| ({ path: '/[locale]/post/[slug]' } & GetConfigResponse<typeof File_LocalePostSlug_getConfig>)
+| ({ path: '/[locale]/post' } & GetConfigResponse<typeof File_LocalePostIndex_getConfig>)
 | ({ path: '/' } & GetConfigResponse<typeof File_Index_getConfig>)
 | ({ path: '/post/[slug]' } & GetConfigResponse<typeof File_PostSlug_getConfig>)
 | ({ path: '/post' } & GetConfigResponse<typeof File_PostIndex_getConfig>);

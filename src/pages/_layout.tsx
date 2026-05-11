@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 
 import { BottomFade } from '@/components/fades'
-import { Footer } from '@/components/footer'
 import { RouteTransition } from '@/components/route-transition'
 import { RSS_FEED_URL, RSS_TITLE } from '@/lib/rss'
 
@@ -19,7 +18,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<main className="min-h-screen">
 				<RouteTransition>{children}</RouteTransition>
 			</main>
-			<Footer />
 			<BottomFade />
 		</div>
 	)

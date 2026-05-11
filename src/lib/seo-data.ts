@@ -45,19 +45,19 @@ export function websiteJsonLd() {
 }
 
 export function blogPostingJsonLd({
+	canonicalPath,
 	date,
 	description,
-	slug,
 	tags,
 	title,
 }: {
+	canonicalPath: string
 	date: Date
 	description: string
-	slug: string
 	tags: string[]
 	title: string
 }) {
-	const url = absoluteUrl(`/post/${slug}`)
+	const url = absoluteUrl(canonicalPath)
 
 	return {
 		'@context': 'https://schema.org',
