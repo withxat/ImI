@@ -1,8 +1,7 @@
-import { ArrowRightIcon } from 'lucide-react'
 import { Link } from 'waku'
 
 import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
-import { CapabilityExternalLink } from '@/components/capability-external-link'
+import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Reveal } from '@/components/reveal'
@@ -92,30 +91,12 @@ export default async function HomePage() {
 
 								return (
 									<Reveal key={slug} staggerIndex={index + 1}>
-										<Link
-											className="
-												group flex items-center justify-start gap-3 rounded-xl border border-input bg-popover px-4
-												py-3.5 text-left font-normal shadow-xs/5 transition-colors
-												not-dark:bg-clip-padding
-												hover:bg-accent/50 hover:text-foreground
-												dark:bg-input/32
-												dark:hover:bg-input/64
-											"
-											to={`/post/${slug}`}
-											unstable_prefetchOnView
-										>
-											<span className="min-w-0 flex-1 space-y-1">
-												<span className="block text-sm font-medium text-foreground">{post.title}</span>
-												<span className="block truncate text-sm text-muted-foreground">{post.summary}</span>
-											</span>
-											<ArrowRightIcon
-												className="
-													-mx-0.5 size-4 text-muted-foreground opacity-80 transition-transform duration-150 ease-out
-													group-hover:translate-x-0.5 group-hover:text-foreground
-												"
-												aria-hidden="true"
-											/>
-										</Link>
+										<HomeCardLink
+											description={post.summary}
+											href={`/post/${slug}`}
+											title={post.title}
+											prefetchOnView
+										/>
 									</Reveal>
 								)
 							})}
@@ -138,18 +119,20 @@ export default async function HomePage() {
 											{cap.items.map(item =>
 												item.link
 													? (
-															<CapabilityExternalLink
+															<HomeCardLink
 																description={item.description}
 																href={item.link}
 																key={`${cap.title}-${item.title}`}
 																title={item.title}
+																external
 															/>
 														)
 													: (
-															<div className="space-y-1" key={`${cap.title}-${item.title}`}>
-																<h4 className="font-medium text-foreground">{item.title}</h4>
-																<p className="truncate text-base/6 text-muted-foreground">{item.description}</p>
-															</div>
+															<HomeCardLink
+																description={item.description}
+																key={`${cap.title}-${item.title}`}
+																title={item.title}
+															/>
 														),
 											)}
 											{cap.items.length === 0 && (
