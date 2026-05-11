@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from 'lucide-react'
 import { Link } from 'waku'
 
 import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
@@ -85,19 +86,35 @@ export default async function HomePage() {
 								</Link>
 							</div>
 						</Reveal>
-						<div>
+						<div className="space-y-3">
 							{posts.map((post, index) => {
 								const slug = post.slug
 
 								return (
 									<Reveal key={slug} staggerIndex={index + 1}>
 										<Link
-											className="post-list-entry entry-link"
+											className="
+												group flex items-center justify-start gap-3 rounded-xl border border-input bg-popover px-4
+												py-3.5 text-left font-normal shadow-xs/5 transition-colors
+												not-dark:bg-clip-padding
+												hover:bg-accent/50 hover:text-foreground
+												dark:bg-input/32
+												dark:hover:bg-input/64
+											"
 											to={`/post/${slug}`}
 											unstable_prefetchOnView
 										>
-											<h3 className="text-sm font-medium text-foreground">{post.title}</h3>
-											<p className="mt-1 text-sm/6 text-muted-foreground">{post.summary}</p>
+											<span className="min-w-0 flex-1 space-y-1">
+												<span className="block text-sm font-medium text-foreground">{post.title}</span>
+												<span className="block truncate text-sm text-muted-foreground">{post.summary}</span>
+											</span>
+											<ArrowRightIcon
+												className="
+													-mx-0.5 size-4 text-muted-foreground opacity-80 transition-transform duration-150 ease-out
+													group-hover:translate-x-0.5 group-hover:text-foreground
+												"
+												aria-hidden="true"
+											/>
 										</Link>
 									</Reveal>
 								)
