@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 
 import { BriefcaseBusiness, GraduationCap } from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
 	Popover,
 	PopoverDescription,
@@ -64,13 +64,9 @@ export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES })
 		<Popover>
 			<PopoverTrigger
 				render={(
-					<Badge
-						className="
-							-mx-0.5 align-[0.08em] text-foreground shadow-xs/5
-							hover:bg-accent/50
-						"
-						render={<button type="button" />}
-						size="sm"
+					<Button
+						className="-mx-0.5 align-[0.08em]"
+						size="xs"
 						variant="outline"
 					/>
 				)}
