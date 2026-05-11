@@ -2,6 +2,7 @@ import { Link } from 'waku'
 
 import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
 import { CapabilityExternalLink } from '@/components/capability-external-link'
+import { IntroBadgePopover } from '@/components/intro-badge-popover'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Reveal } from '@/components/reveal'
 import { StaggerReveal } from '@/components/stagger-reveal'
@@ -54,31 +55,20 @@ export default async function HomePage() {
 						md:mt-32
 					"
 					>
-						<StaggerReveal delayChildren={0.03} staggerChildren={0.045}>
+						<StaggerReveal className="space-y-1.5" delayChildren={0.03} staggerChildren={0.045}>
 							<p className="text-base/7 text-muted-foreground">
-								I design and ship applied AI—interfaces, workflows, and developer-facing
-								surfaces where intelligence is part of the UX, not a bolt-on.
+								I design and ship applied AI interfaces, workflows, and developer tools.
 							</p>
 							<p className="text-base/7 text-muted-foreground">
-								My background is in
+								A
 								{' '}
-								<i>Intelligent Transportation Systems</i>
-								: software and design where physical infrastructure meets digital systems.
-							</p>
-							<p className="text-base/7 text-muted-foreground">
-								Today I work at
+								<IntroBadgePopover kind="systems" />
 								{' '}
-								<a
-									className="text-link text-link-strong"
-									href="https://en.wikipedia.org/wiki/Central_China_Normal_University"
-									rel="noreferrer"
-									target="_blank"
-								>
-									Central China Normal University
-								</a>
+								taught me to balance design intent, engineering constraints, and the messy
+								realities of building
 								{' '}
-								on production AI products and intelligent experiences—exploring how models
-								reshape interfaces, collaboration, and tools.
+								<IntroBadgePopover kind="products" />
+								.
 							</p>
 						</StaggerReveal>
 					</section>
