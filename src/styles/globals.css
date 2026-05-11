@@ -113,8 +113,13 @@
 		-webkit-text-size-adjust: 100%;
 		line-break: loose;
 		overflow-wrap: break-word;
-		scroll-behavior: smooth;
 		word-break: normal;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
 	}
 
 	/* Japanese body copy: JLREQ-style strict breaks — scoped to flow text only so

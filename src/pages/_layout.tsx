@@ -4,6 +4,7 @@ import { BottomFade } from '@/components/fades'
 import { Footer } from '@/components/footer'
 import { LocaleBootstrap } from '@/components/locale-bootstrap'
 import { RouteTransition } from '@/components/route-transition'
+import { ZhSerifStylesheet } from '@/components/zh-serif-font'
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
@@ -21,15 +22,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
 	return (
 		<div className="relative isolate min-h-screen" lang={htmlLangFor(locale)}>
+			<link crossOrigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
+			<link as="font" crossOrigin="anonymous" href="/fonts/fugaz-one-regular-subset.woff2" rel="preload" type="font/woff2" />
 			{locale === 'zh'
 				? (
 						<>
 							<link href="https://fonts.googleapis.com" rel="preconnect" />
 							<link crossOrigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect" />
-							<link
-								href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400&display=swap"
-								rel="stylesheet"
-							/>
+							<ZhSerifStylesheet />
 						</>
 					)
 				: null}

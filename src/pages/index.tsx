@@ -16,7 +16,7 @@ import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { getCapabilities } from '@/lib/projects'
 import { Seo } from '@/lib/seo'
-import { personJsonLd, websiteJsonLd } from '@/lib/seo-data'
+import { personJsonLd, PROFILE_AVATAR_SRC, websiteJsonLd } from '@/lib/seo-data'
 
 export default async function HomePage() {
 	const locale = getRequestLocale()
@@ -39,9 +39,11 @@ export default async function HomePage() {
 				locale={locale}
 				title={m.home.title}
 				type="profile"
-			/>
+			>
+				<link as="image" href={PROFILE_AVATAR_SRC} rel="preload" />
+			</Seo>
 			<Container className="page-shell">
-				<StaggerReveal className="flex flex-col">
+				<div className="flex flex-col">
 					<div className="flex flex-col gap-5">
 						<div className="flex items-start justify-between gap-6">
 							<div className="flex min-w-0 flex-1 flex-col gap-4">
@@ -52,8 +54,11 @@ export default async function HomePage() {
 								>
 									<AvatarImage
 										alt="Xat"
+										fetchPriority="high"
+										height={64}
 										referrerPolicy="no-referrer"
-										src="https://github.com/withxat.png"
+										src={PROFILE_AVATAR_SRC}
+										width={64}
 									/>
 									<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
 								</Avatar>
@@ -188,7 +193,7 @@ export default async function HomePage() {
 							))}
 						</div>
 					</section>
-				</StaggerReveal>
+				</div>
 			</Container>
 		</section>
 	)

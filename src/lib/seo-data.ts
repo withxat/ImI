@@ -6,6 +6,9 @@ export const SITE_URL = 'https://xat.sh'
 export const SITE_NAME = 'Xat'
 export const DEFAULT_DESCRIPTION
 	= 'Design Engineer building AI-native products, interfaces, and frontend systems.'
+/** Direct CDN URL avoids `github.com/...png` redirect and improves LCP discovery. */
+export const PROFILE_AVATAR_SRC = 'https://avatars.githubusercontent.com/u/54651817?s=128&v=4'
+
 export const DEFAULT_OG_IMAGE = 'https://github.com/withxat.png'
 
 /** Twitter handle for `twitter:site` / `twitter:creator` (with leading @). */
