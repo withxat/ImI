@@ -29,7 +29,7 @@ interface RevealProps {
 }
 
 /**
- * Subtle y-axis entrance (opacity stays 1 so text can paint for LCP). Behaviour:
+ * Blur + opacity entrance. Behaviour:
  * - **At scroll top**: in-viewport blocks stagger top → bottom; below-fold blocks animate on scroll into view.
  * - **Mid-page (e.g. refresh while scrolled)**: whatever is in the viewport is shown immediately; below gets scroll-in; above is final.
  */
@@ -57,16 +57,16 @@ export function Reveal({
 		}
 		return {
 			hidden: {
-				opacity: 1,
-				y: 8 + Math.round(blur * 0.5),
+				filter: `blur(${blur}px)`,
+				opacity: 0,
 			},
 			visible: {
+				filter: 'blur(0px)',
 				opacity: 1,
 				transition: {
 					duration: 0.42,
 					ease: easeOut,
 				},
-				y: 0,
 			},
 		}
 	}, [blur, reduceMotion])
@@ -120,7 +120,10 @@ export function Reveal({
 	if (mode === null) {
 		return (
 			<div
-				className={cn(className, reduceMotion ? 'opacity-100' : 'translate-y-2 opacity-100')}
+				className={cn(
+					className,
+					reduceMotion ? 'opacity-0' : 'opacity-0 filter-[blur(10px)]',
+				)}
 				ref={ref}
 			>
 				{children}
