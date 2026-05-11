@@ -58,7 +58,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 			/>
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
-					<div className="mb-20 space-y-8">
+					<div className="space-y-8">
 						<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
 							<TextLink to="/">{m.blog.goHome}</TextLink>
 							<LocaleSwitcher
@@ -76,13 +76,14 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 						<div className="font-ui text-sm text-muted-foreground">
 							<span>{formatPostDate(post.date, locale)}</span>
 						</div>
+						{m.blog.postTranslatedNotice && (
+							<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} />
+						)}
 					</div>
 
-					{m.blog.postTranslatedNotice && (
-						<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} />
-					)}
-
-					<ArticleBody mdx={post.mdx} />
+					<div className="mt-20">
+						<ArticleBody mdx={post.mdx} />
+					</div>
 				</StaggerReveal>
 			</Container>
 		</section>
