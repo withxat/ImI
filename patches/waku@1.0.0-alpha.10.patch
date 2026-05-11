@@ -12,10 +12,19 @@ index f36dc143a8e44e20705a56dcac3400c9b6ee8498..8aa7250d0f5789666a0591edce347a57
              });
          }
 diff --git a/dist/lib/vite-rsc/ssr.js b/dist/lib/vite-rsc/ssr.js
-index 555d2c0ca7fb8e9fda43411b2088f11b62e2aa53..6af8f5e423ed510a1e0272bcaa15a01388d01dbf 100644
+index 555d2c0ca7fb8e9fda43411b2088f11b62e2aa53..08ec74831976ba3f505494dd6420a734dc9673a1 100644
 --- a/dist/lib/vite-rsc/ssr.js
 +++ b/dist/lib/vite-rsc/ssr.js
-@@ -94,7 +94,7 @@ export const renderHtmlStream = async (rscStream, rscHtmlStream, options)=>{
+@@ -84,7 +84,7 @@ export const renderHtmlStream = async (rscStream, rscHtmlStream, options)=>{
+             } : {}
+         });
+     }
+-    const responseStream = htmlStream.pipeThrough(injectRSCPayload(batchReadableStream(stream2), options.nonce ? {
++    const responseStream = normalizePreloadAsValues(htmlStream).pipeThrough(injectRSCPayload(batchReadableStream(stream2), options.nonce ? {
+         nonce: options.nonce
+     } : {}));
+     return {
+@@ -94,9 +94,35 @@ export const renderHtmlStream = async (rscStream, rscHtmlStream, options)=>{
  };
  export async function renderHtmlFallback() {
      const bootstrapScriptContent = await loadBootstrapScriptContent();
@@ -23,4 +32,32 @@ index 555d2c0ca7fb8e9fda43411b2088f11b62e2aa53..6af8f5e423ed510a1e0272bcaa15a013
 +    const html = fallbackHtml.replace('</body>', ()=>`<script type="module">${bootstrapScriptContent}</script></body>`);
      return html;
  }
++function normalizePreloadAsValues(stream) {
++    let carry = '';
++    const decoder = new TextDecoder();
++    const encoder = new TextEncoder();
++    return stream.pipeThrough(new TransformStream({
++        transform (chunk, controller) {
++            const text = carry + decoder.decode(chunk, {
++                stream: true
++            });
++            const emit = text.slice(0, -64);
++            carry = text.slice(-64);
++            if (emit) {
++                controller.enqueue(encoder.encode(normalizePreloadAsText(emit)));
++            }
++        },
++        flush (controller) {
++            const text = carry + decoder.decode();
++            if (text) {
++                controller.enqueue(encoder.encode(normalizePreloadAsText(text)));
++            }
++        }
++    }));
++}
++function normalizePreloadAsText(text) {
++    return text.replaceAll('as="stylesheet"', 'as="style"').replaceAll("as='stylesheet'", "as='style'");
++}
  function loadBootstrapScriptContent() {
+     return import.meta.viteRsc.loadBootstrapScriptContent('index');
+ }
