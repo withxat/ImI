@@ -1,5 +1,6 @@
 import { Link } from 'waku'
 
+import { Reveal } from '@/components/reveal'
 import { StaggerReveal } from '@/components/stagger-reveal'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
 import { getPostsByCategory } from '@/lib/blog'
@@ -34,25 +35,28 @@ export default async function BlogIndexPage() {
 							)}
 							key={group.category.slug}
 						>
-							<div>
-								<Eyebrow>{group.category.name}</Eyebrow>
-								<p className="mt-1 text-base/6 text-muted-foreground">{group.category.description}</p>
-							</div>
+							<Reveal staggerIndex={0}>
+								<div>
+									<Eyebrow>{group.category.name}</Eyebrow>
+									<p className="mt-1 text-base/6 text-muted-foreground">{group.category.description}</p>
+								</div>
+							</Reveal>
 
 							<div className="space-y-6">
-								{group.posts.map((post) => {
+								{group.posts.map((post, postIndex) => {
 									const slug = post.slug
 
 									return (
-										<Link
-											className="entry-link"
-											key={slug}
-											to={`/post/${slug}`}
-											unstable_prefetchOnView
-										>
-											<h3 className="font-medium text-foreground">{post.title}</h3>
-											<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
-										</Link>
+										<Reveal key={slug} staggerIndex={postIndex + 1}>
+											<Link
+												className="entry-link"
+												to={`/post/${slug}`}
+												unstable_prefetchOnView
+											>
+												<h3 className="font-medium text-foreground">{post.title}</h3>
+												<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
+											</Link>
+										</Reveal>
 									)
 								})}
 							</div>
