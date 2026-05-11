@@ -117,8 +117,10 @@
 		word-break: normal;
 	}
 
-	/* Japanese: stricter line-breaking rules (CSS Text / JLREQ-style behavior per UA). */
-	html:lang(ja) {
+	/* Japanese body copy: JLREQ-style strict breaks — scoped to flow text only so
+	 * display headings (article titles, page h1) still inherit loose from `html`. */
+	html:lang(ja) p,
+	html:lang(ja) li {
 		line-break: strict;
 	}
 
@@ -130,6 +132,14 @@
 	html:lang(zh),
 	html:lang(zh-Hans) {
 		hyphens: none;
+	}
+
+	/* `text-wrap: balance` optimizes Latin line lengths; for CJK titles it often
+	 * reflows awkwardly — keep balance for en/zh, plain wrap for Japanese headings. */
+	html:lang(ja) h1,
+	html:lang(ja) h2,
+	html:lang(ja) h3 {
+		text-wrap: wrap;
 	}
 
 	body {
