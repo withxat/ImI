@@ -4,18 +4,16 @@ export type Locale = (typeof LOCALES)[number]
 
 export const DEFAULT_LOCALE: Locale = 'en'
 
+/** Cookie and localStorage key for the UI locale override (en | zh | jp). */
+export const LOCALE_COOKIE_NAME = 'imi_locale'
+
+export const LOCALE_STORAGE_KEY = 'imi_locale'
+
 export function isLocale(value: string): value is Locale {
 	return (LOCALES as readonly string[]).includes(value)
 }
 
-export function toLocale(value: string): Locale {
-	if (!isLocale(value)) {
-		throw new Error(`Invalid locale: ${value}`)
-	}
-	return value
-}
-
-/** BCP 47 for Intl; URL segment stays `jp` per site convention. */
+/** BCP 47 for Intl; site uses `jp` as the internal locale code for Japanese. */
 export function intlLocaleFor(locale: Locale): string {
 	if (locale === 'zh')
 		return 'zh-CN'

@@ -13,7 +13,11 @@ export function Footer({ locale }: { locale: Locale }) {
 		<footer>
 			<Container className="pt-16 pb-28 text-base/7 text-muted-foreground">
 				<div className="space-y-5">
-					<LocaleSwitcher aria-label={m.localeSwitcher.ariaLabel} className="pb-1" />
+					<LocaleSwitcher
+						aria-label={m.localeSwitcher.ariaLabel}
+						className="pb-1"
+						currentLocale={locale}
+					/>
 					<div className="space-y-3">
 						<FooterWanderer copy={m.wanderer} locale={locale} />
 						<p className="text-sm text-muted-foreground">

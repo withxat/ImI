@@ -1,8 +1,5 @@
 import type { allPosts } from 'content-collections'
 
-import { DEFAULT_LOCALE } from '@/lib/i18n/constants'
-import { withLocale } from '@/lib/i18n/paths'
-
 const SITE_URL = 'https://xat.sh'
 const FEED_TITLE = 'Hi, Xat!'
 const FEED_DESCRIPTION = 'Code with Love, Exploring the World.'
@@ -23,8 +20,7 @@ function escapeCdata(value: string) {
 }
 
 function postUrl(post: Pick<Post, 'slug'>) {
-	const path = withLocale(DEFAULT_LOCALE, `/post/${post.slug}`)
-	return `${SITE_URL}${path}`
+	return `${SITE_URL}/post/${post.slug}`
 }
 
 function postContent(post: Pick<Post, 'summary'>) {
@@ -56,7 +52,7 @@ export function generateRssFeed(posts: Post[]) {
 		'<channel>',
 		`<title>${escapeXml(FEED_TITLE)}</title>`,
 		`<description>${escapeXml(FEED_DESCRIPTION)}</description>`,
-		`<link>${SITE_URL}${withLocale(DEFAULT_LOCALE, '/')}</link>`,
+		`<link>${SITE_URL}</link>`,
 		...items,
 		'</channel>',
 		'</rss>',
