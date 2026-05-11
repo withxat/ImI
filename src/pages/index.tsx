@@ -17,7 +17,6 @@ import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { getCapabilities } from '@/lib/projects'
 import { Seo } from '@/lib/seo'
 import { DEFAULT_DESCRIPTION, personJsonLd, websiteJsonLd } from '@/lib/seo-data'
-import { titleForDisplay } from '@/lib/title-display'
 
 export default async function HomePage() {
 	const locale = getRequestLocale()
@@ -128,7 +127,7 @@ export default async function HomePage() {
 										<HomeCardLink
 											description={post.summary}
 											href={`/post/${slug}`}
-											title={titleForDisplay(post.title)}
+											title={post.title}
 											prefetchOnView
 										/>
 									</Reveal>

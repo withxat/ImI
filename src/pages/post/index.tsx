@@ -9,7 +9,6 @@ import { cn } from '@/lib/cn'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { Seo } from '@/lib/seo'
-import { titleForDisplay } from '@/lib/title-display'
 
 export default async function BlogIndexPage() {
 	const locale = getRequestLocale()
@@ -78,7 +77,7 @@ export default async function BlogIndexPage() {
 												to={`/post/${slug}`}
 												unstable_prefetchOnView
 											>
-												<h3 className="font-medium text-foreground">{titleForDisplay(post.title)}</h3>
+												<h3 className="font-medium text-foreground">{post.title}</h3>
 												<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
 											</Link>
 										</Reveal>
