@@ -2,15 +2,11 @@
 
 import type { PostTranslatedNoticeCopy } from '@/lib/i18n/messages'
 
-import { useRouter } from 'waku'
-
 import { persistLocale } from '@/lib/i18n/persist-locale'
 
 const ZH_LINK_LABEL = '中文'
 
 export function PostTranslatedNoticeAside({ notice }: { notice: PostTranslatedNoticeCopy }) {
-	const router = useRouter()
-
 	return (
 		<aside
 			className="mb-12 rounded-xl border border-border bg-muted/30 px-4 py-3 font-ui text-sm/relaxed text-muted-foreground"
@@ -24,7 +20,7 @@ export function PostTranslatedNoticeAside({ notice }: { notice: PostTranslatedNo
 				"
 				onClick={() => {
 					persistLocale('zh')
-					void router.reload()
+					window.location.reload()
 				}}
 				aria-label={notice.switchToChineseAriaLabel}
 				lang="zh"

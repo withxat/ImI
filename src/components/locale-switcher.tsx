@@ -2,8 +2,6 @@
 
 import type { Locale } from '@/lib/i18n/constants'
 
-import { useRouter } from 'waku'
-
 import { LOCALES } from '@/lib/i18n/constants'
 import { persistLocale } from '@/lib/i18n/persist-locale'
 
@@ -20,8 +18,6 @@ interface LocaleSwitcherProps {
 }
 
 export function LocaleSwitcher({ 'aria-label': ariaLabel, className, currentLocale }: LocaleSwitcherProps) {
-	const router = useRouter()
-
 	return (
 		<div
 			aria-label={ariaLabel}
@@ -46,7 +42,10 @@ export function LocaleSwitcher({ 'aria-label': ariaLabel, className, currentLoca
 										"
 										onClick={() => {
 											persistLocale(locale)
-											void router.reload()
+											/* Waku's router.reload() only refetches the current route; prefetched RSC for
+											 * other paths can stay in __WAKU_PREFETCHED__ with the old locale. Hard reload
+											 * clears that cache so navigation uses the new cookie site-wide. */
+											window.location.reload()
 										}}
 										lang={locale}
 										type="button"

@@ -61,7 +61,9 @@ export default async function HomePage() {
 									<NameAudioButton />
 								</h1>
 								<p className="text-muted-foreground">{m.home.role}</p>
-								<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
+								<p
+									className="home-bio-lead mt-3 max-w-prose font-serif text-base/7 text-foreground"
+								>
 									{m.home.bioLead}
 								</p>
 							</div>
