@@ -81,7 +81,7 @@ export function NameAudioButton() {
 					aria-hidden
 				/>
 			</Button>
-			<audio preload="auto" ref={audioRef} src="/xat.mp3" hidden />
+			<audio preload="none" ref={audioRef} src="/xat.mp3" hidden />
 		</span>
 	)
 }
