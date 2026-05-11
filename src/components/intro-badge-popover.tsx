@@ -1,9 +1,10 @@
 'use client'
 
 import type { LucideIcon } from 'lucide-react'
-import type { ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { BriefcaseBusiness, GraduationCap } from 'lucide-react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import {
 	Popover,
@@ -52,11 +53,78 @@ const INTRO_BADGES = {
 	label: string
 }>
 
+type PopoverOpenChangeDetails = Parameters<NonNullable<ComponentProps<typeof Popover>['onOpenChange']>>[1]
+
+const HOVER_QUERY = '(hover: hover) and (pointer: fine)'
+
+function subscribeToHoverCapability(onStoreChange: () => void) {
+	const query = window.matchMedia(HOVER_QUERY)
+
+	query.addEventListener('change', onStoreChange)
+
+	return () => query.removeEventListener('change', onStoreChange)
+}
+
+function getHoverCapabilitySnapshot() {
+	return window.matchMedia(HOVER_QUERY).matches
+}
+
 export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES }) {
 	const { description, Icon, label } = INTRO_BADGES[kind]
+	const [open, setOpen] = useState(false)
+	const closeTimeoutRef = useRef<number | undefined>(undefined)
+	const supportsHover = useSyncExternalStore(
+		subscribeToHoverCapability,
+		getHoverCapabilitySnapshot,
+		() => false,
+	)
+
+	const clearCloseTimeout = () => {
+		if (closeTimeoutRef.current) {
+			window.clearTimeout(closeTimeoutRef.current)
+		}
+	}
+
+	const openOnHover = () => {
+		if (!supportsHover) {
+			return
+		}
+
+		clearCloseTimeout()
+		setOpen(true)
+	}
+
+	const closeOnHoverEnd = () => {
+		if (!supportsHover) {
+			return
+		}
+
+		clearCloseTimeout()
+		closeTimeoutRef.current = window.setTimeout(setOpen, 80, false)
+	}
+
+	const handleOpenChange = (nextOpen: boolean, details: PopoverOpenChangeDetails) => {
+		if (
+			supportsHover
+			&& details.reason === 'trigger-press'
+			&& !(details.event instanceof KeyboardEvent)
+		) {
+			return
+		}
+
+		setOpen(nextOpen)
+	}
+
+	useEffect(() => {
+		return () => {
+			if (closeTimeoutRef.current) {
+				window.clearTimeout(closeTimeoutRef.current)
+			}
+		}
+	}, [])
 
 	return (
-		<Popover>
+		<Popover onOpenChange={handleOpenChange} open={open}>
 			<PopoverTrigger
 				render={(
 					<button
@@ -69,6 +137,8 @@ export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES })
 							dark:hover:bg-input/64
 							[&_svg]:mr-[0.25em] [&_svg]:inline [&_svg]:size-[1em] [&_svg]:align-[-0.125em] [&_svg]:opacity-80
 						"
+						onMouseEnter={openOnHover}
+						onMouseLeave={closeOnHoverEnd}
 						type="button"
 					/>
 				)}
@@ -76,7 +146,13 @@ export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES })
 				<Icon aria-hidden />
 				{label}
 			</PopoverTrigger>
-			<PopoverPopup align="start" className="max-w-72" sideOffset={8}>
+			<PopoverPopup
+				align="start"
+				className="max-w-72"
+				onMouseEnter={openOnHover}
+				onMouseLeave={closeOnHoverEnd}
+				sideOffset={8}
+			>
 				<PopoverDescription className="text-sm/6">
 					{description}
 				</PopoverDescription>
