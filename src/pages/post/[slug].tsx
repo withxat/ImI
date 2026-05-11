@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
 import { Separator } from '@/components/ui/separator'
 import { formatPostDate, getCategoryBySlug, getPostBySlug, getPostSlugs } from '@/lib/blog'
+import { Seo } from '@/lib/seo'
+import { blogPostingJsonLd } from '@/lib/seo-data'
 
 export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
 	const post = getPostBySlug(slug)
@@ -18,7 +20,19 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 
 	return (
 		<section>
-			<title>{post.title}</title>
+			<Seo
+				jsonLd={blogPostingJsonLd({
+					date: post.date,
+					description: post.summary,
+					slug: post.slug,
+					tags: post.tags,
+					title: post.title,
+				})}
+				canonicalPath={`/post/${post.slug}`}
+				description={post.summary}
+				title={`${post.title} - Xat`}
+				type="article"
+			/>
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
 					<div className="mb-20 space-y-8">

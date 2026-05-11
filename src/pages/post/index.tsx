@@ -5,19 +5,24 @@ import { StaggerReveal } from '@/components/stagger-reveal'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
 import { getPostsByCategory } from '@/lib/blog'
 import { cn } from '@/lib/cn'
+import { Seo } from '@/lib/seo'
 
 export default async function BlogIndexPage() {
 	const groups = getPostsByCategory()
 
 	return (
 		<section>
-			<title>All Writings</title>
+			<Seo
+				canonicalPath="/post"
+				description="Writing about frontend engineering, design systems, AI products, tools, and small notes from Xat."
+				title="Writing - Xat"
+			/>
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
 					<div className="space-y-8">
 						<TextLink to="/">Go to home</TextLink>
 						<div className="space-y-0">
-							<p className="font-medium text-foreground">All Writings</p>
+							<h1 className="font-medium text-foreground">All Writings</h1>
 							<p className="text-muted-foreground">Archive - Texts just sparkle in my mind</p>
 						</div>
 					</div>

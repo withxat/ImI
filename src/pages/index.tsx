@@ -10,6 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
 import { getCapabilities } from '@/lib/projects'
+import { Seo } from '@/lib/seo'
+import { DEFAULT_DESCRIPTION, personJsonLd, websiteJsonLd } from '@/lib/seo-data'
 
 export default async function HomePage() {
 	const data = await getData()
@@ -18,7 +20,13 @@ export default async function HomePage() {
 
 	return (
 		<section>
-			<title>{data.title}</title>
+			<Seo
+				canonicalPath="/"
+				description={DEFAULT_DESCRIPTION}
+				jsonLd={[personJsonLd(), websiteJsonLd()]}
+				title={data.title}
+				type="profile"
+			/>
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
 					<div className="flex flex-col gap-4">
@@ -35,14 +43,14 @@ export default async function HomePage() {
 							<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
 						</Avatar>
 						<div className="space-y-0">
-							<p className="
+							<h1 className="
 								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
 								sm:text-3xl
 							"
 							>
 								<span className="font-xat-name font-normal">Xat</span>
 								<NameAudioButton />
-							</p>
+							</h1>
 							<p className="text-muted-foreground">Design Engineer</p>
 							<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
 								Building production-quality interfaces and AI-native products
@@ -156,7 +164,7 @@ export default async function HomePage() {
 
 async function getData() {
 	return {
-		title: 'Hi, Xat!',
+		title: 'Xat - Design Engineer',
 	}
 }
 

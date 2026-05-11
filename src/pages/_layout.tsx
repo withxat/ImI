@@ -10,15 +10,8 @@ import '@/styles/globals.css'
 interface RootLayoutProps { children: ReactNode }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-	const data = await getData()
-
 	return (
 		<div className="relative isolate min-h-screen">
-			<meta content={data.description} name="description" />
-			<meta content="Hi, Xat!" property="og:title" />
-			<meta content={data.description} property="og:description" />
-			<meta content="summary_large_image" name="twitter:card" />
-			<meta content="Hi, Xat!" name="twitter:title" />
 			<link href={RSS_FEED_URL} rel="alternate" title={RSS_TITLE} type="application/rss+xml" />
 			<link href="/favicon.ico" rel="icon" sizes="32x32" />
 			<link href="/icon.svg" rel="icon" type="image/svg+xml" />
@@ -30,15 +23,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<BottomFade />
 		</div>
 	)
-}
-
-async function getData() {
-	const data = {
-		description: 'Design Engineer building AI-native products, interfaces, and frontend systems.',
-		icon: '/images/favicon.png',
-	}
-
-	return data
 }
 
 export async function getConfig() {
