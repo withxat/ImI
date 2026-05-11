@@ -1,9 +1,12 @@
 'use client'
 
-import type { LucideIcon } from 'lucide-react'
-import type { ComponentProps, ReactNode } from 'react'
+import type { IconProps } from 'nucleo-ui-essential-fill-duo-18'
+import type { ComponentProps, FC, ReactNode } from 'react'
 
-import { BriefcaseBusiness, GraduationCap } from 'lucide-react'
+import {
+	IconGraduationCapFillDuo18,
+	IconSuitcase3FillDuo18,
+} from 'nucleo-ui-essential-fill-duo-18'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import {
@@ -32,7 +35,7 @@ const INTRO_BADGES = {
 				reshape interfaces, collaboration, and tools.
 			</>
 		),
-		Icon: BriefcaseBusiness,
+		Icon: IconSuitcase3FillDuo18,
 		label: 'intelligent products',
 	},
 	systems: {
@@ -44,12 +47,12 @@ const INTRO_BADGES = {
 				: software and design where physical infrastructure meets digital systems.
 			</>
 		),
-		Icon: GraduationCap,
+		Icon: IconGraduationCapFillDuo18,
 		label: 'systems background',
 	},
 } satisfies Record<string, {
 	description: ReactNode
-	Icon: LucideIcon
+	Icon: FC<IconProps>
 	label: string
 }>
 
@@ -129,7 +132,7 @@ export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES })
 				render={(
 					<button
 						className="
-							-mx-0.5 inline cursor-pointer rounded-md border border-input bg-popover px-[0.35em] py-0 align-baseline
+							mx-0.5 inline cursor-pointer rounded-md border border-input bg-popover px-[0.35em] py-0 align-baseline
 							text-sm leading-[inherit] font-semibold text-inherit shadow-xs/5 transition-colors
 							hover:bg-accent/50
 							focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
