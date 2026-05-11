@@ -1,6 +1,5 @@
 import { Link } from 'waku'
 
-import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
 import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
 import { NameAudioButton } from '@/components/name-audio-button'
@@ -136,7 +135,7 @@ export default async function HomePage() {
 														),
 											)}
 											{cap.items.length === 0 && (
-												<CapabilityEmptyPlaceholder
+												<HomeCardLink
 													description={cap.emptyState?.description ?? 'Links when there is something worth flexing.'}
 													title={cap.emptyState?.title ?? 'Work in progress'}
 												/>
