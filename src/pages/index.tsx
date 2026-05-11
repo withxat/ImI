@@ -54,7 +54,7 @@ export default async function HomePage() {
 						md:mt-32
 					"
 					>
-						<StaggerReveal delayChildren={0.03} staggerChildren={0.045}>
+						<StaggerReveal className="space-y-1.5" delayChildren={0.03} staggerChildren={0.045}>
 							<p className="text-base/7 text-muted-foreground">
 								I design and ship applied AI—interfaces, workflows, and developer-facing
 								surfaces where intelligence is part of the UX, not a bolt-on.
