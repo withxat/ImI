@@ -158,7 +158,7 @@ const en: Messages = {
 	wanderer: {
 		wanderer: 'wanderer',
 		withCountry: {
-			bridge: ' from ',
+			bridge: 'from',
 			closing: '.',
 			lead: 'Hi, ',
 			pattern: 'en',

@@ -58,12 +58,11 @@ export function FooterWanderer({ copy, locale }: FooterWandererProps) {
 	if (geo.countryCode) {
 		const { bridge, closing, lead, pattern } = copy.withCountry
 		const countryLabel = regionDisplayName(geo.countryCode, locale)
-		const flagCountry = (
-			<>
+		const flagAndLabel = (
+			<span className="mx-[0.35em] inline-flex items-baseline gap-x-1.5">
 				<CountryFlag code={geo.countryCode} />
-				{' '}
-				{countryLabel}
-			</>
+				<span>{countryLabel}</span>
+			</span>
 		)
 
 		if (pattern === 'en') {
@@ -71,8 +70,10 @@ export function FooterWanderer({ copy, locale }: FooterWandererProps) {
 				<p className="text-foreground">
 					{lead}
 					{wanderer}
+					{' '}
 					{bridge}
-					{flagCountry}
+					{' '}
+					{flagAndLabel}
 					{closing}
 				</p>
 			)
@@ -81,7 +82,7 @@ export function FooterWanderer({ copy, locale }: FooterWandererProps) {
 		return (
 			<p className="text-foreground">
 				{lead}
-				{flagCountry}
+				{flagAndLabel}
 				{bridge}
 				{wanderer}
 				{closing}
