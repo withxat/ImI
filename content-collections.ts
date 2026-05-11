@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path'
 
 import { createDefaultImport, defineCollection, defineConfig, defineSingleton } from '@content-collections/core'
 import { compile } from '@mdx-js/mdx'
+import remarkCjkFriendly from 'remark-cjk-friendly'
 import { z } from 'zod'
 
 async function createMdxImport(slug: string, content: string) {
@@ -13,6 +14,7 @@ async function createMdxImport(slug: string, content: string) {
 		development: false,
 		outputFormat: 'program',
 		providerImportSource: undefined,
+		remarkPlugins: [remarkCjkFriendly],
 	})
 
 	await mkdir(dirname(outputPath), { recursive: true })
