@@ -132,7 +132,7 @@ export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES })
 				render={(
 					<button
 						className="
-							-mx-0.5 inline cursor-pointer rounded-md border border-input bg-popover px-[0.35em] py-0 align-baseline
+							mx-0.5 inline cursor-pointer rounded-md border border-input bg-popover px-[0.35em] py-0 align-baseline
 							text-sm leading-[inherit] font-semibold text-inherit shadow-xs/5 transition-colors
 							hover:bg-accent/50
 							focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
