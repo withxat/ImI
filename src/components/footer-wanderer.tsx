@@ -52,13 +52,13 @@ export function FooterWanderer({ copy }: FooterWandererProps) {
 		<span className={wandererGradientClass}>{copy.wanderer}</span>
 	)
 
-	if (geo.countryName) {
+	if (geo.countryCode) {
 		const { bridge, closing, lead, pattern } = copy.withCountry
 		const flagCountry = (
 			<>
 				<CountryFlag code={geo.countryCode} />
 				{' '}
-				{geo.countryName}
+				{geo.countryName ?? geo.countryCode}
 			</>
 		)
 
