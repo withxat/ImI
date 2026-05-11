@@ -1,12 +1,12 @@
 'use client'
 
-import type { IconProps } from 'nucleo-ui-essential-fill-12'
+import type { IconProps } from 'nucleo-ui-essential-fill-duo-18'
 import type { ComponentProps, FC, ReactNode } from 'react'
 
 import {
-	IconStackPerspectiveFill12,
-	IconSuitcase3Fill12,
-} from 'nucleo-ui-essential-fill-12'
+	IconGraduationCapFillDuo18,
+	IconSuitcase3FillDuo18,
+} from 'nucleo-ui-essential-fill-duo-18'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import {
@@ -35,7 +35,7 @@ const INTRO_BADGES = {
 				reshape interfaces, collaboration, and tools.
 			</>
 		),
-		Icon: IconSuitcase3Fill12,
+		Icon: IconSuitcase3FillDuo18,
 		label: 'intelligent products',
 	},
 	systems: {
@@ -47,7 +47,7 @@ const INTRO_BADGES = {
 				: software and design where physical infrastructure meets digital systems.
 			</>
 		),
-		Icon: IconStackPerspectiveFill12,
+		Icon: IconGraduationCapFillDuo18,
 		label: 'systems background',
 	},
 } satisfies Record<string, {
