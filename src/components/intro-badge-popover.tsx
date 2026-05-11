@@ -1,9 +1,12 @@
 'use client'
 
-import type { LucideIcon } from 'lucide-react'
-import type { ComponentProps, ReactNode } from 'react'
+import type { IconProps } from 'nucleo-ui-essential-fill-12'
+import type { ComponentProps, FC, ReactNode } from 'react'
 
-import { BriefcaseBusiness, GraduationCap } from 'lucide-react'
+import {
+	IconStackPerspectiveFill12,
+	IconSuitcase3Fill12,
+} from 'nucleo-ui-essential-fill-12'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import {
@@ -32,7 +35,7 @@ const INTRO_BADGES = {
 				reshape interfaces, collaboration, and tools.
 			</>
 		),
-		Icon: BriefcaseBusiness,
+		Icon: IconSuitcase3Fill12,
 		label: 'intelligent products',
 	},
 	systems: {
@@ -44,12 +47,12 @@ const INTRO_BADGES = {
 				: software and design where physical infrastructure meets digital systems.
 			</>
 		),
-		Icon: GraduationCap,
+		Icon: IconStackPerspectiveFill12,
 		label: 'systems background',
 	},
 } satisfies Record<string, {
 	description: ReactNode
-	Icon: LucideIcon
+	Icon: FC<IconProps>
 	label: string
 }>
 
