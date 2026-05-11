@@ -9,14 +9,21 @@ import { StaggerReveal } from '@/components/stagger-reveal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
+import { getIntroBadgeCopy } from '@/lib/i18n/intro-badges'
+import { getMessages } from '@/lib/i18n/messages'
+import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { getCapabilities } from '@/lib/projects'
 import { Seo } from '@/lib/seo'
 import { DEFAULT_DESCRIPTION, personJsonLd, websiteJsonLd } from '@/lib/seo-data'
 
 export default async function HomePage() {
-	const data = await getData()
+	const locale = getRequestLocale()
+	const m = getMessages(locale)
+	const systemsCopy = getIntroBadgeCopy(locale, 'systems')
+	const productsCopy = getIntroBadgeCopy(locale, 'products')
 	const posts = getAllPosts().slice(0, 4)
-	const capabilities = getCapabilities()
+	const baseCapabilities = getCapabilities()
+	const capabilities = mergeCapabilityCopy(baseCapabilities, m)
 
 	return (
 		<section>
@@ -24,7 +31,7 @@ export default async function HomePage() {
 				canonicalPath="/"
 				description={DEFAULT_DESCRIPTION}
 				jsonLd={[personJsonLd(), websiteJsonLd()]}
-				title={data.title}
+				title={m.home.title}
 				type="profile"
 			/>
 			<Container className="page-shell">
@@ -51,9 +58,9 @@ export default async function HomePage() {
 								<span className="font-xat-name font-normal">Xat</span>
 								<NameAudioButton />
 							</h1>
-							<p className="text-muted-foreground">Design Engineer</p>
+							<p className="text-muted-foreground">{m.home.role}</p>
 							<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
-								Building production-quality interfaces and AI-native products
+								{m.home.bioLead}
 							</p>
 						</div>
 					</div>
@@ -65,18 +72,22 @@ export default async function HomePage() {
 					>
 						<StaggerReveal className="space-y-1.5" delayChildren={0.03} staggerChildren={0.045}>
 							<p className="text-base/7 text-muted-foreground">
-								I design and ship applied AI interfaces, workflows, and developer tools.
+								{m.home.bioP1}
 							</p>
 							<p className="text-base/7 text-muted-foreground">
-								A
-								{' '}
-								<IntroBadgePopover kind="systems" />
-								{' '}
-								taught me to balance design intent, engineering constraints, and the messy
-								realities of building
-								{' '}
-								<IntroBadgePopover kind="products" />
-								.
+								{m.home.introBeforeSystems}
+								<IntroBadgePopover
+									description={systemsCopy.description}
+									kind="systems"
+									label={systemsCopy.label}
+								/>
+								{m.home.introBetweenBadges}
+								<IntroBadgePopover
+									description={productsCopy.description}
+									kind="products"
+									label={productsCopy.label}
+								/>
+								{m.home.introAfterProducts}
 							</p>
 						</StaggerReveal>
 					</section>
@@ -84,12 +95,12 @@ export default async function HomePage() {
 					<section className="mt-28 space-y-7">
 						<Reveal staggerIndex={0}>
 							<div className="flex items-baseline justify-between gap-6">
-								<Eyebrow className="font-semibold">Writing</Eyebrow>
+								<Eyebrow className="font-semibold">{m.home.writingEyebrow}</Eyebrow>
 								<Link
 									className="text-link font-ui text-sm text-muted-foreground"
 									to="/post"
 								>
-									View All
+									{m.home.viewAllPosts}
 								</Link>
 							</div>
 						</Reveal>
@@ -113,11 +124,14 @@ export default async function HomePage() {
 
 					<section className="mt-28 space-y-10">
 						<Reveal staggerIndex={0}>
-							<Eyebrow className="font-semibold">Capabilities</Eyebrow>
+							<Eyebrow className="font-semibold">{m.home.capabilitiesEyebrow}</Eyebrow>
 						</Reveal>
 						<div className="space-y-12">
 							{capabilities.map((cap, index) => (
-								<Reveal key={cap.title} staggerIndex={index + 1}>
+								<Reveal
+									key={baseCapabilities[index]?.title ?? cap.title}
+									staggerIndex={index + 1}
+								>
 									<div className="space-y-5">
 										<div>
 											<h3 className="font-medium text-foreground">{cap.title}</h3>
@@ -145,8 +159,8 @@ export default async function HomePage() {
 											)}
 											{cap.items.length === 0 && (
 												<HomeCardLink
-													description={cap.emptyState?.description ?? 'Links when there is something worth flexing.'}
-													title={cap.emptyState?.title ?? 'Work in progress'}
+													description={cap.emptyState?.description ?? m.home.emptyCapabilityDescription}
+													title={cap.emptyState?.title ?? m.home.emptyCapabilityTitle}
 													trailingIcon={<ConstructionStripesIcon className="-mx-0.5 text-muted-foreground opacity-80" />}
 												/>
 											)}
@@ -162,14 +176,32 @@ export default async function HomePage() {
 	)
 }
 
-async function getData() {
-	return {
-		title: 'Xat - Design Engineer',
-	}
+function mergeCapabilityCopy(
+	capabilities: ReturnType<typeof getCapabilities>,
+	m: ReturnType<typeof getMessages>,
+) {
+	return capabilities.map((cap, i) => {
+		const copy = m.capabilities[i]
+		if (!copy) {
+			return cap
+		}
+
+		return {
+			...cap,
+			emptyState: copy.emptyState ?? cap.emptyState,
+			items: cap.items.map((item, j) => ({
+				...item,
+				description: copy.items[j]?.description ?? item.description,
+				title: copy.items[j]?.title ?? item.title,
+			})),
+			summary: copy.summary,
+			title: copy.title,
+		}
+	})
 }
 
 export async function getConfig() {
 	return {
-		render: 'static',
+		render: 'dynamic',
 	} as const
 }

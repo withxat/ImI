@@ -1,10 +1,14 @@
+import type { Locale } from '@/lib/i18n/constants'
+
+import { intlLocaleFor } from '@/lib/i18n/constants'
+
 interface Cf { country?: string }
 
 export interface VisitorGeo { countryCode: null | string, countryName: null | string }
 
-export function regionName(code: string): string {
+export function regionDisplayName(code: string, locale: Locale): string {
 	try {
-		return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) ?? code
+		return new Intl.DisplayNames([intlLocaleFor(locale)], { type: 'region' }).of(code) ?? code
 	}
 	catch {
 		return code
@@ -18,5 +22,5 @@ export function readVisitorGeoFromRequest(req: Request): VisitorGeo {
 	if (!countryCode) {
 		return { countryCode: null, countryName: null }
 	}
-	return { countryCode, countryName: regionName(countryCode) }
+	return { countryCode, countryName: null }
 }

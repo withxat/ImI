@@ -1,17 +1,25 @@
 'use client'
 
+import type { Locale } from '@/lib/i18n/constants'
+import type { FooterWandererCopy } from '@/lib/i18n/messages'
 import type { VisitorGeo } from '@/lib/visitor-geo'
 
 import { useEffect, useState } from 'react'
 
 import { CountryFlag } from '@/components/country-flag'
+import { regionDisplayName } from '@/lib/visitor-geo'
 
 const wandererGradientClass = `
 	bg-linear-to-r from-violet-600 via-indigo-500 to-cyan-600 bg-clip-text font-bold text-transparent
 	dark:from-violet-300 dark:via-indigo-300 dark:to-cyan-300
 `
 
-export function FooterWanderer() {
+interface FooterWandererProps {
+	copy: FooterWandererCopy
+	locale: Locale
+}
+
+export function FooterWanderer({ copy, locale }: FooterWandererProps) {
 	const [geo, setGeo] = useState<null | VisitorGeo>(null)
 
 	useEffect(() => {
@@ -43,29 +51,52 @@ export function FooterWanderer() {
 		)
 	}
 
-	if (geo.countryName) {
+	const wanderer = (
+		<span className={wandererGradientClass}>{copy.wanderer}</span>
+	)
+
+	if (geo.countryCode) {
+		const { bridge, closing, lead, pattern } = copy.withCountry
+		const countryLabel = regionDisplayName(geo.countryCode, locale)
+		const flagAndLabel = (
+			<span className="mx-0.5 inline-flex items-baseline gap-x-1">
+				<span className="inline-flex h-[1em] shrink-0 translate-y-[0.12em] items-end leading-none">
+					<CountryFlag code={geo.countryCode} />
+				</span>
+				<span>{countryLabel}</span>
+			</span>
+		)
+
+		if (pattern === 'en') {
+			return (
+				<p className="text-foreground">
+					{lead}
+					{wanderer}
+					{' '}
+					{bridge}
+					{' '}
+					{flagAndLabel}
+					{closing}
+				</p>
+			)
+		}
+
 		return (
 			<p className="text-foreground">
-				Hi,
-				{' '}
-				<span className={wandererGradientClass}>wanderer</span>
-				{' '}
-				from
-				{' '}
-				<CountryFlag code={geo.countryCode} />
-				{' '}
-				{geo.countryName}
-				.
+				{lead}
+				{flagAndLabel}
+				{bridge}
+				{wanderer}
+				{closing}
 			</p>
 		)
 	}
 
 	return (
 		<p className="text-foreground">
-			Hi,
-			{' '}
-			<span className={wandererGradientClass}>wanderer</span>
-			—glad you found your way here.
+			{copy.withoutCountry.before}
+			{wanderer}
+			{copy.withoutCountry.after}
 		</p>
 	)
 }

@@ -5,25 +5,37 @@ import { StaggerReveal } from '@/components/stagger-reveal'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
 import { getPostsByCategory } from '@/lib/blog'
 import { cn } from '@/lib/cn'
+import { getMessages } from '@/lib/i18n/messages'
+import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { Seo } from '@/lib/seo'
 
 export default async function BlogIndexPage() {
-	const groups = getPostsByCategory()
+	const locale = getRequestLocale()
+	const m = getMessages(locale)
+	const groups = getPostsByCategory().map((group) => {
+		const cat = m.categories[group.category.slug as keyof typeof m.categories]
+		return {
+			category: cat
+				? { ...group.category, description: cat.description, name: cat.name }
+				: group.category,
+			posts: group.posts,
+		}
+	})
 
 	return (
 		<section>
 			<Seo
 				canonicalPath="/post"
-				description="Writing about frontend engineering, design systems, AI products, tools, and small notes from Xat."
-				title="Writing - Xat"
+				description={m.blog.pageDescription}
+				title={m.blog.pageTitle}
 			/>
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
 					<div className="space-y-8">
-						<TextLink to="/">Go to home</TextLink>
+						<TextLink to="/">{m.blog.goHome}</TextLink>
 						<div className="space-y-0">
-							<h1 className="font-medium text-foreground">All Writings</h1>
-							<p className="text-muted-foreground">Archive - Texts just sparkle in my mind</p>
+							<h1 className="font-medium text-foreground">{m.blog.title}</h1>
+							<p className="text-muted-foreground">{m.blog.archiveSubtitle}</p>
 						</div>
 					</div>
 
@@ -75,6 +87,6 @@ export default async function BlogIndexPage() {
 
 export async function getConfig() {
 	return {
-		render: 'static',
+		render: 'dynamic',
 	} as const
 }
