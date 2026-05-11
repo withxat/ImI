@@ -3,6 +3,7 @@ import { Link } from 'waku'
 import { ConstructionStripesIcon } from '@/components/construction-stripes-icon'
 import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
+import { LocaleSwitcher } from '@/components/locale-switcher'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Reveal } from '@/components/reveal'
 import { StaggerReveal } from '@/components/stagger-reveal'
@@ -36,33 +37,40 @@ export default async function HomePage() {
 			/>
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
-					<div className="flex flex-col gap-4">
-						<Avatar className="
-							size-14 rounded-xl border border-border
-							sm:size-16
-						"
-						>
-							<AvatarImage
-								alt="Xat"
-								referrerPolicy="no-referrer"
-								src="https://github.com/withxat.png"
-							/>
-							<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
-						</Avatar>
-						<div className="space-y-0">
-							<h1 className="
-								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
-								sm:text-3xl
+					<div className="flex items-start justify-between gap-6">
+						<div className="flex min-w-0 flex-1 flex-col gap-4">
+							<Avatar className="
+								size-14 rounded-xl border border-border
+								sm:size-16
 							"
 							>
-								<span className="font-xat-name font-normal">Xat</span>
-								<NameAudioButton />
-							</h1>
-							<p className="text-muted-foreground">{m.home.role}</p>
-							<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
-								{m.home.bioLead}
-							</p>
+								<AvatarImage
+									alt="Xat"
+									referrerPolicy="no-referrer"
+									src="https://github.com/withxat.png"
+								/>
+								<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
+							</Avatar>
+							<div className="space-y-0">
+								<h1 className="
+									inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
+									sm:text-3xl
+								"
+								>
+									<span className="font-xat-name font-normal">Xat</span>
+									<NameAudioButton />
+								</h1>
+								<p className="text-muted-foreground">{m.home.role}</p>
+								<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
+									{m.home.bioLead}
+								</p>
+							</div>
 						</div>
+						<LocaleSwitcher
+							aria-label={m.localeSwitcher.ariaLabel}
+							className="shrink-0"
+							currentLocale={locale}
+						/>
 					</div>
 
 					<section className="

@@ -1,6 +1,7 @@
 import type { PageProps } from 'waku/router'
 
 import { ArticleBody } from '@/components/article-body'
+import { LocaleSwitcher } from '@/components/locale-switcher'
 import { PostTranslatedNoticeAside } from '@/components/post-translated-notice'
 import { StaggerReveal } from '@/components/stagger-reveal'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
@@ -47,7 +48,13 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
 					<div className="mb-20 space-y-8">
-						<TextLink to="/">{m.blog.goHome}</TextLink>
+						<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+							<TextLink to="/">{m.blog.goHome}</TextLink>
+							<LocaleSwitcher
+								aria-label={m.localeSwitcher.ariaLabel}
+								currentLocale={locale}
+							/>
+						</div>
 						<div className="space-y-3">
 							<Eyebrow>
 								{categoryEyebrow}
