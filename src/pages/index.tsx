@@ -1,7 +1,7 @@
 import { Link } from 'waku'
 
-import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
-import { CapabilityExternalLink } from '@/components/capability-external-link'
+import { ConstructionStripesIcon } from '@/components/construction-stripes-icon'
+import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Reveal } from '@/components/reveal'
@@ -85,20 +85,18 @@ export default async function HomePage() {
 								</Link>
 							</div>
 						</Reveal>
-						<div>
+						<div className="space-y-3">
 							{posts.map((post, index) => {
 								const slug = post.slug
 
 								return (
 									<Reveal key={slug} staggerIndex={index + 1}>
-										<Link
-											className="post-list-entry entry-link"
-											to={`/post/${slug}`}
-											unstable_prefetchOnView
-										>
-											<h3 className="text-sm font-medium text-foreground">{post.title}</h3>
-											<p className="mt-1 text-sm/6 text-muted-foreground">{post.summary}</p>
-										</Link>
+										<HomeCardLink
+											description={post.summary}
+											href={`/post/${slug}`}
+											title={post.title}
+											prefetchOnView
+										/>
 									</Reveal>
 								)
 							})}
@@ -121,24 +119,27 @@ export default async function HomePage() {
 											{cap.items.map(item =>
 												item.link
 													? (
-															<CapabilityExternalLink
+															<HomeCardLink
 																description={item.description}
 																href={item.link}
 																key={`${cap.title}-${item.title}`}
 																title={item.title}
+																external
 															/>
 														)
 													: (
-															<div className="space-y-1" key={`${cap.title}-${item.title}`}>
-																<h4 className="font-medium text-foreground">{item.title}</h4>
-																<p className="truncate text-base/6 text-muted-foreground">{item.description}</p>
-															</div>
+															<HomeCardLink
+																description={item.description}
+																key={`${cap.title}-${item.title}`}
+																title={item.title}
+															/>
 														),
 											)}
 											{cap.items.length === 0 && (
-												<CapabilityEmptyPlaceholder
+												<HomeCardLink
 													description={cap.emptyState?.description ?? 'Links when there is something worth flexing.'}
 													title={cap.emptyState?.title ?? 'Work in progress'}
+													trailingIcon={<ConstructionStripesIcon className="-mx-0.5 text-muted-foreground opacity-80" />}
 												/>
 											)}
 										</div>
