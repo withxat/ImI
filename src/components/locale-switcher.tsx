@@ -8,7 +8,7 @@ import { LOCALE_COOKIE_NAME, LOCALE_STORAGE_KEY, LOCALES } from '@/lib/i18n/cons
 
 const LOCALE_LABEL: Record<Locale, string> = {
 	en: 'EN',
-	jp: '日本語',
+	ja: '日本語',
 	zh: '中文',
 }
 
@@ -43,7 +43,7 @@ export function LocaleSwitcher({ 'aria-label': ariaLabel, className, currentLoca
 						{index > 0 && <span className="mx-1.5 text-border">·</span>}
 						{locale === currentLocale
 							? (
-									<span className="font-medium text-foreground" lang={locale === 'jp' ? 'ja' : locale}>
+									<span className="font-medium text-foreground" lang={locale}>
 										{LOCALE_LABEL[locale]}
 									</span>
 								)
@@ -57,7 +57,7 @@ export function LocaleSwitcher({ 'aria-label': ariaLabel, className, currentLoca
 											persistLocale(locale)
 											void router.reload()
 										}}
-										lang={locale === 'jp' ? 'ja' : locale}
+										lang={locale}
 										type="button"
 									>
 										{LOCALE_LABEL[locale]}

@@ -75,7 +75,7 @@ const introBadgesZh: Record<IntroBadgeKind, IntroBadgeCopy> = {
 	},
 }
 
-const introBadgesJp: Record<IntroBadgeKind, IntroBadgeCopy> = {
+const introBadgesJa: Record<IntroBadgeKind, IntroBadgeCopy> = {
 	products: {
 		description: (
 			<>
@@ -110,7 +110,7 @@ const introBadgesJp: Record<IntroBadgeKind, IntroBadgeCopy> = {
 
 const byLocale: Record<Locale, Record<IntroBadgeKind, IntroBadgeCopy>> = {
 	en: introBadgesEn,
-	jp: introBadgesJp,
+	ja: introBadgesJa,
 	zh: introBadgesZh,
 }
 

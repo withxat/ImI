@@ -273,7 +273,7 @@ const zh: Messages = {
 	},
 }
 
-const jp: Messages = {
+const ja: Messages = {
 	blog: {
 		archiveSubtitle: 'アーカイブ — 言葉が頭の中できらめく',
 		goHome: 'ホームへ',
@@ -378,7 +378,7 @@ const jp: Messages = {
 
 export const messages: Record<Locale, Messages> = {
 	en,
-	jp,
+	ja,
 	zh,
 }
 

@@ -5,8 +5,8 @@ import { unstable_getHeaders } from 'waku/server'
 import {
 	DEFAULT_LOCALE,
 	isLocale,
-
 	LOCALE_COOKIE_NAME,
+	normalizeStoredLocale,
 } from '@/lib/i18n/constants'
 
 function parseCookieHeader(cookieHeader: string | undefined): Record<string, string> {
@@ -60,8 +60,8 @@ function localeFromAcceptLanguage(header: string | undefined): Locale | null {
 		if (lang === 'zh-cn' || lang === 'zh-hans' || lang === 'zh-sg' || base === 'zh') {
 			return 'zh'
 		}
-		if (lang === 'jp' || base === 'ja') {
-			return 'jp'
+		if (base === 'ja') {
+			return 'ja'
 		}
 		if (base === 'en') {
 			return 'en'
@@ -76,7 +76,8 @@ export function resolveLocaleFromHeaders(
 	acceptLanguage: string | undefined,
 ): Locale {
 	const cookies = parseCookieHeader(cookieHeader)
-	const fromCookie = cookies[LOCALE_COOKIE_NAME]
+	const rawCookie = cookies[LOCALE_COOKIE_NAME]
+	const fromCookie = rawCookie ? normalizeStoredLocale(rawCookie.trim()) : undefined
 	if (fromCookie && isLocale(fromCookie)) {
 		return fromCookie
 	}

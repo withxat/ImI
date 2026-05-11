@@ -7,6 +7,7 @@ export {
 	LOCALE_COOKIE_NAME,
 	LOCALE_STORAGE_KEY,
 	LOCALES,
+	normalizeStoredLocale,
 } from '@/lib/i18n/constants'
 export { getIntroBadgeCopy } from '@/lib/i18n/intro-badges'
 export type { IntroBadgeKind } from '@/lib/i18n/intro-badges'
