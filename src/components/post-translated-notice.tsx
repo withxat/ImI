@@ -9,7 +9,7 @@ const ZH_LINK_LABEL = '中文'
 export function PostTranslatedNoticeAside({ notice }: { notice: PostTranslatedNoticeCopy }) {
 	return (
 		<aside
-			className="mb-12 rounded-xl border border-border bg-muted/30 px-4 py-3 font-ui text-sm/relaxed text-muted-foreground"
+			className="rounded-xl border border-border bg-muted/30 px-4 py-3 font-ui text-sm/relaxed text-muted-foreground"
 			role="note"
 		>
 			{notice.beforeLink}

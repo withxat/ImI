@@ -76,11 +76,10 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 						<div className="font-ui text-sm text-muted-foreground">
 							<span>{formatPostDate(post.date, locale)}</span>
 						</div>
+						{m.blog.postTranslatedNotice && (
+							<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} />
+						)}
 					</div>
-
-					{m.blog.postTranslatedNotice && (
-						<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} />
-					)}
 
 					<ArticleBody mdx={post.mdx} />
 				</StaggerReveal>
