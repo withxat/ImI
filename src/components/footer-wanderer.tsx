@@ -1,6 +1,5 @@
 'use client'
 
-import type { Locale } from '@/lib/i18n/constants'
 import type { FooterWandererCopy } from '@/lib/i18n/messages'
 import type { VisitorGeo } from '@/lib/visitor-geo'
 
@@ -15,10 +14,9 @@ const wandererGradientClass = `
 
 interface FooterWandererProps {
 	copy: FooterWandererCopy
-	locale: Locale
 }
 
-export function FooterWanderer({ copy, locale }: FooterWandererProps) {
+export function FooterWanderer({ copy }: FooterWandererProps) {
 	const [geo, setGeo] = useState<null | VisitorGeo>(null)
 
 	useEffect(() => {
@@ -50,44 +48,48 @@ export function FooterWanderer({ copy, locale }: FooterWandererProps) {
 		)
 	}
 
+	const wanderer = (
+		<span className={wandererGradientClass}>{copy.wanderer}</span>
+	)
+
 	if (geo.countryName) {
-		if (locale === 'jp') {
+		const { bridge, closing, lead, pattern } = copy.withCountry
+		const flagCountry = (
+			<>
+				<CountryFlag code={geo.countryCode} />
+				{' '}
+				{geo.countryName}
+			</>
+		)
+
+		if (pattern === 'en') {
 			return (
 				<p className="text-foreground">
-					{copy.hi}
-					{' '}
-					<span className={wandererGradientClass}>{copy.wanderer}</span>
-					さん、
-					<CountryFlag code={geo.countryCode} />
-					{' '}
-					{geo.countryName}
-					から。
+					{lead}
+					{wanderer}
+					{bridge}
+					{flagCountry}
+					{closing}
 				</p>
 			)
 		}
 
 		return (
 			<p className="text-foreground">
-				{copy.hi}
-				{' '}
-				<span className={wandererGradientClass}>{copy.wanderer}</span>
-				{' '}
-				{copy.from}
-				{' '}
-				<CountryFlag code={geo.countryCode} />
-				{' '}
-				{geo.countryName}
-				.
+				{lead}
+				{flagCountry}
+				{bridge}
+				{wanderer}
+				{closing}
 			</p>
 		)
 	}
 
 	return (
 		<p className="text-foreground">
-			{copy.hi}
-			{' '}
-			<span className={wandererGradientClass}>{copy.wanderer}</span>
-			{copy.gladFound}
+			{copy.withoutCountry.before}
+			{wanderer}
+			{copy.withoutCountry.after}
 		</p>
 	)
 }

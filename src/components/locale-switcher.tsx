@@ -8,7 +8,7 @@ import { LOCALE_COOKIE_NAME, LOCALE_STORAGE_KEY, LOCALES } from '@/lib/i18n/cons
 
 const LOCALE_LABEL: Record<Locale, string> = {
 	en: 'EN',
-	jp: 'JP',
+	jp: '日本語',
 	zh: '中文',
 }
 

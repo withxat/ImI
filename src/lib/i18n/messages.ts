@@ -17,11 +17,20 @@ export interface CapabilityCopy {
 	title: string
 }
 
+export interface FooterWandererWithCountry {
+	bridge: string
+	closing: string
+	lead: string
+	pattern: 'eastAsia' | 'en'
+}
+
 export interface FooterWandererCopy {
-	from: string
-	gladFound: string
-	hi: string
 	wanderer: string
+	withCountry: FooterWandererWithCountry
+	withoutCountry: {
+		after: string
+		before: string
+	}
 }
 
 export interface Messages {
@@ -147,10 +156,17 @@ const en: Messages = {
 		ariaLabel: 'Language',
 	},
 	wanderer: {
-		from: 'from',
-		gladFound: '—glad you found your way here.',
-		hi: 'Hi,',
 		wanderer: 'wanderer',
+		withCountry: {
+			bridge: ' from ',
+			closing: '.',
+			lead: 'Hi, ',
+			pattern: 'en',
+		},
+		withoutCountry: {
+			after: '—glad you found your way here.',
+			before: 'Hi, ',
+		},
 	},
 }
 
@@ -243,10 +259,17 @@ const zh: Messages = {
 		ariaLabel: '语言',
 	},
 	wanderer: {
-		from: '来自',
-		gladFound: '——很高兴你来到这里。',
-		hi: '你好，',
 		wanderer: '旅人',
+		withCountry: {
+			bridge: '的',
+			closing: '。',
+			lead: '你好，来自',
+			pattern: 'eastAsia',
+		},
+		withoutCountry: {
+			after: '——很高兴你来到这里。',
+			before: '你好，',
+		},
 	},
 }
 
@@ -339,10 +362,17 @@ const jp: Messages = {
 		ariaLabel: '言語',
 	},
 	wanderer: {
-		from: 'からの',
-		gladFound: '——ここに辿り着いてくれてうれしい。',
-		hi: 'こんにちは、',
 		wanderer: '旅人',
+		withCountry: {
+			bridge: 'からの',
+			closing: 'さん。',
+			lead: 'こんにちは、',
+			pattern: 'eastAsia',
+		},
+		withoutCountry: {
+			after: 'さん。ここに辿り着いてくれてうれしい。',
+			before: 'こんにちは、',
+		},
 	},
 }
 

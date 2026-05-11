@@ -19,7 +19,7 @@ export function Footer({ locale }: { locale: Locale }) {
 						currentLocale={locale}
 					/>
 					<div className="space-y-3">
-						<FooterWanderer copy={m.wanderer} locale={locale} />
+						<FooterWanderer copy={m.wanderer} />
 						<p className="text-sm text-muted-foreground">
 							{m.footer.connect}
 						</p>
