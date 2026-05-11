@@ -30,7 +30,13 @@
 					<header>
 						<h1><xsl:value-of select="/rss/channel/title"/></h1>
 						<p><xsl:value-of select="/rss/channel/description"/></p>
-						<p><a href="/feed.xml">RSS source</a></p>
+						<p>
+							<a href="/feed.xml">中文 RSS</a>
+							<xsl:text> · </xsl:text>
+							<a href="/feed.en.xml">English RSS</a>
+							<xsl:text> · </xsl:text>
+							<a href="/feed.ja.xml">日本語 RSS</a>
+						</p>
 					</header>
 					<xsl:for-each select="/rss/channel/item">
 						<article>

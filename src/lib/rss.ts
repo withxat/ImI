@@ -1,8 +1,11 @@
 import type { allPosts } from 'content-collections'
 
+import type { Locale } from '@/lib/i18n/constants'
+
+import { htmlLangFor } from '@/lib/i18n/constants'
+import { getMessages } from '@/lib/i18n/messages'
+
 const SITE_URL = 'https://xat.sh'
-const FEED_TITLE = 'Hi, Xat!'
-const FEED_DESCRIPTION = 'Code with Love, Exploring the World.'
 
 type Post = (typeof allPosts)[number]
 
@@ -27,7 +30,12 @@ function postContent(post: Pick<Post, 'summary'>) {
 	return `<p>${escapeXml(post.summary)}</p>`
 }
 
-export function generateRssFeed(posts: Post[]) {
+export function generateRssFeed(posts: Post[], locale: Locale) {
+	const m = getMessages(locale)
+	const channelTitle = m.blog.pageTitle
+	const channelDescription = m.blog.pageDescription
+	const xmlLang = escapeXml(htmlLangFor(locale))
+
 	const items = posts.map((post) => {
 		const link = postUrl(post)
 		const content = postContent(post)
@@ -48,10 +56,10 @@ export function generateRssFeed(posts: Post[]) {
 	return [
 		'<?xml version="1.0" encoding="UTF-8"?>',
 		'<?xml-stylesheet href="/rss.xsl" type="text/xsl"?>',
-		'<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">',
+		`<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xml:lang="${xmlLang}">`,
 		'<channel>',
-		`<title>${escapeXml(FEED_TITLE)}</title>`,
-		`<description>${escapeXml(FEED_DESCRIPTION)}</description>`,
+		`<title>${escapeXml(channelTitle)}</title>`,
+		`<description>${escapeXml(channelDescription)}</description>`,
 		`<link>${SITE_URL}</link>`,
 		...items,
 		'</channel>',
@@ -59,5 +67,9 @@ export function generateRssFeed(posts: Post[]) {
 	].join('')
 }
 
+/** Default feed URL (Chinese); existing subscribers stay on this path. */
 export const RSS_FEED_URL = `${SITE_URL}/feed.xml`
-export const RSS_TITLE = FEED_TITLE
+
+export const RSS_FEED_URL_EN = `${SITE_URL}/feed.en.xml`
+
+export const RSS_FEED_URL_JA = `${SITE_URL}/feed.ja.xml`
