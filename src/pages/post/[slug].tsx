@@ -10,6 +10,7 @@ import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { Seo } from '@/lib/seo'
 import { blogPostingJsonLd } from '@/lib/seo-data'
+import { titleForDisplay } from '@/lib/title-display'
 
 export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
 	const locale = getRequestLocale()
@@ -29,6 +30,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 		: post.category
 
 	const canonicalPath = `/post/${post.slug}`
+	const titleDisplay = titleForDisplay(post.title)
 
 	return (
 		<section>
@@ -38,11 +40,11 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 					date: post.date,
 					description: post.summary,
 					tags: post.tags,
-					title: post.title,
+					title: titleDisplay,
 				})}
 				canonicalPath={canonicalPath}
 				description={post.summary}
-				title={`${post.title} - Xat`}
+				title={`${titleDisplay} - Xat`}
 				type="article"
 			/>
 			<Container className="page-shell">
@@ -59,7 +61,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 							<Eyebrow>
 								{categoryEyebrow}
 							</Eyebrow>
-							<h1 className="text-3xl font-medium text-foreground">{post.title}</h1>
+							<h1 className="text-3xl font-medium text-foreground">{titleDisplay}</h1>
 							<p className="text-base/7 text-muted-foreground">{post.summary}</p>
 						</div>
 						<div className="font-ui text-sm text-muted-foreground">

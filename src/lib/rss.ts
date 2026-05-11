@@ -1,5 +1,7 @@
 import type { allPosts } from 'content-collections'
 
+import { titleForDisplay } from '@/lib/title-display'
+
 const SITE_URL = 'https://xat.sh'
 const FEED_TITLE = 'Hi, Xat!'
 const FEED_DESCRIPTION = 'Code with Love, Exploring the World.'
@@ -34,7 +36,7 @@ export function generateRssFeed(posts: Post[]) {
 
 		return [
 			'<item>',
-			`<title>${escapeXml(post.title)}</title>`,
+			`<title>${escapeXml(titleForDisplay(post.title))}</title>`,
 			`<link>${escapeXml(link)}</link>`,
 			`<guid isPermaLink="true">${escapeXml(link)}</guid>`,
 			`<description>${escapeXml(post.summary)}</description>`,
