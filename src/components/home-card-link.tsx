@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { ArrowRightIcon, ArrowUpRightIcon } from 'lucide-react'
 import { Link } from 'waku'
@@ -13,6 +13,7 @@ interface HomeCardLinkProps {
 	href?: InternalHref | string
 	prefetchOnView?: boolean
 	title: string
+	trailingIcon?: ReactNode
 }
 
 function HomeCardLinkContent({
@@ -20,21 +21,17 @@ function HomeCardLinkContent({
 	external,
 	hasHref,
 	title,
+	trailingIcon,
 }: {
 	description: string
 	external?: boolean
 	hasHref: boolean
 	title: string
+	trailingIcon?: ReactNode
 }) {
 	const Icon = external ? ArrowUpRightIcon : ArrowRightIcon
-
-	return (
-		<>
-			<span className="min-w-0 flex-1 space-y-1">
-				<span className="block text-sm font-medium text-foreground">{title}</span>
-				<span className="block truncate text-sm text-muted-foreground">{description}</span>
-			</span>
-			{hasHref && (
+	const defaultIcon = hasHref
+		? (
 				<Icon
 					className={cn(
 						`
@@ -47,7 +44,16 @@ function HomeCardLinkContent({
 					)}
 					aria-hidden="true"
 				/>
-			)}
+			)
+		: null
+
+	return (
+		<>
+			<span className="min-w-0 flex-1 space-y-1">
+				<span className="block text-sm font-medium text-foreground">{title}</span>
+				<span className="block truncate text-sm text-muted-foreground">{description}</span>
+			</span>
+			{trailingIcon ?? defaultIcon}
 		</>
 	)
 }
@@ -58,6 +64,7 @@ export function HomeCardLink({
 	href,
 	prefetchOnView = false,
 	title,
+	trailingIcon,
 }: HomeCardLinkProps) {
 	const className = `
 		group flex items-center justify-start gap-3 rounded-xl border border-input bg-popover px-4
@@ -76,6 +83,7 @@ export function HomeCardLink({
 					external={external}
 					hasHref={false}
 					title={title}
+					trailingIcon={trailingIcon}
 				/>
 			</div>
 		)
@@ -92,6 +100,7 @@ export function HomeCardLink({
 				<HomeCardLinkContent
 					description={description}
 					title={title}
+					trailingIcon={trailingIcon}
 					external
 					hasHref
 				/>
@@ -109,6 +118,7 @@ export function HomeCardLink({
 				description={description}
 				external={external}
 				title={title}
+				trailingIcon={trailingIcon}
 				hasHref
 			/>
 		</Link>

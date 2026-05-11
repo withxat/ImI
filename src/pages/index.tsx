@@ -1,5 +1,6 @@
 import { Link } from 'waku'
 
+import { ConstructionStripesIcon } from '@/components/construction-stripes-icon'
 import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
 import { NameAudioButton } from '@/components/name-audio-button'
@@ -138,6 +139,7 @@ export default async function HomePage() {
 												<HomeCardLink
 													description={cap.emptyState?.description ?? 'Links when there is something worth flexing.'}
 													title={cap.emptyState?.title ?? 'Work in progress'}
+													trailingIcon={<ConstructionStripesIcon className="-mx-0.5 text-muted-foreground opacity-80" />}
 												/>
 											)}
 										</div>
