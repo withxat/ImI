@@ -2,8 +2,6 @@ import type { Locale } from '@/lib/i18n/constants'
 
 import { allPosts, config } from 'content-collections'
 
-import { intlLocaleFor } from '@/lib/i18n/constants'
-
 export const BLOG_CATEGORIES = config.categories
 
 export function getAllPosts() {
@@ -33,10 +31,30 @@ export function getPostsByCategory() {
 		.filter(group => group.posts.length > 0)
 }
 
+function utcCalendarParts(date: Date) {
+	return {
+		day: date.getUTCDate(),
+		month: date.getUTCMonth() + 1,
+		year: date.getUTCFullYear(),
+	}
+}
+
+/** Formats the post's calendar date (YAML `date` is treated as UTC midnight). */
 export function formatPostDate(date: Date, locale: Locale) {
-	return new Intl.DateTimeFormat(intlLocaleFor(locale), {
-		day: '2-digit',
+	const { day, month, year } = utcCalendarParts(date)
+
+	if (locale === 'zh') {
+		return `${year}年${month}月${day}日`
+	}
+
+	if (locale === 'jp') {
+		return `${year}年${month}月${day}日`
+	}
+
+	return new Intl.DateTimeFormat('en-US', {
+		day: 'numeric',
 		month: 'short',
+		timeZone: 'UTC',
 		year: 'numeric',
 	}).format(date)
 }
