@@ -10,7 +10,6 @@ import {
 	Popover,
 	PopoverDescription,
 	PopoverPopup,
-	PopoverTitle,
 	PopoverTrigger,
 } from '@/components/ui/popover'
 
@@ -35,7 +34,6 @@ const INTRO_BADGES = {
 		),
 		Icon: BriefcaseBusiness,
 		label: 'intelligent products',
-		title: 'Intelligent products',
 	},
 	systems: {
 		description: (
@@ -48,24 +46,25 @@ const INTRO_BADGES = {
 		),
 		Icon: GraduationCap,
 		label: 'systems background',
-		title: 'Systems background',
 	},
 } satisfies Record<string, {
 	description: ReactNode
 	Icon: LucideIcon
 	label: string
-	title: string
 }>
 
 export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES }) {
-	const { description, Icon, label, title } = INTRO_BADGES[kind]
+	const { description, Icon, label } = INTRO_BADGES[kind]
 
 	return (
 		<Popover>
 			<PopoverTrigger
 				render={(
 					<Button
-						className="-mx-0.5 align-[0.08em]"
+						className="
+							-mx-0.5 h-[1.45em] min-h-0 gap-1 rounded-md px-1.5 align-[0.1em] text-[0.875em] leading-none
+							[&_svg:not([class*='size-'])]:size-[1em]
+						"
 						size="xs"
 						variant="outline"
 					/>
@@ -75,12 +74,9 @@ export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES })
 				{label}
 			</PopoverTrigger>
 			<PopoverPopup align="start" className="max-w-72" sideOffset={8}>
-				<div className="space-y-2">
-					<PopoverTitle className="text-sm">{title}</PopoverTitle>
-					<PopoverDescription className="text-sm/6">
-						{description}
-					</PopoverDescription>
-				</div>
+				<PopoverDescription className="text-sm/6">
+					{description}
+				</PopoverDescription>
 			</PopoverPopup>
 		</Popover>
 	)
