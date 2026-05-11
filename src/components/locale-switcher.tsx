@@ -4,22 +4,13 @@ import type { Locale } from '@/lib/i18n/constants'
 
 import { useRouter } from 'waku'
 
-import { LOCALE_COOKIE_NAME, LOCALE_STORAGE_KEY, LOCALES } from '@/lib/i18n/constants'
+import { LOCALES } from '@/lib/i18n/constants'
+import { persistLocale } from '@/lib/i18n/persist-locale'
 
 const LOCALE_LABEL: Record<Locale, string> = {
 	en: 'EN',
 	ja: '日本語',
 	zh: '中文',
-}
-
-function persistLocale(locale: Locale) {
-	try {
-		localStorage.setItem(LOCALE_STORAGE_KEY, locale)
-	}
-	catch {
-		// ignore
-	}
-	document.cookie = `${LOCALE_COOKIE_NAME}=${locale}; Path=/; Max-Age=31536000; SameSite=Lax`
 }
 
 interface LocaleSwitcherProps {

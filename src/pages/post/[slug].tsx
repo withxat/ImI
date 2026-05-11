@@ -1,6 +1,7 @@
 import type { PageProps } from 'waku/router'
 
 import { ArticleBody } from '@/components/article-body'
+import { PostTranslatedNoticeAside } from '@/components/post-translated-notice'
 import { StaggerReveal } from '@/components/stagger-reveal'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
 import { formatPostDate, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
@@ -60,12 +61,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 					</div>
 
 					{m.blog.postTranslatedNotice && (
-						<aside
-							className="mb-12 rounded-xl border border-border bg-muted/30 px-4 py-3 font-ui text-sm/relaxed text-muted-foreground"
-							role="note"
-						>
-							{m.blog.postTranslatedNotice}
-						</aside>
+						<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} />
 					)}
 
 					<ArticleBody mdx={post.mdx} />
