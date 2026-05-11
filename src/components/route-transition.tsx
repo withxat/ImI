@@ -65,12 +65,20 @@ export function RouteTransition({ children }: RouteTransitionProps) {
 			transition={shellTransition}
 		>
 			<motion.div
+				animate={{
+					filter: 'blur(0px)',
+					opacity: 1,
+					y: 0,
+				}}
 				initial={
 					allowRouteTransition
-						? { opacity: 0, y: reduceMotion ? 0 : 10 }
+						? {
+								filter: reduceMotion ? 'blur(0px)' : 'blur(10px)',
+								opacity: 0,
+								y: reduceMotion ? 0 : 10,
+							}
 						: false
 				}
-				animate={{ opacity: 1, y: 0 }}
 				key={routeKey}
 				transition={pageTransition}
 			>

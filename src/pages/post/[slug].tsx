@@ -1,6 +1,7 @@
 import type { PageProps } from 'waku/router'
 
 import { ArticleBody } from '@/components/article-body'
+import { StaggerReveal } from '@/components/stagger-reveal'
 import { Badge } from '@/components/ui/badge'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
 import { Separator } from '@/components/ui/separator'
@@ -19,29 +20,31 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 		<section>
 			<title>{post.title}</title>
 			<Container className="page-shell">
-				<div className="mb-20 space-y-8">
-					<TextLink to="/">Go to home</TextLink>
-					<div className="space-y-3">
-						<Eyebrow>
-							{category ? `${category.name} - ${category.description}` : post.category}
-						</Eyebrow>
-						<h1 className="text-3xl font-medium text-foreground">{post.title}</h1>
-						<p className="text-base/7 text-muted-foreground">{post.summary}</p>
-					</div>
-					<div className="flex flex-wrap items-center gap-3 font-ui text-sm text-muted-foreground">
-						<span>{formatPostDate(post.date)}</span>
-						<Separator className="h-4" orientation="vertical" />
-						<div className="flex flex-wrap gap-2">
-							{post.tags.map(tag => (
-								<Badge key={tag} size="sm" variant="outline">
-									{tag}
-								</Badge>
-							))}
+				<StaggerReveal className="flex flex-col">
+					<div className="mb-20 space-y-8">
+						<TextLink to="/">Go to home</TextLink>
+						<div className="space-y-3">
+							<Eyebrow>
+								{category ? `${category.name} - ${category.description}` : post.category}
+							</Eyebrow>
+							<h1 className="text-3xl font-medium text-foreground">{post.title}</h1>
+							<p className="text-base/7 text-muted-foreground">{post.summary}</p>
+						</div>
+						<div className="flex flex-wrap items-center gap-3 font-ui text-sm text-muted-foreground">
+							<span>{formatPostDate(post.date)}</span>
+							<Separator className="h-4" orientation="vertical" />
+							<div className="flex flex-wrap gap-2">
+								{post.tags.map(tag => (
+									<Badge key={tag} size="sm" variant="outline">
+										{tag}
+									</Badge>
+								))}
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<ArticleBody mdx={post.mdx} />
+					<ArticleBody mdx={post.mdx} />
+				</StaggerReveal>
 			</Container>
 		</section>
 	)

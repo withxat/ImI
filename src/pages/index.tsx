@@ -3,6 +3,8 @@ import { Link } from 'waku'
 import { CapabilityEmptyPlaceholder } from '@/components/capability-empty-placeholder'
 import { CapabilityExternalLink } from '@/components/capability-external-link'
 import { NameAudioButton } from '@/components/name-audio-button'
+import { Reveal } from '@/components/reveal'
+import { StaggerReveal } from '@/components/stagger-reveal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
@@ -17,49 +19,53 @@ export default async function HomePage() {
 		<section>
 			<title>{data.title}</title>
 			<Container className="page-shell">
-				<div className="flex flex-col gap-4">
-					<Avatar className="
-						size-14 rounded-xl border border-border
-						sm:size-16
-					"
-					>
-						<AvatarImage
-							alt="Xat"
-							referrerPolicy="no-referrer"
-							src="https://github.com/withxat.png"
-						/>
-						<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
-					</Avatar>
-					<div className="space-y-0">
-						<p className="
-							inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
-							sm:text-3xl
+				<StaggerReveal className="flex flex-col">
+					<div className="flex flex-col gap-4">
+						<Avatar className="
+							size-14 rounded-xl border border-border
+							sm:size-16
 						"
 						>
-							<span className="font-xat-name font-normal">Xat</span>
-							<NameAudioButton />
-						</p>
-						<p className="text-muted-foreground">Design Engineer</p>
-						<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
-							Building production-quality interfaces and AI-native products
-						</p>
+							<AvatarImage
+								alt="Xat"
+								referrerPolicy="no-referrer"
+								src="https://github.com/withxat.png"
+							/>
+							<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
+						</Avatar>
+						<div className="space-y-0">
+							<p className="
+								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
+								sm:text-3xl
+							"
+							>
+								<span className="font-xat-name font-normal">Xat</span>
+								<NameAudioButton />
+							</p>
+							<p className="text-muted-foreground">Design Engineer</p>
+							<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
+								Building production-quality interfaces and AI-native products
+							</p>
+						</div>
 					</div>
-				</div>
 
-				<div className="home-sections">
-					<section>
-						<div className="space-y-5 text-base/7 text-muted-foreground">
-							<p>
+					<section className="
+						mt-28
+						md:mt-32
+					"
+					>
+						<StaggerReveal delayChildren={0.03} staggerChildren={0.045}>
+							<p className="text-base/7 text-muted-foreground">
 								I design and ship applied AI—interfaces, workflows, and developer-facing
 								surfaces where intelligence is part of the UX, not a bolt-on.
 							</p>
-							<p>
+							<p className="text-base/7 text-muted-foreground">
 								My background is in
 								{' '}
 								<i>Intelligent Transportation Systems</i>
 								: software and design where physical infrastructure meets digital systems.
 							</p>
-							<p>
+							<p className="text-base/7 text-muted-foreground">
 								Today I work at
 								{' '}
 								<a
@@ -74,78 +80,84 @@ export default async function HomePage() {
 								on production AI products and intelligent experiences—exploring how models
 								reshape interfaces, collaboration, and tools.
 							</p>
-						</div>
+						</StaggerReveal>
 					</section>
 
-					<section className="space-y-7">
-						<div className="flex items-baseline justify-between gap-6">
-							<Eyebrow className="font-semibold">Writing</Eyebrow>
-							<Link
-								className="text-link font-ui text-sm text-muted-foreground"
-								to="/post"
-							>
-								View All
-							</Link>
-						</div>
+					<section className="mt-28 space-y-7">
+						<Reveal staggerIndex={0}>
+							<div className="flex items-baseline justify-between gap-6">
+								<Eyebrow className="font-semibold">Writing</Eyebrow>
+								<Link
+									className="text-link font-ui text-sm text-muted-foreground"
+									to="/post"
+								>
+									View All
+								</Link>
+							</div>
+						</Reveal>
 						<div>
-							{posts.map((post) => {
+							{posts.map((post, index) => {
 								const slug = post.slug
 
 								return (
-									<Link
-										className="post-list-entry entry-link"
-										key={slug}
-										to={`/post/${slug}`}
-										unstable_prefetchOnView
-									>
-										<h3 className="text-sm font-medium text-foreground">{post.title}</h3>
-										<p className="mt-1 text-sm/6 text-muted-foreground">{post.summary}</p>
-									</Link>
+									<Reveal key={slug} staggerIndex={index + 1}>
+										<Link
+											className="post-list-entry entry-link"
+											to={`/post/${slug}`}
+											unstable_prefetchOnView
+										>
+											<h3 className="text-sm font-medium text-foreground">{post.title}</h3>
+											<p className="mt-1 text-sm/6 text-muted-foreground">{post.summary}</p>
+										</Link>
+									</Reveal>
 								)
 							})}
 						</div>
 					</section>
 
-					<section className="space-y-10">
-						<Eyebrow className="font-semibold">Capabilities</Eyebrow>
+					<section className="mt-28 space-y-10">
+						<Reveal staggerIndex={0}>
+							<Eyebrow className="font-semibold">Capabilities</Eyebrow>
+						</Reveal>
 						<div className="space-y-12">
-							{capabilities.map(cap => (
-								<div className="space-y-5" key={cap.title}>
-									<div>
-										<h3 className="font-medium text-foreground">{cap.title}</h3>
-										<p className="mt-1 text-base/6 text-muted-foreground">{cap.summary}</p>
+							{capabilities.map((cap, index) => (
+								<Reveal key={cap.title} staggerIndex={index + 1}>
+									<div className="space-y-5">
+										<div>
+											<h3 className="font-medium text-foreground">{cap.title}</h3>
+											<p className="mt-1 text-base/6 text-muted-foreground">{cap.summary}</p>
+										</div>
+										<div className="space-y-3">
+											{cap.items.map(item =>
+												item.link
+													? (
+															<CapabilityExternalLink
+																description={item.description}
+																href={item.link}
+																key={`${cap.title}-${item.title}`}
+																title={item.title}
+															/>
+														)
+													: (
+															<div className="space-y-1" key={`${cap.title}-${item.title}`}>
+																<h4 className="font-medium text-foreground">{item.title}</h4>
+																<p className="truncate text-base/6 text-muted-foreground">{item.description}</p>
+															</div>
+														),
+											)}
+											{cap.items.length === 0 && (
+												<CapabilityEmptyPlaceholder
+													description={cap.emptyState?.description ?? 'Links when there is something worth flexing.'}
+													title={cap.emptyState?.title ?? 'Work in progress'}
+												/>
+											)}
+										</div>
 									</div>
-									<div className="space-y-3">
-										{cap.items.map(item =>
-											item.link
-												? (
-														<CapabilityExternalLink
-															description={item.description}
-															href={item.link}
-															key={`${cap.title}-${item.title}`}
-															title={item.title}
-														/>
-													)
-												: (
-														<div className="space-y-1" key={`${cap.title}-${item.title}`}>
-															<h4 className="font-medium text-foreground">{item.title}</h4>
-															<p className="truncate text-base/6 text-muted-foreground">{item.description}</p>
-														</div>
-													),
-										)}
-										{cap.items.length === 0 && (
-											<CapabilityEmptyPlaceholder
-												description={cap.emptyState?.description ?? 'Links when there is something worth flexing.'}
-												title={cap.emptyState?.title ?? 'Work in progress'}
-											/>
-										)}
-									</div>
-								</div>
+								</Reveal>
 							))}
 						</div>
 					</section>
-
-				</div>
+				</StaggerReveal>
 			</Container>
 		</section>
 	)

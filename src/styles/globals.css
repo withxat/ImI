@@ -214,6 +214,58 @@
 		@apply block w-full max-w-full border-collapse overflow-x-auto;
 	}
 
+	/* Article block reveals (driven by article-reveal-client.tsx) */
+	@keyframes article-line-reveal {
+		from {
+			opacity: 0;
+			filter: blur(10px);
+		}
+
+		to {
+			opacity: 1;
+			filter: blur(0);
+		}
+	}
+
+	.article-body > *.article-reveal-stagger {
+		opacity: 0;
+		filter: blur(10px);
+		animation: article-line-reveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+		animation-delay: var(--article-reveal-delay, 0ms);
+	}
+
+	.article-body > *.article-reveal-pending:not(.article-reveal-done) {
+		opacity: 0;
+		filter: blur(10px);
+	}
+
+	.article-body > *.article-reveal-done:not(.article-reveal-stagger):not(.article-reveal-skip) {
+		opacity: 1;
+		filter: blur(0);
+		transition:
+			opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+			filter 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.article-body > *.article-reveal-skip {
+		opacity: 1 !important;
+		filter: none !important;
+		transition: none !important;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.article-body > *.article-reveal-stagger,
+		.article-body > *.article-reveal-pending {
+			animation: none;
+			opacity: 1;
+			filter: none;
+		}
+
+		.article-body > *.article-reveal-done:not(.article-reveal-skip) {
+			transition: none;
+		}
+	}
+
 	.article-body td {
 		@apply border px-3 py-2;
 	}
