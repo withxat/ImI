@@ -62,7 +62,9 @@ export function IntroBadgePopover({ kind }: { kind: keyof typeof INTRO_BADGES })
 				render={(
 					<Button
 						className="
-							-mx-0.5 h-[1.45em] min-h-0 gap-1 rounded-md px-1.5 align-[0.1em] text-[0.875em] leading-none
+							-mx-0.5 h-[1.35em] min-h-0 items-baseline gap-1 rounded-md px-[0.35em] align-baseline text-[1em] leading-none
+							font-normal text-muted-foreground
+							sm:text-[1em]
 							[&_svg:not([class*='size-'])]:size-[1em]
 						"
 						size="xs"
