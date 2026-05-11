@@ -17,6 +17,18 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
 	return (
 		<div className="relative isolate min-h-screen" lang={htmlLangFor(locale)}>
+			{locale === 'zh'
+				? (
+						<>
+							<link href="https://fonts.googleapis.com" rel="preconnect" />
+							<link crossOrigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect" />
+							<link
+								href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400&display=swap"
+								rel="stylesheet"
+							/>
+						</>
+					)
+				: null}
 			<link href={RSS_FEED_URL} rel="alternate" title={RSS_TITLE} type="application/rss+xml" />
 			<link href="/favicon.ico" rel="icon" sizes="32x32" />
 			<link href="/icon.svg" rel="icon" type="image/svg+xml" />

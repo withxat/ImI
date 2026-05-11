@@ -16,9 +16,9 @@
 	--font-ui: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-serif:
 		'New York', 'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman', 'Droid Serif', Times,
-		'Source Serif 4', Georgia, 'Songti SC', 'STSong', 'Noto Serif CJK SC', 'Noto Serif CJK TC', 'Source Han Serif SC',
-		'Source Han Serif TC', SimSun, NSimSun, FangSong, 'KaiTi', 'STKaiti', 'Hiragino Mincho ProN', 'Hiragino Mincho Pro',
-		'Yu Mincho', 'YuMincho', 'MS PMincho', 'MS Mincho', ui-serif, serif;
+		'Source Serif 4', Georgia, 'Noto Serif SC', 'Songti SC', 'STSong', 'Noto Serif CJK SC', 'Noto Serif CJK TC',
+		'Source Han Serif SC', 'Source Han Serif TC', SimSun, NSimSun, FangSong, 'KaiTi', 'STKaiti', 'Hiragino Mincho ProN',
+		'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', 'MS PMincho', 'MS Mincho', ui-serif, serif;
 
 	--color-background: oklch(1 0 0);
 	--color-foreground: oklch(0.17 0.003 260);
