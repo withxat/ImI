@@ -12,7 +12,7 @@ import { blogPostingJsonLd } from '@/lib/seo-data'
 export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
 	const locale = getRequestLocale()
 	const m = getMessages(locale)
-	const post = getPostBySlug(slug)
+	const post = getPostBySlug(slug, locale)
 
 	if (!post) {
 		throw new Error(`Post not found: ${slug}`)
@@ -58,6 +58,15 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 							<span>{formatPostDate(post.date, locale)}</span>
 						</div>
 					</div>
+
+					{m.blog.postTranslatedNotice && (
+						<aside
+							className="mb-12 rounded-xl border border-border bg-muted/30 px-4 py-3 font-ui text-sm/relaxed text-muted-foreground"
+							role="note"
+						>
+							{m.blog.postTranslatedNotice}
+						</aside>
+					)}
 
 					<ArticleBody mdx={post.mdx} />
 				</StaggerReveal>

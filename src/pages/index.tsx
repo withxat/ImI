@@ -21,7 +21,7 @@ export default async function HomePage() {
 	const m = getMessages(locale)
 	const systemsCopy = getIntroBadgeCopy(locale, 'systems')
 	const productsCopy = getIntroBadgeCopy(locale, 'products')
-	const posts = getAllPosts().slice(0, 4)
+	const posts = getAllPosts(locale).slice(0, 4)
 	const baseCapabilities = getCapabilities()
 	const capabilities = mergeCapabilityCopy(baseCapabilities, m)
 

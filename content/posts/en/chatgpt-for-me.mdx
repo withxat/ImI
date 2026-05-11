@@ -1,0 +1,62 @@
+---
+title: My journey with ChatGPT
+date: 2023-03-04
+category: life
+summary: AI? GPT? What even is this?
+tags:
+  - ChatGPT
+  - AI
+---
+
+## Intro
+
+Toward the end of last year, I started seeing a lot of ChatGPT chatter on Twitter. After playing with it for a while, it felt like waking from a long dream: the market was suddenly full of AI products.
+
+There was Disco Diffusion for AI art—roommates who usually did not care downloaded it and ran fun images, partly because AI art overlaps so much with anime culture, and these friends really were deep into that world.
+
+There were image generators like Midjourney, and writing helpers like Notion AI.
+
+And today’s main character: ChatGPT.
+
+## Who is ChatGPT?
+
+> ChatGPT is a sibling model to [InstructGPT](https://openai.com/blog/instruction-following/)
+> , which is trained to follow an instruction in a prompt and provide a detailed response.
+
+In plain terms, it is a language model that follows your instructions and answers in detail.
+
+If you want the deeper theory, search for articles—Twitter already has great explainers, and I have not gone very deep myself.
+
+Use your imagination, or borrow ideas from repos like [awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts) to turn ChatGPT into a productivity tool.
+
+## Getting set up
+
+### Sign-up
+
+First, the infamous network environment: bring your own VPN and use global mode.
+
+Register on OpenAI’s site with email and password, then verify a phone number. Numbers from Greater China still do not work at sign-up; since SMS is only needed once, I used smsActivateru for a number—under ¥5 if I remember right.
+
+### API keys and deployment
+
+New accounts used to ship with \$18 of free credit; after that, chatting via the API was billed around \$0.002 per thousand tokens.
+
+Beyond the web UI, calling the API is often nicer: fewer “not available in your country” banners, and you can wire it into your own tools.
+
+Because WeChat is so constrained, I mostly hosted ChatGPT on Feishu—GitHub already had solid “ChatGPT for Feishu” projects, and I used [feishu-ChatGPT](https://github.com/Leizhenpeng/feishu-ChatGPT).
+
+- Create an API key in the OpenAI dashboard
+- Follow the README to deploy and tweak config
+- Use it inside Feishu
+
+I mostly toyed with it occasionally, so I never wired it into a heavier workflow.
+
+### Going further
+
+If you want to go deeper on the ChatGPT API, read the official docs; for creative patterns, browse the [openai-cookbook](https://github.com/openai/openai-cookbook) repo.
+
+## Outro
+
+More and more domains are experimenting with AI. ChatGPT feels like it carved a new path for the whole industry—at least compared with other AI launches, its marketing, distribution, and cultural footprint look huge to me. But is this really the default direction? What does it mean that OpenAI refuses to open ChatGPT in a way that seems to drift from its founding story?
+
+Set the questions aside: as a product, ChatGPT clearly won.

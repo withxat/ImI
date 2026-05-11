@@ -1,0 +1,133 @@
+---
+title: Vite、Rollup、esbuild、webpack の話
+date: 2025-04-23
+category: tech
+summary: 深く潜らないと眠れない。
+tags:
+  - Vite
+  - Rollup
+  - bundlers
+  - esbuild
+  - webpack
+---
+
+React を書き始めたのはかなり早かったが、ずっと趣味の範囲で、フレームワークは Next.js ばかりだった。
+
+理由は単純で、React ドキュメントで最も推されていたフレームワークだから、主流に乗るのが自然だった。（当時はまだ、いま X で Next.js / Vercel / RSC を叩く声がこんなに増えるとは思っていなかった）
+
+Vite エコシステムに最初に触れたのは逆に [Astro 1.0 のリリース](https://astro.build/blog/astro-1/) がきっかけだった。
+
+本業で Vite + React Router のプロジェクトに着手したのは去年の 5 月以降で、実務の中で少しずつ中核の考え方を理解していった。
+
+## フレームワークではなくビルドツール
+
+フレームワークやメタフレームワークは、だいたい「すぐ使える機能」「開発体験を良くする道具」「プロジェクトが大きくなったときの受け皿」をまとめて提供する。
+
+典型は Nuxt や Next.js のようなフルスタック系だ。
+
+一方 Vite はビルドツールに徹していて、強みは次のとおり：
+
+1. Rollup 互換のプラグインで高い拡張性を保ちつつ、webpack みたいに設定地獄になりにくい（webpack 名指し）
+2. ESM ベースで冷起動が速く、開発時は必要なモジュールだけ読み込み、全体を毎回作り直さない（webpack 再度名指し）
+3. その結果 HMR が素直に効いて、開発体験が良い
+
+Vite は過剰設計を避け、ビルドパイプラインに集中しているので、Remix や Astro、TanStack Router などもその上にフレームワークを載せている。
+
+そしてここから大事なポイントに触れる。
+
+## 関心の分離
+
+関心の分離（Separation of Concerns, SoC）は汎用の設計原則で、プログラミング以外の領域にも効く。
+
+学校の科目分けも SoC の一種で、だから物理・化学・生物は地続きに見える。
+
+自分の [Aha! moment](https://en.wikipedia.org/wiki/Eureka_effect) は、TypeScript と Vite がどう協働するかを理解したときだった。
+
+最初は腑に落ちなかった。`tsconfig.json` で import alias を書いたのに、なぜ `vite.config.js` にも同じ話を書かないとビルドが通らないのか。
+
+<details>
+<summary>ちなみに議論は根強い</summary>
+<a href="https://github.com/vitejs/vite/issues/6828">
+Native support for tsconfig's paths resolution #6828
+</a>
+</details>
+
+当初イメージしていたのは：
+
+tsc でコンパイル → Vite でバンドル → 出力
+
+でも違う。Vite + TypeScript のプロジェクトでは、`dev` も `build` も **TypeScript から JavaScript までの変換は Vite が全部やる**。
+
+TypeScript 本体は型チェックと IDE の補完に専念する。
+
+つまり型エラーがあっても、トランスパイルさえ通れば（`tsc --noCheck` に近いイメージ）、Vite は気にしない。**型には興味がなく、ビルドだけ**を見る。
+
+だから `build` がよく `tsc --noEmit && vite build` になる。
+
+## 刃物は鋼の使いどころ
+
+少し脱線して、Vite の設計思想／うまくいった理由。
+
+この話から webpack を外せない。まず webpack が居た文脈から。
+
+### webpack、かつての救世主
+
+2010 年代に webpack が覇した理由は：
+
+- ブラウザは CommonJS を理解できず、webpack がブラウザ向け（IIFE など）に束ねられた
+- SPA で複雑度と依存が増え、webpack が全部一つの JS にまとめられた
+- プラグインと loader で画像や CSS までなんでも処理できた
+
+フロントエンド工程化の始まり、と言われることもある。だが Vite が出た頃、webpack を押し潰したのもまた自分の特徴だった：
+
+- **起動が遅い**：毎回フルビルド。巨大プロジェクトでは HMR があっても重い
+- **設定が重い**：`webpack.config.js` が簡単に数十行。初心者には厳しい（求人に「webpack 設定に詳しい」と書いてあるのを見ると現実味がない）
+- **エコシステムとのズレ**：本当に webpack を終わらせたのは ESM の成熟と HTTP/2 の普及で、全部束ねる必然性が薄れた、という感覚が強い
+
+### Vite, it's fast!
+
+本題の Vite に戻る。成功の二本柱は Rollup と esbuild。
+
+#### Rollup
+
+- **長所**
+  1. JavaScript 実装でモジュール束ねに特化。tree-shaking が看板（概念は Lisp 起源で、Google Closure Tools や Dart にも流れている）
+  2. プラグインの自由度が高い
+- **短所**
+  1. 常に全コードを一度に束ねる
+  2. 大規模だと遅く、解析と依存接続に時間が溶ける
+  3. Node.js のシングルスレッド限界を受ける
+
+#### esbuild
+
+- **長所**
+  1. Go で書かれネイティブ化。マルチスレッドで解析・束ねが爆速
+- **短所**
+  1. プラグインはシンプルで拡張の幅は狭い
+  2. 最適化より速度。出力は Rollup よりやや大きめになりがち
+
+#### 賢い役割分担
+
+Vite の設計はとても上手い。
+
+Rollup を直接叩くのではなく、互換ロジックの上に独自のプラグインシステムを載せている。
+
+- 開発（`vite dev`）では、まず esbuild が `node_modules` をブラウザが読める ESM に事前ビルドし、`node_modules/.vite/deps/${packageName}.js` に置く。ブラウザからのリクエストには、自前のプラグインシステムで応える。
+
+- 本番（`vite build`）では、プラグインを Rollup に渡してビルドする。
+
+ここで二つの大きなことを同時に満たす。
+
+開発では esbuild で依存を速く温め、Rollup 互換プラグインでオンデマンド処理と HMR を実現する（Rollup 単体はフルビルド志向）。
+
+本番では最適化に強い Rollup に任せる。
+
+**開発**も**本番**も、体験を押し上げている。
+
+## これから
+
+今日（2025-3-5）時点で追っているニュースは [rolldown-vite](https://github.com/vitejs/rolldown-vite)。Rust の Rolldown で、ボトルネックが見え始めた Rollup を置き換える流れだ。
+
+Evan You が 2024 年に Vite の延長で立ち上げた [VoidZero](https://voidzero.dev/posts/announcing-voidzero-inc) もまだ勢いがある。
+
+どちらにせよ、これからの Vite が楽しみだ。

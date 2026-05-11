@@ -39,6 +39,8 @@ export interface Messages {
 		goHome: string
 		pageDescription: string
 		pageTitle: string
+		/** Shown above translated article bodies when UI locale is not Chinese. */
+		postTranslatedNotice?: string
 		title: string
 	}
 	capabilities: CapabilityCopy[]
@@ -73,6 +75,8 @@ const en: Messages = {
 		goHome: 'Go to home',
 		pageDescription: 'Writing about frontend engineering, design systems, AI products, tools, and small notes from Xat.',
 		pageTitle: 'Writing - Xat',
+		postTranslatedNotice:
+			'This article is an AI translation from the Chinese original. Switch the site language to 中文 to read the author-written source text.',
 		title: 'All writings',
 	},
 	capabilities: [
@@ -279,6 +283,8 @@ const ja: Messages = {
 		goHome: 'ホームへ',
 		pageDescription: 'フロントエンド、デザインシステム、AI プロダクト、ツール、Xat のメモ。',
 		pageTitle: 'Writing - Xat',
+		postTranslatedNotice:
+			'この記事は中国語の原文をAIが翻訳したものです。サイトの言語を中文に切り替えると著者による原文を読めます。',
 		title: 'すべての記事',
 	},
 	capabilities: [

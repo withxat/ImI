@@ -12,7 +12,7 @@ import { Seo } from '@/lib/seo'
 export default async function BlogIndexPage() {
 	const locale = getRequestLocale()
 	const m = getMessages(locale)
-	const groups = getPostsByCategory().map((group) => {
+	const groups = getPostsByCategory(locale).map((group) => {
 		const cat = m.categories[group.category.slug as keyof typeof m.categories]
 		return {
 			category: cat

@@ -1,0 +1,202 @@
+---
+title: 米国区 Apple ID で暮らすメモ
+date: 2025-06-19
+category: tech
+summary: 便利。気持ちいい。
+tags:
+  - Apple
+---
+
+英語環境に慣れるために、iPhone 13 Pro を手にしてから（実際はもっと前、[Hackintosh](https://en.wikipedia.org/wiki/Hackintosh) をいじっていた頃から）手元のデバイスはすべてシステム言語を英語にしていた。
+
+しばらく続けているうちに、体験を揃えたいという理由と、~~外の月亮が丸い~~、Android の経験から「国際版の方が国内版より良い」という思い込みもあって、米国区 Apple ID をメインにしてみることにした。
+
+ここではその体験と、少し役立ったことを書いておく。
+
+## アプリの出方
+
+最初は国内アプリが足りず、しょっちゅう中国ストアに戻るんじゃないかと心配したが、ほぼ杞憂だった。
+
+多くのソーシャル系は米国区にもある。海外留学の人が多いから、と考えれば自然だ。
+
+それでも中国区に戻る必要がある例はある：
+
+- **工商銀行（ICBC）**。米国ストアにあるのは国際向けの ICBC Mobile Banking だけ。一方で交通銀行、中国銀行、農行、招行、建行などは国内版アプリが並んでいるのに、宇宙最大行だけは……
+- **抖音・飛書**。海外には TikTok と Lark があるから。
+- **マクドナルド**。米国アプリはアメリカ向け。アメリカ人が中国に来ても結局 WeChat か Alipay のミニプログラムで注文するしかない。
+
+まとめると、多くのアプリは揃っていて、国内外で別アプリになるもの、国内専用のものだけ中国区に戻ればよい。
+
+## Make it better
+
+ここまで読んだなら、米国区 ID をメインにしたい気持ちはあるはず。脱線しないように、体験を良くするコツだけ書く。
+
+米国区 Apple ID の作り方？ チュートリアルは山ほどあるので省略。
+
+### Apple, This way!
+
+中国にいながら米国区を快適に使うには、適切なプロキシ分流が欠かせない。多くの Apple サービスは直結でよく、米国 App Store も国内から普通に開ける。
+
+自分も長い間、Apple まわりは基本直結だった。
+
+ところが、あるとき問題が起きた。
+
+![Antfu's X Post](https://assets.xat.sh/images/antfu.png)
+
+[antfu](https://x.com/antfuzh/status/1896530111677227174) がポッドキャスト[「尖不想寫扣 No Coding Today」](https://bento.me/nocodingtoday) を始めて、Apple Podcasts のリンクを出した。
+
+開けない。というより、「存在しない」と出る。
+
+すぐに Apple Podcasts の国区ロックを疑ったが、分流ルールを探すのが面倒で放置していた。
+
+あとで V2EX の [「苹果需要代理的域名有哪些」](https://www.v2ex.com/t/1135950) を読み、#4 のリストが自分には合っていた。共有しておく。
+
+> **li19910102**
+>
+> 多年蘋果用戶，長期美區 ID 登錄，在國內使用總結出來的代理域名，覺得對你有幫助的煩請點個🌟
+>
+> https://raw.githubusercontent.com/li2282231/Clash-rule/refs/heads/main/AppleProxy.list
+
+作者を応援してスターを。
+
+ルールだけ欲しい／リンクが死んだ場合は次のとおり：
+
+```plaintext
+# Apple Intelligence
+DOMAIN-KEYWORD,apple-relay
+# Apple FindMyDevice
+DOMAIN,humb.apple.com
+DOMAIN,fmipalservice.icloud.com
+DOMAIN,p44-fmfmobile.icloud.com
+DOMAIN,p44-fmf.icloud.com
+DOMAIN,p44-fmip.icloud.com
+DOMAIN,p44-fmipmobile.icloud.com
+# Apple Podcasts
+DOMAIN-SUFFIX,podcasts.apple.com
+DOMAIN-SUFFIX,podbean.com
+DOMAIN-SUFFIX,soundon.fm
+DOMAIN-SUFFIX,fm
+DOMAIN-SUFFIX,seahorseplanet.net
+# Apple Books
+DOMAIN,buy.itunes.apple.com
+# Apple TV
+DOMAIN,amp-api.videos.apple.com
+DOMAIN,hls-amt.itunes.apple.com
+DOMAIN,hls.itunes.apple.com
+DOMAIN,np-edge.itunes.apple.com
+DOMAIN,play-edge.itunes.apple.com
+DOMAIN,tv.applemusic.com
+DOMAIN,uts-api.itunes.apple.com
+DOMAIN-SUFFIX,tv.apple.com
+PROCESS-NAME,TV
+# Apple iCloud Private Relay
+DOMAIN,mask.icloud.com
+DOMAIN,mask-canary.icloud.com
+DOMAIN,mask-h2.icloud.com
+DOMAIN,mask-api.icloud.com
+DOMAIN,mask.apple-dns.net
+DOMAIN,canary.mask.apple-dns.net
+DOMAIN-SUFFIX,safebrowsing.apple
+```
+
+### 頼む！iRingo
+
+![iRingo.png](https://assets.xat.sh/images/iringo.png)
+
+[iRingo](https://nsringo.github.io/) をざっくり紹介する。詳細はプロジェクトページへ。
+
+できること：
+
+- 純正の天気や地図などを強化
+- TestFlight の地域を切り替え
+- Siri のおすすめを強化
+- Apple TV をカスタム
+- Apple News を解放
+
+中国区アカウントでも（一部）効く。
+
+前提として、メジャーなプロキシアプリが必要。
+
+え、ないの？ それで米国区 Apple ID を……？
+
+### 国区 Apple ID を端末に追加
+
+米国区にないアプリが必要なときは、一時的に中国区へ切り替えてダウンロードする。
+
+App Store でアカウントを切り替えるたびに SMS や [OTP](https://en.wikipedia.org/wiki/One-time_password) が必要になる。
+
+ログアウト／ログインは避けられないが、認証コードのたび打ちは避けられる。あとで米国区に戻っていても、すでに入れた国区アプリの更新が楽になる。
+
+手順は **設定 → Apps → メール／カレンダー／連絡先** に国区アカウントを追加する。そうすると端末が信頼済み扱いになり、検証を毎回求められにくくなる。
+
+![Calendar Account](https://assets.xat.sh/images/calendar.png)
+
+### 支払い方法
+
+App Store に紐づけるカードはアカウントの国と一致する必要があるため、中国国内発行の Visa、Mastercard、American Express は単ブランドでも二重ブランドでも基本つながらない。
+
+余談だが、国内 JCB は仕組み上、日本区 App Store には紐づけやすい。
+
+なので迂回策が二つ：
+
+#### ギフトカード
+
+入手経路は多いが、一番おすすめは Apple 米国公式。公式はカード種を問わず、銀聯クレジットでも買える。
+
+![Apple Gift Card 付款方式](https://assets.xat.sh/images/buy-gift-card.png)
+
+次点で信頼できる第三者。自分は Alipay の PockytShop を使っていて、今のところ問題なし。
+
+咸魚や淘宝の販売は自分は未経験なのでコメントしない。
+
+App Store のトライアル（Apple Music 3 ヶ月無料、Duolingo Super 7 日など）はカードがないと無理、と思っている人が多いが、実際は違う。**試用終了後に引き落とせる残高**があれば購入できる。
+
+具体例：
+
+![Duolingo Super 订阅](https://assets.xat.sh/images/duolingo.png)
+
+Duolingo Super のファミリー版、1 週間無料。
+
+画面は $9.99/月に見えるが、実態は年契約で一年に一度更新。つまり一週間後に **$119.99** を一括請求される。
+
+ギフトカードで残高を足して $119.99 を満たせば、トライアル付きで契約できる。
+
+本当に課金されたくないなら、**試用期限前に App Store で解約**を忘れずに。
+
+#### PayPal
+
+米国 PayPal は中国発行の Visa / Mastercard / Amex を紐づけられ、さらに App Store に連携できる。
+
+ただし米国 PayPal 自体の登録は難しく、+86 では作れない。Wikipedia 寄付で Google Voice を付ける、といった裏道はあるが、PayPal のリスク管理は厳しい。IP が跳ぶと制限や永久 BAN になり、一度 BAN されるとカードの解除もできず再紐づけも困難。
+
+どうにか成功しても、安定 IP がない限り PayPal にはログインしない方がよい。普段の購入は App Store だけで十分。
+
+## 雑多
+
+iPhone のおかげでスマホいじりの時間は減った（iOS がいじらせないから）。
+
+それでも長いあいだ、いろいろ試してきた。
+
+### Apple ID のリスク
+
+外区 ID が突然 BAN された、という話はネットに多いが、自分は今のところ一度もない。生存者バイアスかもしれない。
+
+ただ、一度だけアカウント制限っぽいものがあった。アプリ内課金や有料アプリが、いつも *この取引は完了できません* のような表示（当時は米国 ID をメインにしておらず、この文言は中国語だった記憶）。米国のオンラインサポートに連絡したら、数十分で直った。因果は不明。
+
+注意したいのは闇ギフトカードの連座。自作プロキシ以前は IP も跳んでいたが BAN はなかったので、「IP が跳ぶだけで即 BAN」ではなさそう。
+
+### 変なフォント
+
+Android の頃はフォントをいじるのが好きだった。「犬神志」という WeChat 公式の [「山海苹方」](https://mp.weixin.qq.com/s/6bL9xRD7bH7xzcrKEbEnKQ) が印象に残っている。細部は忘れたが、字形の癖が好きだった。
+
+![山海苹方](https://assets.xat.sh/images/pingfangx.webp)
+
+iOS でもだいたい再現できる。原理はグリフの上書きで、システム言語の並べ方を変えると字形が混ざって見える。
+
+同じ趣味なら参考まで。好みの領域で、万人向けではない。
+
+![粗略的模仿](https://assets.xat.sh/images/languages.png)
+
+長く見ていると、普通の国标フォントが逆に違和感になることもある。
+
+That's it! Enjoy yourself!

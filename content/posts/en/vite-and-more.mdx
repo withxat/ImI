@@ -1,0 +1,133 @@
+---
+title: On Vite, Rollup, esbuild, and webpack
+date: 2025-04-23
+category: tech
+summary: Dive deep—or you will not be able to sleep.
+tags:
+  - Vite
+  - Rollup
+  - bundlers
+  - esbuild
+  - webpack
+---
+
+I started writing React very early, but only as a hobby—and always with Next.js.
+
+Why? It was the framework the React docs pushed hardest, so I followed the herd. (I did not predict today’s chorus on X dunking on Next.js, Vercel, and RSC.)
+
+My first real brush with the Vite ecosystem was [Astro 1.0 shipping](https://astro.build/blog/astro-1/).
+
+Only after I began working full-time last May did I ship a Vite + React Router project and slowly internalize the core ideas in practice.
+
+## Bundlers, not frameworks
+
+Frameworks—or meta-frameworks—mostly ship batteries-included features, nicer DX tooling, and guardrails as projects grow.
+
+Think full-stack stacks like Nuxt or Next.js.
+
+Vite is “just” a bundler. Its strengths are:
+
+1. A Rollup-compatible plugin system that stays highly customizable without webpack-level config soup (sorry, webpack).
+2. ESM-first dev servers: cold start is fast, modules load on demand, and you skip rebuilding the whole graph every time (webpack, again).
+3. Because of the above, first-class HMR feels great day to day.
+
+Vite refuses to over-build itself; it focuses on the build pipeline. That is why Remix, Astro, TanStack Router, and friends all chose to sit on top of it.
+
+Which brings me to the key idea.
+
+## Separation of concerns
+
+Separation of concerns (SoC) is a universal design principle—not only in software.
+
+Even school subjects are a form of SoC, which is why physics, chemistry, and biology keep bleeding into one another.
+
+My personal [Aha! moment](https://en.wikipedia.org/wiki/Eureka_effect) was understanding how TypeScript and Vite split the work.
+
+I could not see why, if `tsconfig.json` already defined import aliases, I still had to mirror them inside `vite.config.js` for builds to succeed.
+
+<details>
+<summary>Side note: people argue about this a lot</summary>
+<a href="https://github.com/vitejs/vite/issues/6828">
+Native support for tsconfig's paths resolution #6828
+</a>
+</details>
+
+My mental model used to be:
+
+`tsc` compile → Vite bundle → output
+
+That is wrong. In a Vite + TypeScript app, Vite owns the entire TS→JS pipeline for both `dev` and `build`.
+
+TypeScript itself is only doing type-checking and powering editor IntelliSense.
+
+So even if the checker screams, as long as the code can transpile (think `tsc --noCheck`), Vite does not care—it **ignores types** and just builds.
+
+That is why `npm run build` is so often `tsc --noEmit && vite build`.
+
+## Right tool, right job
+
+Maybe a tangent—how Vite is designed, or why it won.
+
+You cannot tell that story without webpack, the incumbent when Vite arrived.
+
+### webpack, the savior era
+
+webpack dominated the 2010s because:
+
+- Browsers did not understand CommonJS; webpack could emit browser-friendly IIFE bundles.
+- SPAs exploded in size and dependency count; webpack could cram everything into one JS artifact.
+- Loaders + plugins meant it could chew images, CSS, and almost anything else.
+
+People call that the birth of “front-end engineering,” yet by Vite’s time webpack’s virtues became liabilities:
+
+- **Slow boots**: every dev session rebuilt the world; HMR helped but never fixed huge graphs.
+- **Config weight**: `webpack.config.js` routinely ballooned—rough on beginners (job posts still demanding “webpack expert” felt surreal).
+- **Ecosystem drift**: ESM matured, HTTP/2 spread, and shipping one giant bundle started to feel like overkill.
+
+### Vite, it is fast!
+
+Back to Vite—Rollup and esbuild are the twin engines.
+
+#### Rollup
+
+- **Pros**
+  1. Pure JavaScript bundler laser-focused on modules; tree-shaking is its signature trick (concept borrowed from Lisp, later seen in Google Closure and Dart).
+  2. Extremely flexible plugins.
+- **Cons**
+  1. Always bundles the full graph in one shot.
+  2. Slower on large apps—too much time parsing and linking deps.
+  3. Throughput is capped by Node’s single-threaded model.
+
+#### esbuild
+
+- **Pros**
+  1. Written in Go, compiled to native code, multi-threaded—absurdly fast parse/bundling passes.
+- **Cons**
+  1. Simpler plugin surface, less room for bespoke transforms.
+  2. Trades optimization for speed; output can be chunkier than Rollup.
+
+#### A deliberate split
+
+Vite’s design is clever.
+
+Instead of shelling out to Rollup directly, it reimplements a Rollup-compatible plugin contract and hosts its own plugin runtime.
+
+- During `vite dev`, esbuild pre-bundles `node_modules` into browser-ready ESM under `node_modules/.vite/deps/${packageName}.js`, while Vite’s plugin pipeline answers each browser request.
+
+- During `vite build`, the same plugins are handed to Rollup for production bundling.
+
+That yields two big wins:
+
+In dev, esbuild keeps dependency warm-up fast, Vite plugins run on demand, and HMR stays instant—something Rollup alone cannot do because it always wants a full graph.
+
+In prod, Rollup’s stronger optimization passes take over.
+
+**Dev** and **prod** both level up.
+
+## Looking ahead
+
+As of today (2025-03-05), the headline I am tracking is [rolldown-vite](https://github.com/vitejs/rolldown-vite)—a Rust-powered Rolldown meant to replace Rollup as it hits scaling limits.
+
+Evan You’s Vite-inspired [VoidZero](https://voidzero.dev/posts/announcing-voidzero-inc) from 2024 is still heating up.
+
+Either way, I am excited to see where Vite goes next.

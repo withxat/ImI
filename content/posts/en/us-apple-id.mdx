@@ -1,0 +1,202 @@
+---
+title: Living with a US Apple ID
+date: 2025-06-19
+category: tech
+summary: Works great. Feels great.
+tags:
+  - Apple
+---
+
+To stay immersed in English, I switched every device I own to English system language starting with the iPhone 13 Pro (really it began during my [Hackintosh](https://en.wikipedia.org/wiki/Hackintosh) phase).
+
+After a while it was partly about consistency, and partly—~~the grass is always greener~~—Android had trained a stereotype that “international builds beat China builds,” so I tried using a US-region Apple ID as my primary account.
+
+Here are some notes and tips from that experience.
+
+## App availability
+
+At first I worried I would constantly bounce back to the China storefront for missing apps. That barely happened.
+
+Most social apps ship on the US App Store too—makes sense when you think about students abroad.
+
+Still, a few cases really do need the China region:
+
+- **ICBC**: the US store only has ICBC Mobile Banking for international users, while Bank of Communications, Bank of China, ABC, CMB, CCB, etc. all publish their domestic apps there—unlike “the biggest bank in the universe…”
+- **Douyin / Feishu**, because TikTok and Lark exist overseas.
+- **McDonald’s**: the US McDonald’s app targets the US; even Americans visiting China end up ordering through WeChat or Alipay mini programs.
+
+Overall most apps exist; you only hop back for China-only variants or domestic-only services.
+
+## Make it better
+
+If you read this far, you probably care about polishing the US-ID workflow, so here is how I make day-to-day life smoother.
+
+How to register a US Apple ID? Tutorials are everywhere—I will skip the basics.
+
+### Apple, this way!
+
+Living in China, a sane proxy routing policy helps a lot. Most Apple services can stay on direct connections because the US App Store is reachable locally.
+
+I kept almost everything on direct routing for a long time.
+
+Then something broke.
+
+![Antfu's X Post](https://assets.xat.sh/images/antfu.png)
+
+[antfu](https://x.com/antfuzh/status/1896530111677227174) launched a podcast, [“No Coding Today / 尖不想寫扣”](https://bento.me/nocodingtoday), with an Apple Podcasts link.
+
+I could not open it—or rather, the show “did not exist.”
+
+I immediately suspected Apple Podcasts region locks, but I never bothered to hunt down routing rules.
+
+Later I found a V2EX thread, [“Which Apple domains need a proxy?”](https://www.v2ex.com/t/1135950); reply #4 matched my needs—sharing it here.
+
+> **li19910102**
+>
+> Long-time Apple user on a US account in mainland China—compiled proxy domains. Star the repo if it helps.
+>
+> https://raw.githubusercontent.com/li2282231/Clash-rule/refs/heads/main/AppleProxy.list
+
+Give the author a star if it helps.
+
+If you only want the rules or the link dies:
+
+```plaintext
+# Apple Intelligence
+DOMAIN-KEYWORD,apple-relay
+# Apple FindMyDevice
+DOMAIN,humb.apple.com
+DOMAIN,fmipalservice.icloud.com
+DOMAIN,p44-fmfmobile.icloud.com
+DOMAIN,p44-fmf.icloud.com
+DOMAIN,p44-fmip.icloud.com
+DOMAIN,p44-fmipmobile.icloud.com
+# Apple Podcasts
+DOMAIN-SUFFIX,podcasts.apple.com
+DOMAIN-SUFFIX,podbean.com
+DOMAIN-SUFFIX,soundon.fm
+DOMAIN-SUFFIX,fm
+DOMAIN-SUFFIX,seahorseplanet.net
+# Apple Books
+DOMAIN,buy.itunes.apple.com
+# Apple TV
+DOMAIN,amp-api.videos.apple.com
+DOMAIN,hls-amt.itunes.apple.com
+DOMAIN,hls.itunes.apple.com
+DOMAIN,np-edge.itunes.apple.com
+DOMAIN,play-edge.itunes.apple.com
+DOMAIN,tv.applemusic.com
+DOMAIN,uts-api.itunes.apple.com
+DOMAIN-SUFFIX,tv.apple.com
+PROCESS-NAME,TV
+# Apple iCloud Private Relay
+DOMAIN,mask.icloud.com
+DOMAIN,mask-canary.icloud.com
+DOMAIN,mask-h2.icloud.com
+DOMAIN,mask-api.icloud.com
+DOMAIN,mask.apple-dns.net
+DOMAIN,canary.mask.apple-dns.net
+DOMAIN-SUFFIX,safebrowsing.apple
+```
+
+### Help me, iRingo
+
+![iRingo.png](https://assets.xat.sh/images/iringo.png)
+
+Quick intro to [iRingo](https://nsringo.github.io/)—read the project page for depth.
+
+It can:
+
+- Enhance Weather, Maps, and other stock apps
+- Flip TestFlight regions
+- Boost Siri suggestions
+- Tweak Apple TV behavior
+- Unlock Apple News
+
+Parts of it still help even on China accounts.
+
+You need a mainstream proxy client first.
+
+No proxy? Then why are you registering a US Apple ID…
+
+### Add your China Apple ID on-device
+
+When an app is missing from the US store, you temporarily switch to China to download it.
+
+Every App Store account switch forces an SMS or other [OTP](https://en.wikipedia.org/wiki/One-time_password).
+
+You cannot skip sign-in/out, but you *can* skip repeated OTP prompts—which matters when you later update China-only apps while signed into the US account.
+
+Add the China Apple ID under **Settings → Apps → Mail / Calendar / Contacts**. Apple then treats the device as trusted and stops nagging for codes.
+
+![Calendar Account](https://assets.xat.sh/images/calendar.png)
+
+### Paying for things
+
+App Store cards must match the account region, so China-issued Visa, Mastercard, or American Express—single- or dual-brand—will not bind to a US account.
+
+Side note: China-issued JCB cards can bind to the Japan storefront because of how JCB routes settlements.
+
+Workarounds boil down to two paths:
+
+#### Gift cards
+
+Lots of resellers exist. Safest is buying straight from Apple’s US site—they accept UnionPay credit cards there.
+
+![Apple Gift Card 付款方式](https://assets.xat.sh/images/buy-gift-card.png)
+
+Otherwise use a trusted third party; I buy through PockytShop inside Alipay and it has felt reliable.
+
+Xianyu/Taobao resellers exist—I never tried them.
+
+Many people think trial subscriptions (Apple Music three months free, Duolingo Super seven days, etc.) require a card on file. You only need enough **balance** to cover the first renewal after the trial.
+
+Example:
+
+![Duolingo Super 订阅](https://assets.xat.sh/images/duolingo.png)
+
+Duolingo Super family plan with a one-week trial.
+
+The UI quotes $9.99/month, but it is actually billed annually—after the week Duolingo charges **$119.99** at once.
+
+Load gift card credit to cover that amount and the trial activates.
+
+If you do not want the charge, **cancel inside the App Store before the trial ends**.
+
+#### PayPal
+
+US PayPal accepts China-issued Visa/Mastercard/Amex, and you can link PayPal to the App Store.
+
+But registering US PayPal is painful—+86 numbers are blocked. Some people donate to Wikipedia to attach Google Voice; it can work, yet PayPal fraud controls are brutal. If your IP jumps, you risk limits or a permanent ban, and you cannot remove the card afterward.
+
+If you survive setup, avoid logging into PayPal unless your IP is stable; buy through the App Store day to day.
+
+## Odds and ends
+
+The iPhone saved me from endless Android tinkering—mostly because iOS refuses to let you.
+
+I still found plenty to tweak.
+
+### Apple ID risk controls
+
+Horror stories about foreign IDs getting banned float online, but I have never been banned—maybe survivor bias.
+
+I did hit a restriction once: in-app purchases and paid downloads kept saying *this transaction cannot be completed* (the banner was still Chinese because the US ID was not primary yet). US support chat cleared it within tens of minutes—maybe coincidence.
+
+Black-market gift cards are the real ban vector. Before I self-hosted proxies my IP bounced constantly without bans, so “IP hopping alone nukes accounts” does not match what I have seen.
+
+### Weird fonts
+
+On Android I used to flash fonts. I still remember a WeChat article from “犬神志” about [“Shanhai Pingfang”](https://mp.weixin.qq.com/s/6bL9xRD7bH7xzcrKEbEnKQ)—details fuzzy, but I loved the eccentric letterforms.
+
+![山海苹方](https://assets.xat.sh/images/pingfangx.webp)
+
+iOS can approximate the effect via glyph fallback order in the language list—stack languages differently and the system blends shapes.
+
+Fun rabbit hole, very taste-dependent.
+
+![粗略的模仿](https://assets.xat.sh/images/languages.png)
+
+Stare at it long enough and normal GB fonts start feeling odd.
+
+That's it! Enjoy yourself!
