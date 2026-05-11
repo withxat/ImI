@@ -1,11 +1,6 @@
 'use client'
 
-import {
-	ComputerTerminal02Icon,
-	Copy01Icon,
-	Tick02Icon,
-} from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
+import { CheckIcon, CopyIcon, TerminalIcon } from 'lucide-react'
 import * as React from 'react'
 
 import { useConfig } from '@/components/mdx/hooks/use-config'
@@ -66,12 +61,11 @@ export function CodeBlockCommand({
 				value={packageManager}
 			>
 				<div className="flex items-center gap-2 border-b border-border/64 px-4 py-1 font-mono">
-					<HugeiconsIcon
+					<TerminalIcon
 						className="
 							size-5 text-code-foreground
 							sm:size-4
 						"
-						icon={ComputerTerminal02Icon}
 						strokeWidth={2}
 					/>
 					<TabsList className="
@@ -130,8 +124,8 @@ export function CodeBlockCommand({
 						>
 							<span className="sr-only">Copy</span>
 							{isCopied
-								? <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
-								: <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} />}
+								? <CheckIcon strokeWidth={2} />
+								: <CopyIcon strokeWidth={2} />}
 						</Button>
 					)}
 				/>

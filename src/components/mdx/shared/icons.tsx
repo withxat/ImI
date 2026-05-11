@@ -1,12 +1,11 @@
 import type React from 'react'
 
 import {
-	CssFile01Icon,
-	Folder01Icon,
-	ThirdBracketIcon,
-	Typescript02Icon,
-} from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
+	BracesIcon,
+	FileCode2Icon,
+	FileType2Icon,
+	FolderIcon,
+} from 'lucide-react'
 
 type IconProps = React.HTMLAttributes<SVGElement>
 
@@ -194,16 +193,16 @@ export const Icons = {
 export function getIconForLanguageExtension(language: string) {
 	switch (language) {
 		case 'json':
-			return <HugeiconsIcon icon={ThirdBracketIcon} strokeWidth={2} />
+			return <BracesIcon strokeWidth={2} />
 		case 'css':
-			return <HugeiconsIcon icon={CssFile01Icon} strokeWidth={2} />
+			return <FileCode2Icon strokeWidth={2} />
 		case 'js':
 		case 'jsx':
 		case 'ts':
 		case 'tsx':
 		case 'typescript':
-			return <HugeiconsIcon icon={Typescript02Icon} strokeWidth={2} />
+			return <FileType2Icon strokeWidth={2} />
 		default:
-			return <HugeiconsIcon icon={Folder01Icon} strokeWidth={2} />
+			return <FolderIcon strokeWidth={2} />
 	}
 }

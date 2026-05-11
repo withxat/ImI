@@ -2,8 +2,7 @@
 
 import type * as React from 'react'
 
-import { Copy01Icon, Tick02Icon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
+import { CheckIcon, CopyIcon } from 'lucide-react'
 
 import { useCopyToClipboard } from '@/components/mdx/hooks/use-copy-to-clipboard'
 import { Button } from '@/components/mdx/ui/button'
@@ -47,8 +46,8 @@ export function CopyButton({
 					>
 						<span className="sr-only">Copy</span>
 						{isCopied
-							? <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />
-							: <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} />}
+							? <CheckIcon strokeWidth={2} />
+							: <CopyIcon strokeWidth={2} />}
 					</Button>
 				)}
 			/>
