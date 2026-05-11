@@ -1,11 +1,13 @@
 'use client'
 
+import type { Locale } from '@/lib/i18n/constants'
 import type { FooterWandererCopy } from '@/lib/i18n/messages'
 import type { VisitorGeo } from '@/lib/visitor-geo'
 
 import { useEffect, useState } from 'react'
 
 import { CountryFlag } from '@/components/country-flag'
+import { regionDisplayName } from '@/lib/visitor-geo'
 
 const wandererGradientClass = `
 	bg-linear-to-r from-violet-600 via-indigo-500 to-cyan-600 bg-clip-text font-bold text-transparent
@@ -14,9 +16,10 @@ const wandererGradientClass = `
 
 interface FooterWandererProps {
 	copy: FooterWandererCopy
+	locale: Locale
 }
 
-export function FooterWanderer({ copy }: FooterWandererProps) {
+export function FooterWanderer({ copy, locale }: FooterWandererProps) {
 	const [geo, setGeo] = useState<null | VisitorGeo>(null)
 
 	useEffect(() => {
@@ -54,11 +57,12 @@ export function FooterWanderer({ copy }: FooterWandererProps) {
 
 	if (geo.countryCode) {
 		const { bridge, closing, lead, pattern } = copy.withCountry
+		const countryLabel = regionDisplayName(geo.countryCode, locale)
 		const flagCountry = (
 			<>
 				<CountryFlag code={geo.countryCode} />
 				{' '}
-				{geo.countryName ?? geo.countryCode}
+				{countryLabel}
 			</>
 		)
 
