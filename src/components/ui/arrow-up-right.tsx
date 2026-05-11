@@ -1,10 +1,10 @@
 'use client'
 
 import type { Variants } from 'motion/react'
-import type { HTMLAttributes } from 'react'
+import type { HTMLAttributes, Ref } from 'react'
 
-import { motion, useAnimation } from 'motion/react'
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
+import { motion } from 'motion/react'
+import { useCallback, useImperativeHandle, useRef, useState } from 'react'
 
 import { cn } from '@/lib/cn'
 
@@ -14,6 +14,7 @@ export interface ArrowUpRightIconHandle {
 }
 
 interface ArrowUpRightIconProps extends HTMLAttributes<HTMLDivElement> {
+	ref?: Ref<ArrowUpRightIconHandle>
 	size?: number
 }
 
@@ -36,68 +37,73 @@ const ARROW_VARIANTS: Variants = {
 	},
 }
 
-const ArrowUpRightIcon = forwardRef<ArrowUpRightIconHandle, ArrowUpRightIconProps>(
-	({ className, onMouseEnter, onMouseLeave, size = 28, ...props }, ref) => {
-		const controls = useAnimation()
-		const isControlledRef = useRef(false)
+function ArrowUpRightIcon({
+	className,
+	onMouseEnter,
+	onMouseLeave,
+	ref,
+	size = 28,
+	...props
+}: ArrowUpRightIconProps) {
+	const [animation, setAnimation] = useState<'animate' | 'normal'>('normal')
+	const isControlledRef = useRef(false)
 
-		useImperativeHandle(ref, () => {
-			isControlledRef.current = true
-			return {
-				startAnimation: () => {
-					void controls.start('animate')
-				},
-				stopAnimation: () => {
-					void controls.start('normal')
-				},
-			}
-		})
-
-		const handleMouseEnter = useCallback(
-			(e: React.MouseEvent<HTMLDivElement>) => {
-				if (!isControlledRef.current)
-					void controls.start('animate')
-				onMouseEnter?.(e)
+	useImperativeHandle(ref, () => {
+		isControlledRef.current = true
+		return {
+			startAnimation: () => {
+				setAnimation('animate')
 			},
-			[controls, onMouseEnter],
-		)
-
-		const handleMouseLeave = useCallback(
-			(e: React.MouseEvent<HTMLDivElement>) => {
-				if (!isControlledRef.current)
-					void controls.start('normal')
-				onMouseLeave?.(e)
+			stopAnimation: () => {
+				setAnimation('normal')
 			},
-			[controls, onMouseLeave],
-		)
+		}
+	})
 
-		return (
-			<div
-				className={cn('inline-flex shrink-0 text-current', className)}
-				onMouseEnter={handleMouseEnter}
-				onMouseLeave={handleMouseLeave}
-				{...props}
+	const handleMouseEnter = useCallback(
+		(e: React.MouseEvent<HTMLDivElement>) => {
+			if (!isControlledRef.current)
+				setAnimation('animate')
+			onMouseEnter?.(e)
+		},
+		[onMouseEnter],
+	)
+
+	const handleMouseLeave = useCallback(
+		(e: React.MouseEvent<HTMLDivElement>) => {
+			if (!isControlledRef.current)
+				setAnimation('normal')
+			onMouseLeave?.(e)
+		},
+		[onMouseLeave],
+	)
+
+	return (
+		<div
+			className={cn('inline-flex shrink-0 text-current', className)}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
+			{...props}
+		>
+			<svg
+				fill="none"
+				height={size}
+				stroke="currentColor"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+				viewBox="0 0 24 24"
+				width={size}
+				xmlns="http://www.w3.org/2000/svg"
 			>
-				<svg
-					fill="none"
-					height={size}
-					stroke="currentColor"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					strokeWidth="2"
-					viewBox="0 0 24 24"
-					width={size}
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<motion.g animate={controls} initial="normal" variants={ARROW_VARIANTS}>
-						<path d="M7 7h10v10" />
-						<path d="M7 17 17 7" />
-					</motion.g>
-				</svg>
-			</div>
-		)
-	},
-)
+				<motion.g animate={animation} initial="normal" variants={ARROW_VARIANTS}>
+					<path d="M7 7h10v10" />
+					<path d="M7 17 17 7" />
+				</motion.g>
+			</svg>
+		</div>
+	)
+}
 
 ArrowUpRightIcon.displayName = 'ArrowUpRightIcon'
 
