@@ -33,12 +33,21 @@ export interface FooterWandererCopy {
 	}
 }
 
+/** Copy for the AI-translation banner; `中文` is inserted as a locale-switch control between the two strings. */
+export interface PostTranslatedNoticeCopy {
+	afterLink: string
+	beforeLink: string
+	switchToChineseAriaLabel: string
+}
+
 export interface Messages {
 	blog: {
 		archiveSubtitle: string
 		goHome: string
 		pageDescription: string
 		pageTitle: string
+		/** Shown above translated article bodies when UI locale is not Chinese. */
+		postTranslatedNotice?: PostTranslatedNoticeCopy
 		title: string
 	}
 	capabilities: CapabilityCopy[]
@@ -55,6 +64,8 @@ export interface Messages {
 		introAfterProducts: string
 		introBeforeSystems: string
 		introBetweenBadges: string
+		/** `<meta name="description">` and default JSON-LD site blurbs for the home page. */
+		metaDescription: string
 		role: string
 		tagline: string
 		title: string
@@ -73,6 +84,11 @@ const en: Messages = {
 		goHome: 'Go to home',
 		pageDescription: 'Writing about frontend engineering, design systems, AI products, tools, and small notes from Xat.',
 		pageTitle: 'Writing - Xat',
+		postTranslatedNotice: {
+			afterLink: ' to read the author-written source text.',
+			beforeLink: 'This article is an AI translation from the Chinese original. Switch the site language to ',
+			switchToChineseAriaLabel: 'Switch site language to Chinese for the original article',
+		},
 		title: 'All writings',
 	},
 	capabilities: [
@@ -146,6 +162,8 @@ const en: Messages = {
 		introAfterProducts: '.',
 		introBeforeSystems: 'A ',
 		introBetweenBadges: ' taught me to balance design intent, engineering constraints, and the messy realities of building ',
+		metaDescription:
+			'Design Engineer building AI-native products, interfaces, and frontend systems. Writing on frontend craft, design systems, and tools.',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',
 		title: 'Xat - Design Engineer',
@@ -249,6 +267,8 @@ const zh: Messages = {
 		introAfterProducts: '。',
 		introBeforeSystems: '',
 		introBetweenBadges: '让我学会在设计意图、工程约束与真实落地的混乱之间找平衡，去构建',
+		metaDescription:
+			'设计工程师，专注 AI 原生产品与前端系统。写作涵盖前端工程、设计系统、工具与实践笔记。',
 		role: '设计工程师',
 		tagline: 'Xat - 设计工程师',
 		title: 'Xat - 设计工程师',
@@ -279,6 +299,11 @@ const ja: Messages = {
 		goHome: 'ホームへ',
 		pageDescription: 'フロントエンド、デザインシステム、AI プロダクト、ツール、Xat のメモ。',
 		pageTitle: 'Writing - Xat',
+		postTranslatedNotice: {
+			afterLink: 'に切り替えると著者による原文を読めます。',
+			beforeLink: 'この記事は中国語の原文をAIが翻訳したものです。サイトの言語を',
+			switchToChineseAriaLabel: 'サイトの表示言語を中文に切り替えて原文を表示する',
+		},
 		title: 'すべての記事',
 	},
 	capabilities: [
@@ -352,6 +377,8 @@ const ja: Messages = {
 		introAfterProducts: 'を形にする。',
 		introBeforeSystems: '',
 		introBetweenBadges: 'という背景から、設計意図・実装制約・現場の複雑さのバランスを学び、',
+		metaDescription:
+			'デザインエンジニア。AI ネイティブなプロダクトとフロントエンドをつくる。フロントエンド、デザインシステム、ツールのメモ。',
 		role: 'デザインエンジニア',
 		tagline: 'Xat - デザインエンジニア',
 		title: 'Xat - デザインエンジニア',

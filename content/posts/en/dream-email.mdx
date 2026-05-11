@@ -1,0 +1,117 @@
+---
+title: Setting up custom-domain email without the headache
+date: 2024-11-14
+category: tech
+summary: Cloudflare + Resend + Gmail + Apple Mail — the comfortable stack.
+tags:
+  - Email
+---
+
+A mailbox on your own domain is one of those evergreen topics. A suffix that matches your taste just feels cool.
+
+Beyond buying mailbox service from your registrar, plenty of free options exist: Feishu enterprise mail, Zoho Mail, and others.
+
+I once used Tencent Exmail; painful login verification pushed me away. I moved to Skiff Mail—great UI, though the iOS UX did not quite click for me. It was easy to use, but after Notion acquired Skiff I started looking for a replacement.
+
+![Skiff Mail](https://assets.xat.sh/images/skiff.png)
+
+## What I wanted
+
+### Play nicely with Gmail
+
+I have **a lot** of inboxes—Sohu and 163 from middle school, Gmail, later QQ numeric and English aliases, Outlook… easily more than a dozen addresses.
+
+Managing them in one place with a solid cross-platform experience would be ideal.
+
+Configuring IMAP/SMTP for each one by hand sounded exhausting.
+
+I do not send much mail, so I forward satellite addresses into Gmail and read everything there.
+
+I skipped iCloud Mail because I still cannot picture myself living in its web UI—maybe I will try it later.
+
+### Send and receive on my domain
+
+As domain mail goes, the bare minimum is being able to both receive and send.
+
+Cloudflare offers free [Email Routing](https://www.cloudflare.com/developer-platform/products/email-routing/): point DNS at it and forward `anything@yourdomain` to Gmail, Outlook, etc.
+
+But Cloudflare routing is receive-only—you still need SMTP somewhere else to send.
+
+Resend is a solid pick: generous free tier SMTP you can wire into clients.
+
+> At the time of writing, Resend offers 3,000 free emails per month and caps daily sends at 100—more than enough for personal use.
+
+![Resend Price](https://assets.xat.sh/images/resend-price.png)
+
+### Apple Mail
+
+I am not a die-hard Apple fan, but I do have a MacBook Air and an iPhone, and I prefer first-party apps when they fit. Apple Mail is my default mail client.
+
+Since iOS 17 and macOS 14, auto-copying OTP codes from mail sounded great (in practice it misses a lot; plain-text messages seem to work better).
+
+![New features in macOS 14](https://assets.xat.sh/images/mail-macos-14.png)
+
+## Wiring it up
+
+Great walkthroughs already exist—e.g. [“Don’t waste your domain—free business mail with Cloudflare + Gmail + Resend in ten minutes.”](https://cleanclip.cc/zh/developer/cloudflare-worker-gmail-resend-enterprise-email/)
+
+Building on that article, here is a compact checklist.
+
+### Cloudflare → Gmail
+
+Any host with email routing works; Cloudflare is just the example.
+
+1. Add the domain to Cloudflare
+2. Sidebar: `Email → Email Routing`
+3. Add the DNS records it asks for, and register your Gmail inbox as a destination
+4. Add routing rules—I use catch-all so `anything@yourdomain.com` forwards inbound mail
+5. Set the destination to your Gmail address
+
+![Cloudflare Email Routing](https://assets.xat.sh/images/cf-mail.png)
+
+**Catch-all tip: set Action to `Send to an email`. The default can be `Drop`, which silently deletes mail.**
+
+After that, your domain addresses can receive mail.
+
+### Resend signup and DNS
+
+1. Create a Resend account
+2. Add the domain and complete DNS verification
+3. Create an API key—this becomes your SMTP password (optionally scope permissions like the screenshot if you are picky)
+
+![Resend API Key](https://assets.xat.sh/images/resend-key.png)
+
+### Gmail “Send mail as”
+
+1. Gmail settings → `Accounts and Import` → `Send mail as` → `Add another email address`
+   ![Gmail Send mail as](https://assets.xat.sh/images/gmail-send-as.png)
+2. Fill SMTP host/port from Resend’s [SMTP docs](https://resend.com/docs/send-with-smtp#smtp-credentials); password is the API key
+   ![Gmail SMTP](https://assets.xat.sh/images/gmail-smtp.png)
+3. Gmail sends a verification message—confirm it, then you can send as the domain address and optionally set it as default under `Accounts and Import`
+
+## Client: Apple Mail
+
+After the steps above you can read and send domain mail entirely inside Gmail. Many tutorials stop there.
+
+I did not want another Gmail install on my phone, and I periodically trim apps—fewer clients is a habit.
+
+So map the same plumbing into Apple Mail:
+
+1. In Google Account settings, [create an App Password](https://myaccount.google.com/apppasswords)—this is what **Apple Mail uses to log into Gmail via IMAP**.
+   ![Google App Password](https://assets.xat.sh/images/google-app-pwd.png)
+2. Apple Mail → Add Account → `Other Mail Account`. Enter your domain address; the password field can be a placeholder—we only need to reach the SMTP editor.
+   ![Apple Mail 1](https://assets.xat.sh/images/mail-1.png)
+3. In the SMTP sheet: IMAP host `imap.gmail.com`, SMTP host `smtp.resend.com`. For credentials you can pair either Gmail + App Password **or** username `resend` + API key—pick one combination for the first pass.
+   ![Apple Mail 2](https://assets.xat.sh/images/mail-2.png)
+4. After saving, split credentials: in Mail settings → Accounts, set IMAP to Gmail + App Password, SMTP to `resend` + API key.
+   ![Apple Mail 3](https://assets.xat.sh/images/mail-3.png)
+5. Almost there—open `Advanced IMAP Settings` and set `IMAP Path Prefix` to `[Gmail]` so Apple Mail understands Gmail’s folder layout.
+   ![Apple Mail 4](https://assets.xat.sh/images/mail-4.png)
+6. Hit `Save` in the corner and you are done.
+   ![Final](https://assets.xat.sh/images/final.png)
+
+## Conclusion
+
+Enjoy it!
+
+![New mail](https://assets.xat.sh/images/new-mail.png)

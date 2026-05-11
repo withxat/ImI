@@ -1,0 +1,117 @@
+---
+title: ドメインメールを気持ちよく組む
+date: 2024-11-14
+category: tech
+summary: Cloudflare + Resend + Gmail + Apple Mail で落ち着いた。
+tags:
+  - Email
+---
+
+ドメインメールはいつもの定番話題で、自分らしいサフィックスを持てるのはやっぱり格好いい。
+
+レジストラで買う／もらうメール以外にも、飛書の企業メールや Zoho Mail など無料で使えるサービスは多い。
+
+自分はかつて腾讯企业邮箱を使ったが、ログイン検証のストレスで離脱。そのあと Skiff Mail に移った。UI はかなり良かったが、iOS の UI/UX は好みから少し外れた。使い勝手は悪くなかったのに、Notion に買収されたあたりから代替を探し始めた。
+
+![Skiff Mail](https://assets.xat.sh/images/skiff.png)
+
+## 欲しかったもの
+
+### Gmail とうまくつなぐ
+
+自分のメールアドレスは**本当に多い**。中学の頃の Sohu や 163、Gmail、あと QQ の数字アドレスや英字アドレス、Outlookまで、十個以上はある。
+
+一か所でまとめつつ、全プラットフォームで気持ちよく使えたら最高。
+
+でも一つずつ IMAP/SMTP を設定するのは面倒すぎる。
+
+送信はそこまで多くないので、枝メールは Gmail に転送してそこで受信する形にした。
+
+iCloud Mail を選ばなかったのは、ウェブで使う絵がまだ想像できないから。いつか試すかもしれない。
+
+### ドメインで送受信できること
+
+ドメインメールとして、最低限「受け取れる」「送れる」は外せない。
+
+Cloudflare は無料の [メール転送](https://www.cloudflare.com/developer-platform/products/email-routing/) を出しているので、DNS を整えればよく使う受信箱（Gmail や Outlook など）へ転送できる。
+
+ただし Cloudflare の転送は送信非対応なので、SMTP が使える別サービスが必要になる。
+
+Resend はその候補のひとつ。無料枠の SMTP が使えて、クライアントから送れる。
+
+> 執筆時点では Resend は月 3000 通まで無料、1 日あたり最大 100 通。個人用途なら十分すぎる。
+
+![Resend Price](https://assets.xat.sh/images/resend-price.png)
+
+### Apple Mail
+
+ガチ勢とは言えないが、MacBook Air と iPhone は持っているし、できれば純正アプリで済ませたい。メールクライアントは Apple Mail が第一候補。
+
+iOS 17 と macOS 14 以降、メールから認証コードを自動コピーできるのも魅力（ただし精度はイマイチで、プレーンテキストの方が通りやすい印象）。
+
+![New features in macOS 14](https://assets.xat.sh/images/mail-macos-14.png)
+
+## 構成
+
+この二つを満たす手順は、すでに優れた記事が多い。例えば [「ドメインを寝かせないで、Cloudflare + Gmail + Resend で十分な無料企業メール」](https://cleanclip.cc/zh/developer/cloudflare-worker-gmail-resend-enterprise-email/) など。
+
+その記事を土台に、ここでは手順だけ短くまとめる。
+
+### Cloudflare から Gmail へ
+
+転送できるプラットフォームなら何でもよい。例として Cloudflare を使う。
+
+1. ドメインを Cloudflare に追加
+2. サイドバーで `Email - Email Routing`
+3. 案内に沿って DNS を足し、受信に使う Gmail を Destination に登録
+4. `Routing rules` を追加。自分は Catch-all（`xxx@yourdomain.com` 全部）を選んだ
+5. `Destination` に Gmail アドレスを入れる
+
+![Cloudflare Email Routing](https://assets.xat.sh/images/cf-mail.png)
+
+**注意：Catch-all の Action は `Send to an email` を選ぶ。デフォルトが `Drop` だとメールが捨てられる。**
+
+ここまでで、ドメイン宛の受信は Gmail に届く。
+
+### Resend の登録と設定
+
+1. Resend に登録
+2. ドメインを追加し DNS で検証
+3. API Key を発行して控える。あとで SMTP のパスワードになる（権限を絞るなら画面のようにしてもよい）
+
+![Resend API Key](https://assets.xat.sh/images/resend-key.png)
+
+### Gmail の SMTP（Send mail as）
+
+1. Gmail 設定の `Accounts and Import` → `Send mail as` → `Add another email address`
+   ![Gmail Send mail as](https://assets.xat.sh/images/gmail-send-as.png)
+2. SMTP は Resend の [ホストとポート](https://resend.com/docs/send-with-smtp#smtp-credentials) を入れ、パスワードは API Key
+   ![Gmail SMTP](https://assets.xat.sh/images/gmail-smtp.png)
+3. `Next` で検証メールが届くので確認。`Accounts and Import` で既定の送信元にしてもよい
+
+## クライアント
+
+ここまでで Gmail だけでドメイン宛の送受信はできる。多くのチュートリアルもここで終わる。
+
+でも要件はまだ残る。スマホに Gmail を増やしたくないし、定期的にアプリを整理して、数は少ない方がいい。
+
+なので Apple Mail に載せ替える。
+
+1. Google アカウントで [App Password](https://myaccount.google.com/apppasswords) を追加する。これは **Apple Mail が Gmail に IMAP ログインするとき** のパスワード。
+   ![Google App Password](https://assets.xat.sh/images/google-app-pwd.png)
+2. Apple Mail でアカウント追加 → `Other Mail Account`。ドメインのメールアドレスを入れ、パスワードは適当でよい（SMTP 編集画面を開くためのトリガー）。
+   ![Apple Mail 1](https://assets.xat.sh/images/mail-1.png)
+3. SMTP 編集画面で、IMAP は `imap.gmail.com`、SMTP は `smtp.resend.com`。ユーザー名とパスワードは「Gmail + App Password」か「`resend` + API Key」のどちらかの組み合わせを選べばよい。
+   ![Apple Mail 2](https://assets.xat.sh/images/mail-2.png)
+4. 保存したあと、IMAP と SMTP で別アカウントに分ける。設定 → アカウントで、IMAP は Gmail + App Password、SMTP は `resend` + API Key。
+   ![Apple Mail 3](https://assets.xat.sh/images/mail-3.png)
+5. あともう一歩。`Advanced IMAP Settings` の `IMAP Path Prefix` に `[Gmail]` を入れないと、Gmail のフォルダが正しく認識されない。
+   ![Apple Mail 4](https://assets.xat.sh/images/mail-4.png)
+6. 右下の `Save` を忘れずに。これで快適にドメインメールが使える。
+   ![Final](https://assets.xat.sh/images/final.png)
+
+## おわりに
+
+Enjoy it!
+
+![New mail](https://assets.xat.sh/images/new-mail.png)

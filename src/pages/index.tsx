@@ -3,66 +3,84 @@ import { Link } from 'waku'
 import { ConstructionStripesIcon } from '@/components/construction-stripes-icon'
 import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
+import { LocaleSwitcher } from '@/components/locale-switcher'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Reveal } from '@/components/reveal'
 import { StaggerReveal } from '@/components/stagger-reveal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
+import { htmlLangFor } from '@/lib/i18n/constants'
 import { getIntroBadgeCopy } from '@/lib/i18n/intro-badges'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { getCapabilities } from '@/lib/projects'
 import { Seo } from '@/lib/seo'
-import { DEFAULT_DESCRIPTION, personJsonLd, websiteJsonLd } from '@/lib/seo-data'
+import { personJsonLd, websiteJsonLd } from '@/lib/seo-data'
 
 export default async function HomePage() {
 	const locale = getRequestLocale()
 	const m = getMessages(locale)
 	const systemsCopy = getIntroBadgeCopy(locale, 'systems')
 	const productsCopy = getIntroBadgeCopy(locale, 'products')
-	const posts = getAllPosts().slice(0, 4)
+	const posts = getAllPosts(locale).slice(0, 4)
 	const baseCapabilities = getCapabilities()
 	const capabilities = mergeCapabilityCopy(baseCapabilities, m)
 
 	return (
 		<section>
 			<Seo
+				jsonLd={[
+					personJsonLd({ description: m.home.metaDescription }),
+					websiteJsonLd({ description: m.home.metaDescription }),
+				]}
 				canonicalPath="/"
-				description={DEFAULT_DESCRIPTION}
-				jsonLd={[personJsonLd(), websiteJsonLd()]}
+				description={m.home.metaDescription}
+				locale={locale}
 				title={m.home.title}
 				type="profile"
 			/>
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
-					<div className="flex flex-col gap-4">
-						<Avatar className="
-							size-14 rounded-xl border border-border
-							sm:size-16
-						"
-						>
-							<AvatarImage
-								alt="Xat"
-								referrerPolicy="no-referrer"
-								src="https://github.com/withxat.png"
+					<div className="flex flex-col gap-5">
+						<div className="flex items-start justify-between gap-6">
+							<div className="flex min-w-0 flex-1 flex-col gap-4">
+								<Avatar className="
+									size-14 rounded-xl border border-border
+									sm:size-16
+								"
+								>
+									<AvatarImage
+										alt="Xat"
+										referrerPolicy="no-referrer"
+										src="https://github.com/withxat.png"
+									/>
+									<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
+								</Avatar>
+								<div className="space-y-0">
+									<h1 className="
+										inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
+										sm:text-3xl
+									"
+									>
+										<span className="font-xat-name font-normal">Xat</span>
+										<NameAudioButton />
+									</h1>
+									<p className="text-muted-foreground">{m.home.role}</p>
+								</div>
+							</div>
+							<LocaleSwitcher
+								aria-label={m.localeSwitcher.ariaLabel}
+								className="shrink-0"
+								currentLocale={locale}
 							/>
-							<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
-						</Avatar>
-						<div className="space-y-0">
-							<h1 className="
-								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
-								sm:text-3xl
-							"
-							>
-								<span className="font-xat-name font-normal">Xat</span>
-								<NameAudioButton />
-							</h1>
-							<p className="text-muted-foreground">{m.home.role}</p>
-							<p className="mt-3 max-w-prose font-serif text-base/7 text-foreground">
-								{m.home.bioLead}
-							</p>
 						</div>
+						<p
+							className="home-bio-lead max-w-prose font-serif text-base/7 text-foreground"
+							lang={htmlLangFor(locale)}
+						>
+							{m.home.bioLead}
+						</p>
 					</div>
 
 					<section className="

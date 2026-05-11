@@ -15,8 +15,10 @@
 	--font-text: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-ui: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-serif:
-		ui-serif, 'New York', 'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman', 'Droid Serif', Times,
-		'Source Serif 4', Georgia, serif;
+		'New York', 'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman', 'Droid Serif', Times,
+		'Source Serif 4', Georgia, 'Noto Serif SC', 'Songti SC', 'STSong', 'Noto Serif CJK SC', 'Noto Serif CJK TC',
+		'Source Han Serif SC', 'Source Han Serif TC', SimSun, NSimSun, FangSong, 'KaiTi', 'STKaiti', 'Hiragino Mincho ProN',
+		'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', 'MS PMincho', 'MS Mincho', ui-serif, serif;
 
 	--color-background: oklch(1 0 0);
 	--color-foreground: oklch(0.17 0.003 260);
@@ -108,8 +110,36 @@
 	}
 
 	html {
-		scroll-behavior: smooth;
 		-webkit-text-size-adjust: 100%;
+		line-break: loose;
+		overflow-wrap: break-word;
+		scroll-behavior: smooth;
+		word-break: normal;
+	}
+
+	/* Japanese body copy: JLREQ-style strict breaks — scoped to flow text only so
+	 * display headings (article titles, page h1) still inherit loose from `html`. */
+	html:lang(ja) p,
+	html:lang(ja) li {
+		line-break: strict;
+	}
+
+	html:lang(en) {
+		hyphens: manual;
+	}
+
+	html:lang(ja),
+	html:lang(zh),
+	html:lang(zh-Hans) {
+		hyphens: none;
+	}
+
+	/* `text-wrap: balance` optimizes Latin line lengths; for CJK titles it often
+	 * reflows awkwardly — keep balance for en/zh, plain wrap for Japanese headings. */
+	html:lang(ja) h1,
+	html:lang(ja) h2,
+	html:lang(ja) h3 {
+		text-wrap: wrap;
 	}
 
 	body {
@@ -126,12 +156,15 @@
 	h3 {
 		font-family: var(--font-display);
 		letter-spacing: 0;
+		overflow-wrap: break-word;
 		text-wrap: balance;
+		word-break: normal;
 	}
 
 	p,
 	li {
-		text-wrap: pretty;
+		/* default `wrap`: `pretty` optimizes Latin rag but often wastes line width on CJK / mixed copy */
+		text-wrap: wrap;
 	}
 
 	::selection {
@@ -160,6 +193,11 @@
 
 	.font-xat-name {
 		font-family: 'Fugaz One Xat', var(--font-display);
+	}
+
+	/* Hero intro: English serif line only — global html rules cover CJK breaking. */
+	.home-bio-lead:lang(en) {
+		text-wrap: pretty;
 	}
 
 	.post-list-entry {
@@ -192,7 +230,6 @@
 	.article-body {
 		/* avoid wrap-anywhere: it breaks between arbitrary characters (bad CJK on narrow screens) */
 		@apply max-w-full min-w-0 space-y-7 text-base/7 break-words text-foreground;
-		line-break: loose;
 	}
 
 	.article-body a {
@@ -234,7 +271,7 @@
 	.article-body li,
 	.article-body p {
 		@apply text-muted-foreground;
-		/* base layer uses text-wrap: pretty (Latin-oriented); normal wrap reads better for Chinese body copy */
+		/* explicit wrap matches site-wide body copy (see @layer base p, li) */
 		text-wrap: wrap;
 	}
 

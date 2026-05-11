@@ -1,4 +1,4 @@
-import { getAllPosts } from '@/lib/blog'
+import { BLOG_PRIMARY_LOCALE, getAllPosts } from '@/lib/blog'
 import { absoluteUrl } from '@/lib/seo-data'
 
 interface SitemapEntry {
@@ -29,7 +29,7 @@ function createUrlEntry({ changefreq, lastmod, path, priority }: SitemapEntry) {
 }
 
 export function GET() {
-	const posts = getAllPosts()
+	const posts = getAllPosts(BLOG_PRIMARY_LOCALE)
 	const latestPostDate = posts[0]?.date
 	const entries: SitemapEntry[] = [
 		{

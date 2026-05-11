@@ -1,5 +1,6 @@
 import { Link } from 'waku'
 
+import { LocaleSwitcher } from '@/components/locale-switcher'
 import { Reveal } from '@/components/reveal'
 import { StaggerReveal } from '@/components/stagger-reveal'
 import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
@@ -12,7 +13,7 @@ import { Seo } from '@/lib/seo'
 export default async function BlogIndexPage() {
 	const locale = getRequestLocale()
 	const m = getMessages(locale)
-	const groups = getPostsByCategory().map((group) => {
+	const groups = getPostsByCategory(locale).map((group) => {
 		const cat = m.categories[group.category.slug as keyof typeof m.categories]
 		return {
 			category: cat
@@ -27,12 +28,19 @@ export default async function BlogIndexPage() {
 			<Seo
 				canonicalPath="/post"
 				description={m.blog.pageDescription}
+				locale={locale}
 				title={m.blog.pageTitle}
 			/>
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
 					<div className="space-y-8">
-						<TextLink to="/">{m.blog.goHome}</TextLink>
+						<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+							<TextLink to="/">{m.blog.goHome}</TextLink>
+							<LocaleSwitcher
+								aria-label={m.localeSwitcher.ariaLabel}
+								currentLocale={locale}
+							/>
+						</div>
 						<div className="space-y-0">
 							<h1 className="font-medium text-foreground">{m.blog.title}</h1>
 							<p className="text-muted-foreground">{m.blog.archiveSubtitle}</p>

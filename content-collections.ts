@@ -10,8 +10,11 @@ import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethr
 import remarkGfm from 'remark-gfm'
 import { z } from 'zod'
 
-async function createMdxImport(slug: string, content: string) {
-	const outputPath = join('.content-collections', 'mdx', `${slug}.js`)
+import { isLocale, LOCALES } from '@/lib/i18n/constants'
+
+async function createMdxImport(compilationKey: string, content: string) {
+	const safeKey = compilationKey.replaceAll(/[^\w-]+/g, '_')
+	const outputPath = join('.content-collections', 'mdx', `${safeKey}.js`)
 	const compiled = await compile(content, {
 		development: false,
 		outputFormat: 'program',
@@ -22,7 +25,7 @@ async function createMdxImport(slug: string, content: string) {
 	await mkdir(dirname(outputPath), { recursive: true })
 	await writeFile(outputPath, String(compiled))
 
-	return createDefaultImport<MDXContent>(`../mdx/${slug}.js`)
+	return createDefaultImport<MDXContent>(`../mdx/${safeKey}.js`)
 }
 
 const posts = defineCollection({
@@ -38,12 +41,26 @@ const posts = defineCollection({
 		title: z.string(),
 	}),
 	transform: async (document) => {
-		const mdx = await createMdxImport(document._meta.path, document.content)
+		const segments = document._meta.path.split('/')
+		const localeSegment = segments[0]
+		if (!localeSegment || !isLocale(localeSegment)) {
+			throw new Error(`Post path must start with a locale (${LOCALES.join(', ')}): ${document._meta.path}`)
+		}
+
+		const locale = localeSegment
+		const slug = segments.slice(1).join('/')
+		if (!slug) {
+			throw new Error(`Post path must include a slug after the locale folder: ${document._meta.path}`)
+		}
+
+		const compilationKey = `${locale}__${slug.replaceAll('/', '__')}`
+		const mdx = await createMdxImport(compilationKey, document.content)
 
 		return {
 			...document,
+			locale,
 			mdx,
-			slug: document._meta.path,
+			slug,
 		}
 	},
 })

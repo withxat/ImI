@@ -1,0 +1,62 @@
+---
+title: ChatGPT を使ってみた記録
+date: 2023-03-04
+category: life
+summary: AI？ GPT？ なにそれ？
+tags:
+  - ChatGPT
+  - AI
+---
+
+## はじめに
+
+昨年末ごろから、Twitter に ChatGPT の話が目につくようになった。しばらく触ってみると、いつの間にか市場には AI プロダクトがあふれていることに気づく、という感覚に近かった。
+
+もともと注目していた AI 作画の Disco Diffusion では、普段は無関心なルームメイトまでがダウンロードして遊ぶ画像を走らせていた。AI 作画と「二次元」の距離が近いこともあって、周りの友人はたしかにアニメ文化側の人たちだった。
+
+Midjourney のような画像生成 AI や、Notion AI のような文章補助 AI もあった。
+
+そして今日の主役：ChatGPT。
+
+## ChatGPT とは？
+
+> ChatGPT is a sibling model to [InstructGPT](https://openai.com/blog/instruction-following/)
+> , which is trained to follow an instruction in a prompt and provide a detailed response.
+
+ざっくり言うと、指示に従って詳しい返答を返す言語モデルだ。
+
+もっと原理まで知りたければ記事を検索するとよい。Twitter にはすでに優れた解説がたくさんあり、自分はそこまで深く追っていない。
+
+想像力を働かせるか、[awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts) のような例を参考にして、ChatGPT を生産性ツールにしてもいい。
+
+## セットアップしてみる
+
+### 登録
+
+まず有名なネットワーク環境の話。VPN を用意してグローバルプロキシを使うのが無難だ。
+
+OpenAI のサイトでメールとパスワードを登録し、電話番号を検証する。大中华圏の番号は現状使えないことが多いが、SMS は登録時の一度だけなので、自分は smsActivateru の受番サービスを使った。5 元（人民元）を切るくらいだったと思う。
+
+### API とデプロイ
+
+新規アカウントには当時 \$18 の無料枠が付き、そのあとはチャットを API 経由にするとだいたい千トークン \$0.002 くらいのイメージだった。
+
+ブラウザの UI 以外に、API から呼ぶと「お住まいの国では利用できません」のような表示を避けやすく、いろいろな作業環境に組み込める。
+
+WeChat にはさまざまな制限があるため、自分は ChatGPT を飛書（Feishu）上に載せる形を多く選んだ。GitHub には「ChatGPT for Feishu」系の優れたプロジェクトがすでにあり、[feishu-ChatGPT](https://github.com/Leizhenpeng/feishu-ChatGPT) を使った。
+
+- OpenAI の個人画面で API キーを発行する
+- README に沿ってデプロイし設定を調整する
+- Feishu 上で使う
+
+自分はたまに遊ぶ程度だったので、それ以上にリッチな環境には組み込まなかった。
+
+### もっと遊ぶ
+
+API の使い方を深く知りたければ公式ドキュメントを、変わった使い方は公式の [openai-cookbook](https://github.com/openai/openai-cookbook) も参照するとよい。
+
+## おわりに
+
+いまや多くの領域が AI に手を伸ばし始めている。ChatGPT は業界にまた一つの筋道を切り開いたようにも見える。少なくとも他の AI 作品と比べて、宣伝・普及・インパクトの大きさは驚くほどだった。それが本当に「主流」の方向なのか、ChatGPT をオープンソースにしない OpenAI の姿勢が業界に何をもたらすのか、疑問は残る。
+
+疑問はさておき、一つはっきりしている。ChatGPT はプロダクトとして成功した。

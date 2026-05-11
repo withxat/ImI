@@ -4,24 +4,31 @@ import { allPosts, config } from 'content-collections'
 
 export const BLOG_CATEGORIES = config.categories
 
-export function getAllPosts() {
-	return allPosts.sort((a, b) => b.date.getTime() - a.date.getTime())
+/** RSS and sitemap use Chinese posts as the canonical writing locale. */
+export const BLOG_PRIMARY_LOCALE: Locale = 'zh'
+
+function allPostsSorted() {
+	return [...allPosts].sort((a, b) => b.date.getTime() - a.date.getTime())
+}
+
+export function getAllPosts(locale: Locale) {
+	return allPostsSorted().filter(post => post.locale === locale)
 }
 
 export function getPostSlugs() {
-	return getAllPosts().map(post => post.slug)
+	return [...new Set(allPostsSorted().map(post => post.slug))]
 }
 
-export function getPostBySlug(slug: string) {
-	return getAllPosts().find(post => post.slug === slug)
+export function getPostBySlug(slug: string, locale: Locale) {
+	return allPostsSorted().find(post => post.slug === slug && post.locale === locale)
 }
 
 export function getCategoryBySlug(slug: string) {
 	return BLOG_CATEGORIES.find(category => category.slug === slug)
 }
 
-export function getPostsByCategory() {
-	const posts = getAllPosts()
+export function getPostsByCategory(locale: Locale) {
+	const posts = getAllPosts(locale)
 
 	return BLOG_CATEGORIES
 		.map(category => ({
