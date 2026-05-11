@@ -79,6 +79,8 @@
 	--color-popover: var(--popover);
 	--color-card-foreground: var(--card-foreground);
 	--color-card: var(--card);
+	--color-code-foreground: var(--code-foreground);
+	--color-code: var(--code);
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
@@ -328,6 +330,8 @@
 	--foreground: oklch(0.17 0.003 260);
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.18 0.004 260);
+	--code: #16171d;
+	--code-foreground: var(--color-neutral-100);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.18 0.004 260);
 	--primary: oklch(0.17 0.003 260);
@@ -364,6 +368,8 @@
 	--foreground: var(--color-neutral-100);
 	--card: color-mix(in srgb, var(--background) 98%, var(--color-white));
 	--card-foreground: var(--color-neutral-100);
+	--code: color-mix(in srgb, var(--color-neutral-950) 92%, var(--color-white));
+	--code-foreground: var(--color-neutral-100);
 	--popover: color-mix(in srgb, var(--background) 98%, var(--color-white));
 	--popover-foreground: var(--color-neutral-100);
 	--primary: var(--color-neutral-100);

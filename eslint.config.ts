@@ -35,4 +35,11 @@ config.append({
 	},
 })
 
+config.append({
+	files: ['src/components/mdx/**/*.{ts,tsx}'],
+	rules: {
+		'react-refresh/only-export-components': 'off',
+	},
+})
+
 export default config
