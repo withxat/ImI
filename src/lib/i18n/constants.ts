@@ -28,5 +28,9 @@ export function intlLocaleFor(locale: Locale): string {
 
 /** `lang` attribute on the document shell. */
 export function htmlLangFor(locale: Locale): string {
+	if (locale === 'zh') {
+		return 'zh-Hans'
+	}
+
 	return locale
 }
