@@ -165,12 +165,17 @@
 		font-family: 'Fugaz One Xat', var(--font-display);
 	}
 
-	/* Hero one-liner: balance short lines; avoid hyphen/word-break fighting serif rag */
+	/* Hero intro: full container width (not squeezed beside locale switcher). */
 	.home-bio-lead {
 		hyphens: none;
 		overflow-wrap: normal;
-		text-wrap: balance;
+		text-wrap: wrap;
 		word-break: normal;
+	}
+
+	/* Latin-only: allow pretty rag on this single line; avoid on CJK (global p/li rule). */
+	.home-bio-lead:lang(en) {
+		text-wrap: pretty;
 	}
 
 	.post-list-entry {
