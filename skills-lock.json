@@ -19,6 +19,12 @@
 			"skillPath": "skills/emil-design-eng/SKILL.md",
 			"computedHash": "8bdf9e4e6de7a4969147bf4828a4ad2c5aacd9fba4b690b250a85e0467ca387d"
 		},
+		"seo-audit": {
+			"source": "coreyhaines31/marketingskills",
+			"sourceType": "github",
+			"skillPath": "skills/seo-audit/SKILL.md",
+			"computedHash": "ddd028951738fcbcdebf0f9bd90b708c55d1b9370a31603e0c13e5b262d8b8bb"
+		},
 		"tailwind-design-system": {
 			"source": "wshobson/agents",
 			"sourceType": "github",
