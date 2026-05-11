@@ -60,7 +60,7 @@ export function FooterWanderer({ copy, locale }: FooterWandererProps) {
 		const countryLabel = regionDisplayName(geo.countryCode, locale)
 		const flagAndLabel = (
 			<span className="mx-0.5 inline-flex items-baseline gap-x-1">
-				<span className="inline-flex h-[1em] shrink-0 translate-y-[0.1em] items-end leading-none">
+				<span className="inline-flex h-[1em] shrink-0 translate-y-[0.12em] items-end leading-none">
 					<CountryFlag code={geo.countryCode} />
 				</span>
 				<span>{countryLabel}</span>
