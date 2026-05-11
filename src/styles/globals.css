@@ -133,7 +133,8 @@
 
 	p,
 	li {
-		text-wrap: pretty;
+		/* default `wrap`: `pretty` optimizes Latin rag but often wastes line width on CJK / mixed copy */
+		text-wrap: wrap;
 	}
 
 	::selection {
@@ -236,7 +237,7 @@
 	.article-body li,
 	.article-body p {
 		@apply text-muted-foreground;
-		/* base layer uses text-wrap: pretty (Latin-oriented); normal wrap reads better for Chinese body copy */
+		/* explicit wrap matches site-wide body copy (see @layer base p, li) */
 		text-wrap: wrap;
 	}
 
