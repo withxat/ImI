@@ -59,12 +59,13 @@ export function useArticlePhotoswipe(rootRef: RefObject<HTMLElement | null>) {
 					arrowNext: false,
 					arrowPrev: false,
 					bgClickAction: 'close',
-					bgOpacity: 0.94,
+					bgOpacity: 0.72,
 					close: false,
 					counter: false,
 					dataSource: [
 						{
 							alt: el.alt,
+							element: el,
 							height: h,
 							src,
 							width: w,
@@ -74,7 +75,7 @@ export function useArticlePhotoswipe(rootRef: RefObject<HTMLElement | null>) {
 					index: 0,
 					loop: false,
 					mainClass: 'pswp--article-minimal',
-					showHideAnimationType: 'fade',
+					showHideAnimationType: 'zoom',
 					zoom: false,
 				})
 				pswp.init()
