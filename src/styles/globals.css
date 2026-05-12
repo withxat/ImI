@@ -101,6 +101,10 @@
 	color: color-mix(in oklab, var(--color-foreground) 62%, var(--color-highlight));
 }
 
+@utility text-highlight-icon {
+	color: color-mix(in oklab, var(--color-foreground) 36%, var(--color-highlight));
+}
+
 @layer base {
 	:root {
 		color-scheme: light;

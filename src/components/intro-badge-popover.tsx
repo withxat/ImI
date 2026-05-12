@@ -113,8 +113,8 @@ export function IntroBadgePopover({
 							focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
 							dark:bg-input/32
 							dark:hover:bg-input/64
-							[&_svg]:mr-[0.25em] [&_svg]:inline [&_svg]:size-[1em] [&_svg]:align-[-0.125em] [&_svg]:text-highlight [&_svg]:opacity-75
-							hover:[&_svg]:opacity-100
+							[&_svg]:mr-[0.25em] [&_svg]:inline [&_svg]:size-[1em] [&_svg]:align-[-0.125em] [&_svg]:text-highlight-icon
+							hover:[&_svg]:text-highlight
 						"
 						onMouseEnter={openOnHover}
 						onMouseLeave={closeOnHoverEnd}
