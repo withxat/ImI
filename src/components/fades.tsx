@@ -12,12 +12,13 @@ export function BottomFade({
 	return (
 		<div
 			className={cn(
-				'pointer-events-none sticky inset-x-0 bottom-0 z-10 backdrop-blur-[6px]',
+				'pointer-events-none fixed inset-x-0 z-10 transform-[translateZ(0)] opacity-[0.99] backdrop-blur-[6px]',
+				'-bottom-[env(safe-area-inset-bottom,0)]',
 				'bg-linear-to-b from-transparent to-background',
 				'mask-[linear-gradient(to_top,var(--color-background)_18%,transparent)]',
 				className,
 			)}
-			style={{ height }}
+			style={{ height: `calc(${height}px + env(safe-area-inset-bottom, 0px))` }}
 			aria-hidden
 		/>
 	)
