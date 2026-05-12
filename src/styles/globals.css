@@ -255,13 +255,12 @@
 	}
 
 	.article-body a {
-		@apply text-foreground underline underline-offset-4 transition-colors duration-150;
+		@apply text-highlight-strong underline underline-offset-4 transition-colors duration-150;
 		text-decoration-color: color-mix(in srgb, var(--color-highlight) 75%, transparent);
 		text-decoration-thickness: 0.08em;
 	}
 
 	.article-body a:hover {
-		color: color-mix(in oklab, var(--color-foreground) 42%, var(--color-highlight));
 		text-decoration-color: var(--color-highlight);
 	}
 

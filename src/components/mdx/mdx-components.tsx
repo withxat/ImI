@@ -55,7 +55,7 @@ export const mdxComponents = {
 	a: ({ className, ...props }: React.ComponentProps<'a'>) => (
 		<a
 			className={cn(
-				'text-link font-medium text-foreground',
+				'text-link font-medium text-highlight-strong',
 				className,
 			)}
 			{...props}
