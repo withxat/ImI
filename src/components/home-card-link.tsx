@@ -50,7 +50,14 @@ function HomeCardLinkContent({
 	return (
 		<>
 			<span className="min-w-0 flex-1 space-y-1">
-				<span className="block text-sm font-medium text-foreground">{title}</span>
+				<span
+					className="
+						block text-sm font-medium text-foreground transition-colors
+						group-hover:text-highlight-strong
+					"
+				>
+					{title}
+				</span>
 				<span className="block truncate text-sm text-muted-foreground">{description}</span>
 			</span>
 			{trailingIcon ?? defaultIcon}

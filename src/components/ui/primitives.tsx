@@ -49,7 +49,7 @@ export function TextLink({
 	return (
 		<Link
 			className={cn(
-				`text-link text-link-strong inline-flex items-center gap-2 font-ui text-sm`,
+				`text-link inline-flex items-center gap-2 font-ui text-sm`,
 				className,
 			)}
 			to={to}

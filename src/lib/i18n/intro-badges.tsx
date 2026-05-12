@@ -16,7 +16,7 @@ const introBadgesEn: Record<IntroBadgeKind, IntroBadgeCopy> = {
 				Today I work at
 				{' '}
 				<a
-					className="text-link text-link-strong"
+					className="text-link"
 					href="https://en.wikipedia.org/wiki/Central_China_Normal_University"
 					rel="noreferrer"
 					target="_blank"
@@ -49,7 +49,7 @@ const introBadgesZh: Record<IntroBadgeKind, IntroBadgeCopy> = {
 				目前在
 				{' '}
 				<a
-					className="text-link text-link-strong"
+					className="text-link"
 					href="https://en.wikipedia.org/wiki/Central_China_Normal_University"
 					rel="noreferrer"
 					target="_blank"
@@ -82,7 +82,7 @@ const introBadgesJa: Record<IntroBadgeKind, IntroBadgeCopy> = {
 				現在は
 				{' '}
 				<a
-					className="text-link text-link-strong"
+					className="text-link"
 					href="https://en.wikipedia.org/wiki/Central_China_Normal_University"
 					rel="noreferrer"
 					target="_blank"

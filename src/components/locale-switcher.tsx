@@ -36,10 +36,6 @@ export function LocaleSwitcher({ 'aria-label': ariaLabel, className, currentLoca
 								)
 							: (
 									<button
-										className="
-											text-link cursor-pointer border-none bg-transparent p-0 font-[inherit] text-muted-foreground
-											hover:text-foreground
-										"
 										onClick={() => {
 											persistLocale(locale)
 											/* Waku's router.reload() only refetches the current route; prefetched RSC for
@@ -47,6 +43,7 @@ export function LocaleSwitcher({ 'aria-label': ariaLabel, className, currentLoca
 											 * clears that cache so navigation uses the new cookie site-wide. */
 											window.location.reload()
 										}}
+										className="text-link-muted cursor-pointer border-none bg-transparent p-0 font-[inherit]"
 										lang={locale}
 										type="button"
 									>

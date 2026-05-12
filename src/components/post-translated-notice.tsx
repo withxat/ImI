@@ -14,15 +14,12 @@ export function PostTranslatedNoticeAside({ notice }: { notice: PostTranslatedNo
 		>
 			{notice.beforeLink}
 			<button
-				className="
-					text-link cursor-pointer border-none bg-transparent p-0 font-[inherit] text-muted-foreground
-					hover:text-foreground
-				"
 				onClick={() => {
 					persistLocale('zh')
 					window.location.reload()
 				}}
 				aria-label={notice.switchToChineseAriaLabel}
+				className="text-link-muted cursor-pointer border-none bg-transparent p-0 font-[inherit]"
 				lang="zh"
 				type="button"
 			>

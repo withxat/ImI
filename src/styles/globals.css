@@ -10,6 +10,7 @@
 
 @custom-variant dark (&:is(html.dark *));
 
+/* Fonts + deps not backed by `:root` / `@theme inline`. Palette values live in `:root`/`.dark` only. */
 @theme {
 	--font-display: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-text: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -20,30 +21,6 @@
 		'Source Han Serif SC', 'Source Han Serif TC', SimSun, NSimSun, FangSong, 'KaiTi', 'STKaiti', 'Hiragino Mincho ProN',
 		'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', 'MS PMincho', 'MS Mincho', ui-serif, serif;
 
-	--color-background: oklch(1 0 0);
-	--color-foreground: oklch(0.17 0.003 260);
-	--color-surface: oklch(1 0 0);
-	--color-surface-foreground: oklch(0.18 0.004 260);
-	--color-card: oklch(1 0 0);
-	--color-card-foreground: oklch(0.18 0.004 260);
-	--color-popover: oklch(1 0 0);
-	--color-popover-foreground: oklch(0.18 0.004 260);
-	--color-primary: oklch(0.17 0.003 260);
-	--color-primary-foreground: oklch(1 0 0);
-	--color-secondary: oklch(0.94 0.002 260);
-	--color-secondary-foreground: oklch(0.18 0.004 260);
-	--color-muted: oklch(0.94 0.002 260);
-	--color-muted-foreground: oklch(0.45 0.004 260);
-	--color-border: color-mix(in oklab, oklch(0.17 0.003 260) 12%, transparent);
-	--color-input: color-mix(in oklab, oklch(0.17 0.003 260) 14%, transparent);
-	--color-ring: oklch(0.17 0.003 260);
-	--color-highlight-soft: oklch(0.85654 0.06125 10.83);
-	--color-highlight-text: oklch(0.67303 0.11669 3.08);
-	--color-highlight-icon: color-mix(in oklab, var(--color-foreground) 36%, var(--color-highlight-soft));
-	--color-accent: oklch(0.9 0.02 92);
-	--color-accent-foreground: oklch(0.18 0.004 260);
-	--color-destructive: oklch(0.56 0.19 28);
-	--color-selection: oklch(0.88 0.018 92);
 	--shadow-soft: 0 20px 60px -30px color-mix(in srgb, var(--color-highlight-soft) 38%, transparent);
 }
 
@@ -90,6 +67,7 @@
 	--color-surface-foreground: var(--surface-foreground);
 	--color-highlight-soft: var(--highlight-soft);
 	--color-highlight-text: var(--highlight-text);
+	--color-highlight-icon: var(--highlight-icon);
 	--color-selection: var(--selection);
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
@@ -214,22 +192,32 @@
 @layer components {
 	.text-link {
 		@apply underline underline-offset-4 transition-colors duration-150;
+		color: var(--color-highlight-text);
 		text-decoration-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
 		text-decoration-thickness: 0.08em;
 		text-decoration-skip-ink: auto;
 	}
 
 	.text-link:hover {
+		text-decoration-color: var(--color-highlight-soft);
+	}
+
+	/* Underline/link affordance while staying muted until hover — e.g. locale switcher chips. */
+	.text-link-muted {
+		@apply underline underline-offset-4 transition-colors duration-150;
+		color: var(--color-muted-foreground);
+		text-decoration-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
+		text-decoration-thickness: 0.08em;
+		text-decoration-skip-ink: auto;
+	}
+
+	.text-link-muted:hover {
 		color: var(--color-highlight-text);
 		text-decoration-color: var(--color-highlight-soft);
 	}
 
-	.text-link-strong {
-		@apply text-foreground;
-	}
-
 	.entry-link {
-		@apply block transition-colors duration-150 hover:text-foreground;
+		@apply block transition-colors duration-150 hover:text-highlight-strong;
 	}
 
 	.font-xat-name {
@@ -284,9 +272,11 @@
 	}
 
 	.article-body a {
-		@apply text-highlight-strong underline underline-offset-4 transition-colors duration-150;
+		@apply underline underline-offset-4 transition-colors duration-150;
+		color: var(--color-highlight-text);
 		text-decoration-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
 		text-decoration-thickness: 0.08em;
+		text-decoration-skip-ink: auto;
 	}
 
 	.article-body a:hover {
@@ -296,6 +286,10 @@
 	.article-body :is(h1, h2, h3, h4, h5, h6) a {
 		@apply text-foreground;
 		text-decoration-color: currentColor;
+	}
+
+	.article-body :is(h1, h2, h3, h4, h5, h6) a:hover {
+		color: var(--color-highlight-text);
 	}
 
 	.article-body blockquote {
@@ -464,6 +458,7 @@
 	--surface-foreground: oklch(0.18 0.004 260);
 	--highlight-soft: oklch(0.85654 0.06125 10.83);
 	--highlight-text: oklch(0.67303 0.11669 3.08);
+	--highlight-icon: color-mix(in oklab, var(--foreground) 36%, var(--highlight-soft));
 	--selection: oklch(0.88 0.018 92);
 }
 

@@ -114,7 +114,7 @@ export default async function HomePage() {
 							<div className="flex items-baseline justify-between gap-6">
 								<Eyebrow className="font-semibold">{m.home.writingEyebrow}</Eyebrow>
 								<Link
-									className="text-link font-ui text-sm text-muted-foreground"
+									className="text-link font-ui text-sm"
 									to="/post"
 								>
 									{m.home.viewAllPosts}

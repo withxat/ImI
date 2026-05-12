@@ -117,8 +117,8 @@ export const buttonVariants = cva(
 											*:data-[slot=button-loading-indicator]:text-foreground
 										`,
 				'link': `
-					text-link border-transparent text-foreground
-					*:data-[slot=button-loading-indicator]:text-foreground
+					text-link border-transparent
+					*:data-[slot=button-loading-indicator]:text-highlight-strong
 				`,
 				'outline':
           `

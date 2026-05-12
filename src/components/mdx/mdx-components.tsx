@@ -54,10 +54,7 @@ function MdxLink({ className, href, to, ...props }: MdxLinkProps) {
 export const mdxComponents = {
 	a: ({ className, ...props }: React.ComponentProps<'a'>) => (
 		<a
-			className={cn(
-				'text-link font-medium text-highlight-strong',
-				className,
-			)}
+			className={cn('text-link font-medium', className)}
 			{...props}
 		/>
 	),
@@ -193,7 +190,7 @@ export const mdxComponents = {
 				<a
 					className="
 						no-underline underline-offset-4
-						hover:underline
+						hover:text-highlight-strong hover:underline
 					"
 					href={`#${id}`}
 				>
@@ -220,7 +217,7 @@ export const mdxComponents = {
 				<a
 					className="
 						no-underline underline-offset-4
-						hover:underline
+						hover:text-highlight-strong hover:underline
 					"
 					href={`#${id}`}
 				>
