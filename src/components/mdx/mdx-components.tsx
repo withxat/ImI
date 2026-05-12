@@ -290,7 +290,7 @@ export const mdxComponents = {
 	MediaQueryDemo,
 	ol: ({ className, ...props }: React.ComponentProps<'ol'>) => (
 		<ol
-			className={cn('my-6 ms-6 list-decimal text-muted-foreground', className)}
+			className={cn('my-6 ms-4 list-decimal text-muted-foreground', className)}
 			{...props}
 		/>
 	),
@@ -437,7 +437,7 @@ export const mdxComponents = {
 	),
 	ul: ({ className, ...props }: React.ComponentProps<'ul'>) => (
 		<ul
-			className={cn('my-6 ms-6 list-disc text-muted-foreground', className)}
+			className={cn('my-6 ms-4 list-disc text-muted-foreground', className)}
 			{...props}
 		/>
 	),

@@ -314,7 +314,7 @@
 
 	.article-body ol,
 	.article-body ul {
-		@apply space-y-2 pl-5;
+		@apply space-y-2 ps-3;
 	}
 
 	.article-body pre {
