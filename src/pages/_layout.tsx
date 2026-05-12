@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { BottomFade } from '@/components/fades'
 import { Footer } from '@/components/footer'
 import { LocaleBootstrap } from '@/components/locale-bootstrap'
 import { RouteTransition } from '@/components/route-transition'
@@ -44,7 +43,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				<RouteTransition>{children}</RouteTransition>
 			</main>
 			<Footer locale={locale} />
-			<BottomFade />
 		</div>
 	)
 }
