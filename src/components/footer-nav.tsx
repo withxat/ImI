@@ -17,7 +17,7 @@ export function FooterNav() {
 						<Dot className="size-3 shrink-0 text-muted-foreground opacity-70" aria-hidden />
 					)}
 					<a
-						className="text-link"
+						className="text-link text-highlight-strong"
 						href={item.href}
 						rel={item.href.startsWith('mailto:') ? undefined : 'noreferrer'}
 						target={item.href.startsWith('mailto:') ? undefined : '_blank'}
