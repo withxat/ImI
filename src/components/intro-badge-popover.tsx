@@ -114,7 +114,6 @@ export function IntroBadgePopover({
 							dark:bg-input/32
 							dark:hover:bg-input/64
 							[&_svg]:mr-[0.25em] [&_svg]:inline [&_svg]:size-[1em] [&_svg]:align-[-0.125em] [&_svg]:text-highlight-icon
-							hover:[&_svg]:text-highlight
 						"
 						onMouseEnter={openOnHover}
 						onMouseLeave={closeOnHoverEnd}
