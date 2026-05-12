@@ -7,6 +7,8 @@ packages:
   - .
 
 patchedDependencies:
+  '@vitejs/plugin-rsc@0.5.26': patches/@vitejs__plugin-rsc@0.5.26.patch
+  react-server-dom-webpack@19.2.6: patches/react-server-dom-webpack@19.2.6.patch
   waku@1.0.0-alpha.10: patches/waku@1.0.0-alpha.10.patch
 allowBuilds:
   esbuild: false

@@ -1,0 +1,78 @@
+diff --git a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.browser.development.js b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.browser.development.js
+index 3e348765670b75a2d2aeffa91e4532b0dc52394f..c744cbf613d37dcafe3569fcd63ab5c7b4655b53 100644
+--- a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.browser.development.js
++++ b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.browser.development.js
+@@ -355,7 +355,7 @@
+                 });
+                 break;
+               case "stylesheet":
+-                preload(srcSet, "stylesheet", {
++                preload(srcSet, "style", {
+                   crossOrigin: props.crossOrigin,
+                   integrity: props.integrity,
+                   nonce: props.nonce,
+diff --git a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.browser.production.js b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.browser.production.js
+index 7c930da835b6abeb26203f664cf94683eb9b4af5..353c6fc8c45db48c5f3a31fe819c43e109c01185 100644
+--- a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.browser.production.js
++++ b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.browser.production.js
+@@ -466,7 +466,7 @@ function getChildFormatContext(parentContext, type, props) {
+             });
+             break;
+           case "stylesheet":
+-            preload(srcSet, "stylesheet", {
++            preload(srcSet, "style", {
+               crossOrigin: props.crossOrigin,
+               integrity: props.integrity,
+               nonce: props.nonce,
+diff --git a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.edge.development.js b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.edge.development.js
+index 31e0f9bc64031eded1ffc128d624b6b520bcccf9..9329125d1a6ea83a057b0b2a0dd8e4c2c0d1bb7c 100644
+--- a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.edge.development.js
++++ b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.edge.development.js
+@@ -359,7 +359,7 @@
+                 });
+                 break;
+               case "stylesheet":
+-                preload(srcSet, "stylesheet", {
++                preload(srcSet, "style", {
+                   crossOrigin: props.crossOrigin,
+                   integrity: props.integrity,
+                   nonce: props.nonce,
+diff --git a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.edge.production.js b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.edge.production.js
+index fffccc52f0668287f11d0a8b7a9fc4aae5fc3cee..41659aff52832c5828ef813f9a7018da71933e77 100644
+--- a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.edge.production.js
++++ b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.edge.production.js
+@@ -476,7 +476,7 @@ function getChildFormatContext(parentContext, type, props) {
+             });
+             break;
+           case "stylesheet":
+-            preload(srcSet, "stylesheet", {
++            preload(srcSet, "style", {
+               crossOrigin: props.crossOrigin,
+               integrity: props.integrity,
+               nonce: props.nonce,
+diff --git a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.node.development.js b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.node.development.js
+index 778cc88a8e1b39e666798c8c734abd483c026363..efc0c6eb25eb50aa6367be54d0ccc9af0a2503b4 100644
+--- a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.node.development.js
++++ b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.node.development.js
+@@ -388,7 +388,7 @@
+                 });
+                 break;
+               case "stylesheet":
+-                preload(srcSet, "stylesheet", {
++                preload(srcSet, "style", {
+                   crossOrigin: props.crossOrigin,
+                   integrity: props.integrity,
+                   nonce: props.nonce,
+diff --git a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.node.production.js b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.node.production.js
+index 064f6bc665f43c08905fd9907597e1a0c629b391..77057479b4d1212b562da228369c6b18bb935ec5 100644
+--- a/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.node.production.js
++++ b/dist/vendor/react-server-dom/cjs/react-server-dom-webpack-server.node.production.js
+@@ -503,7 +503,7 @@ function getChildFormatContext(parentContext, type, props) {
+             });
+             break;
+           case "stylesheet":
+-            preload(srcSet, "stylesheet", {
++            preload(srcSet, "style", {
+               crossOrigin: props.crossOrigin,
+               integrity: props.integrity,
+               nonce: props.nonce,
