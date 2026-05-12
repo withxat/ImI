@@ -98,7 +98,7 @@
 }
 
 @utility text-highlight-strong {
-	color: color-mix(in oklab, var(--color-foreground) 36%, var(--color-highlight));
+	color: #ff007e;
 }
 
 @utility text-highlight-icon {
