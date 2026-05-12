@@ -1,9 +1,9 @@
 import { Link } from 'waku'
 
-import { LocaleSwitcher } from '@/components/locale-switcher'
 import { Reveal } from '@/components/reveal'
+import { SiteHeader } from '@/components/site-header'
 import { StaggerReveal } from '@/components/stagger-reveal'
-import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
+import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getPostsByCategory } from '@/lib/blog'
 import { cn } from '@/lib/cn'
 import { getMessages } from '@/lib/i18n/messages'
@@ -34,13 +34,7 @@ export default async function BlogIndexPage() {
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col">
 					<div className="space-y-8">
-						<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-							<TextLink to="/">{m.blog.goHome}</TextLink>
-							<LocaleSwitcher
-								aria-label={m.localeSwitcher.ariaLabel}
-								currentLocale={locale}
-							/>
-						</div>
+						<SiteHeader locale={locale} messages={m} showBack />
 						<div className="space-y-0">
 							<h1 className="font-medium text-foreground">{m.blog.title}</h1>
 							<p className="text-muted-foreground">{m.blog.archiveSubtitle}</p>

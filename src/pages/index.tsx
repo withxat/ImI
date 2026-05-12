@@ -3,9 +3,9 @@ import { Link } from 'waku'
 import { ConstructionStripesIcon } from '@/components/construction-stripes-icon'
 import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
-import { LocaleSwitcher } from '@/components/locale-switcher'
 import { NameAudioButton } from '@/components/name-audio-button'
 import { Reveal } from '@/components/reveal'
+import { SiteHeader } from '@/components/site-header'
 import { StaggerReveal } from '@/components/stagger-reveal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Container, Eyebrow } from '@/components/ui/primitives'
@@ -45,40 +45,34 @@ export default async function HomePage() {
 			<Container className="page-shell">
 				<div className="flex flex-col">
 					<div className="flex flex-col gap-5">
-						<div className="flex items-start justify-between gap-6">
-							<div className="flex min-w-0 flex-1 flex-col gap-4">
-								<Avatar className="
-									size-14 rounded-xl border border-border
-									sm:size-16
+						<SiteHeader locale={locale} messages={m} />
+						<div className="flex min-w-0 flex-col gap-4">
+							<Avatar className="
+								size-14 rounded-xl border border-border
+								sm:size-16
+							"
+							>
+								<AvatarImage
+									alt="Xat"
+									fetchPriority="high"
+									height={64}
+									referrerPolicy="no-referrer"
+									src={PROFILE_AVATAR_SRC}
+									width={64}
+								/>
+								<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
+							</Avatar>
+							<div className="space-y-0">
+								<h1 className="
+									inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
+									sm:text-3xl
 								"
 								>
-									<AvatarImage
-										alt="Xat"
-										fetchPriority="high"
-										height={64}
-										referrerPolicy="no-referrer"
-										src={PROFILE_AVATAR_SRC}
-										width={64}
-									/>
-									<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
-								</Avatar>
-								<div className="space-y-0">
-									<h1 className="
-										inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
-										sm:text-3xl
-									"
-									>
-										<span className="font-xat-name font-normal text-highlight-strong">Xat</span>
-										<NameAudioButton />
-									</h1>
-									<p className="text-muted-foreground">{m.home.role}</p>
-								</div>
+									<span className="font-xat-name font-normal text-highlight-strong">Xat</span>
+									<NameAudioButton />
+								</h1>
+								<p className="text-muted-foreground">{m.home.role}</p>
 							</div>
-							<LocaleSwitcher
-								aria-label={m.localeSwitcher.ariaLabel}
-								className="shrink-0"
-								currentLocale={locale}
-							/>
 						</div>
 						<p
 							className="home-bio-lead max-w-prose font-serif text-base/7 text-foreground"

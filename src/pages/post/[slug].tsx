@@ -1,10 +1,10 @@
 import type { PageProps } from 'waku/router'
 
 import { ArticleBody } from '@/components/article-body'
-import { LocaleSwitcher } from '@/components/locale-switcher'
 import { PostTranslatedNoticeAside } from '@/components/post-translated-notice'
+import { SiteHeader } from '@/components/site-header'
 import { StaggerReveal } from '@/components/stagger-reveal'
-import { Container, Eyebrow, TextLink } from '@/components/ui/primitives'
+import { Container, Eyebrow } from '@/components/ui/primitives'
 import { formatPostDate, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
@@ -59,13 +59,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 			<Container className="page-shell">
 				<StaggerReveal className="flex flex-col space-y-8">
 					<div className="space-y-8">
-						<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-							<TextLink to="/">{m.blog.goHome}</TextLink>
-							<LocaleSwitcher
-								aria-label={m.localeSwitcher.ariaLabel}
-								currentLocale={locale}
-							/>
-						</div>
+						<SiteHeader locale={locale} messages={m} showBack />
 						<div className="space-y-3">
 							<Eyebrow>
 								{categoryEyebrow}

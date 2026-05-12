@@ -8,7 +8,7 @@
 	src: url('/fonts/fugaz-one-regular-subset.woff2') format('woff2');
 }
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(html.dark *));
 
 @theme {
 	--font-display: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -86,6 +86,11 @@
 	--color-card: var(--card);
 	--color-code-foreground: var(--code-foreground);
 	--color-code: var(--code);
+	--color-surface: var(--surface);
+	--color-surface-foreground: var(--surface-foreground);
+	--color-highlight-soft: var(--highlight-soft);
+	--color-highlight-text: var(--highlight-text);
+	--color-selection: var(--selection);
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
@@ -224,7 +229,7 @@
 	}
 
 	.entry-link {
-		@apply block transition-colors duration-150 hover:text-black;
+		@apply block transition-colors duration-150 hover:text-foreground;
 	}
 
 	.font-xat-name {
@@ -249,6 +254,16 @@
 		background-repeat: repeat-x;
 		background-size: 48px 10px;
 		background-position: 0 100%;
+	}
+
+	html.dark .post-list-entry::after {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 10' width='48' height='10'%3E%3Cpath d='M0 5 Q6 0.5 12 5 T24 5 T36 5 T48 5' fill='none' stroke='%23333333' stroke-width='1.15' stroke-linecap='round'/%3E%3C/svg%3E");
+	}
+
+	@media (prefers-color-scheme: dark) {
+		html:not(.light) .post-list-entry::after {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 10' width='48' height='10'%3E%3Cpath d='M0 5 Q6 0.5 12 5 T24 5 T36 5 T48 5' fill='none' stroke='%23333333' stroke-width='1.15' stroke-linecap='round'/%3E%3C/svg%3E");
+		}
 	}
 
 	.page-shell {
@@ -445,25 +460,31 @@
 	--sidebar-accent-foreground: var(--foreground);
 	--sidebar-border: --alpha(var(--color-black) / 6%);
 	--sidebar-ring: var(--ring);
+	--surface: oklch(1 0 0);
+	--surface-foreground: oklch(0.18 0.004 260);
+	--highlight-soft: oklch(0.85654 0.06125 10.83);
+	--highlight-text: oklch(0.67303 0.11669 3.08);
+	--selection: oklch(0.88 0.018 92);
 }
 
 .dark {
-	--background: color-mix(in srgb, var(--color-neutral-950) 95%, var(--color-white));
-	--foreground: var(--color-neutral-100);
-	--card: color-mix(in srgb, var(--background) 98%, var(--color-white));
-	--card-foreground: var(--color-neutral-100);
-	--code: color-mix(in srgb, var(--color-neutral-950) 92%, var(--color-white));
-	--code-foreground: var(--color-neutral-100);
-	--popover: color-mix(in srgb, var(--background) 98%, var(--color-white));
-	--popover-foreground: var(--color-neutral-100);
-	--primary: var(--color-neutral-100);
-	--primary-foreground: var(--color-neutral-800);
-	--secondary: --alpha(var(--color-white) / 4%);
-	--secondary-foreground: var(--color-neutral-100);
-	--muted: --alpha(var(--color-white) / 4%);
-	--muted-foreground: color-mix(in srgb, var(--color-neutral-500) 90%, var(--color-white));
-	--accent: --alpha(var(--color-white) / 4%);
-	--accent-foreground: var(--color-neutral-100);
+	color-scheme: dark;
+	--background: #101010;
+	--foreground: #ffffff;
+	--card: #1a1a1a;
+	--card-foreground: #ffffff;
+	--code: #181818;
+	--code-foreground: var(--color-neutral-200);
+	--popover: #1a1a1a;
+	--popover-foreground: #ffffff;
+	--primary: #ffffff;
+	--primary-foreground: #101010;
+	--secondary: --alpha(var(--color-white) / 6%);
+	--secondary-foreground: #ffffff;
+	--muted: --alpha(var(--color-white) / 6%);
+	--muted-foreground: #999999;
+	--accent: --alpha(var(--color-white) / 6%);
+	--accent-foreground: #ffffff;
 	--destructive: color-mix(in srgb, var(--color-red-500) 90%, var(--color-white));
 	--destructive-foreground: var(--color-red-400);
 	--info: var(--color-blue-500);
@@ -472,10 +493,15 @@
 	--success-foreground: var(--color-emerald-400);
 	--warning: var(--color-amber-500);
 	--warning-foreground: var(--color-amber-400);
-	--border: --alpha(var(--color-white) / 6%);
-	--input: --alpha(var(--color-white) / 8%);
+	--highlight-soft: #a0a0a0;
+	--highlight-text: #ffc799;
+	--selection: color-mix(in srgb, #ffc799 20%, #101010);
+	--surface: #1a1a1a;
+	--surface-foreground: #ffffff;
+	--border: --alpha(var(--color-white) / 10%);
+	--input: --alpha(var(--color-white) / 12%);
 	--ring: var(--color-neutral-500);
-	--sidebar: color-mix(in srgb, var(--color-neutral-950) 97%, var(--color-white));
+	--sidebar: #0a0a0a;
 	--sidebar-foreground: color-mix(in srgb, var(--foreground) 64%, var(--sidebar));
 	--sidebar-primary: var(--primary);
 	--sidebar-primary-foreground: var(--primary-foreground);
@@ -483,4 +509,50 @@
 	--sidebar-accent-foreground: var(--foreground);
 	--sidebar-border: --alpha(var(--color-white) / 5%);
 	--sidebar-ring: var(--color-neutral-400);
+}
+
+@media (prefers-color-scheme: dark) {
+	html:not(.light) {
+		color-scheme: dark;
+		--background: #101010;
+		--foreground: #ffffff;
+		--card: #1a1a1a;
+		--card-foreground: #ffffff;
+		--code: #181818;
+		--code-foreground: var(--color-neutral-200);
+		--popover: #1a1a1a;
+		--popover-foreground: #ffffff;
+		--primary: #ffffff;
+		--primary-foreground: #101010;
+		--secondary: --alpha(var(--color-white) / 6%);
+		--secondary-foreground: #ffffff;
+		--muted: --alpha(var(--color-white) / 6%);
+		--muted-foreground: #999999;
+		--accent: --alpha(var(--color-white) / 6%);
+		--accent-foreground: #ffffff;
+		--destructive: color-mix(in srgb, var(--color-red-500) 90%, var(--color-white));
+		--destructive-foreground: var(--color-red-400);
+		--info: var(--color-blue-500);
+		--info-foreground: var(--color-blue-400);
+		--success: var(--color-emerald-500);
+		--success-foreground: var(--color-emerald-400);
+		--warning: var(--color-amber-500);
+		--warning-foreground: var(--color-amber-400);
+		--highlight-soft: #a0a0a0;
+		--highlight-text: #ffc799;
+		--selection: color-mix(in srgb, #ffc799 20%, #101010);
+		--surface: #1a1a1a;
+		--surface-foreground: #ffffff;
+		--border: --alpha(var(--color-white) / 10%);
+		--input: --alpha(var(--color-white) / 12%);
+		--ring: var(--color-neutral-500);
+		--sidebar: #0a0a0a;
+		--sidebar-foreground: color-mix(in srgb, var(--foreground) 64%, var(--sidebar));
+		--sidebar-primary: var(--primary);
+		--sidebar-primary-foreground: var(--primary-foreground);
+		--sidebar-accent: --alpha(var(--color-white) / 4%);
+		--sidebar-accent-foreground: var(--foreground);
+		--sidebar-border: --alpha(var(--color-white) / 5%);
+		--sidebar-ring: var(--color-neutral-400);
+	}
 }

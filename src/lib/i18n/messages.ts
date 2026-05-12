@@ -55,6 +55,15 @@ export interface Messages {
 	footer: {
 		connect: string
 	}
+	header: {
+		goHome: string
+		theme: {
+			ariaLabel: string
+			dark: string
+			light: string
+			system: string
+		}
+	}
 	home: {
 		bioLead: string
 		bioP1: string
@@ -152,6 +161,15 @@ const en: Messages = {
 	},
 	footer: {
 		connect: 'Connect through any of these:',
+	},
+	header: {
+		goHome: 'Go to home',
+		theme: {
+			ariaLabel: 'Theme',
+			dark: 'Dark',
+			light: 'Light',
+			system: 'System',
+		},
 	},
 	home: {
 		bioLead: 'Building production-quality interfaces and AI-native products',
@@ -257,6 +275,15 @@ const zh: Messages = {
 	},
 	footer: {
 		connect: '可以通过这些方式联系：',
+	},
+	header: {
+		goHome: '回到首页',
+		theme: {
+			ariaLabel: '主题',
+			dark: '深色',
+			light: '浅色',
+			system: '跟随系统',
+		},
 	},
 	home: {
 		bioLead: '打造生产级界面与 AI 原生产品',
@@ -367,6 +394,15 @@ const ja: Messages = {
 	},
 	footer: {
 		connect: 'こちらからどうぞ：',
+	},
+	header: {
+		goHome: 'ホームへ',
+		theme: {
+			ariaLabel: 'テーマ',
+			dark: 'ダーク',
+			light: 'ライト',
+			system: 'システム',
+		},
 	},
 	home: {
 		bioLead: '本番品質の UI と AI ネイティブなプロダクトをつくる',
