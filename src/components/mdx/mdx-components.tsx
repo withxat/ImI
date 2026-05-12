@@ -10,6 +10,8 @@ import { ComponentSource } from '@/components/mdx/component-source'
 import { MediaQueryDemo } from '@/components/mdx/media-query-demo'
 import { CopyButton } from '@/components/mdx/shared/copy-button'
 import { getIconForLanguageExtension } from '@/components/mdx/shared/icons'
+import { MdxPreWithCopy } from '@/components/mdx/shared/mdx-pre-with-copy'
+import { MdxPrettyCodeFigcaption } from '@/components/mdx/shared/mdx-pretty-code-figcaption'
 import {
 	Accordion,
 	AccordionItem,
@@ -49,6 +51,30 @@ function MdxLink({ className, href, to, ...props }: MdxLinkProps) {
 			{...props}
 		/>
 	)
+}
+
+function isMdxBlockCode(
+	props: React.ComponentProps<'code'> & {
+		'__bun__'?: string
+		'__npm__'?: string
+		'__pnpm__'?: string
+		'__raw__'?: string
+		'__src__'?: string
+		'__yarn__'?: string
+		'data-language'?: string
+	},
+): boolean {
+	if (typeof props['data-language'] === 'string' && props['data-language'].length > 0) {
+		return true
+	}
+	const cn = props.className
+	if (typeof cn === 'string' && /\blanguage-[\w-]+\b/.test(cn)) {
+		return true
+	}
+	if (props.children != null && typeof props.children !== 'string') {
+		return true
+	}
+	return false
 }
 
 export const mdxComponents = {
@@ -92,8 +118,19 @@ export const mdxComponents = {
 		__src__?: string
 		__yarn__?: string
 	}) => {
-		// Inline Code.
-		if (typeof props.children === 'string') {
+		const block = isMdxBlockCode({
+			__bun__,
+			__npm__,
+			__pnpm__,
+			__raw__,
+			__src__,
+			__yarn__,
+			className,
+			...props,
+		})
+
+		// Inline code (incl. plain `text` in prose).
+		if (!block && typeof props.children === 'string') {
 			return (
 				<code
 					className={cn(
@@ -105,7 +142,7 @@ export const mdxComponents = {
 			)
 		}
 
-		// npm command.
+		// npm / multi-package command block.
 		const isNpmCommand = __npm__ && __yarn__ && __pnpm__ && __bun__
 		if (isNpmCommand) {
 			return (
@@ -118,11 +155,11 @@ export const mdxComponents = {
 			)
 		}
 
-		// Default codeblock.
+		// Fenced / pretty-code block: copy lives on `MdxPreWithCopy`; optional legacy __raw__ hook.
 		return (
 			<>
-				{__raw__ && <CopyButton src={__src__} value={__raw__} />}
-				<code {...props} />
+				{__raw__ && <CopyButton src={__src__} value={__raw__} codeSurface />}
+				<code className={className} {...props} />
 			</>
 		)
 	},
@@ -139,6 +176,16 @@ export const mdxComponents = {
 			= 'data-language' in props && typeof props['data-language'] === 'string'
 				? getIconForLanguageExtension(props['data-language'])
 				: null
+
+		const isPrettyTitle = 'data-rehype-pretty-code-title' in props
+
+		if (isPrettyTitle) {
+			return (
+				<MdxPrettyCodeFigcaption className={className} icon={iconExtension} {...props}>
+					{children}
+				</MdxPrettyCodeFigcaption>
+			)
+		}
 
 		return (
 			<figcaption
@@ -158,7 +205,15 @@ export const mdxComponents = {
 		)
 	},
 	figure: ({ className, ...props }: React.ComponentProps<'figure'>) => {
-		return <figure className={cn(className)} {...props} />
+		return (
+			<figure
+				className={cn(
+					`data-rehype-pretty-code-figure:relative data-rehype-pretty-code-figure:my-6 data-rehype-pretty-code-figure:rounded-xl data-rehype-pretty-code-figure:border data-rehype-pretty-code-figure:border-border data-rehype-pretty-code-figure:bg-code`,
+					className,
+				)}
+				{...props}
+			/>
+		)
 	},
 	h1: ({ className, ...props }: React.ComponentProps<'h1'>) => (
 		<h1
@@ -303,30 +358,7 @@ export const mdxComponents = {
 			{...props}
 		/>
 	),
-	pre: ({ children, className, ...props }: React.ComponentProps<'pre'>) => {
-		return (
-			<ScrollArea className="
-				**:data-[slot=scroll-area-scrollbar]:data-[orientation=horizontal]:mx-2
-				**:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2
-			"
-			>
-				<pre
-					className={cn(
-						`
-							w-max min-w-full px-4 py-3.5 text-[.8125rem] outline-none
-							has-data-highlighted-line:px-0
-							has-data-line-numbers:px-0
-							has-data-[slot=tabs]:p-0
-						`,
-						className,
-					)}
-					{...props}
-				>
-					{children}
-				</pre>
-			</ScrollArea>
-		)
-	},
+	pre: (preProps: React.ComponentProps<'pre'>) => <MdxPreWithCopy {...preProps} />,
 	Step: ({ className, ...props }: React.ComponentProps<'h3'>) => (
 		<h3
 			className={cn('mt-8 scroll-m-32 font-medium tracking-tight', className)}

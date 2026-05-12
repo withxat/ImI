@@ -15,7 +15,7 @@ export function CodeBlock({
 	title?: string
 }) {
 	return (
-		<figure data-rehype-pretty-code-figure="">
+		<figure className="relative" data-rehype-pretty-code-figure="">
 			{title && (
 				<figcaption
 					className="
@@ -30,7 +30,7 @@ export function CodeBlock({
 					{title}
 				</figcaption>
 			)}
-			{copyButton && <CopyButton value={code} />}
+			{copyButton && <CopyButton value={code} codeSurface />}
 			<ScrollArea className="
 				**:data-[slot=scroll-area-scrollbar]:data-[orientation=horizontal]:mx-2
 				**:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2

@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path'
 
 import { createDefaultImport, defineCollection, defineConfig, defineSingleton } from '@content-collections/core'
 import { compile } from '@mdx-js/mdx'
+import rehypePrettyCode from 'rehype-pretty-code'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
 import remarkGfm from 'remark-gfm'
@@ -19,6 +20,17 @@ async function createMdxImport(compilationKey: string, content: string) {
 		development: false,
 		outputFormat: 'program',
 		providerImportSource: undefined,
+		rehypePlugins: [
+			[
+				rehypePrettyCode,
+				{
+					bypassInlineCode: true,
+					defaultLang: 'plaintext',
+					keepBackground: false,
+					theme: 'vesper',
+				},
+			],
+		],
 		remarkPlugins: [remarkGfm, remarkCjkFriendly, remarkCjkFriendlyGfmStrikethrough],
 	})
 

@@ -315,6 +315,24 @@
 		@apply max-w-full overflow-x-auto bg-code p-4 font-ui text-[13px]/6 wrap-normal text-white;
 	}
 
+	/* Pretty-code frame already provides surface; avoid double background on pre. */
+	.article-body [data-rehype-pretty-code-figure] pre {
+		@apply bg-transparent;
+	}
+
+	/* When a title row exists, copy lives in figcaption — hide the floating duplicate. */
+	.article-body figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) [data-mdx-pre-copy-slot] {
+		display: none;
+	}
+
+	.article-body [data-rehype-pretty-code-title] {
+		@apply border-border border-b px-4 py-2.5 font-ui text-[13px] text-white/80;
+	}
+
+	.article-body [data-rehype-pretty-code-caption] {
+		@apply px-4 py-2 text-[13px] text-white/55;
+	}
+
 	.article-body pre code {
 		@apply bg-transparent p-0 break-normal wrap-normal text-inherit;
 	}
