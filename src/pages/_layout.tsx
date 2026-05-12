@@ -25,7 +25,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<meta charSet="utf-8" />
 			<meta content="width=device-width, initial-scale=1" name="viewport" />
 			<link crossOrigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
-			<link as="font" crossOrigin="anonymous" href="/fonts/fugaz-one-regular-subset.woff2" rel="preload" type="font/woff2" />
 			{locale === 'zh'
 				? (
 						<>

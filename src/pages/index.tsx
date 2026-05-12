@@ -40,6 +40,7 @@ export default async function HomePage() {
 				title={m.home.title}
 				type="profile"
 			>
+				<link as="font" crossOrigin="anonymous" href="/fonts/fugaz-one-regular-subset.woff2" rel="preload" type="font/woff2" />
 				<link as="image" href={PROFILE_AVATAR_SRC} rel="preload" />
 			</Seo>
 			<Container className="page-shell">
