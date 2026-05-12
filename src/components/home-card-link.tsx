@@ -36,7 +36,7 @@ function HomeCardLinkContent({
 					className={cn(
 						`
 							-mx-0.5 size-4 shrink-0 text-muted-foreground opacity-80 transition-transform duration-150 ease-out
-							group-hover:text-highlight-icon
+							group-hover:text-highlight-icon group-hover:opacity-100
 						`,
 						external
 							? 'group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
