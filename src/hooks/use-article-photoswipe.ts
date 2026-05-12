@@ -50,6 +50,9 @@ export function useArticlePhotoswipe(rootRef: RefObject<HTMLElement | null>) {
 
 			const { h, w } = dimensionsForImage(el)
 			const src = el.currentSrc || el.src
+			const msrc = el.currentSrc || el.src
+			const srcset = el.srcset?.trim() ? el.srcset : undefined
+			const sizes = el.sizes?.trim() ? el.sizes : undefined
 
 			void (async () => {
 				const { default: PhotoSwipe } = await import('photoswipe')
@@ -67,7 +70,10 @@ export function useArticlePhotoswipe(rootRef: RefObject<HTMLElement | null>) {
 							alt: el.alt,
 							element: el,
 							height: h,
+							msrc,
+							...(sizes ? { sizes } : {}),
 							src,
+							...(srcset ? { srcset } : {}),
 							width: w,
 						},
 					],
