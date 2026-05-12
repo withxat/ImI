@@ -37,7 +37,7 @@
 	--color-border: color-mix(in oklab, oklch(0.17 0.003 260) 12%, transparent);
 	--color-input: color-mix(in oklab, oklch(0.17 0.003 260) 14%, transparent);
 	--color-ring: oklch(0.17 0.003 260);
-	--color-highlight: #f5c0c6;
+	--color-highlight: oklch(0.85654 0.06125 10.83);
 	--color-accent: oklch(0.9 0.02 92);
 	--color-accent-foreground: oklch(0.18 0.004 260);
 	--color-destructive: oklch(0.56 0.19 28);
@@ -98,7 +98,7 @@
 }
 
 @utility text-highlight-strong {
-	color: #d1768f;
+	color: oklch(0.67303 0.11669 3.08);
 }
 
 @utility text-highlight-icon {
@@ -314,7 +314,7 @@
 	}
 
 	.article-body pre {
-		@apply max-w-full overflow-x-auto bg-[#16171d] p-4 font-ui text-[13px]/6 wrap-normal text-white;
+		@apply max-w-full overflow-x-auto bg-code p-4 font-ui text-[13px]/6 wrap-normal text-white;
 	}
 
 	.article-body pre code {
@@ -396,7 +396,7 @@
 	--foreground: oklch(0.17 0.003 260);
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.18 0.004 260);
-	--code: #16171d;
+	--code: oklch(0.20628 0.01199 277.83);
 	--code-foreground: var(--color-neutral-100);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.18 0.004 260);
