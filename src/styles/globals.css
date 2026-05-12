@@ -37,11 +37,12 @@
 	--color-border: color-mix(in oklab, oklch(0.17 0.003 260) 12%, transparent);
 	--color-input: color-mix(in oklab, oklch(0.17 0.003 260) 14%, transparent);
 	--color-ring: oklch(0.17 0.003 260);
+	--color-highlight: #f5c0c6;
 	--color-accent: oklch(0.9 0.02 92);
 	--color-accent-foreground: oklch(0.18 0.004 260);
 	--color-destructive: oklch(0.56 0.19 28);
 	--color-selection: oklch(0.88 0.018 92);
-	--shadow-soft: 0 20px 60px -30px color-mix(in srgb, #111827 18%, transparent);
+	--shadow-soft: 0 20px 60px -30px color-mix(in srgb, var(--color-highlight) 38%, transparent);
 }
 
 @theme inline {
@@ -94,6 +95,10 @@
 			background-position: -200% 0;
 		}
 	}
+}
+
+@utility text-highlight-strong {
+	color: color-mix(in oklab, var(--color-foreground) 62%, var(--color-highlight));
 }
 
 @layer base {
@@ -185,11 +190,19 @@
 
 @layer components {
 	.text-link {
-		@apply underline decoration-border underline-offset-4 transition-colors duration-150 hover:text-foreground hover:decoration-current;
+		@apply underline underline-offset-4 transition-colors duration-150;
+		text-decoration-color: color-mix(in srgb, var(--color-highlight) 75%, transparent);
+		text-decoration-thickness: 0.08em;
+		text-decoration-skip-ink: auto;
+	}
+
+	.text-link:hover {
+		color: color-mix(in oklab, var(--color-foreground) 42%, var(--color-highlight));
+		text-decoration-color: var(--color-highlight);
 	}
 
 	.text-link-strong {
-		@apply text-foreground hover:text-black;
+		@apply text-foreground;
 	}
 
 	.entry-link {
@@ -238,7 +251,14 @@
 	}
 
 	.article-body a {
-		@apply text-foreground underline decoration-border underline-offset-4;
+		@apply text-foreground underline underline-offset-4 transition-colors duration-150;
+		text-decoration-color: color-mix(in srgb, var(--color-highlight) 75%, transparent);
+		text-decoration-thickness: 0.08em;
+	}
+
+	.article-body a:hover {
+		color: color-mix(in oklab, var(--color-foreground) 42%, var(--color-highlight));
+		text-decoration-color: var(--color-highlight);
 	}
 
 	.article-body blockquote {
@@ -298,7 +318,7 @@
 	}
 
 	.article-body strong {
-		@apply font-semibold text-foreground;
+		@apply font-semibold text-highlight-strong;
 	}
 
 	.article-body table {

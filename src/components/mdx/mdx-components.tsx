@@ -44,7 +44,7 @@ type MdxLinkProps = React.ComponentProps<'a'> & {
 function MdxLink({ className, href, to, ...props }: MdxLinkProps) {
 	return (
 		<a
-			className={cn('font-medium underline underline-offset-4', className)}
+			className={cn('text-link font-medium', className)}
 			href={href ?? to}
 			{...props}
 		/>
@@ -55,7 +55,7 @@ export const mdxComponents = {
 	a: ({ className, ...props }: React.ComponentProps<'a'>) => (
 		<a
 			className={cn(
-				'font-medium text-foreground underline underline-offset-4',
+				'text-link font-medium text-foreground',
 				className,
 			)}
 			{...props}
@@ -347,7 +347,7 @@ export const mdxComponents = {
 	),
 	strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
 		<strong
-			className={cn('font-medium text-foreground', className)}
+			className={cn('font-medium text-highlight-strong', className)}
 			{...props}
 		/>
 	),
