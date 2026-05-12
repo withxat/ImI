@@ -26,6 +26,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			{/* Static bootstrap only — no runtime HTML; aligns <html.dark> before paint */}
 			{/* eslint-disable-next-line react/dom-no-dangerously-set-innerhtml -- intentional inline FOUC blocker */}
 			<script dangerouslySetInnerHTML={{ __html: getThemeBootstrapScript() }} suppressHydrationWarning />
+			<meta charSet="utf-8" />
+			<meta content="width=device-width, initial-scale=1" name="viewport" />
 			<link crossOrigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
 			<link as="font" crossOrigin="anonymous" href="/fonts/fugaz-one-regular-subset.woff2" rel="preload" type="font/woff2" />
 			{locale === 'zh'

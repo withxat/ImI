@@ -140,8 +140,7 @@
 	}
 
 	html:lang(ja),
-	html:lang(zh),
-	html:lang(zh-Hans) {
+	html:lang(zh) {
 		hyphens: none;
 	}
 
