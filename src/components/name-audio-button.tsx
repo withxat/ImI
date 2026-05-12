@@ -67,7 +67,7 @@ export function NameAudioButton() {
 		<span className="inline-flex items-center">
 			<Button
 				aria-label="Play name pronunciation"
-				className="ml-2 -translate-y-px"
+				className="-translate-y-px"
 				onClick={handlePlay}
 				size="icon-xs"
 				type="button"
