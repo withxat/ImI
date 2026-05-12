@@ -1,0 +1,87 @@
+'use client'
+
+import type { RefObject } from 'react'
+
+import { useEffect } from 'react'
+
+import 'photoswipe/style.css'
+import '@/components/article-photoswipe.css'
+
+function dimensionsForImage(img: HTMLImageElement) {
+	const rect = img.getBoundingClientRect()
+	let w = img.naturalWidth
+	let h = img.naturalHeight
+	if (!w || !h) {
+		const dpr = window.devicePixelRatio || 1
+		w = Math.max(1, Math.round(rect.width * dpr))
+		h = Math.max(1, Math.round(rect.height * dpr))
+	}
+	return { h, w }
+}
+
+/**
+ * Delegated clicks on `<img>` inside the article root open PhotoSwipe (single image, no gallery UI).
+ */
+export function useArticlePhotoswipe(rootRef: RefObject<HTMLElement | null>) {
+	useEffect(() => {
+		const root = rootRef.current
+		if (!root)
+			return
+
+		const onClick = (e: MouseEvent) => {
+			if (e.defaultPrevented)
+				return
+			if (e.button !== 0)
+				return
+			if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)
+				return
+
+			const el = e.target
+			if (!(el instanceof HTMLImageElement))
+				return
+			if (!root.contains(el))
+				return
+			if (el.closest('a'))
+				return
+			if (el.hasAttribute('data-no-photoswipe'))
+				return
+
+			e.preventDefault()
+
+			const { h, w } = dimensionsForImage(el)
+			const src = el.currentSrc || el.src
+
+			void (async () => {
+				const { default: PhotoSwipe } = await import('photoswipe')
+				const pswp = new PhotoSwipe({
+					allowPanToNext: false,
+					arrowKeys: false,
+					arrowNext: false,
+					arrowPrev: false,
+					bgClickAction: 'close',
+					bgOpacity: 0.94,
+					close: false,
+					counter: false,
+					dataSource: [
+						{
+							alt: el.alt,
+							height: h,
+							src,
+							width: w,
+						},
+					],
+					escKey: true,
+					index: 0,
+					loop: false,
+					mainClass: 'pswp--article-minimal',
+					showHideAnimationType: 'fade',
+					zoom: false,
+				})
+				pswp.init()
+			})()
+		}
+
+		root.addEventListener('click', onClick)
+		return () => root.removeEventListener('click', onClick)
+	}, [rootRef])
+}

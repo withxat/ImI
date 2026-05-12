@@ -1,0 +1,5 @@
+/* Minimal article lightbox: no control chrome, no preloader dots */
+.pswp--article-minimal .pswp__top-bar,
+.pswp--article-minimal .pswp__preloader {
+	display: none !important;
+}

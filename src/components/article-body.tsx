@@ -1,8 +1,8 @@
 import type { MDXComponents, MDXContent } from 'mdx/types'
 
+import { ArticleBodyPlainClient } from '@/components/article-body-plain-client'
 import { ArticleRevealClient } from '@/components/article-reveal-client'
 import { mdxComponents } from '@/components/mdx'
-import { cn } from '@/lib/cn'
 
 interface ArticleBodyProps {
 	className?: string
@@ -32,8 +32,8 @@ export function ArticleBody({
 	}
 
 	return (
-		<div className={cn('article-body', className)}>
+		<ArticleBodyPlainClient className={className}>
 			<MDXContent components={componentsWithDefaults} />
-		</div>
+		</ArticleBodyPlainClient>
 	)
 }

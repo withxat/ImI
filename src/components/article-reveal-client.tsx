@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 
 import { useLayoutEffect, useRef } from 'react'
 
+import { useArticlePhotoswipe } from '@/hooks/use-article-photoswipe'
 import { cn } from '@/lib/cn'
 
 const TOP_SCROLL_PX = 16
@@ -19,6 +20,8 @@ interface ArticleRevealClientProps {
  */
 export function ArticleRevealClient({ children, className }: ArticleRevealClientProps) {
 	const rootRef = useRef<HTMLDivElement>(null)
+
+	useArticlePhotoswipe(rootRef)
 
 	useLayoutEffect(() => {
 		const root = rootRef.current
