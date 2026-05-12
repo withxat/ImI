@@ -68,7 +68,7 @@ export default async function HomePage() {
 										sm:text-3xl
 									"
 									>
-										<span className="font-xat-name font-normal">Xat</span>
+										<span className="font-xat-name font-normal text-highlight-strong">Xat</span>
 										<NameAudioButton />
 									</h1>
 									<p className="text-muted-foreground">{m.home.role}</p>
