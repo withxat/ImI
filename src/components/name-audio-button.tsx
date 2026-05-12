@@ -1,5 +1,6 @@
 'use client'
 
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { NameVolumeIcon } from '@/components/name-volume-icon'
@@ -9,6 +10,8 @@ export function NameAudioButton() {
 	const audioRef = useRef<HTMLAudioElement>(null)
 	const [playing, setPlaying] = useState(false)
 	const [endSync, setEndSync] = useState(false)
+	const [showPronunciation, setShowPronunciation] = useState(false)
+	const reduceMotion = useReducedMotion()
 
 	const onEndSyncComplete = useCallback(() => {
 		setEndSync(false)
@@ -59,15 +62,45 @@ export function NameAudioButton() {
 			return
 		}
 
+		setShowPronunciation(true)
 		audio.currentTime = 0
 		void audio.play()
 	}
 
 	return (
-		<span className="inline-flex items-center">
+		<span className="inline-flex items-baseline gap-0.75">
+			<AnimatePresence initial={false}>
+				{showPronunciation && (
+					<motion.span
+						animate={{
+							opacity: 1,
+							width: 'auto',
+						}}
+						className="
+							inline-flex overflow-hidden text-sm whitespace-nowrap text-highlight-strong
+							sm:text-base
+						"
+						exit={{
+							opacity: 0,
+							width: 0,
+						}}
+						initial={reduceMotion
+							? false
+							: {
+									opacity: 0,
+									width: 0,
+								}}
+						transition={{
+							duration: reduceMotion ? 0 : 0.24,
+							ease: [0.22, 1, 0.36, 1],
+						}}
+					>
+						/ˈeɪtoʊ/
+					</motion.span>
+				)}
+			</AnimatePresence>
 			<Button
 				aria-label="Play name pronunciation"
-				className="-translate-y-px"
 				onClick={handlePlay}
 				size="icon-xs"
 				type="button"
@@ -75,9 +108,9 @@ export function NameAudioButton() {
 			>
 				<NameVolumeIcon
 					audioPlaying={playing}
+					className="size-3.5"
 					endSync={endSync}
 					onEndSyncComplete={onEndSyncComplete}
-					size={16}
 					aria-hidden
 				/>
 			</Button>
