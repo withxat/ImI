@@ -13,7 +13,7 @@ interface SiteHeaderProps {
 
 export function SiteHeader({ locale, messages, showBack = false }: SiteHeaderProps) {
 	return (
-		<header className="space-y-2">
+		<header className="space-y-4">
 			<div className="flex items-baseline justify-between gap-4">
 				{showBack
 					? <TextLink to="/">{messages.header.goHome}</TextLink>

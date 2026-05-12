@@ -1,5 +1,4 @@
-import { Link } from 'waku'
-
+import { HomeCardLink } from '@/components/home-card-link'
 import { Reveal } from '@/components/reveal'
 import { SiteHeader } from '@/components/site-header'
 import { StaggerReveal } from '@/components/stagger-reveal'
@@ -61,20 +60,18 @@ export default async function BlogIndexPage() {
 								</div>
 							</Reveal>
 
-							<div className="space-y-6">
+							<div className="space-y-3">
 								{group.posts.map((post, postIndex) => {
 									const slug = post.slug
 
 									return (
 										<Reveal key={slug} staggerIndex={postIndex + 1}>
-											<Link
-												className="entry-link"
-												to={`/post/${slug}`}
-												unstable_prefetchOnView
-											>
-												<h3 className="font-medium text-foreground">{post.title}</h3>
-												<p className="mt-1 text-base/6 text-muted-foreground">{post.summary}</p>
-											</Link>
+											<HomeCardLink
+												description={post.summary}
+												href={`/post/${slug}`}
+												title={post.title}
+												prefetchOnView
+											/>
 										</Reveal>
 									)
 								})}

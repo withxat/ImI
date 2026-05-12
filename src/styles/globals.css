@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @font-face {
-	font-family: 'Fugaz One Xat';
+	font-family: 'Fugaz One';
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
@@ -224,8 +224,8 @@
 		@apply rounded-xl border border-border bg-muted/30 shadow-xs shadow-highlight-soft/30 dark:shadow-black/35;
 	}
 
-	.font-xat-name {
-		font-family: 'Fugaz One Xat', var(--font-display);
+	.font-fugaz-one {
+		font-family: 'Fugaz One', var(--font-display);
 	}
 
 	/* Hero intro: English serif line only — global html rules cover CJK breaking. */
@@ -234,12 +234,12 @@
 	}
 
 	.page-shell {
-		@apply py-16 md:py-28;
+		@apply py-8 md:py-14;
 	}
 
 	.article-body {
 		/* avoid wrap-anywhere: it breaks between arbitrary characters (bad CJK on narrow screens) */
-		@apply max-w-full min-w-0 space-y-7 text-base/7 break-words text-foreground;
+		@apply max-w-full min-w-0 space-y-7 text-base/7 wrap-break-word text-foreground;
 	}
 
 	.article-body a {

@@ -45,7 +45,7 @@ export default async function HomePage() {
 			</Seo>
 			<Container className="page-shell">
 				<div className="flex flex-col">
-					<div className="flex flex-col gap-5">
+					<div className="flex flex-col gap-4">
 						<SiteHeader locale={locale} messages={m} />
 						<div className="flex min-w-0 flex-col gap-4">
 							<Avatar className="
@@ -69,14 +69,14 @@ export default async function HomePage() {
 									sm:text-3xl
 								"
 								>
-									<span className="font-xat-name font-normal text-highlight-strong">Xat</span>
+									<span className="font-fugaz-one font-normal text-highlight-strong">Xat</span>
 									<NameAudioButton />
 								</h1>
 								<p className="text-muted-foreground">{m.home.role}</p>
 							</div>
 						</div>
 						<p
-							className="home-bio-lead max-w-prose font-serif text-base/7 text-foreground"
+							className="home-bio-lead max-w-prose font-serif text-base/7 font-semibold text-foreground"
 							lang={htmlLangFor(locale)}
 						>
 							{m.home.bioLead}
