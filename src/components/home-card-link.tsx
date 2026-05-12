@@ -67,10 +67,10 @@ export function HomeCardLink({
 	trailingIcon,
 }: HomeCardLinkProps) {
 	const className = `
-		group flex items-center justify-start gap-3 rounded-xl border border-highlight/75 bg-popover px-4
-		py-3.5 text-left font-normal shadow-xs shadow-highlight/30 transition-colors
+		group flex items-center justify-start gap-3 rounded-xl border highlight-surface highlight-surface-hover bg-popover
+		px-4 py-3.5 text-left font-normal transition-colors
 		not-dark:bg-clip-padding
-		hover:border-highlight hover:bg-accent/50 hover:text-foreground hover:shadow-highlight/45
+		hover:bg-accent/50 hover:text-foreground
 		dark:bg-input/32
 		dark:hover:bg-input/64
 	`

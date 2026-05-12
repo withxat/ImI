@@ -109,15 +109,15 @@ export function IntroBadgePopover({
 					<button
 						className={cn(
 							`
-								mx-0.5 inline cursor-pointer rounded-md border border-highlight/75 bg-popover px-[0.35em] py-0 align-baseline
-								text-sm leading-[inherit] font-semibold text-highlight-strong shadow-xs shadow-highlight/30 transition-colors
-								hover:border-highlight hover:bg-accent/50 hover:shadow-highlight/45
+								mx-0.5 inline cursor-pointer rounded-md border highlight-surface highlight-surface-hover bg-popover px-[0.35em] py-0
+								align-baseline text-sm leading-[inherit] font-semibold text-highlight-strong transition-colors
+								hover:bg-accent/50
 								focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
 								dark:bg-input/32
 								dark:hover:bg-input/64
 								[&_svg]:mr-[0.25em] [&_svg]:inline [&_svg]:size-[1em] [&_svg]:align-[-0.125em] [&_svg]:text-highlight-icon
 							`,
-							open && 'border-highlight bg-accent/50 shadow-highlight/45',
+							open && 'highlight-surface-active',
 						)}
 						onMouseEnter={openOnHover}
 						onMouseLeave={closeOnHoverEnd}

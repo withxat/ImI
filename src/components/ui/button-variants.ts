@@ -78,10 +78,10 @@ export const buttonVariants = cva(
 			variant: {
 				'default':
           `
-											border-highlight/75 bg-primary text-primary-foreground shadow-xs shadow-highlight/40
+											border-highlight-soft/75 bg-primary text-primary-foreground shadow-xs shadow-highlight-soft/40
 											not-disabled:inset-shadow-[0_1px_--theme(--color-white/16%)]
-											hover:border-highlight hover:bg-primary/90 hover:shadow-highlight/55
-											data-pressed:border-highlight data-pressed:bg-primary/90 data-pressed:shadow-highlight/55
+											hover:border-highlight-soft hover:bg-primary/90 hover:shadow-highlight-soft/55
+											data-pressed:border-highlight-soft data-pressed:bg-primary/90 data-pressed:shadow-highlight-soft/55
 											*:data-[slot=button-loading-indicator]:text-primary-foreground
 											[:active,[data-pressed]]:inset-shadow-[0_1px_--theme(--color-black/8%)]
 											[:disabled,:active,[data-pressed]]:shadow-none
@@ -122,11 +122,11 @@ export const buttonVariants = cva(
 				`,
 				'outline':
           `
-											border-highlight/75 bg-popover text-foreground shadow-xs shadow-highlight/30
+											highlight-surface bg-popover text-foreground
 											not-dark:bg-clip-padding
 											not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)]
-											hover:border-highlight hover:bg-accent/50 hover:shadow-highlight/45
-											data-pressed:border-highlight data-pressed:bg-accent/50 data-pressed:shadow-highlight/45
+											hover:highlight-surface-active
+											data-pressed:highlight-surface-active
 											*:data-[slot=button-loading-indicator]:text-foreground
 											dark:bg-input/32
 											dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/2%)]

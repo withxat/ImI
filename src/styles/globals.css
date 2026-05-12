@@ -37,12 +37,14 @@
 	--color-border: color-mix(in oklab, oklch(0.17 0.003 260) 12%, transparent);
 	--color-input: color-mix(in oklab, oklch(0.17 0.003 260) 14%, transparent);
 	--color-ring: oklch(0.17 0.003 260);
-	--color-highlight: oklch(0.85654 0.06125 10.83);
+	--color-highlight-soft: oklch(0.85654 0.06125 10.83);
+	--color-highlight-text: oklch(0.67303 0.11669 3.08);
+	--color-highlight-icon: color-mix(in oklab, var(--color-foreground) 36%, var(--color-highlight-soft));
 	--color-accent: oklch(0.9 0.02 92);
 	--color-accent-foreground: oklch(0.18 0.004 260);
 	--color-destructive: oklch(0.56 0.19 28);
 	--color-selection: oklch(0.88 0.018 92);
-	--shadow-soft: 0 20px 60px -30px color-mix(in srgb, var(--color-highlight) 38%, transparent);
+	--shadow-soft: 0 20px 60px -30px color-mix(in srgb, var(--color-highlight-soft) 38%, transparent);
 }
 
 @theme inline {
@@ -98,11 +100,23 @@
 }
 
 @utility text-highlight-strong {
-	color: oklch(0.67303 0.11669 3.08);
+	color: var(--color-highlight-text);
 }
 
 @utility text-highlight-icon {
-	color: color-mix(in oklab, var(--color-foreground) 36%, var(--color-highlight));
+	color: var(--color-highlight-icon);
+}
+
+@utility highlight-surface {
+	@apply border-highlight-soft/75 shadow-xs shadow-highlight-soft/30;
+}
+
+@utility highlight-surface-hover {
+	@apply hover:border-highlight-soft hover:shadow-highlight-soft/45;
+}
+
+@utility highlight-surface-active {
+	@apply border-highlight-soft bg-accent/50 shadow-highlight-soft/45;
 }
 
 @layer base {
@@ -195,14 +209,14 @@
 @layer components {
 	.text-link {
 		@apply underline underline-offset-4 transition-colors duration-150;
-		text-decoration-color: color-mix(in srgb, var(--color-highlight) 75%, transparent);
+		text-decoration-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
 		text-decoration-thickness: 0.08em;
 		text-decoration-skip-ink: auto;
 	}
 
 	.text-link:hover {
-		color: color-mix(in oklab, var(--color-foreground) 42%, var(--color-highlight));
-		text-decoration-color: var(--color-highlight);
+		color: var(--color-highlight-text);
+		text-decoration-color: var(--color-highlight-soft);
 	}
 
 	.text-link-strong {
@@ -256,12 +270,12 @@
 
 	.article-body a {
 		@apply text-highlight-strong underline underline-offset-4 transition-colors duration-150;
-		text-decoration-color: color-mix(in srgb, var(--color-highlight) 75%, transparent);
+		text-decoration-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
 		text-decoration-thickness: 0.08em;
 	}
 
 	.article-body a:hover {
-		text-decoration-color: var(--color-highlight);
+		text-decoration-color: var(--color-highlight-soft);
 	}
 
 	.article-body :is(h1, h2, h3, h4, h5, h6) a {
