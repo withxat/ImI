@@ -91,15 +91,15 @@
 }
 
 @utility highlight-surface {
-	@apply border-highlight-soft/75 shadow-xs shadow-highlight-soft/30;
+	@apply border border-highlight-soft/75 shadow-xs shadow-highlight-soft/30 dark:border-border dark:shadow-black/35;
 }
 
 @utility highlight-surface-hover {
-	@apply hover:border-highlight-soft hover:shadow-highlight-soft/45;
+	@apply hover:border-highlight-soft hover:shadow-highlight-soft/45 dark:hover:border-foreground/22;
 }
 
 @utility highlight-surface-active {
-	@apply border-highlight-soft bg-accent/50 shadow-highlight-soft/45;
+	@apply border-highlight-soft bg-accent/50 shadow-highlight-soft/45 dark:border-border dark:shadow-black/40;
 }
 
 @layer base {
@@ -218,6 +218,11 @@
 
 	.entry-link {
 		@apply block transition-colors duration-150 hover:text-highlight-strong;
+	}
+
+	/* Translation notice etc. — same shadow stack as `highlight-surface`, semantic `border-border`. */
+	.surface-callout {
+		@apply rounded-xl border border-border bg-muted/30 shadow-xs shadow-highlight-soft/30 dark:shadow-black/35;
 	}
 
 	.font-xat-name {
@@ -493,8 +498,8 @@
 	--selection: color-mix(in srgb, #ffc799 20%, #101010);
 	--surface: #1a1a1a;
 	--surface-foreground: #ffffff;
-	--border: --alpha(var(--color-white) / 10%);
-	--input: --alpha(var(--color-white) / 12%);
+	--border: --alpha(var(--color-white) / 15%);
+	--input: --alpha(var(--color-white) / 18%);
 	--ring: var(--color-neutral-500);
 	--sidebar: #0a0a0a;
 	--sidebar-foreground: color-mix(in srgb, var(--foreground) 64%, var(--sidebar));
@@ -502,7 +507,7 @@
 	--sidebar-primary-foreground: var(--primary-foreground);
 	--sidebar-accent: --alpha(var(--color-white) / 4%);
 	--sidebar-accent-foreground: var(--foreground);
-	--sidebar-border: --alpha(var(--color-white) / 5%);
+	--sidebar-border: --alpha(var(--color-white) / 10%);
 	--sidebar-ring: var(--color-neutral-400);
 }
 
@@ -538,8 +543,8 @@
 		--selection: color-mix(in srgb, #ffc799 20%, #101010);
 		--surface: #1a1a1a;
 		--surface-foreground: #ffffff;
-		--border: --alpha(var(--color-white) / 10%);
-		--input: --alpha(var(--color-white) / 12%);
+		--border: --alpha(var(--color-white) / 15%);
+		--input: --alpha(var(--color-white) / 18%);
 		--ring: var(--color-neutral-500);
 		--sidebar: #0a0a0a;
 		--sidebar-foreground: color-mix(in srgb, var(--foreground) 64%, var(--sidebar));
@@ -547,7 +552,7 @@
 		--sidebar-primary-foreground: var(--primary-foreground);
 		--sidebar-accent: --alpha(var(--color-white) / 4%);
 		--sidebar-accent-foreground: var(--foreground);
-		--sidebar-border: --alpha(var(--color-white) / 5%);
+		--sidebar-border: --alpha(var(--color-white) / 10%);
 		--sidebar-ring: var(--color-neutral-400);
 	}
 }

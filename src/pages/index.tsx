@@ -97,12 +97,14 @@ export default async function HomePage() {
 									description={systemsCopy.description}
 									kind="systems"
 									label={systemsCopy.label}
+									locale={locale}
 								/>
 								{m.home.introBetweenBadges}
 								<IntroBadgePopover
 									description={productsCopy.description}
 									kind="products"
 									label={productsCopy.label}
+									locale={locale}
 								/>
 								{m.home.introAfterProducts}
 							</p>

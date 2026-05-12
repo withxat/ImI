@@ -9,6 +9,7 @@ import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/rss'
+import { getThemeBootstrapScript } from '@/lib/theme/constants'
 
 import '@/styles/globals.css'
 
@@ -22,6 +23,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
 	return (
 		<div className="relative isolate min-h-screen" id="theme-root" lang={htmlLangFor(locale)}>
+			{/* Static bootstrap only — no runtime HTML; aligns <html.dark> before paint */}
+			{/* eslint-disable-next-line react/dom-no-dangerously-set-innerhtml -- intentional inline FOUC blocker */}
+			<script dangerouslySetInnerHTML={{ __html: getThemeBootstrapScript() }} suppressHydrationWarning />
 			<link crossOrigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
 			<link as="font" crossOrigin="anonymous" href="/fonts/fugaz-one-regular-subset.woff2" rel="preload" type="font/woff2" />
 			{locale === 'zh'

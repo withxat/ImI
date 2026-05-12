@@ -83,6 +83,8 @@ export const buttonVariants = cva(
 											hover:border-highlight-soft hover:bg-primary/90 hover:shadow-highlight-soft/55
 											data-pressed:border-highlight-soft data-pressed:bg-primary/90 data-pressed:shadow-highlight-soft/55
 											*:data-[slot=button-loading-indicator]:text-primary-foreground
+											dark:border-border dark:shadow-black/35
+											dark:hover:border-foreground/22
 											[:active,[data-pressed]]:inset-shadow-[0_1px_--theme(--color-black/8%)]
 											[:disabled,:active,[data-pressed]]:shadow-none
 										`,

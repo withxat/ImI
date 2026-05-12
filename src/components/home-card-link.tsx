@@ -74,7 +74,7 @@ export function HomeCardLink({
 	trailingIcon,
 }: HomeCardLinkProps) {
 	const className = `
-		group flex items-center justify-start gap-3 rounded-xl border highlight-surface highlight-surface-hover bg-popover
+		group flex items-center justify-start gap-3 rounded-xl highlight-surface border highlight-surface-hover bg-popover
 		px-4 py-3.5 text-left font-normal transition-colors
 		not-dark:bg-clip-padding
 		hover:bg-accent/50 hover:text-foreground

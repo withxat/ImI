@@ -1,11 +1,12 @@
 'use client'
 
+import type { Theme } from '@/lib/theme/read-stored-theme'
+
 import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-type Theme = 'dark' | 'light' | 'system'
-
-const STORAGE_KEY = 'theme'
+import { THEME_STORAGE_KEY } from '@/lib/theme/constants'
+import { readStoredTheme } from '@/lib/theme/read-stored-theme'
 
 const ICONS = {
 	dark: MoonIcon,
@@ -34,40 +35,43 @@ function applyTheme(theme: Theme) {
 	}
 }
 
-function readStored(): Theme {
-	try {
-		const v = localStorage.getItem(STORAGE_KEY)
-		if (v === 'light' || v === 'dark')
-			return v
-	}
-	catch {}
-	return 'system'
-}
-
 export function ThemeSwitcher({ labels }: ThemeSwitcherProps) {
 	const [theme, setTheme] = useState<Theme>('system')
 	const [open, setOpen] = useState(false)
 	const containerRef = useRef<HTMLDivElement>(null)
+	const themeSyncedRef = useRef(false)
 
-	useEffect(() => {
-		setTheme(readStored())
-	}, [])
-
-	useEffect(() => {
-		applyTheme(theme)
-
-		if (theme !== 'system')
+	/**
+	 * First frame: ignore `theme` React state — read persisted preference and sync DOM.
+	 * Later changes: react to toggles only (avoid `applyTheme('system')` before storage is read).
+	 */
+	useLayoutEffect(() => {
+		if (!themeSyncedRef.current) {
+			themeSyncedRef.current = true
+			const resolved = readStoredTheme()
+			setTheme(resolved)
+			applyTheme(resolved)
 			return
+		}
+		applyTheme(theme)
+	}, [theme])
 
+	useEffect(() => {
+		if (theme !== 'system')
+			return undefined
 		const mq = matchMedia('(prefers-color-scheme:dark)')
-		const handler = () => applyTheme('system')
+		const handler = () => {
+			if (readStoredTheme() !== 'system')
+				return
+			applyTheme('system')
+		}
 		mq.addEventListener('change', handler)
 		return () => mq.removeEventListener('change', handler)
 	}, [theme])
 
 	useEffect(() => {
 		if (!open)
-			return
+			return undefined
 		function onPointerDown(e: PointerEvent) {
 			if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
 				setOpen(false)
@@ -126,7 +130,10 @@ export function ThemeSwitcher({ labels }: ThemeSwitcherProps) {
 									hover:bg-accent hover:text-foreground
 								`}
 								onClick={() => {
-									localStorage.setItem(STORAGE_KEY, opt.key)
+									try {
+										localStorage.setItem(THEME_STORAGE_KEY, opt.key)
+									}
+									catch {}
 									setTheme(opt.key)
 									setOpen(false)
 								}}
