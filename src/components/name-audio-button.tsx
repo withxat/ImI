@@ -77,7 +77,7 @@ export function NameAudioButton() {
 							width: 'auto',
 						}}
 						className="
-							inline-flex overflow-hidden text-sm whitespace-nowrap text-highlight-strong
+							inline-flex -translate-y-0.75 overflow-hidden text-sm whitespace-nowrap text-highlight-strong
 							sm:text-base
 						"
 						exit={{
