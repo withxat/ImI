@@ -24,9 +24,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 	const localizedCategory = category
 		? m.categories[category.slug as keyof typeof m.categories]
 		: undefined
-	const categoryEyebrow = localizedCategory
-		? `${localizedCategory.name} - ${localizedCategory.description}`
-		: post.category
+	const categoryEyebrow = localizedCategory ? localizedCategory.name : post.category
 
 	const canonicalPath = `/post/${post.slug}`
 	const articleSection = localizedCategory?.name

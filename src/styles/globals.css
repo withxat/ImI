@@ -291,8 +291,13 @@
 		@apply border-border;
 	}
 
+	.article-body a img {
+		cursor: pointer;
+	}
+
 	.article-body img {
 		@apply my-8 w-full;
+		cursor: zoom-in;
 	}
 
 	.article-body li,
