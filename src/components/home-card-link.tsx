@@ -36,7 +36,7 @@ function HomeCardLinkContent({
 					className={cn(
 						`
 							-mx-0.5 size-4 shrink-0 text-muted-foreground opacity-80 transition-transform duration-150 ease-out
-							group-hover:text-foreground
+							group-hover:text-highlight-icon
 						`,
 						external
 							? 'group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
@@ -67,10 +67,10 @@ export function HomeCardLink({
 	trailingIcon,
 }: HomeCardLinkProps) {
 	const className = `
-		group flex items-center justify-start gap-3 rounded-xl border border-input bg-popover px-4
-		py-3.5 text-left font-normal shadow-xs/5 transition-colors
+		group flex items-center justify-start gap-3 rounded-xl border border-highlight/75 bg-popover px-4
+		py-3.5 text-left font-normal shadow-xs shadow-highlight/30 transition-colors
 		not-dark:bg-clip-padding
-		hover:bg-accent/50 hover:text-foreground
+		hover:border-highlight hover:bg-accent/50 hover:text-foreground hover:shadow-highlight/45
 		dark:bg-input/32
 		dark:hover:bg-input/64
 	`
