@@ -30,7 +30,7 @@ export function LocaleSwitcher({ 'aria-label': ariaLabel, className, currentLoca
 						{index > 0 && <span className="mx-1.5 text-border">·</span>}
 						{locale === currentLocale
 							? (
-									<span className="font-medium text-foreground" lang={locale}>
+									<span className="font-medium text-highlight-strong" lang={locale}>
 										{LOCALE_LABEL[locale]}
 									</span>
 								)
