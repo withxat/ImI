@@ -5,7 +5,6 @@ import { Footer } from '@/components/footer'
 import { LocaleBootstrap } from '@/components/locale-bootstrap'
 import { RouteTransition } from '@/components/route-transition'
 import { ZhSerifStylesheet } from '@/components/zh-serif-font'
-import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/rss'
@@ -21,7 +20,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 	const rssJa = getMessages('ja').blog
 
 	return (
-		<div className="relative isolate min-h-screen" id="theme-root" lang={htmlLangFor(locale)}>
+		<div className="relative isolate min-h-screen">
 			<meta charSet="utf-8" />
 			<meta content="width=device-width, initial-scale=1" name="viewport" />
 			<link crossOrigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
