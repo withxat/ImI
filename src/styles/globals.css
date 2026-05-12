@@ -264,6 +264,11 @@
 		text-decoration-color: var(--color-highlight);
 	}
 
+	.article-body :is(h1, h2, h3, h4, h5, h6) a {
+		@apply text-foreground;
+		text-decoration-color: currentColor;
+	}
+
 	.article-body blockquote {
 		@apply my-8 max-w-full min-w-0 pl-5 text-muted-foreground;
 	}
@@ -281,11 +286,11 @@
 	}
 
 	.article-body h2 {
-		@apply mt-14 text-2xl font-medium;
+		@apply mt-14 text-2xl font-medium text-foreground;
 	}
 
 	.article-body h3 {
-		@apply mt-10 text-xl font-medium;
+		@apply mt-10 text-xl font-medium text-foreground;
 	}
 
 	.article-body hr {
