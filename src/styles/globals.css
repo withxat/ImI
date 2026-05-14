@@ -261,6 +261,52 @@
 		font-family: 'Fugaz One', var(--font-display);
 	}
 
+	.wanderer-gradient-text {
+		display: inline-block;
+		background-image: linear-gradient(
+			110deg,
+			var(--color-highlight-text) 0%,
+			color-mix(in oklab, var(--color-highlight-text) 58%, var(--color-foreground)) 24%,
+			var(--color-cyan-600) 48%,
+			color-mix(in oklab, var(--color-foreground) 72%, var(--color-highlight-text)) 68%,
+			var(--color-highlight-text) 100%
+		);
+		background-position: 0% 50%;
+		background-size: 260% 100%;
+		background-clip: text;
+		-webkit-background-clip: text;
+		color: transparent;
+		animation: wanderer-gradient-flow 7.5s cubic-bezier(0.45, 0, 0.2, 1) infinite alternate;
+	}
+
+	.dark .wanderer-gradient-text {
+		background-image: linear-gradient(
+			110deg,
+			var(--color-highlight-text) 0%,
+			color-mix(in oklab, var(--color-highlight-text) 70%, var(--color-cyan-300)) 28%,
+			var(--color-cyan-300) 52%,
+			color-mix(in oklab, var(--color-foreground) 70%, var(--color-highlight-text)) 72%,
+			var(--color-highlight-text) 100%
+		);
+	}
+
+	@keyframes wanderer-gradient-flow {
+		0% {
+			background-position: 0% 50%;
+		}
+
+		100% {
+			background-position: 100% 50%;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.wanderer-gradient-text {
+			animation: none;
+			background-position: 50% 50%;
+		}
+	}
+
 	/* Hero intro: English serif line only — global html rules cover CJK breaking. */
 	.home-bio-lead:lang(en) {
 		text-wrap: pretty;

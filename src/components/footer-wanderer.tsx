@@ -10,8 +10,7 @@ import { CountryFlag } from '@/components/country-flag'
 import { regionDisplayName } from '@/lib/visitor-geo'
 
 const wandererGradientClass = `
-	bg-linear-to-r from-violet-600 via-indigo-500 to-cyan-600 bg-clip-text font-bold text-transparent
-	dark:from-violet-300 dark:via-indigo-300 dark:to-cyan-300
+	wanderer-gradient-text font-bold
 `
 
 interface FooterWandererProps {
