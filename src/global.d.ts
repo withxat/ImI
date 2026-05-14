@@ -1,1 +1,12 @@
+/// <reference types="vite-plugin-font/src/font" />
+
 declare module '*.css';
+
+declare module '*.ttf?subsets' {
+	export const css: {
+		family: string
+		style?: string
+		weight?: string
+	}
+	export const fontFamilyFallback: string
+}

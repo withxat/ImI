@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 
 import { Footer } from '@/components/footer'
 import { LocaleBootstrap } from '@/components/locale-bootstrap'
+import { MiSansFontStyles } from '@/components/mi-sans-font'
 import { RouteTransition } from '@/components/route-transition'
-import { ZhSerifStylesheet } from '@/components/zh-serif-font'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/rss'
@@ -23,15 +23,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<meta charSet="utf-8" />
 			<meta content="width=device-width, initial-scale=1" name="viewport" />
 			<link crossOrigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
-			{locale === 'zh'
-				? (
-						<>
-							<link href="https://fonts.googleapis.com" rel="preconnect" />
-							<link crossOrigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect" />
-							<ZhSerifStylesheet />
-						</>
-					)
-				: null}
+			{locale === 'zh' ? <MiSansFontStyles /> : null}
 			<link href={RSS_FEED_URL} hrefLang="zh-Hans" rel="alternate" title={rssZh.pageTitle} type="application/rss+xml" />
 			<link href={RSS_FEED_URL_EN} hrefLang="en" rel="alternate" title={rssEn.pageTitle} type="application/rss+xml" />
 			<link href={RSS_FEED_URL_JA} hrefLang="ja" rel="alternate" title={rssJa.pageTitle} type="application/rss+xml" />
