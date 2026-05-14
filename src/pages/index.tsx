@@ -1,3 +1,4 @@
+import { ArrowUpRightIcon } from 'lucide-react'
 import { Link } from 'waku'
 
 import { ConstructionStripesIcon } from '@/components/construction-stripes-icon'
@@ -26,6 +27,8 @@ export default async function HomePage() {
 	const posts = getAllPosts(locale).slice(0, 4)
 	const baseCapabilities = getCapabilities()
 	const capabilities = mergeCapabilityCopy(baseCapabilities, m)
+	const featuredCapability = capabilities[0]
+	const featuredProject = featuredCapability?.items[0]
 
 	return (
 		<section>
@@ -98,21 +101,58 @@ export default async function HomePage() {
 									description={systemsCopy.description}
 									kind="systems"
 									label={systemsCopy.label}
-									locale={locale}
 								/>
 								{m.home.introBetweenBadges}
 								<IntroBadgePopover
 									description={productsCopy.description}
 									kind="products"
 									label={productsCopy.label}
-									locale={locale}
 								/>
 								{m.home.introAfterProducts}
 							</p>
 						</StaggerReveal>
 					</section>
 
-					<section className="mt-28 space-y-7">
+					{featuredProject?.link && (
+						<section className="
+							mt-20 border-y border-border py-7
+							md:mt-24 md:py-8
+						"
+						>
+							<Reveal staggerIndex={0}>
+								<div className="
+									grid gap-5
+									sm:grid-cols-[10rem_1fr]
+								"
+								>
+									<Eyebrow className="text-sm text-muted-foreground">{m.home.proofEyebrow}</Eyebrow>
+									<div className="space-y-4">
+										<div className="space-y-1.5">
+											<p className="text-lg/6 font-semibold text-foreground">{m.home.proofTitle}</p>
+											<p className="max-w-prose text-base/7 text-muted-foreground">{m.home.proofDescription}</p>
+										</div>
+										<a
+											className="group inline-flex items-center gap-2 font-ui text-sm font-medium text-highlight-strong"
+											href={featuredProject.link}
+											rel="noreferrer"
+											target="_blank"
+										>
+											{m.home.proofCta}
+											<ArrowUpRightIcon
+												className="
+													size-4 text-highlight-icon transition-transform duration-150 ease-out
+													group-hover:translate-x-0.5 group-hover:-translate-y-0.5
+												"
+												aria-hidden="true"
+											/>
+										</a>
+									</div>
+								</div>
+							</Reveal>
+						</section>
+					)}
+
+					<section className="mt-24 space-y-7">
 						<Reveal staggerIndex={0}>
 							<div className="flex items-baseline justify-between gap-6">
 								<Eyebrow className="font-semibold">{m.home.writingEyebrow}</Eyebrow>
@@ -146,44 +186,73 @@ export default async function HomePage() {
 						<Reveal staggerIndex={0}>
 							<Eyebrow className="font-semibold">{m.home.capabilitiesEyebrow}</Eyebrow>
 						</Reveal>
-						<div className="space-y-12">
+						<div className="space-y-14">
 							{capabilities.map((cap, index) => (
 								<Reveal
 									key={baseCapabilities[index]?.title ?? cap.title}
 									staggerIndex={index + 1}
 								>
-									<div className="space-y-5">
-										<div>
-											<h3 className="font-medium text-foreground">{cap.title}</h3>
-											<p className="mt-1 text-base/6 text-muted-foreground">{cap.summary}</p>
-										</div>
-										<div className="space-y-3">
-											{cap.items.map(item =>
-												item.link
-													? (
-															<HomeCardLink
-																description={item.description}
-																href={item.link}
-																key={`${cap.title}-${item.title}`}
-																title={item.title}
-																external
-															/>
-														)
-													: (
-															<HomeCardLink
-																description={item.description}
-																key={`${cap.title}-${item.title}`}
-																title={item.title}
-															/>
-														),
-											)}
-											{cap.items.length === 0 && (
-												<HomeCardLink
-													description={cap.emptyState?.description ?? m.home.emptyCapabilityDescription}
-													title={cap.emptyState?.title ?? m.home.emptyCapabilityTitle}
-													trailingIcon={<ConstructionStripesIcon className="-mx-0.5 text-muted-foreground opacity-80" />}
-												/>
-											)}
+									<div className="
+										grid gap-4 border-t border-border pt-5
+										sm:grid-cols-[3rem_1fr]
+									"
+									>
+										<p className="font-mono text-xs/6 text-muted-foreground">
+											{String(index + 1).padStart(2, '0')}
+										</p>
+										<div className="min-w-0 space-y-4">
+											<div>
+												<h3 className="text-base/6 font-semibold text-foreground">{cap.title}</h3>
+												<p className="mt-1 text-base/7 text-muted-foreground">{cap.summary}</p>
+											</div>
+											<ul className="space-y-2">
+												{cap.items.map(item => (
+													<li key={`${cap.title}-${item.title}`}>
+														{item.link
+															? (
+																	<a
+																		className="group inline-flex max-w-full items-baseline gap-2 text-sm/6 text-foreground"
+																		href={item.link}
+																		rel="noreferrer"
+																		target="_blank"
+																	>
+																		<span className="
+																			font-medium transition-colors
+																			group-hover:text-highlight-strong
+																		"
+																		>
+																			{item.title}
+																		</span>
+																		<span className="min-w-0 truncate text-muted-foreground">{item.description}</span>
+																		<ArrowUpRightIcon
+																			className="
+																				size-3.5 shrink-0 self-center text-muted-foreground transition-transform duration-150 ease-out
+																				group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-highlight-icon
+																			"
+																			aria-hidden="true"
+																		/>
+																	</a>
+																)
+															: (
+																	<div className="inline-flex max-w-full items-baseline gap-2 text-sm/6">
+																		<span className="font-medium text-foreground">{item.title}</span>
+																		<span className="min-w-0 truncate text-muted-foreground">{item.description}</span>
+																	</div>
+																)}
+													</li>
+												))}
+												{cap.items.length === 0 && (
+													<li className="inline-flex max-w-full items-baseline gap-2 text-sm/6">
+														<span className="font-medium text-foreground">
+															{cap.emptyState?.title ?? m.home.emptyCapabilityTitle}
+														</span>
+														<span className="min-w-0 truncate text-muted-foreground">
+															{cap.emptyState?.description ?? m.home.emptyCapabilityDescription}
+														</span>
+														<ConstructionStripesIcon className="size-4 shrink-0 self-center text-muted-foreground opacity-80" />
+													</li>
+												)}
+											</ul>
 										</div>
 									</div>
 								</Reveal>

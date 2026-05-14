@@ -75,6 +75,10 @@ export interface Messages {
 		introBetweenBadges: string
 		/** `<meta name="description">` and default JSON-LD site blurbs for the home page. */
 		metaDescription: string
+		proofCta: string
+		proofDescription: string
+		proofEyebrow: string
+		proofTitle: string
 		role: string
 		tagline: string
 		title: string
@@ -182,6 +186,11 @@ const en: Messages = {
 		introBetweenBadges: ' taught me to balance design intent, engineering constraints, and the messy realities of building ',
 		metaDescription:
 			'Design Engineer building AI-native products, interfaces, and frontend systems. Writing on frontend craft, design systems, and tools.',
+		proofCta: 'View project source',
+		proofDescription:
+			'A real product surface: repositioning an AI chat app with cleaner hierarchy, sharper copy, and production-ready frontend details.',
+		proofEyebrow: 'Selected proof',
+		proofTitle: 'OpenCat.app redesign',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',
 		title: 'Xat - Design Engineer',
@@ -296,6 +305,11 @@ const zh: Messages = {
 		introBetweenBadges: '让我学会在设计意图、工程约束与真实落地的混乱之间找平衡，去构建',
 		metaDescription:
 			'设计工程师，专注 AI 原生产品与前端系统。写作涵盖前端工程、设计系统、工具与实践笔记。',
+		proofCta: '查看项目源码',
+		proofDescription:
+			'一个真实产品界面：重新梳理 AI 聊天应用的层级、文案与可落地的前端细节。',
+		proofEyebrow: '精选证明',
+		proofTitle: 'OpenCat.app 重设计',
 		role: '设计工程师',
 		tagline: 'Xat - 设计工程师',
 		title: 'Xat - 设计工程师',
@@ -415,6 +429,11 @@ const ja: Messages = {
 		introBetweenBadges: 'という背景から、設計意図・実装制約・現場の複雑さのバランスを学び、',
 		metaDescription:
 			'デザインエンジニア。AI ネイティブなプロダクトとフロントエンドをつくる。フロントエンド、デザインシステム、ツールのメモ。',
+		proofCta: 'ソースを見る',
+		proofDescription:
+			'実プロダクトの表面を、AI チャットアプリとしての階層、コピー、本番向けの実装細部まで整え直す。',
+		proofEyebrow: '選んだ実例',
+		proofTitle: 'OpenCat.app リデザイン',
 		role: 'デザインエンジニア',
 		tagline: 'Xat - デザインエンジニア',
 		title: 'Xat - デザインエンジニア',

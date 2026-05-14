@@ -3,7 +3,6 @@
 import type { IconProps } from 'nucleo-ui-essential-fill-duo-18'
 import type { ComponentProps, FC, ReactNode } from 'react'
 
-import type { Locale } from '@/lib/i18n/constants'
 import type { IntroBadgeKind } from '@/lib/i18n/intro-badges'
 
 import {
@@ -45,12 +44,10 @@ export function IntroBadgePopover({
 	description,
 	kind,
 	label,
-	locale,
 }: {
 	description: ReactNode
 	kind: IntroBadgeKind
 	label: string
-	locale: Locale
 }) {
 	const Icon = ICONS[kind]
 	const [open, setOpen] = useState(false)
@@ -113,15 +110,14 @@ export function IntroBadgePopover({
 					<span
 						className={cn(
 							`
-								mx-0.5 inline cursor-pointer rounded-md highlight-surface border highlight-surface-hover bg-popover box-decoration-clone px-[0.35em]
-								py-0 align-baseline text-sm leading-[inherit] font-semibold wrap-break-word whitespace-normal text-highlight-strong transition-colors [-webkit-box-decoration-break:clone]
+								mx-0.5 inline-flex cursor-pointer items-baseline rounded-md highlight-surface border highlight-surface-hover bg-popover px-[0.35em]
+								py-0 align-baseline text-sm leading-[inherit] font-semibold whitespace-nowrap text-highlight-strong transition-colors
 								hover:bg-accent/50
 								focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
 								dark:bg-input/32
 								dark:hover:bg-input/64
 								[&_svg]:mr-[0.25em] [&_svg]:inline [&_svg]:size-[1em] [&_svg]:align-[-0.125em] [&_svg]:text-highlight-icon
 							`,
-							locale === 'en' && 'hyphens-auto',
 							open && 'highlight-surface-active',
 						)}
 						onMouseEnter={openOnHover}
