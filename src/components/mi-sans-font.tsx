@@ -1,16 +1,18 @@
 import { css, fontFamilyFallback } from '@/assets/mi-sans-vf.ttf?subsets'
+import { css as serifCss, fontFamilyFallback as serifFontFamilyFallback } from '@/assets/source-han-serif-sc-vf.ttf?subsets'
 
-const zhFontStack = `${css.family}, ${fontFamilyFallback}`
+const sansFontStack = `${css.family}, ${fontFamilyFallback}`
+const serifFontStack = `${serifCss.family}, ${serifFontFamilyFallback}`
 
 export function MiSansFontStyles() {
 	return (
 		<style>
 			{`
-				html:lang(zh) {
-					--font-display: ${zhFontStack};
-					--font-serif: ${zhFontStack};
-					--font-text: ${zhFontStack};
-					--font-ui: ${zhFontStack};
+				html {
+					--font-display: ${sansFontStack};
+					--font-serif: ${serifFontStack};
+					--font-text: ${sansFontStack};
+					--font-ui: ${sansFontStack};
 				}
 			`}
 		</style>
