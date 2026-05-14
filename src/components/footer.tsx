@@ -10,7 +10,7 @@ export function Footer({ locale }: { locale: Locale }) {
 
 	return (
 		<footer>
-			<Container className="pt-28 pb-4 text-base/7 text-muted-foreground">
+			<Container className="pt-28 pb-8 text-base/7 text-muted-foreground">
 				<div className="space-y-3">
 					<FooterWanderer copy={m.wanderer} locale={locale} />
 					<p className="text-sm text-muted-foreground">
