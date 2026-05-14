@@ -19,7 +19,7 @@ export function PostTranslatedNoticeAside({ notice }: { notice: PostTranslatedNo
 					window.location.reload()
 				}}
 				aria-label={notice.switchToChineseAriaLabel}
-				className="text-link-muted cursor-pointer border-none bg-transparent p-0 font-[inherit]"
+				className="text-link cursor-pointer border-none bg-transparent p-0 font-[inherit]"
 				lang="zh"
 				type="button"
 			>
