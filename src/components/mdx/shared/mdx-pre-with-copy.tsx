@@ -31,14 +31,15 @@ export function MdxPreWithCopy({ children, className, ...props }: PreProps) {
 			</div>
 			<ScrollArea
 				className="
-					max-h-[600px]
 					**:data-[slot=scroll-area-scrollbar]:data-[orientation=horizontal]:mx-2
 					**:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2
 				"
 				viewportProps={{
 					role: 'region',
+					style: { maxHeight: 600 },
 					tabIndex: 0,
 				}}
+				style={{ height: 'auto', width: '100%' }}
 				viewportClassName="py-3.5 focus-visible:ring-white/20 focus-visible:ring-offset-0"
 			>
 				<pre

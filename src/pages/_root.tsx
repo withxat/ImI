@@ -17,7 +17,7 @@ export default async function RootElement({ children }: RootElementProps) {
 				{/* eslint-disable-next-line react/dom-no-dangerously-set-innerhtml -- intentional inline FOUC blocker */}
 				<script dangerouslySetInnerHTML={{ __html: getThemeBootstrapScript() }} />
 			</head>
-			<body className="overflow-hidden">{children}</body>
+			<body>{children}</body>
 		</html>
 	)
 }
