@@ -110,13 +110,13 @@ export function IntroBadgePopover({
 					<span
 						className={cn(
 							`
-								mx-0.5 inline-flex cursor-pointer items-baseline rounded-md highlight-surface border highlight-surface-hover bg-popover px-[0.35em]
-								py-0 align-baseline text-sm leading-[inherit] font-semibold whitespace-nowrap text-highlight-strong transition-colors
+								mx-0.5 inline-flex cursor-pointer items-center gap-[0.25em] rounded-md highlight-surface border highlight-surface-hover bg-popover
+								px-[0.35em] py-0 align-baseline text-sm leading-[inherit] font-semibold whitespace-nowrap text-highlight-strong transition-colors
 								hover:bg-accent/50
 								focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
 								dark:bg-input/32
 								dark:hover:bg-input/64
-								[&_svg]:mr-[0.25em] [&_svg]:inline [&_svg]:size-[1em] [&_svg]:align-[-0.125em] [&_svg]:text-highlight-icon
+								[&_svg]:block [&_svg]:size-[1em] [&_svg]:shrink-0 [&_svg]:translate-y-[0.04em] [&_svg]:text-highlight-icon
 							`,
 							open && 'highlight-surface-active',
 						)}
