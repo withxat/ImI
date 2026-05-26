@@ -215,7 +215,7 @@ function CapabilityProofLink({
 }) {
 	const content = (
 		<>
-			<span className="min-w-0">
+			<span className="min-w-0 space-y-1">
 				<span className="
 					block text-sm/5 font-medium text-foreground transition-colors
 					group-hover/proof:text-highlight-strong
