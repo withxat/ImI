@@ -1,7 +1,6 @@
 import { ArrowUpRightIcon } from 'lucide-react'
 import { Link } from 'waku'
 
-import { ConstructionStripesIcon } from '@/components/construction-stripes-icon'
 import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
 import { NameAudioButton } from '@/components/name-audio-button'
@@ -182,79 +181,73 @@ export default async function HomePage() {
 						</div>
 					</section>
 
-					<section className="mt-28 space-y-10">
+					<section className="mt-28 space-y-8">
 						<Reveal staggerIndex={0}>
-							<Eyebrow className="font-semibold">{m.home.capabilitiesEyebrow}</Eyebrow>
+							<div className="
+								grid gap-3
+								sm:grid-cols-[10rem_1fr]
+							"
+							>
+								<Eyebrow className="font-semibold">{m.home.capabilitiesEyebrow}</Eyebrow>
+								<p className="max-w-prose text-base/7 text-muted-foreground">
+									{m.home.capabilitiesIntro}
+								</p>
+							</div>
 						</Reveal>
-						<div className="space-y-14">
+						<div className="border-y border-border">
 							{capabilities.map((cap, index) => (
 								<Reveal
 									key={baseCapabilities[index]?.title ?? cap.title}
 									staggerIndex={index + 1}
 								>
-									<div className="
-										grid gap-4 border-t border-border pt-5
-										sm:grid-cols-[3rem_1fr]
+									<article className="
+										group grid gap-4 border-b border-border py-6
+										last:border-b-0
+										sm:grid-cols-[3.25rem_1fr_15rem] sm:gap-6
 									"
 									>
-										<p className="font-mono text-xs/6 text-muted-foreground">
-											{String(index + 1).padStart(2, '0')}
-										</p>
-										<div className="min-w-0 space-y-4">
-											<div>
-												<h3 className="text-base/6 font-semibold text-foreground">{cap.title}</h3>
+										<div className="
+											flex items-center gap-3
+											sm:block
+										"
+										>
+											<p className="font-mono text-xs/6 text-muted-foreground">
+												{String(index + 1).padStart(2, '0')}
+											</p>
+											<span className="
+												size-1.5 rounded-full bg-highlight-soft transition-colors
+												group-hover:bg-highlight-icon
+												sm:mt-3 sm:block
+											"
+											/>
+										</div>
+										<div className="min-w-0">
+											<div className="max-w-prose">
+												<h3 className="text-lg/6 font-semibold tracking-tight text-foreground">{cap.title}</h3>
 												<p className="mt-1 text-base/7 text-muted-foreground">{cap.summary}</p>
 											</div>
-											<ul className="space-y-2">
-												{cap.items.map(item => (
-													<li key={`${cap.title}-${item.title}`}>
-														{item.link
-															? (
-																	<a
-																		className="group inline-flex max-w-full items-baseline gap-2 text-sm/6 text-foreground"
-																		href={item.link}
-																		rel="noreferrer"
-																		target="_blank"
-																	>
-																		<span className="
-																			font-medium transition-colors
-																			group-hover:text-highlight-strong
-																		"
-																		>
-																			{item.title}
-																		</span>
-																		<span className="min-w-0 truncate text-muted-foreground">{item.description}</span>
-																		<ArrowUpRightIcon
-																			className="
-																				size-3.5 shrink-0 self-center text-muted-foreground transition-transform duration-150 ease-out
-																				group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-highlight-icon
-																			"
-																			aria-hidden="true"
-																		/>
-																	</a>
-																)
-															: (
-																	<div className="inline-flex max-w-full items-baseline gap-2 text-sm/6">
-																		<span className="font-medium text-foreground">{item.title}</span>
-																		<span className="min-w-0 truncate text-muted-foreground">{item.description}</span>
-																	</div>
-																)}
-													</li>
-												))}
-												{cap.items.length === 0 && (
-													<li className="inline-flex max-w-full items-baseline gap-2 text-sm/6">
-														<span className="font-medium text-foreground">
-															{cap.emptyState?.title ?? m.home.emptyCapabilityTitle}
-														</span>
-														<span className="min-w-0 truncate text-muted-foreground">
-															{cap.emptyState?.description ?? m.home.emptyCapabilityDescription}
-														</span>
-														<ConstructionStripesIcon className="size-4 shrink-0 self-center text-muted-foreground opacity-80" />
-													</li>
-												)}
-											</ul>
 										</div>
-									</div>
+										<div className="
+											min-w-0 space-y-2
+											sm:pt-0.5
+										"
+										>
+											{cap.items.map(item => (
+												<CapabilityProofLink
+													description={item.description}
+													href={item.link}
+													key={`${cap.title}-${item.title}`}
+													title={item.title}
+												/>
+											))}
+											{cap.items.length === 0 && (
+												<CapabilityProofLink
+													description={cap.emptyState?.description ?? m.home.emptyCapabilityDescription}
+													title={cap.emptyState?.title ?? m.home.emptyCapabilityTitle}
+												/>
+											)}
+										</div>
+									</article>
 								</Reveal>
 							))}
 						</div>
@@ -262,6 +255,59 @@ export default async function HomePage() {
 				</div>
 			</Container>
 		</section>
+	)
+}
+
+function CapabilityProofLink({
+	description,
+	href,
+	title,
+}: {
+	description: string
+	href?: string
+	title: string
+}) {
+	const content = (
+		<>
+			<span className="min-w-0">
+				<span className="
+					block text-sm/5 font-medium text-foreground transition-colors
+					group-hover/proof:text-highlight-strong
+				"
+				>
+					{title}
+				</span>
+				<span className="block truncate text-sm/5 text-muted-foreground">{description}</span>
+			</span>
+			{href && (
+				<ArrowUpRightIcon
+					className="
+						size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 ease-out
+						group-hover/proof:translate-x-0.5 group-hover/proof:-translate-y-0.5 group-hover/proof:text-highlight-icon
+					"
+					aria-hidden="true"
+				/>
+			)}
+		</>
+	)
+	const className = `
+		group/proof flex min-w-0 items-center justify-between gap-3 border-b border-border/70 pb-2 text-left
+		last:border-b-0 last:pb-0
+	`
+
+	if (!href) {
+		return <div className={className}>{content}</div>
+	}
+
+	return (
+		<a
+			className={className}
+			href={href}
+			rel="noreferrer"
+			target="_blank"
+		>
+			{content}
+		</a>
 	)
 }
 

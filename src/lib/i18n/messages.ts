@@ -68,6 +68,7 @@ export interface Messages {
 		bioLead: string
 		bioP1: string
 		capabilitiesEyebrow: string
+		capabilitiesIntro: string
 		emptyCapabilityDescription: string
 		emptyCapabilityTitle: string
 		introAfterProducts: string
@@ -179,6 +180,7 @@ const en: Messages = {
 		bioLead: 'Building production-quality interfaces and AI-native products',
 		bioP1: 'I design and ship applied AI interfaces, workflows, and developer tools.',
 		capabilitiesEyebrow: 'Capabilities',
+		capabilitiesIntro: 'The overlap I keep returning to: product surfaces, frontend systems, developer tooling, and the tiny interaction details between them.',
 		emptyCapabilityDescription: 'Links when there is something worth flexing.',
 		emptyCapabilityTitle: 'Work in progress',
 		introAfterProducts: '.',
@@ -298,6 +300,7 @@ const zh: Messages = {
 		bioLead: '打造生产级界面与 AI 原生产品',
 		bioP1: '我设计并交付应用型 AI 界面、工作流与开发者工具。',
 		capabilitiesEyebrow: '能力',
+		capabilitiesIntro: '我反复打磨的交叉点：产品界面、前端系统、开发工具，以及它们之间那些微小但重要的交互细节。',
 		emptyCapabilityDescription: '有值得展示的成果时会补上链接。',
 		emptyCapabilityTitle: '进行中',
 		introAfterProducts: '。',
@@ -422,6 +425,7 @@ const ja: Messages = {
 		bioLead: '本番品質の UI と AI ネイティブなプロダクトをつくる',
 		bioP1: '応用 AI のインターフェース、ワークフロー、開発者向けツールを設計し届ける。',
 		capabilitiesEyebrow: 'できること',
+		capabilitiesIntro: 'プロダクトの表面、フロントエンド基盤、開発者向けツール、そのあいだにある小さな操作感を行き来している。',
 		emptyCapabilityDescription: '見せられるものができたらリンクを載せます。',
 		emptyCapabilityTitle: '作業中',
 		introAfterProducts: 'を形にする。',
