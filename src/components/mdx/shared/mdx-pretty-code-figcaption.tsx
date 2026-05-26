@@ -24,17 +24,17 @@ export function MdxPrettyCodeFigcaption({
 			{...props}
 			className={cn(
 				`
-					flex items-center justify-between gap-3 pr-2 text-[.8125rem] text-white/75
-					[&_svg]:size-4.5 [&_svg]:text-white/55
+					flex h-9.5 items-center justify-between gap-3 px-4 pe-2 text-[.8125rem] text-white/70
+					[&_svg]:size-4.5 [&_svg]:text-white/50
 					sm:[&_svg]:size-4
 				`,
 				className,
 			)}
 			ref={capRef}
 		>
-			<span className="flex min-w-0 items-center gap-2">
+			<span className="flex min-w-0 flex-1 items-center gap-2">
 				{icon}
-				{children}
+				<span className="truncate">{children}</span>
 			</span>
 			<CopyButton
 				getValue={() =>

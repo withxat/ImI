@@ -5,7 +5,6 @@ import type * as React from 'react'
 import { useRef } from 'react'
 
 import { CopyButton } from '@/components/mdx/shared/copy-button'
-import { ScrollArea } from '@/components/mdx/ui/scroll-area'
 import { cn } from '@/lib/cn'
 
 type PreProps = React.ComponentProps<'pre'>
@@ -16,7 +15,7 @@ export function MdxPreWithCopy({ children, className, ...props }: PreProps) {
 	return (
 		<div className="relative" ref={rootRef}>
 			<div
-				className="pointer-events-none absolute inset-e-0 top-0 z-30 pe-2 pt-2"
+				className="pointer-events-none absolute inset-e-0 top-0 z-30 pe-2.5 pt-2.5"
 				data-mdx-pre-copy-slot=""
 			>
 				<div className="pointer-events-auto">
@@ -29,15 +28,19 @@ export function MdxPreWithCopy({ children, className, ...props }: PreProps) {
 					/>
 				</div>
 			</div>
-			<ScrollArea className="
-				**:data-[slot=scroll-area-scrollbar]:data-[orientation=horizontal]:mx-2
-				**:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2
-			"
+			<div
+				className="
+					max-h-[600px] overflow-auto py-3.5 outline-none
+					focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-inset
+				"
+				role="region"
+				tabIndex={0}
 			>
 				<pre
 					className={cn(
 						`
-							w-max min-w-full px-4 py-3.5 text-[.8125rem] outline-none
+							w-max min-w-full px-4 text-[.8125rem] outline-none
+							*:flex *:flex-col
 							has-data-highlighted-line:px-0
 							has-data-line-numbers:px-0
 							has-data-[slot=tabs]:p-0
@@ -48,7 +51,7 @@ export function MdxPreWithCopy({ children, className, ...props }: PreProps) {
 				>
 					{children}
 				</pre>
-			</ScrollArea>
+			</div>
 		</div>
 	)
 }

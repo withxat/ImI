@@ -208,9 +208,14 @@ export const mdxComponents = {
 		return (
 			<figure
 				className={cn(
-					`data-rehype-pretty-code-figure:relative data-rehype-pretty-code-figure:my-6 data-rehype-pretty-code-figure:rounded-xl data-rehype-pretty-code-figure:border data-rehype-pretty-code-figure:border-border data-rehype-pretty-code-figure:bg-code`,
+					`
+						data-rehype-pretty-code-figure:relative data-rehype-pretty-code-figure:my-6 data-rehype-pretty-code-figure:overflow-hidden data-rehype-pretty-code-figure:rounded-xl data-rehype-pretty-code-figure:bg-code data-rehype-pretty-code-figure:text-sm data-rehype-pretty-code-figure:shadow-sm data-rehype-pretty-code-figure:ring-1 data-rehype-pretty-code-figure:ring-black/10
+						dark:data-rehype-pretty-code-figure:ring-white/12
+					`,
 					className,
 				)}
+				dir="ltr"
+				tabIndex={-1}
 				{...props}
 			/>
 		)
