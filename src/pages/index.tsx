@@ -153,33 +153,20 @@ export default async function HomePage() {
 								</p>
 							</div>
 						</Reveal>
-						<div className="border-y border-border">
+						<div className="space-y-10">
 							{capabilities.map((cap, index) => (
 								<Reveal
 									key={baseCapabilities[index]?.title ?? cap.title}
 									staggerIndex={index + 1}
 								>
 									<article className="
-										group grid gap-4 border-b border-border py-6
-										last:border-b-0
+										grid gap-3
 										sm:grid-cols-[3.25rem_1fr_15rem] sm:gap-6
 									"
 									>
-										<div className="
-											flex items-center gap-3
-											sm:block
-										"
-										>
-											<p className="font-mono text-xs/6 text-muted-foreground">
-												{String(index + 1).padStart(2, '0')}
-											</p>
-											<span className="
-												size-1.5 rounded-full bg-highlight-soft transition-colors
-												group-hover:bg-highlight-icon
-												sm:mt-3 sm:block
-											"
-											/>
-										</div>
+										<p className="font-mono text-xs/6 text-muted-foreground">
+											{String(index + 1).padStart(2, '0')}
+										</p>
 										<div className="min-w-0">
 											<div className="max-w-prose">
 												<h3 className="text-lg/6 font-semibold tracking-tight text-foreground">{cap.title}</h3>
@@ -249,10 +236,7 @@ function CapabilityProofLink({
 			)}
 		</>
 	)
-	const className = `
-		group/proof flex min-w-0 items-center justify-between gap-3 border-b border-border/70 pb-2 text-left
-		last:border-b-0 last:pb-0
-	`
+	const className = `group/proof flex min-w-0 items-center justify-between gap-3 text-left`
 
 	if (!href) {
 		return <div className={className}>{content}</div>
