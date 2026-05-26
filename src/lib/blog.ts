@@ -51,11 +51,11 @@ export function formatPostDate(date: Date, locale: Locale) {
 	const { day, month, year } = utcCalendarParts(date)
 
 	if (locale === 'zh') {
-		return `${year}年${month}月${day}日`
+		return `${year} 年 ${month} 月 ${day} 日`
 	}
 
 	if (locale === 'ja') {
-		return `${year}年${month}月${day}日`
+		return `${year} 年 ${month} 月 ${day} 日`
 	}
 
 	return new Intl.DateTimeFormat('en-US', {
