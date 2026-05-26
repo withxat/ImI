@@ -28,20 +28,10 @@ export function intlLocaleFor(locale: Locale): string {
 
 /** `lang` attribute on the document shell. */
 export function htmlLangFor(locale: Locale): string {
-	if (locale === 'zh') {
-		return 'zh-Hans'
-	}
-
 	return locale
 }
 
-/** Open Graph `og:locale` tag uses underscore form (e.g. `en_US`). */
+/** Open Graph locale follows the site's primary locale keys. */
 export function ogLocaleFor(locale: Locale): string {
-	if (locale === 'zh') {
-		return 'zh_CN'
-	}
-	if (locale === 'ja') {
-		return 'ja_JP'
-	}
-	return 'en_US'
+	return locale
 }

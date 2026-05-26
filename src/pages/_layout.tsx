@@ -24,7 +24,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<meta content="width=device-width, initial-scale=1" name="viewport" />
 			<link crossOrigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
 			<MiSansFontStyles />
-			<link href={RSS_FEED_URL} hrefLang="zh-Hans" rel="alternate" title={rssZh.pageTitle} type="application/rss+xml" />
+			<link href={RSS_FEED_URL} hrefLang="zh" rel="alternate" title={rssZh.pageTitle} type="application/rss+xml" />
 			<link href={RSS_FEED_URL_EN} hrefLang="en" rel="alternate" title={rssEn.pageTitle} type="application/rss+xml" />
 			<link href={RSS_FEED_URL_JA} hrefLang="ja" rel="alternate" title={rssJa.pageTitle} type="application/rss+xml" />
 			<link href="/favicon.ico" rel="icon" sizes="32x32" />
