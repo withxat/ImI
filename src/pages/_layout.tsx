@@ -4,6 +4,7 @@ import { Footer } from '@/components/footer'
 import { LocaleBootstrap } from '@/components/locale-bootstrap'
 import { MiSansFontStyles } from '@/components/mi-sans-font'
 import { RouteTransition } from '@/components/route-transition'
+import { SiteScrollArea } from '@/components/site-scroll-area'
 import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/rss'
@@ -19,7 +20,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 	const rssJa = getMessages('ja').blog
 
 	return (
-		<div className="relative isolate min-h-screen">
+		<div className="relative isolate h-dvh overflow-hidden">
 			<meta charSet="utf-8" />
 			<meta content="width=device-width, initial-scale=1" name="viewport" />
 			<link crossOrigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
@@ -31,10 +32,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<link href="/icon.svg" rel="icon" type="image/svg+xml" />
 			<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
 			<LocaleBootstrap serverLocale={locale} />
-			<main className="min-h-screen">
-				<RouteTransition>{children}</RouteTransition>
-			</main>
-			<Footer locale={locale} />
+			<SiteScrollArea>
+				<div className="relative isolate min-h-dvh">
+					<main className="min-h-dvh">
+						<RouteTransition>{children}</RouteTransition>
+					</main>
+					<Footer locale={locale} />
+				</div>
+			</SiteScrollArea>
 		</div>
 	)
 }

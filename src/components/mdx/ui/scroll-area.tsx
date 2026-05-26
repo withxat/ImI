@@ -11,10 +11,14 @@ export function ScrollArea({
 	className,
 	scrollbarGutter = false,
 	scrollFade = false,
+	viewportClassName,
+	viewportProps,
 	...props
 }: ScrollAreaPrimitive.Root.Props & {
 	scrollbarGutter?: boolean
 	scrollFade?: boolean
+	viewportClassName?: string
+	viewportProps?: ScrollAreaPrimitive.Viewport.Props
 }): React.ReactElement {
 	return (
 		<ScrollAreaPrimitive.Root
@@ -22,6 +26,7 @@ export function ScrollArea({
 			{...props}
 		>
 			<ScrollAreaPrimitive.Viewport
+				{...viewportProps}
 				className={cn(
 					`
 						h-full rounded-[inherit] transition-shadow outline-none
@@ -36,6 +41,8 @@ export function ScrollArea({
 						data-has-overflow-x:pb-2.5
 						data-has-overflow-y:pe-2.5
 					`,
+					viewportClassName,
+					viewportProps?.className,
 				)}
 				data-slot="scroll-area-viewport"
 			>

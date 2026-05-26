@@ -5,6 +5,7 @@ import type * as React from 'react'
 import { useRef } from 'react'
 
 import { CopyButton } from '@/components/mdx/shared/copy-button'
+import { ScrollArea } from '@/components/mdx/ui/scroll-area'
 import { cn } from '@/lib/cn'
 
 type PreProps = React.ComponentProps<'pre'>
@@ -28,13 +29,17 @@ export function MdxPreWithCopy({ children, className, ...props }: PreProps) {
 					/>
 				</div>
 			</div>
-			<div
+			<ScrollArea
 				className="
-					max-h-[600px] overflow-auto py-3.5 outline-none
-					focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-inset
+					max-h-[600px]
+					**:data-[slot=scroll-area-scrollbar]:data-[orientation=horizontal]:mx-2
+					**:data-[slot=scroll-area-scrollbar]:data-[orientation=vertical]:my-2
 				"
-				role="region"
-				tabIndex={0}
+				viewportProps={{
+					role: 'region',
+					tabIndex: 0,
+				}}
+				viewportClassName="py-3.5 focus-visible:ring-white/20 focus-visible:ring-offset-0"
 			>
 				<pre
 					className={cn(
@@ -51,7 +56,7 @@ export function MdxPreWithCopy({ children, className, ...props }: PreProps) {
 				>
 					{children}
 				</pre>
-			</div>
+			</ScrollArea>
 		</div>
 	)
 }
