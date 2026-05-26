@@ -223,7 +223,7 @@ function CapabilityProofLink({
 				>
 					{title}
 				</span>
-				<span className="block truncate text-sm/5 text-muted-foreground">{description}</span>
+				<span className="block truncate text-sm/5 text-muted-foreground" title={description}>{description}</span>
 			</span>
 			{href && (
 				<ArrowUpRightIcon

@@ -58,7 +58,7 @@ function HomeCardLinkContent({
 				>
 					{title}
 				</span>
-				<span className="block truncate text-sm text-muted-foreground">{description}</span>
+				<span className="block truncate text-sm text-muted-foreground" title={description}>{description}</span>
 			</span>
 			{trailingIcon ?? defaultIcon}
 		</>
