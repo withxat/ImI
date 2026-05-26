@@ -79,6 +79,9 @@ export interface Messages {
 		proofCta: string
 		proofDescription: string
 		proofEyebrow: string
+		proofFacetCopy: string
+		proofFacetFrontend: string
+		proofFacetHierarchy: string
 		proofTitle: string
 		role: string
 		tagline: string
@@ -192,6 +195,9 @@ const en: Messages = {
 		proofDescription:
 			'A real product surface: repositioning an AI chat app with cleaner hierarchy, sharper copy, and production-ready frontend details.',
 		proofEyebrow: 'Selected proof',
+		proofFacetCopy: 'Copy',
+		proofFacetFrontend: 'Production frontend',
+		proofFacetHierarchy: 'Hierarchy',
 		proofTitle: 'OpenCat.app redesign',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',
@@ -312,6 +318,9 @@ const zh: Messages = {
 		proofDescription:
 			'一个真实产品界面：重新梳理 AI 聊天应用的层级、文案与可落地的前端细节。',
 		proofEyebrow: '精选证明',
+		proofFacetCopy: '文案',
+		proofFacetFrontend: '生产级前端',
+		proofFacetHierarchy: '层级',
 		proofTitle: 'OpenCat.app 重设计',
 		role: '设计工程师',
 		tagline: 'Xat - 设计工程师',
@@ -437,6 +446,9 @@ const ja: Messages = {
 		proofDescription:
 			'実プロダクトの表面を、AI チャットアプリとしての階層、コピー、本番向けの実装細部まで整え直す。',
 		proofEyebrow: '選んだ実例',
+		proofFacetCopy: 'コピー',
+		proofFacetFrontend: '本番向けフロントエンド',
+		proofFacetHierarchy: '階層',
 		proofTitle: 'OpenCat.app リデザイン',
 		role: 'デザインエンジニア',
 		tagline: 'Xat - デザインエンジニア',

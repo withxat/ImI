@@ -114,24 +114,41 @@ export default async function HomePage() {
 
 					{featuredProject?.link && (
 						<section className="
-							mt-20 border-y border-border py-7
-							md:mt-24 md:py-8
+							mt-20 rounded-xl border border-highlight-soft/75 bg-highlight-soft/10 p-5 shadow-soft
+							md:mt-24 md:p-6
+							dark:border-border dark:bg-input/24 dark:shadow-black/35
 						"
 						>
 							<Reveal staggerIndex={0}>
 								<div className="
-									grid gap-5
-									sm:grid-cols-[10rem_1fr]
+									grid gap-7
+									md:grid-cols-[1fr_15rem] md:items-end
 								"
 								>
-									<Eyebrow className="text-sm text-muted-foreground">{m.home.proofEyebrow}</Eyebrow>
-									<div className="space-y-4">
-										<div className="space-y-1.5">
-											<p className="text-lg/6 font-semibold text-foreground">{m.home.proofTitle}</p>
-											<p className="max-w-prose text-base/7 text-muted-foreground">{m.home.proofDescription}</p>
+									<div className="space-y-5">
+										<div className="space-y-3">
+											<div className="flex items-center gap-3">
+												<Eyebrow className="text-sm text-muted-foreground">{m.home.proofEyebrow}</Eyebrow>
+												<span className="h-px flex-1 bg-border" />
+											</div>
+											<div className="space-y-2">
+												<p className="
+													max-w-xl text-2xl/7 font-semibold tracking-tight text-foreground
+													sm:text-3xl/9
+												"
+												>
+													{m.home.proofTitle}
+												</p>
+												<p className="max-w-prose text-base/7 text-muted-foreground">{m.home.proofDescription}</p>
+											</div>
 										</div>
 										<a
-											className="group inline-flex items-center gap-2 font-ui text-sm font-medium text-highlight-strong"
+											className="
+												group inline-flex items-center gap-2 rounded-md bg-foreground px-3.5 py-2 font-ui text-sm
+												font-medium text-background transition-colors duration-150
+												hover:bg-highlight-text
+												dark:hover:bg-highlight-text
+											"
 											href={featuredProject.link}
 											rel="noreferrer"
 											target="_blank"
@@ -139,12 +156,49 @@ export default async function HomePage() {
 											{m.home.proofCta}
 											<ArrowUpRightIcon
 												className="
-													size-4 text-highlight-icon transition-transform duration-150 ease-out
+													size-4 transition-transform duration-150 ease-out
 													group-hover:translate-x-0.5 group-hover:-translate-y-0.5
 												"
 												aria-hidden="true"
 											/>
 										</a>
+									</div>
+									<div className="
+										grid gap-3 border-t border-border pt-5
+										md:border-t-0 md:pt-0
+									"
+									>
+										<div className="flex items-center justify-between gap-3 font-mono text-xs/5 text-muted-foreground">
+											<span>01</span>
+											<span>{featuredProject.title}</span>
+										</div>
+										<div className="space-y-2">
+											<div className="h-2.5 w-3/4 rounded-full bg-foreground/85" />
+											<div className="h-2.5 w-1/2 rounded-full bg-highlight-icon/70" />
+										</div>
+										<div className="grid grid-cols-2 gap-2">
+											<span className="
+												min-w-0 truncate rounded-md border border-border bg-background/45 px-2 py-1.5 text-xs/4 font-medium
+												text-foreground
+											"
+											>
+												{m.home.proofFacetHierarchy}
+											</span>
+											<span className="
+												min-w-0 truncate rounded-md border border-border bg-background/45 px-2 py-1.5 text-xs/4 font-medium
+												text-foreground
+											"
+											>
+												{m.home.proofFacetCopy}
+											</span>
+											<span className="
+												col-span-2 min-w-0 truncate rounded-md border border-border bg-background/45 px-2 py-1.5 text-xs/4
+												font-medium text-foreground
+											"
+											>
+												{m.home.proofFacetFrontend}
+											</span>
+										</div>
 									</div>
 								</div>
 							</Reveal>
