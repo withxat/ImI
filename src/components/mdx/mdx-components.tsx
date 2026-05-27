@@ -96,7 +96,7 @@ export const mdxComponents = {
 	AlertTitle,
 	blockquote: ({ className, ...props }: React.ComponentProps<'blockquote'>) => (
 		<blockquote
-			className={cn('my-8 rounded-s-sm border-l-2 ps-4 italic', className)}
+			className={cn('my-8 rounded-full border-l-2 ps-4 italic', className)}
 			{...props}
 		/>
 	),
