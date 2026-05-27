@@ -116,7 +116,7 @@ export function IntroBadgePopover({
 								focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
 								dark:bg-input/32
 								dark:hover:bg-input/64
-								[&_svg]:block [&_svg]:size-[1em] [&_svg]:shrink-0 [&_svg]:text-highlight-icon
+								[&_svg]:block [&_svg]:size-[1em] [&_svg]:shrink-0 [&_svg]:translate-y-[-0.08em] [&_svg]:text-highlight-icon
 							`,
 							open && 'highlight-surface-active',
 						)}
@@ -127,7 +127,7 @@ export function IntroBadgePopover({
 				nativeButton={false}
 			>
 				<Icon aria-hidden />
-				{label}
+				<span className="leading-none">{label}</span>
 			</PopoverTrigger>
 			<PopoverPopup
 				align="start"
