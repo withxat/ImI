@@ -251,55 +251,49 @@
 }
 
 @layer components {
+	/* Rounded “pill” underline per wrapped line: `::after` cannot follow inline fragments. */
 	.text-link {
-		@apply relative transition-colors duration-150;
+		@apply transition-colors duration-150;
 		color: var(--color-highlight-text);
 		text-decoration: none;
+		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
+		padding: 0 0.04em 0.02em;
+		margin: 0 -0.04em;
+		background-image: linear-gradient(var(--text-link-underline), var(--text-link-underline));
+		background-position: 0 100%;
+		background-size: 100% 0.09em;
+		background-repeat: no-repeat;
+		border-bottom-left-radius: 9999px;
+		border-bottom-right-radius: 9999px;
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
 	}
 
-	.text-link::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: -0.18em;
-		height: 0.1em;
-		border-radius: 9999px;
-		background-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		transition: background-color 150ms;
-		pointer-events: none;
-	}
-
-	.text-link:hover::after {
-		background-color: var(--color-highlight-soft);
+	.text-link:hover {
+		--text-link-underline: var(--color-highlight-soft);
 	}
 
 	/* Underline/link affordance while staying muted until hover — e.g. locale switcher chips. */
 	.text-link-muted {
-		@apply relative transition-colors duration-150;
+		@apply transition-colors duration-150;
 		color: var(--color-muted-foreground);
 		text-decoration: none;
-	}
-
-	.text-link-muted::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: -0.18em;
-		height: 0.1em;
-		border-radius: 9999px;
-		background-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		transition: background-color 150ms;
-		pointer-events: none;
+		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
+		padding: 0 0.04em 0.02em;
+		margin: 0 -0.04em;
+		background-image: linear-gradient(var(--text-link-underline), var(--text-link-underline));
+		background-position: 0 100%;
+		background-size: 100% 0.09em;
+		background-repeat: no-repeat;
+		border-bottom-left-radius: 9999px;
+		border-bottom-right-radius: 9999px;
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
 	}
 
 	.text-link-muted:hover {
 		color: var(--color-highlight-text);
-	}
-
-	.text-link-muted:hover::after {
-		background-color: var(--color-highlight-soft);
+		--text-link-underline: var(--color-highlight-soft);
 	}
 
 	.entry-link {
@@ -376,43 +370,51 @@
 	}
 
 	.article-body a {
-		@apply relative transition-colors duration-150;
+		@apply transition-colors duration-150;
 		color: var(--color-highlight-text);
 		text-decoration: none;
+		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
+		padding: 0 0.04em 0.02em;
+		margin: 0 -0.04em;
+		background-image: linear-gradient(var(--text-link-underline), var(--text-link-underline));
+		background-position: 0 100%;
+		background-size: 100% 0.09em;
+		background-repeat: no-repeat;
+		border-bottom-left-radius: 9999px;
+		border-bottom-right-radius: 9999px;
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
 	}
 
-	.article-body a::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: -0.18em;
-		height: 0.1em;
-		border-radius: 9999px;
-		background-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		transition: background-color 150ms;
-		pointer-events: none;
-	}
-
-	.article-body a:hover::after {
-		background-color: var(--color-highlight-soft);
+	.article-body a:hover {
+		--text-link-underline: var(--color-highlight-soft);
 	}
 
 	.article-body :is(h1, h2, h3, h4, h5, h6) a {
 		@apply text-foreground;
-	}
-
-	.article-body :is(h1, h2, h3, h4, h5, h6) a::after {
-		display: none;
-		background-color: currentColor;
+		background-image: none;
+		background-size: 0 0;
+		padding: 0;
+		margin: 0;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		box-decoration-break: initial;
+		-webkit-box-decoration-break: initial;
 	}
 
 	.article-body :is(h1, h2, h3, h4, h5, h6) a:hover {
 		color: var(--color-highlight-text);
-	}
-
-	.article-body :is(h1, h2, h3, h4, h5, h6) a:hover::after {
-		display: block;
+		--text-link-underline: currentColor;
+		padding: 0 0.04em 0.02em;
+		margin: 0 -0.04em;
+		background-image: linear-gradient(var(--text-link-underline), var(--text-link-underline));
+		background-position: 0 100%;
+		background-size: 100% 0.09em;
+		background-repeat: no-repeat;
+		border-bottom-left-radius: 9999px;
+		border-bottom-right-radius: 9999px;
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
 	}
 
 	.article-body blockquote {
