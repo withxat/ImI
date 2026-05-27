@@ -252,29 +252,35 @@
 
 @layer components {
 	/*
-	 * Pill underline per wrapped line: one stadium SVG + source-in tint (no stacked caps/bar).
-	 * Avoids overlap color shift and square corners leaking from a rectangular center bar.
+	 * Pill underline per line: em-sized semicircle caps + center bar (no overlap, no SVG stretch).
+	 * SVG + source-in squashes rx when stretched wide; separate caps keep round ends visible.
 	 */
 	.text-link,
 	.text-link-muted,
 	.article-body a {
-		--text-link-pill-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0%200%20100%2010' preserveAspectRatio='none'%3E%3Crect width='100' height='10' rx='5' ry='5' fill='black'/%3E%3C/svg%3E");
 		@apply transition-colors duration-150;
 		text-decoration: none;
-		--text-link-u-thickness: 0.09em;
+		--text-link-u-thickness: 0.1em;
 		--text-link-u-clear: 0.04em;
+		--text-link-u-r: calc(var(--text-link-u-thickness) / 2);
 		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
 		padding: 0 0.02em calc(var(--text-link-u-thickness) + var(--text-link-u-clear));
 		margin: 0 -0.02em;
 		border-radius: 0;
 		background-color: transparent;
 		background-image:
-			linear-gradient(var(--text-link-underline), var(--text-link-underline)), var(--text-link-pill-shape);
-		background-size: 100% var(--text-link-u-thickness);
-		background-position: left bottom;
+			radial-gradient(circle var(--text-link-u-r) at 100% 50%, var(--text-link-underline) 100%, transparent 100%),
+			radial-gradient(circle var(--text-link-u-r) at 0 50%, var(--text-link-underline) 100%, transparent 100%),
+			linear-gradient(var(--text-link-underline), var(--text-link-underline));
+		background-size:
+			var(--text-link-u-thickness) var(--text-link-u-thickness),
+			var(--text-link-u-thickness) var(--text-link-u-thickness),
+			calc(100% - 2 * var(--text-link-u-thickness)) var(--text-link-u-thickness);
+		background-position:
+			0 calc(100% - var(--text-link-u-thickness)),
+			100% calc(100% - var(--text-link-u-thickness)),
+			var(--text-link-u-thickness) calc(100% - var(--text-link-u-thickness));
 		background-repeat: no-repeat;
-		background-blend-mode: source-in;
-		-webkit-background-blend-mode: source-in;
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
 	}
@@ -381,25 +387,30 @@
 		-webkit-box-decoration-break: initial;
 		background-color: transparent;
 		background-image: none;
-		background-blend-mode: normal;
-		-webkit-background-blend-mode: normal;
 	}
 
 	.article-body :is(h1, h2, h3, h4, h5, h6) a:hover {
 		color: var(--color-highlight-text);
 		--text-link-underline: currentColor;
-		--text-link-u-thickness: 0.09em;
+		--text-link-u-thickness: 0.1em;
 		--text-link-u-clear: 0.04em;
+		--text-link-u-r: calc(var(--text-link-u-thickness) / 2);
 		padding: 0 0.02em calc(var(--text-link-u-thickness) + var(--text-link-u-clear));
 		margin: 0 -0.02em;
 		background-color: transparent;
 		background-image:
-			linear-gradient(var(--text-link-underline), var(--text-link-underline)), var(--text-link-pill-shape);
-		background-size: 100% var(--text-link-u-thickness);
-		background-position: left bottom;
+			radial-gradient(circle var(--text-link-u-r) at 100% 50%, var(--text-link-underline) 100%, transparent 100%),
+			radial-gradient(circle var(--text-link-u-r) at 0 50%, var(--text-link-underline) 100%, transparent 100%),
+			linear-gradient(var(--text-link-underline), var(--text-link-underline));
+		background-size:
+			var(--text-link-u-thickness) var(--text-link-u-thickness),
+			var(--text-link-u-thickness) var(--text-link-u-thickness),
+			calc(100% - 2 * var(--text-link-u-thickness)) var(--text-link-u-thickness);
+		background-position:
+			0 calc(100% - var(--text-link-u-thickness)),
+			100% calc(100% - var(--text-link-u-thickness)),
+			var(--text-link-u-thickness) calc(100% - var(--text-link-u-thickness));
 		background-repeat: no-repeat;
-		background-blend-mode: source-in;
-		-webkit-background-blend-mode: source-in;
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
 	}
