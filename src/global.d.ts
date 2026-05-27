@@ -10,3 +10,7 @@ declare module '*.ttf?subsets' {
 	}
 	export const fontFamilyFallback: string
 }
+
+declare module '*.ttf?subsets&key=content' {
+	export * from '*.ttf?subsets'
+}

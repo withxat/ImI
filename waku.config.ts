@@ -14,10 +14,14 @@ export default defineConfig({
 		plugins: [
 			contentCollections(),
 			Font.vite({
-				scanFiles: [
-					'src/**/*.{css,ts,tsx}',
-					'content/**/*.{json,md,mdx}',
-				],
+				scanFiles: {
+					content: [
+						'content/**/*.{json,md,mdx}',
+					],
+					default: [
+						'src/**/*.{css,ts,tsx}',
+					],
+				},
 				whiteList: '，。！？、；：「」『』（）《》—…·￥',
 			}),
 			tailwindcss(),

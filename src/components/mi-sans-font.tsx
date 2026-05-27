@@ -1,17 +1,30 @@
-import { css, fontFamilyFallback } from '@/assets/mi-sans-vf.ttf?subsets'
+'use client'
 
-const sansFontStack = `"Hanken Grotesk", ${css.family}, ${fontFamilyFallback}`
+import { useEffect } from 'react'
+
+const hankenFontStack = '"Hanken Grotesk"'
 
 export function MiSansFontStyles() {
-	return (
-		<style>
-			{`
-				html {
-					--font-display: ${sansFontStack};
-					--font-text: ${sansFontStack};
-					--font-ui: ${sansFontStack};
+	useEffect(() => {
+		let cancelled = false
+
+		void import('@/assets/mi-sans-vf.ttf?subsets')
+			.then(({ css, fontFamilyFallback }) => {
+				if (cancelled) {
+					return
 				}
-			`}
-		</style>
-	)
+
+				const sansFontStack = `${hankenFontStack}, ${css.family}, ${fontFamilyFallback}`
+				document.documentElement.style.setProperty('--font-display', sansFontStack)
+				document.documentElement.style.setProperty('--font-text', sansFontStack)
+				document.documentElement.style.setProperty('--font-ui', sansFontStack)
+			})
+			.catch(() => {})
+
+		return () => {
+			cancelled = true
+		}
+	}, [])
+
+	return null
 }

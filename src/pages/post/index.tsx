@@ -1,4 +1,5 @@
 import { HomeCardLink } from '@/components/home-card-link'
+import { MiSansContentFontStyles } from '@/components/mi-sans-content-font'
 import { Reveal } from '@/components/reveal'
 import { SiteHeader } from '@/components/site-header'
 import { StaggerReveal } from '@/components/stagger-reveal'
@@ -24,6 +25,7 @@ export default async function BlogIndexPage() {
 
 	return (
 		<section>
+			<MiSansContentFontStyles />
 			<Seo
 				canonicalPath="/post"
 				description={m.blog.pageDescription}

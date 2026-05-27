@@ -1,6 +1,7 @@
 import type { PageProps } from 'waku/router'
 
 import { ArticleBody } from '@/components/article-body'
+import { MiSansContentFontStyles } from '@/components/mi-sans-content-font'
 import { PostTranslatedNoticeAside } from '@/components/post-translated-notice'
 import { SiteHeader } from '@/components/site-header'
 import { StaggerReveal } from '@/components/stagger-reveal'
@@ -31,6 +32,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 
 	return (
 		<section>
+			<MiSansContentFontStyles />
 			<Seo
 				jsonLd={[
 					blogPostingJsonLd({
