@@ -372,7 +372,7 @@
 	}
 
 	.article-body blockquote {
-		@apply my-8 max-w-full min-w-0 pl-5 text-muted-foreground;
+		@apply max-w-full min-w-0 text-muted-foreground;
 	}
 
 	.article-body code {

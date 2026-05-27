@@ -96,7 +96,7 @@ export const mdxComponents = {
 	AlertTitle,
 	blockquote: ({ className, ...props }: React.ComponentProps<'blockquote'>) => (
 		<blockquote
-			className={cn('mt-6 border-l-2 ps-6 italic', className)}
+			className={cn('my-8 rounded-s-sm border-l-2 ps-4 italic', className)}
 			{...props}
 		/>
 	),
@@ -347,7 +347,7 @@ export const mdxComponents = {
 	MediaQueryDemo,
 	ol: ({ className, ...props }: React.ComponentProps<'ol'>) => (
 		<ol
-			className={cn('my-6 ms-4 list-decimal text-muted-foreground', className)}
+			className={cn('my-6 list-decimal text-muted-foreground', className)}
 			{...props}
 		/>
 	),
@@ -471,7 +471,7 @@ export const mdxComponents = {
 	),
 	ul: ({ className, ...props }: React.ComponentProps<'ul'>) => (
 		<ul
-			className={cn('my-6 ms-4 list-disc text-muted-foreground', className)}
+			className={cn('my-6 list-disc text-muted-foreground', className)}
 			{...props}
 		/>
 	),
