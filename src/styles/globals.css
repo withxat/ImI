@@ -252,29 +252,54 @@
 
 @layer components {
 	.text-link {
-		@apply underline underline-offset-4 transition-colors duration-150;
+		@apply relative transition-colors duration-150;
 		color: var(--color-highlight-text);
-		text-decoration-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		text-decoration-thickness: 0.08em;
-		text-decoration-skip-ink: auto;
+		text-decoration: none;
 	}
 
-	.text-link:hover {
-		text-decoration-color: var(--color-highlight-soft);
+	.text-link::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -0.18em;
+		height: 0.1em;
+		border-radius: 9999px;
+		background-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
+		transition: background-color 150ms;
+		pointer-events: none;
+	}
+
+	.text-link:hover::after {
+		background-color: var(--color-highlight-soft);
 	}
 
 	/* Underline/link affordance while staying muted until hover — e.g. locale switcher chips. */
 	.text-link-muted {
-		@apply underline underline-offset-4 transition-colors duration-150;
+		@apply relative transition-colors duration-150;
 		color: var(--color-muted-foreground);
-		text-decoration-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		text-decoration-thickness: 0.08em;
-		text-decoration-skip-ink: auto;
+		text-decoration: none;
+	}
+
+	.text-link-muted::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -0.18em;
+		height: 0.1em;
+		border-radius: 9999px;
+		background-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
+		transition: background-color 150ms;
+		pointer-events: none;
 	}
 
 	.text-link-muted:hover {
 		color: var(--color-highlight-text);
-		text-decoration-color: var(--color-highlight-soft);
+	}
+
+	.text-link-muted:hover::after {
+		background-color: var(--color-highlight-soft);
 	}
 
 	.entry-link {
@@ -351,24 +376,43 @@
 	}
 
 	.article-body a {
-		@apply underline underline-offset-4 transition-colors duration-150;
+		@apply relative transition-colors duration-150;
 		color: var(--color-highlight-text);
-		text-decoration-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		text-decoration-thickness: 0.08em;
-		text-decoration-skip-ink: auto;
+		text-decoration: none;
 	}
 
-	.article-body a:hover {
-		text-decoration-color: var(--color-highlight-soft);
+	.article-body a::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -0.18em;
+		height: 0.1em;
+		border-radius: 9999px;
+		background-color: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
+		transition: background-color 150ms;
+		pointer-events: none;
+	}
+
+	.article-body a:hover::after {
+		background-color: var(--color-highlight-soft);
 	}
 
 	.article-body :is(h1, h2, h3, h4, h5, h6) a {
 		@apply text-foreground;
-		text-decoration-color: currentColor;
+	}
+
+	.article-body :is(h1, h2, h3, h4, h5, h6) a::after {
+		display: none;
+		background-color: currentColor;
 	}
 
 	.article-body :is(h1, h2, h3, h4, h5, h6) a:hover {
 		color: var(--color-highlight-text);
+	}
+
+	.article-body :is(h1, h2, h3, h4, h5, h6) a:hover::after {
+		display: block;
 	}
 
 	.article-body blockquote {

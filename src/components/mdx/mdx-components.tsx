@@ -84,10 +84,30 @@ export const mdxComponents = {
 			{...props}
 		/>
 	),
-	Accordion,
-	AccordionItem,
-	AccordionPanel,
-	AccordionTrigger,
+	Accordion: ({ className, ...props }: React.ComponentProps<typeof Accordion>) => (
+		<Accordion className={cn('not-first:mt-6', className)} {...props} />
+	),
+	AccordionItem: ({ className, ...props }: React.ComponentProps<typeof AccordionItem>) => (
+		<AccordionItem className={cn('border-b-0!', className)} {...props} />
+	),
+	AccordionPanel: ({ className, ...props }: React.ComponentProps<typeof AccordionPanel>) => (
+		<AccordionPanel
+			className={cn(
+				'mt-3 rounded-lg border border-dashed border-border px-3.5 py-2.5!',
+				className,
+			)}
+			{...props}
+		/>
+	),
+	AccordionTrigger: ({ className, ...props }: React.ComponentProps<typeof AccordionTrigger>) => (
+		<AccordionTrigger
+			className={cn(
+				'py-0! text-base! leading-relaxed font-normal! text-muted-foreground',
+				className,
+			)}
+			{...props}
+		/>
+	),
 	Alert: ({ className, ...props }: React.ComponentProps<typeof Alert>) => (
 		<Alert className={cn('my-6', className)} {...props} />
 	),
@@ -256,13 +276,7 @@ export const mdxComponents = {
 				)}
 				id={id}
 			>
-				<a
-					className="
-						no-underline underline-offset-4
-						hover:text-highlight-strong hover:underline
-					"
-					href={`#${id}`}
-				>
+				<a href={`#${id}`}>
 					{children}
 				</a>
 			</h2>
@@ -283,13 +297,7 @@ export const mdxComponents = {
 				)}
 				id={id}
 			>
-				<a
-					className="
-						no-underline underline-offset-4
-						hover:text-highlight-strong hover:underline
-					"
-					href={`#${id}`}
-				>
+				<a href={`#${id}`}>
 					{children}
 				</a>
 			</h3>
