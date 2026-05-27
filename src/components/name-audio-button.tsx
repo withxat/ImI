@@ -1,17 +1,14 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { NameVolumeIcon } from '@/components/name-volume-icon'
-import { Button } from '@/components/ui/button'
 
 export function NameAudioButton() {
 	const audioRef = useRef<HTMLAudioElement>(null)
 	const [playing, setPlaying] = useState(false)
 	const [endSync, setEndSync] = useState(false)
 	const [showPronunciation, setShowPronunciation] = useState(false)
-	const reduceMotion = useReducedMotion()
 
 	const onEndSyncComplete = useCallback(() => {
 		setEndSync(false)
@@ -69,42 +66,26 @@ export function NameAudioButton() {
 
 	return (
 		<span className="inline-flex items-baseline gap-0.75">
-			<AnimatePresence initial={false}>
-				{showPronunciation && (
-					<motion.span
-						animate={{
-							opacity: 1,
-							width: 'auto',
-						}}
-						className="
-							inline-flex -translate-y-0.75 overflow-hidden text-sm whitespace-nowrap text-highlight-strong
-							sm:text-base
-						"
-						exit={{
-							opacity: 0,
-							width: 0,
-						}}
-						initial={reduceMotion
-							? false
-							: {
-									opacity: 0,
-									width: 0,
-								}}
-						transition={{
-							duration: reduceMotion ? 0 : 0.24,
-							ease: [0.22, 1, 0.36, 1],
-						}}
-					>
-						/ˈeɪtoʊ/
-					</motion.span>
-				)}
-			</AnimatePresence>
-			<Button
+			{showPronunciation && (
+				<span className="
+					inline-flex -translate-y-0.75 text-sm whitespace-nowrap text-highlight-strong
+					sm:text-base
+				"
+				>
+					/ˈeɪtoʊ/
+				</span>
+			)}
+			<button
+				className="
+					relative inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground transition-colors
+					outline-none
+					hover:bg-accent
+					focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background
+					sm:size-6
+				"
 				aria-label="Play name pronunciation"
 				onClick={handlePlay}
-				size="icon-xs"
 				type="button"
-				variant="ghost"
 			>
 				<NameVolumeIcon
 					audioPlaying={playing}
@@ -113,7 +94,7 @@ export function NameAudioButton() {
 					onEndSyncComplete={onEndSyncComplete}
 					aria-hidden
 				/>
-			</Button>
+			</button>
 			<audio preload="none" ref={audioRef} src="/xat.mp3" hidden />
 		</span>
 	)

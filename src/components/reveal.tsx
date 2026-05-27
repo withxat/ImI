@@ -1,14 +1,10 @@
 'use client'
 
-import type { Variants } from 'motion/react'
 import type { ReactNode } from 'react'
 
-import { motion, useReducedMotion } from 'motion/react'
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
 import { cn } from '@/lib/cn'
-
-const easeOut = [0.22, 1, 0.36, 1] as const
 
 /** Scroll restoration / mid-page load: treat as "not top" above this offset. */
 const TOP_SCROLL_PX = 16
@@ -29,9 +25,8 @@ interface RevealProps {
 }
 
 /**
- * Blur + opacity entrance. Behaviour:
- * - **At scroll top**: in-viewport blocks stagger top → bottom; below-fold blocks animate on scroll into view.
- * - **Mid-page (e.g. refresh while scrolled)**: whatever is in the viewport is shown immediately; below gets scroll-in; above is final.
+ * Blur + opacity entrance without pulling a runtime animation library into the
+ * first page load. Initial viewport items stagger; below-fold items reveal once.
  */
 export function Reveal({
 	baseDelay = 0.06,
@@ -41,42 +36,17 @@ export function Reveal({
 	staggerIndex,
 	staggerStep = 0.048,
 }: RevealProps) {
-	const reduceMotion = useReducedMotion()
 	const ref = useRef<HTMLDivElement>(null)
 	const [mode, setMode] = useState<null | RevealMode>(null)
+	const [visible, setVisible] = useState(false)
 
-	const variants: Variants = useMemo(() => {
-		if (reduceMotion) {
-			return {
-				hidden: { opacity: 0 },
-				visible: {
-					opacity: 1,
-					transition: { duration: 0.2 },
-				},
-			}
-		}
-		return {
-			hidden: {
-				filter: `blur(${blur}px)`,
-				opacity: 0,
-			},
-			visible: {
-				filter: 'blur(0px)',
-				opacity: 1,
-				transition: {
-					duration: 0.42,
-					ease: easeOut,
-				},
-			},
-		}
-	}, [blur, reduceMotion])
-
-	/* eslint-disable react/set-state-in-effect -- layout reads scroll + geometry; mode must be set before paint */
+	/* eslint-disable react/set-state-in-effect -- layout reads scroll + geometry before paint */
 	useLayoutEffect(() => {
 		const el = ref.current
 		if (!el)
 			return
 
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 		const atTop = window.scrollY <= TOP_SCROLL_PX
 		const r = el.getBoundingClientRect()
 		const vh = window.visualViewport?.height ?? window.innerHeight
@@ -85,26 +55,20 @@ export function Reveal({
 		const belowFold = r.top > vh - 8
 		const aboveViewport = r.bottom < 8
 
-		if (!atTop && intersects) {
+		if (reduceMotion || (!atTop && (intersects || aboveViewport))) {
 			setMode('instant')
-			return
-		}
-		if (!atTop && aboveViewport) {
-			setMode('instant')
-			return
-		}
-		if (!atTop && belowFold) {
-			setMode('scroll')
+			setVisible(true)
 			return
 		}
 
-		if (atTop && belowFold) {
+		if ((atTop && belowFold) || (!atTop && belowFold)) {
 			setMode('scroll')
 			return
 		}
 
 		if (atTop && intersects) {
 			setMode('stagger')
+			requestAnimationFrame(() => setVisible(true))
 			return
 		}
 
@@ -112,70 +76,44 @@ export function Reveal({
 	}, [])
 	/* eslint-enable react/set-state-in-effect */
 
-	const staggerDelay
+	useLayoutEffect(() => {
+		const el = ref.current
+		if (mode !== 'scroll' || !el)
+			return
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (!entry?.isIntersecting)
+					return
+				setVisible(true)
+				observer.disconnect()
+			},
+			{ rootMargin: '0px 0px -10% 0px', threshold: 0.14 },
+		)
+		observer.observe(el)
+		return () => observer.disconnect()
+	}, [mode])
+
+	const delay
 		= mode === 'stagger'
 			? baseDelay + (staggerIndex ?? 0) * staggerStep
 			: 0
-
-	if (mode === null) {
-		return (
-			<div
-				className={cn(
-					className,
-					reduceMotion ? 'opacity-0' : 'opacity-0 filter-[blur(10px)]',
-				)}
-				ref={ref}
-			>
-				{children}
-			</div>
-		)
-	}
-
-	if (mode === 'instant') {
-		return (
-			<motion.div
-				animate="visible"
-				className={className}
-				initial={false}
-				ref={ref}
-				transition={{ duration: 0 }}
-				variants={variants}
-			>
-				{children}
-			</motion.div>
-		)
-	}
-
-	if (mode === 'stagger') {
-		return (
-			<motion.div
-				transition={{
-					delay: staggerDelay,
-					duration: reduceMotion ? 0.2 : 0.42,
-					ease: easeOut,
-				}}
-				animate="visible"
-				className={className}
-				initial="hidden"
-				ref={ref}
-				variants={variants}
-			>
-				{children}
-			</motion.div>
-		)
-	}
+	const shouldBlur = mode !== 'instant' && !visible
 
 	return (
-		<motion.div
-			className={className}
-			initial="hidden"
+		<div
+			style={{
+				filter: shouldBlur ? `blur(${blur}px)` : 'blur(0px)',
+				opacity: visible ? 1 : 0,
+				transitionDelay: visible && delay ? `${delay}s` : undefined,
+				transitionDuration: mode === 'instant' ? '0ms' : '420ms',
+				transitionProperty: 'opacity, filter',
+				transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+			}}
+			className={cn(className)}
 			ref={ref}
-			transition={{ duration: reduceMotion ? 0.2 : 0.42, ease: easeOut }}
-			variants={variants}
-			viewport={{ amount: 0.14, margin: '0px 0px -10% 0px', once: true }}
-			whileInView="visible"
 		>
 			{children}
-		</motion.div>
+		</div>
 	)
 }

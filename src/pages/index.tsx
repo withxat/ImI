@@ -1,4 +1,3 @@
-import { ArrowUpRightIcon } from 'lucide-react'
 import { Link } from 'waku'
 
 import { HomeCardLink } from '@/components/home-card-link'
@@ -7,7 +6,6 @@ import { NameAudioButton } from '@/components/name-audio-button'
 import { Reveal } from '@/components/reveal'
 import { SiteHeader } from '@/components/site-header'
 import { StaggerReveal } from '@/components/stagger-reveal'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Container, Eyebrow } from '@/components/ui/primitives'
 import { getAllPosts } from '@/lib/blog'
 import { htmlLangFor } from '@/lib/i18n/constants'
@@ -48,21 +46,18 @@ export default async function HomePage() {
 					<div className="flex flex-col gap-4">
 						<SiteHeader locale={locale} messages={m} />
 						<div className="flex min-w-0 flex-col gap-4">
-							<Avatar className="
-								size-14 rounded-xl border border-border
-								sm:size-16
-							"
-							>
-								<AvatarImage
-									alt="Xat"
-									fetchPriority="high"
-									height={64}
-									referrerPolicy="no-referrer"
-									src={PROFILE_AVATAR_SRC}
-									width={64}
-								/>
-								<AvatarFallback className="rounded-xl text-sm">Xat</AvatarFallback>
-							</Avatar>
+							<img
+								className="
+									size-14 rounded-xl border border-border object-cover
+									sm:size-16
+								"
+								alt="Xat"
+								fetchPriority="high"
+								height={64}
+								referrerPolicy="no-referrer"
+								src={PROFILE_AVATAR_SRC}
+								width={64}
+							/>
 							<div className="space-y-0">
 								<h1 className="
 									inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
@@ -226,13 +221,22 @@ function CapabilityProofLink({
 				<span className="block truncate text-sm/5 text-muted-foreground" title={description}>{description}</span>
 			</span>
 			{href && (
-				<ArrowUpRightIcon
+				<svg
 					className="
 						size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 ease-out
 						group-hover/proof:translate-x-0.5 group-hover/proof:-translate-y-0.5 group-hover/proof:text-highlight-icon
 					"
 					aria-hidden="true"
-				/>
+					fill="none"
+					stroke="currentColor"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth="2"
+					viewBox="0 0 24 24"
+				>
+					<path d="M7 7h10v10" />
+					<path d="M7 17 17 7" />
+				</svg>
 			)}
 		</>
 	)
