@@ -252,8 +252,8 @@
 
 @layer components {
 	/*
-	 * Pill (stadium) underline per line: left/right semicircles (radials centered on edges)
-	 * plus a straight center bar — not a flat “tray”. Background sits under text; clone = per line.
+	 * Pill underline per line: H×H cap tiles with semicircles bulging outward (not inward),
+	 * plus a center bar on the same baseline. Bar layer on top hides cap/bar seams.
 	 */
 	.text-link,
 	.text-link-muted,
@@ -269,25 +269,17 @@
 		border-radius: 0;
 		background-color: transparent;
 		background-image:
-			radial-gradient(
-				circle var(--text-link-u-r) at 0 calc(100% - var(--text-link-u-r)),
-				var(--text-link-underline) 100%,
-				transparent 100%
-			),
-			radial-gradient(
-				circle var(--text-link-u-r) at 100% calc(100% - var(--text-link-u-r)),
-				var(--text-link-underline) 100%,
-				transparent 100%
-			),
-			linear-gradient(var(--text-link-underline), var(--text-link-underline));
+			linear-gradient(var(--text-link-underline), var(--text-link-underline)),
+			radial-gradient(circle var(--text-link-u-r) at 100% 50%, var(--text-link-underline) 100%, transparent 100%),
+			radial-gradient(circle var(--text-link-u-r) at 0 50%, var(--text-link-underline) 100%, transparent 100%);
 		background-size:
-			auto,
-			auto,
-			calc(100% - var(--text-link-u-thickness)) var(--text-link-u-thickness);
+			calc(100% - var(--text-link-u-thickness)) var(--text-link-u-thickness),
+			var(--text-link-u-thickness) var(--text-link-u-thickness),
+			var(--text-link-u-thickness) var(--text-link-u-thickness);
 		background-position:
-			0 0,
-			0 0,
-			var(--text-link-u-r) calc(100% - var(--text-link-u-thickness));
+			var(--text-link-u-r) calc(100% - var(--text-link-u-thickness)),
+			0 calc(100% - var(--text-link-u-thickness)),
+			100% calc(100% - var(--text-link-u-thickness));
 		background-repeat: no-repeat;
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
@@ -407,25 +399,17 @@
 		margin: 0 -0.02em;
 		background-color: transparent;
 		background-image:
-			radial-gradient(
-				circle var(--text-link-u-r) at 0 calc(100% - var(--text-link-u-r)),
-				var(--text-link-underline) 100%,
-				transparent 100%
-			),
-			radial-gradient(
-				circle var(--text-link-u-r) at 100% calc(100% - var(--text-link-u-r)),
-				var(--text-link-underline) 100%,
-				transparent 100%
-			),
-			linear-gradient(var(--text-link-underline), var(--text-link-underline));
+			linear-gradient(var(--text-link-underline), var(--text-link-underline)),
+			radial-gradient(circle var(--text-link-u-r) at 100% 50%, var(--text-link-underline) 100%, transparent 100%),
+			radial-gradient(circle var(--text-link-u-r) at 0 50%, var(--text-link-underline) 100%, transparent 100%);
 		background-size:
-			auto,
-			auto,
-			calc(100% - var(--text-link-u-thickness)) var(--text-link-u-thickness);
+			calc(100% - var(--text-link-u-thickness)) var(--text-link-u-thickness),
+			var(--text-link-u-thickness) var(--text-link-u-thickness),
+			var(--text-link-u-thickness) var(--text-link-u-thickness);
 		background-position:
-			0 0,
-			0 0,
-			var(--text-link-u-r) calc(100% - var(--text-link-u-thickness));
+			var(--text-link-u-r) calc(100% - var(--text-link-u-thickness)),
+			0 calc(100% - var(--text-link-u-thickness)),
+			100% calc(100% - var(--text-link-u-thickness));
 		background-repeat: no-repeat;
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
