@@ -54,6 +54,7 @@ export interface Messages {
 	categories: Record<'design' | 'life' | 'tech', CategoryCopy>
 	footer: {
 		connect: string
+		moeIcp: string
 	}
 	header: {
 		goHome: string
@@ -162,6 +163,7 @@ const en: Messages = {
 	},
 	footer: {
 		connect: 'Connect through any of these:',
+		moeIcp: 'Moe ICP Filing No. 20264698',
 	},
 	header: {
 		goHome: 'Go to home',
@@ -277,6 +279,7 @@ const zh: Messages = {
 	},
 	footer: {
 		connect: '可以通过这些方式联系：',
+		moeIcp: '萌ICP备20264698号',
 	},
 	header: {
 		goHome: '回到首页',
@@ -397,6 +400,7 @@ const ja: Messages = {
 	},
 	footer: {
 		connect: 'こちらからどうぞ：',
+		moeIcp: '萌えICP登録済み♡ 20264698号',
 	},
 	header: {
 		goHome: 'ホームへ',
