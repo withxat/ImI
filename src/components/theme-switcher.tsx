@@ -2,7 +2,7 @@
 
 import type { Theme } from '@/lib/theme/read-stored-theme'
 
-import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react'
+import { MonitorIcon, MoonIcon, SmartphoneIcon, SunIcon, TabletIcon } from 'lucide-react'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { THEME_STORAGE_KEY } from '@/lib/theme/constants'
@@ -18,6 +18,34 @@ function getIconClassName(theme: Theme, sizeClassName: string) {
 	return theme === 'light'
 		? `${sizeClassName} scale-115`
 		: sizeClassName
+}
+
+function ThemeIcon({ sizeClassName, theme }: { sizeClassName: string, theme: Theme }) {
+	if (theme === 'system') {
+		return (
+			<span className={sizeClassName}>
+				<SmartphoneIcon className="
+					size-full
+					md:hidden
+				"
+				/>
+				<TabletIcon className="
+					hidden size-full
+					md:block
+					lg:hidden
+				"
+				/>
+				<MonitorIcon className="
+					hidden size-full
+					lg:block
+				"
+				/>
+			</span>
+		)
+	}
+
+	const Icon = ICONS[theme]
+	return <Icon className={getIconClassName(theme, sizeClassName)} />
 }
 
 interface ThemeSwitcherProps {
@@ -95,8 +123,6 @@ export function ThemeSwitcher({ labels }: ThemeSwitcherProps) {
 		}
 	}, [open])
 
-	const TriggerIcon = ICONS[theme]
-
 	const options: { key: Theme, label: string }[] = [
 		{ key: 'system', label: labels.system },
 		{ key: 'light', label: labels.light },
@@ -114,7 +140,7 @@ export function ThemeSwitcher({ labels }: ThemeSwitcherProps) {
 				onClick={() => setOpen(v => !v)}
 				type="button"
 			>
-				<TriggerIcon className={getIconClassName(theme, 'size-4')} />
+				<ThemeIcon sizeClassName="size-4" theme={theme} />
 			</button>
 			{open && (
 				<div
@@ -125,7 +151,6 @@ export function ThemeSwitcher({ labels }: ThemeSwitcherProps) {
 					role="menu"
 				>
 					{options.map((opt) => {
-						const Icon = ICONS[opt.key]
 						const active = theme === opt.key
 						return (
 							<button
@@ -147,7 +172,7 @@ export function ThemeSwitcher({ labels }: ThemeSwitcherProps) {
 								role="menuitem"
 								type="button"
 							>
-								<Icon className={getIconClassName(opt.key, 'size-3.5')} />
+								<ThemeIcon sizeClassName="size-3.5" theme={opt.key} />
 								<span>{opt.label}</span>
 							</button>
 						)
