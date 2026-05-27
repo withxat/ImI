@@ -14,6 +14,12 @@ const ICONS = {
 	system: MonitorIcon,
 } as const
 
+function getIconClassName(theme: Theme, sizeClassName: string) {
+	return theme === 'light'
+		? `${sizeClassName} scale-115`
+		: sizeClassName
+}
+
 interface ThemeSwitcherProps {
 	labels: {
 		ariaLabel: string
@@ -108,7 +114,7 @@ export function ThemeSwitcher({ labels }: ThemeSwitcherProps) {
 				onClick={() => setOpen(v => !v)}
 				type="button"
 			>
-				<TriggerIcon className="size-4" />
+				<TriggerIcon className={getIconClassName(theme, 'size-4')} />
 			</button>
 			{open && (
 				<div
@@ -141,7 +147,7 @@ export function ThemeSwitcher({ labels }: ThemeSwitcherProps) {
 								role="menuitem"
 								type="button"
 							>
-								<Icon className="size-3.5" />
+								<Icon className={getIconClassName(opt.key, 'size-3.5')} />
 								<span>{opt.label}</span>
 							</button>
 						)
