@@ -111,7 +111,7 @@ export function IntroBadgePopover({
 						className={cn(
 							`
 								mx-0.5 inline-flex translate-y-[0.08em] cursor-pointer items-center gap-[0.25em] rounded-md highlight-surface border highlight-surface-hover
-								bg-popover px-[0.35em] py-[0.12em] align-baseline text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong transition-colors
+								bg-popover px-[0.35em] py-[0.16em] align-baseline text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong transition-colors
 								hover:bg-accent/50
 								focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
 								dark:bg-input/32
