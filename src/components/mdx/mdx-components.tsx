@@ -94,11 +94,20 @@ export const mdxComponents = {
 	AlertAction,
 	AlertDescription,
 	AlertTitle,
-	blockquote: ({ className, ...props }: React.ComponentProps<'blockquote'>) => (
+	blockquote: ({ children, className, ...props }: React.ComponentProps<'blockquote'>) => (
 		<blockquote
-			className={cn('my-8 rounded-full border-l-2 ps-4 italic', className)}
+			className={cn(
+				`relative my-8 ps-4 italic`,
+				className,
+			)}
 			{...props}
-		/>
+		>
+			<span
+				aria-hidden="true"
+				className="absolute inset-y-0 left-0 w-[3px] rounded-full bg-muted-foreground/45"
+			/>
+			{children}
+		</blockquote>
 	),
 	Button,
 	code: ({
