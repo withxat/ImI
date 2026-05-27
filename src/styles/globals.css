@@ -251,44 +251,44 @@
 }
 
 @layer components {
-	/* Rounded “pill” underline per wrapped line: `::after` cannot follow inline fragments. */
-	.text-link {
+	/*
+	 * Pill-shaped underline on each wrapped line: paint a bottom band inside a
+	 * fully rounded (stadium) fragment so ends are semicircles, not “bottom-only” corners.
+	 * `box-decoration-break: clone` repeats the decoration per line; `::after` cannot.
+	 */
+	.text-link,
+	.text-link-muted,
+	.article-body a {
 		@apply transition-colors duration-150;
-		color: var(--color-highlight-text);
 		text-decoration: none;
+		--text-link-u-thickness: 0.09em;
+		--text-link-u-clear: 0.04em;
 		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		padding: 0 0.04em 0.02em;
-		margin: 0 -0.04em;
-		background-image: linear-gradient(var(--text-link-underline), var(--text-link-underline));
-		background-position: 0 100%;
-		background-size: 100% 0.09em;
-		background-repeat: no-repeat;
-		border-bottom-left-radius: 9999px;
-		border-bottom-right-radius: 9999px;
+		padding: 0 0.14em calc(var(--text-link-u-thickness) + var(--text-link-u-clear));
+		margin: 0 -0.14em;
+		border-radius: 9999px;
+		background: linear-gradient(
+			to bottom,
+			transparent 0 calc(100% - var(--text-link-u-thickness)),
+			var(--text-link-underline) calc(100% - var(--text-link-u-thickness)) 100%
+		);
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
 	}
 
-	.text-link:hover {
+	.text-link,
+	.article-body a {
+		color: var(--color-highlight-text);
+	}
+
+	.text-link:hover,
+	.article-body a:hover {
 		--text-link-underline: var(--color-highlight-soft);
 	}
 
 	/* Underline/link affordance while staying muted until hover — e.g. locale switcher chips. */
 	.text-link-muted {
-		@apply transition-colors duration-150;
 		color: var(--color-muted-foreground);
-		text-decoration: none;
-		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		padding: 0 0.04em 0.02em;
-		margin: 0 -0.04em;
-		background-image: linear-gradient(var(--text-link-underline), var(--text-link-underline));
-		background-position: 0 100%;
-		background-size: 100% 0.09em;
-		background-repeat: no-repeat;
-		border-bottom-left-radius: 9999px;
-		border-bottom-right-radius: 9999px;
-		-webkit-box-decoration-break: clone;
-		box-decoration-break: clone;
 	}
 
 	.text-link-muted:hover {
@@ -369,52 +369,31 @@
 		@apply max-w-full min-w-0 space-y-7 text-base/7 wrap-break-word text-foreground;
 	}
 
-	.article-body a {
-		@apply transition-colors duration-150;
-		color: var(--color-highlight-text);
-		text-decoration: none;
-		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
-		padding: 0 0.04em 0.02em;
-		margin: 0 -0.04em;
-		background-image: linear-gradient(var(--text-link-underline), var(--text-link-underline));
-		background-position: 0 100%;
-		background-size: 100% 0.09em;
-		background-repeat: no-repeat;
-		border-bottom-left-radius: 9999px;
-		border-bottom-right-radius: 9999px;
-		-webkit-box-decoration-break: clone;
-		box-decoration-break: clone;
-	}
-
-	.article-body a:hover {
-		--text-link-underline: var(--color-highlight-soft);
-	}
-
 	.article-body :is(h1, h2, h3, h4, h5, h6) a {
 		@apply text-foreground;
-		background-image: none;
-		background-size: 0 0;
 		padding: 0;
 		margin: 0;
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
+		border-radius: 0;
 		box-decoration-break: initial;
 		-webkit-box-decoration-break: initial;
+		background: none;
 	}
 
 	.article-body :is(h1, h2, h3, h4, h5, h6) a:hover {
 		color: var(--color-highlight-text);
 		--text-link-underline: currentColor;
-		padding: 0 0.04em 0.02em;
-		margin: 0 -0.04em;
-		background-image: linear-gradient(var(--text-link-underline), var(--text-link-underline));
-		background-position: 0 100%;
-		background-size: 100% 0.09em;
-		background-repeat: no-repeat;
-		border-bottom-left-radius: 9999px;
-		border-bottom-right-radius: 9999px;
+		--text-link-u-thickness: 0.09em;
+		--text-link-u-clear: 0.04em;
+		padding: 0 0.14em calc(var(--text-link-u-thickness) + var(--text-link-u-clear));
+		margin: 0 -0.14em;
+		border-radius: 9999px;
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
+		background: linear-gradient(
+			to bottom,
+			transparent 0 calc(100% - var(--text-link-u-thickness)),
+			var(--text-link-underline) calc(100% - var(--text-link-u-thickness)) 100%
+		);
 	}
 
 	.article-body blockquote {
