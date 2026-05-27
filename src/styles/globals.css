@@ -261,7 +261,7 @@
 		@apply transition-colors duration-150;
 		text-decoration: none;
 		--text-link-u-thickness: 0.1em;
-		--text-link-u-clear: 0.07em;
+		--text-link-u-clear: 0.1em;
 		--text-link-u-r: calc(var(--text-link-u-thickness) / 2);
 		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
 		padding: 0 0.02em calc(var(--text-link-u-thickness) + var(--text-link-u-clear));
@@ -393,7 +393,7 @@
 		color: var(--color-highlight-text);
 		--text-link-underline: currentColor;
 		--text-link-u-thickness: 0.1em;
-		--text-link-u-clear: 0.07em;
+		--text-link-u-clear: 0.1em;
 		--text-link-u-r: calc(var(--text-link-u-thickness) / 2);
 		padding: 0 0.02em calc(var(--text-link-u-thickness) + var(--text-link-u-clear));
 		margin: 0 -0.02em;
