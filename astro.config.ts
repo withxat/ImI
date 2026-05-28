@@ -3,6 +3,7 @@ import mdx from '@astrojs/mdx'
 import tailwindcss from '@tailwindcss/vite'
 import expressiveCode from 'astro-expressive-code'
 import { defineConfig } from 'astro/config'
+import { createJiti } from 'jiti'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
 import remarkGfm from 'remark-gfm'
@@ -10,10 +11,15 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Icons from 'unplugin-icons/vite'
 import Font from 'vite-plugin-font'
 
+const jiti = createJiti(import.meta.url)
+
+const { getExpressiveCodeBlockLocale } = jiti('./src/lib/expressive-code.ts') as typeof import('./src/lib/expressive-code.ts')
+
 export default defineConfig({
 	adapter: cloudflare(),
 	integrations: [
 		expressiveCode({
+			defaultLocale: 'en',
 			defaultProps: {
 				wrap: false,
 			},
@@ -21,6 +27,7 @@ export default defineConfig({
 			frames: {
 				showCopyToClipboardButton: true,
 			},
+			getBlockLocale: getExpressiveCodeBlockLocale,
 			styleOverrides: {
 				borderColor: 'color-mix(in oklab, var(--foreground) 10%, transparent)',
 				borderRadius: '0.75rem',
