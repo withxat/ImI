@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url'
+
 import cloudflare from '@astrojs/cloudflare'
 import mdx from '@astrojs/mdx'
 import tailwindcss from '@tailwindcss/vite'
@@ -11,7 +13,11 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Icons from 'unplugin-icons/vite'
 import Font from 'vite-plugin-font'
 
-const jiti = createJiti(import.meta.url)
+const jiti = createJiti(import.meta.url, {
+	alias: {
+		'@': fileURLToPath(new URL('./src', import.meta.url)),
+	},
+})
 
 const { getExpressiveCodeBlockLocale } = jiti('./src/lib/expressive-code.ts') as typeof import('./src/lib/expressive-code.ts')
 
