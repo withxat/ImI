@@ -22,10 +22,12 @@ for (const locale of LOCALES) {
 	pluginFramesTexts.addLocale(locale, framesTextsFor(locale))
 }
 
+/** Content paths: `content/posts/zh/…` (filesystem) or `zh/…` (Astro collection id). */
 const POST_LOCALE_RE = /(?:^|\/)posts\/(en|zh|ja)\//
+const COLLECTION_ID_LOCALE_RE = /^(en|zh|ja)\//
 
 export function getExpressiveCodeBlockLocale({ file }: { file?: { history?: string[], path?: string } }) {
 	const path = file?.path ?? file?.history?.[0] ?? ''
-	const match = path.match(POST_LOCALE_RE)
+	const match = path.match(POST_LOCALE_RE) ?? path.match(COLLECTION_ID_LOCALE_RE)
 	return match?.[1] ?? 'en'
 }
