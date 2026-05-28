@@ -1,5 +1,6 @@
 import { Link } from 'waku'
 
+import ArrowUpRightIcon from '@/assets/icons/arrow-up-right.svg?react'
 import { HomeCardLink } from '@/components/home-card-link'
 import { IntroBadgePopover } from '@/components/intro-badge-popover'
 import { NameAudioButton } from '@/components/name-audio-button'
@@ -221,22 +222,13 @@ function CapabilityProofLink({
 				<span className="block truncate text-sm/5 text-muted-foreground" title={description}>{description}</span>
 			</span>
 			{href && (
-				<svg
+				<ArrowUpRightIcon
 					className="
 						mb-[3px] size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 ease-out
 						group-hover/proof:translate-x-0.5 group-hover/proof:-translate-y-0.5 group-hover/proof:text-highlight-icon
 					"
 					aria-hidden="true"
-					fill="none"
-					stroke="currentColor"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					strokeWidth="2"
-					viewBox="0 0 24 24"
-				>
-					<path d="M7 7h10v10" />
-					<path d="M7 17 17 7" />
-				</svg>
+				/>
 			)}
 		</>
 	)

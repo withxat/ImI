@@ -1,4 +1,5 @@
 /// <reference types="vite-plugin-font/src/font" />
+/// <reference types="vite-plugin-svgr/client" />
 
 declare module '*.css';
 

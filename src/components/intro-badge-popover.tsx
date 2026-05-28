@@ -1,20 +1,16 @@
 'use client'
 
-import type { IconProps } from 'nucleo-ui-essential-fill-duo-18'
-import type { FC, ReactNode } from 'react'
+import type { FC, ReactNode, SVGProps } from 'react'
 
 import type { IntroBadgeKind } from '@/lib/i18n/intro-badges'
 
-import {
-	IconGraduationCapFillDuo18,
-	IconSuitcase3FillDuo18,
-} from 'nucleo-ui-essential-fill-duo-18'
-
+import GraduationCapIcon from '@/assets/icons/graduation-cap.svg?react'
+import SuitcaseIcon from '@/assets/icons/suitcase.svg?react'
 import { Popover, PopoverPopup, PopoverTrigger } from '@/components/ui/popover'
 
-const ICONS: Record<IntroBadgeKind, FC<IconProps>> = {
-	products: IconSuitcase3FillDuo18,
-	systems: IconGraduationCapFillDuo18,
+const ICONS: Record<IntroBadgeKind, FC<SVGProps<SVGSVGElement>>> = {
+	products: SuitcaseIcon,
+	systems: GraduationCapIcon,
 }
 
 export function IntroBadgePopover({

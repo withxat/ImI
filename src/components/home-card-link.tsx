@@ -2,6 +2,8 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import { Link } from 'waku'
 
+import ArrowRightIcon from '@/assets/icons/arrow-right.svg?react'
+import ArrowUpRightIcon from '@/assets/icons/arrow-up-right.svg?react'
 import { cn } from '@/lib/cn'
 
 type InternalHref = ComponentProps<typeof Link>['to']
@@ -28,9 +30,10 @@ function HomeCardLinkContent({
 	title: string
 	trailingIcon?: ReactNode
 }) {
+	const Icon = external ? ArrowUpRightIcon : ArrowRightIcon
 	const defaultIcon = hasHref
 		? (
-				<svg
+				<Icon
 					className={cn(
 						`
 							-mx-0.5 size-4 shrink-0 text-muted-foreground opacity-80 transition-transform duration-150 ease-out
@@ -41,27 +44,7 @@ function HomeCardLinkContent({
 							: 'group-hover:translate-x-0.5',
 					)}
 					aria-hidden="true"
-					fill="none"
-					stroke="currentColor"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					strokeWidth="2"
-					viewBox="0 0 24 24"
-				>
-					{external
-						? (
-								<>
-									<path d="M7 7h10v10" />
-									<path d="M7 17 17 7" />
-								</>
-							)
-						: (
-								<>
-									<path d="M5 12h14" />
-									<path d="m12 5 7 7-7 7" />
-								</>
-							)}
-				</svg>
+				/>
 			)
 		: null
 

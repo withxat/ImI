@@ -1,18 +1,5 @@
-diff --git a/dist/lib/utils/render.js b/dist/lib/utils/render.js
-index f36dc143a8e44e20705a56dcac3400c9b6ee8498..8aa7250d0f5789666a0591edce347a57f9669f3c 100644
---- a/dist/lib/utils/render.js
-+++ b/dist/lib/utils/render.js
-@@ -35,7 +35,7 @@ export function createRenderUtils(temporaryReferences, renderToReadableStream, c
-             return new Response(htmlResult.stream, {
-                 status: htmlResult.status || options.status || 200,
-                 headers: {
--                    'content-type': 'text/html'
-+                    'content-type': 'text/html; charset=utf-8'
-                 }
-             });
-         }
 diff --git a/dist/lib/vite-rsc/ssr.js b/dist/lib/vite-rsc/ssr.js
-index 555d2c0ca7fb8e9fda43411b2088f11b62e2aa53..08ec74831976ba3f505494dd6420a734dc9673a1 100644
+index 062793ae494f08db0131fc010419b85db9998cc1..5b8b5ef7d56ef98935e2f26b6ffb12730f51f013 100644
 --- a/dist/lib/vite-rsc/ssr.js
 +++ b/dist/lib/vite-rsc/ssr.js
 @@ -84,7 +84,7 @@ export const renderHtmlStream = async (rscStream, rscHtmlStream, options)=>{
@@ -28,8 +15,8 @@ index 555d2c0ca7fb8e9fda43411b2088f11b62e2aa53..08ec74831976ba3f505494dd6420a734
  };
  export async function renderHtmlFallback() {
      const bootstrapScriptContent = await loadBootstrapScriptContent();
--    const html = fallbackHtml.replace('</body>', ()=>`<script>${bootstrapScriptContent}</script></body>`);
-+    const html = fallbackHtml.replace('</body>', ()=>`<script type="module">${bootstrapScriptContent}</script></body>`);
+-    const html = htmlShell.replace('</body>', ()=>`<script>${bootstrapScriptContent}</script></body>`);
++    const html = htmlShell.replace('</body>', ()=>`<script type="module">${bootstrapScriptContent}</script></body>`);
      return html;
  }
 +function normalizePreloadAsValues(stream) {
