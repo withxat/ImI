@@ -37,16 +37,16 @@ const Icon = kind === 'products' ? Suitcase : GraduationCap
 		<Icon aria-hidden />
 		<span class="leading-none">{label}</span>
 	</span>
-	<div
+	<span
 		class="
-			absolute top-full left-0 z-50 mt-2 hidden max-w-72 -translate-x-1 rounded-lg border
-			bg-popover p-3 text-sm/6 text-muted-foreground shadow-md
+			absolute top-full left-0 z-50 mt-2 hidden w-max max-w-72 -translate-x-1 rounded-lg
+			border bg-popover p-3 text-sm/6 text-muted-foreground shadow-md
 		"
 		role="dialog"
 		data-intro-badge-popup
 	>
 		<IntroBadgeDescription kind={kind} locale={locale} />
-	</div>
+	</span>
 </span>
 
 <script>
