@@ -11,6 +11,7 @@ import { getMessages } from '@/lib/i18n/messages'
 import { getRequestLocale } from '@/lib/i18n/request-locale'
 import { Seo } from '@/lib/seo'
 import { articleBreadcrumbJsonLd, blogPostingJsonLd, SITE_NAME } from '@/lib/seo-data'
+import { toTranslator } from '@/types/translator'
 
 export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) {
 	const locale = getRequestLocale()
@@ -29,6 +30,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 
 	const canonicalPath = `/post/${post.slug}`
 	const articleSection = localizedCategory?.name
+	const translator = toTranslator(post.translator)
 
 	return (
 		<section>
@@ -71,7 +73,7 @@ export default async function BlogPostPage({ slug }: PageProps<'/post/[slug]'>) 
 							<span>{formatPostDate(post.date, locale)}</span>
 						</div>
 						{m.blog.postTranslatedNotice && (
-							<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} />
+							<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} translator={translator} />
 						)}
 					</div>
 

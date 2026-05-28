@@ -1,5 +1,7 @@
 import type { MDXContent } from 'mdx/types'
 
+import type { Translator } from '@/types/translator'
+
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
@@ -12,6 +14,7 @@ import remarkGfm from 'remark-gfm'
 import { z } from 'zod'
 
 import { isLocale, LOCALES } from '@/lib/i18n/constants'
+import { TRANSLATOR_BRANDS } from '@/types/translator'
 
 async function createMdxImport(compilationKey: string, content: string) {
 	const safeKey = compilationKey.replaceAll(/[^\w-]+/g, '_')
@@ -51,6 +54,7 @@ const posts = defineCollection({
 		summary: z.string(),
 		tags: z.array(z.string()),
 		title: z.string(),
+		translator: z.tuple([z.enum(TRANSLATOR_BRANDS), z.string()]).optional(),
 	}),
 	transform: async (document) => {
 		const segments = document._meta.path.split('/')
@@ -73,6 +77,7 @@ const posts = defineCollection({
 			locale,
 			mdx,
 			slug,
+			translator: document.translator ? ([document.translator[0], document.translator[1]] satisfies Translator) : undefined,
 		}
 	},
 })
