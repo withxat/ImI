@@ -1,5 +1,14 @@
 let dispose: (() => void) | null = null
 
+const COPIED_MS = 1600
+
+function showCopiedCheck(trigger: HTMLButtonElement) {
+	trigger.dataset.copied = 'true'
+	window.setTimeout(() => {
+		delete trigger.dataset.copied
+	}, COPIED_MS)
+}
+
 function bindCopyTrigger(trigger: HTMLButtonElement, signal: AbortSignal) {
 	trigger.addEventListener('click', async () => {
 		const root = trigger.closest('[data-mdx-pre-root]')
@@ -14,7 +23,7 @@ function bindCopyTrigger(trigger: HTMLButtonElement, signal: AbortSignal) {
 				window.setTimeout(() => {
 					copyIcon.classList.remove('hidden')
 					checkIcon.classList.add('hidden')
-				}, 1600)
+				}, COPIED_MS)
 			}
 		}
 		catch {}
@@ -31,6 +40,10 @@ export function initMdxCopyButtons() {
 
 	for (const trigger of document.querySelectorAll<HTMLButtonElement>('[data-copy-trigger]'))
 		bindCopyTrigger(trigger, signal)
+
+	// Expressive Code copies via its own handler; we only swap the icon to a check briefly.
+	for (const trigger of document.querySelectorAll<HTMLButtonElement>('.article-body .expressive-code .copy button'))
+		trigger.addEventListener('click', () => showCopiedCheck(trigger), { signal })
 
 	dispose = () => ac.abort()
 }
