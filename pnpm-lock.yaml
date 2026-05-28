@@ -23,12 +23,18 @@ importers:
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       motion:
         specifier: ^12.40.0
         version: 12.40.0
       photoswipe:
         specifier: ^5.4.4
         version: 5.4.4
+      tailwind-merge:
+        specifier: ^3.6.0
+        version: 3.6.0
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.9

@@ -10,15 +10,21 @@
 		"typegen": "wrangler types",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"typecheck": "astro check"
+		"typecheck": "astro check",
+		"ui:add": "bejamas add",
+		"ui:docs": "bejamas docs",
+		"ui:info": "bejamas info",
+		"ui:preset": "bejamas preset"
 	},
 	"dependencies": {
 		"@expressive-code/plugin-frames": "0.42.0",
 		"astro": "^6.3.8",
 		"astro-expressive-code": "^0.42.0",
 		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
 		"motion": "^12.40.0",
-		"photoswipe": "^5.4.4"
+		"photoswipe": "^5.4.4",
+		"tailwind-merge": "^3.6.0"
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.9.9",
