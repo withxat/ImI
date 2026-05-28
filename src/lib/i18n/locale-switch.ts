@@ -5,10 +5,6 @@ import { isLocale, normalizeStoredLocale } from '@/lib/i18n/constants'
 /** Query param used once per navigation to persist locale via middleware (not a locale URL prefix). */
 export const LOCALE_SWITCH_PARAM = 'set_locale'
 
-export function localeUsesCjkUiFont(locale: Locale) {
-	return locale === 'zh' || locale === 'ja'
-}
-
 export function parseLocaleSwitchParam(value: null | string): Locale | null {
 	if (!value)
 		return null

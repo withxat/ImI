@@ -1,14 +1,5 @@
 ---
-import type { Locale } from '@/lib/i18n/constants'
-
 import MisansContentStyles from '@/components/ui-fonts/misans-content-styles.astro'
-import { localeUsesCjkUiFont } from '@/lib/i18n/locale-switch'
-
-interface Props {
-	locale: Locale
-}
-
-const { locale } = Astro.props as Props
 ---
 
-{localeUsesCjkUiFont(locale) ? <MisansContentStyles /> : null}
+<MisansContentStyles />
