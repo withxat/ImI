@@ -22,6 +22,7 @@ export function initIntroBadges() {
 
 		let openTimer = 0
 		let closeTimer = 0
+		let focusReturnTarget: HTMLElement | null = null
 
 		const setTriggerOpenState = (open: boolean) => {
 			if (open)
@@ -37,6 +38,9 @@ export function initIntroBadges() {
 
 		const open = () => {
 			window.clearTimeout(closeTimer)
+			focusReturnTarget = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
+				? document.activeElement
+				: null
 			setOpen(true)
 		}
 
@@ -56,7 +60,6 @@ export function initIntroBadges() {
 
 		root.addEventListener('popover:change', (event) => {
 			const { open } = (event as CustomEvent<{ open: boolean }>).detail
-			const focusBeforeAutoFocus = document.activeElement
 
 			setTriggerOpenState(open)
 
@@ -64,13 +67,15 @@ export function initIntroBadges() {
 				return
 
 			requestAnimationFrame(() => {
-				if (!popup.contains(document.activeElement))
-					return
+				requestAnimationFrame(() => {
+					if (!popup.contains(document.activeElement))
+						return
 
-				if (focusBeforeAutoFocus instanceof HTMLElement && document.contains(focusBeforeAutoFocus))
-					focusBeforeAutoFocus.focus({ preventScroll: true })
-				else if (document.activeElement instanceof HTMLElement)
-					document.activeElement.blur()
+					if (focusReturnTarget && document.contains(focusReturnTarget))
+						focusReturnTarget.focus({ preventScroll: true })
+					else if (document.activeElement instanceof HTMLElement)
+						document.activeElement.blur()
+				})
 			})
 		}, { signal })
 
