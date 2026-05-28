@@ -1,13 +1,8 @@
-'use client'
-
 import type { Locale } from '@/lib/i18n/constants'
 import type { FooterWandererCopy } from '@/lib/i18n/messages'
-import type { VisitorGeo } from '@/lib/visitor-geo'
-
-import { useEffect, useState } from 'react'
 
 import { CountryFlag } from '@/components/country-flag'
-import { regionDisplayName } from '@/lib/visitor-geo'
+import { getRequestVisitorGeo, regionDisplayName } from '@/lib/visitor-geo'
 
 const wandererGradientClass = `
 	wanderer-gradient-text font-bold
@@ -19,37 +14,7 @@ interface FooterWandererProps {
 }
 
 export function FooterWanderer({ copy, locale }: FooterWandererProps) {
-	const [geo, setGeo] = useState<null | VisitorGeo>(null)
-
-	useEffect(() => {
-		let cancelled = false
-		void (async () => {
-			try {
-				const res = await fetch('/geo', { headers: { Accept: 'application/json' } })
-				if (!res.ok)
-					throw new Error(String(res.status))
-				const data = (await res.json()) as VisitorGeo
-				if (!cancelled)
-					setGeo(data)
-			}
-			catch {
-				if (!cancelled)
-					setGeo({ countryCode: null, countryName: null })
-			}
-		})()
-		return () => {
-			cancelled = true
-		}
-	}, [])
-
-	if (geo === null) {
-		return (
-			<p className="h-5 w-72 max-w-full animate-pulse rounded-md bg-muted text-transparent" aria-hidden>
-				&nbsp;
-			</p>
-		)
-	}
-
+	const geo = getRequestVisitorGeo()
 	const wanderer = (
 		<span className={wandererGradientClass}>{copy.wanderer}</span>
 	)

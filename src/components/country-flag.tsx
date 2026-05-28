@@ -1,5 +1,3 @@
-'use client'
-
 import type { IconProps } from 'nucleo-flags'
 import type { ComponentType } from 'react'
 
