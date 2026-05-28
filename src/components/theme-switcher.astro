@@ -35,9 +35,22 @@ const { labels } = Astro.props as Props
 				<Moon class="size-full" />
 			</span>
 			<span data-icon="system">
-				<Smartphone class="size-full md:hidden" />
-				<Tablet class="hidden size-full md:block lg:hidden" />
-				<Monitor class="hidden size-full lg:block" />
+				<Smartphone class="
+					size-full
+					md:hidden
+				"
+				/>
+				<Tablet class="
+					hidden size-full
+					md:block
+					lg:hidden
+				"
+				/>
+				<Monitor class="
+					hidden size-full
+					lg:block
+				"
+				/>
 			</span>
 		</span>
 	</button>
@@ -60,9 +73,22 @@ const { labels } = Astro.props as Props
 			type="button"
 		>
 			<span class="size-3.5">
-				<Smartphone class="size-full md:hidden" />
-				<Tablet class="hidden size-full md:block lg:hidden" />
-				<Monitor class="hidden size-full lg:block" />
+				<Smartphone class="
+					size-full
+					md:hidden
+				"
+				/>
+				<Tablet class="
+					hidden size-full
+					md:block
+					lg:hidden
+				"
+				/>
+				<Monitor class="
+					hidden size-full
+					lg:block
+				"
+				/>
 			</span>
 			<span>{labels.system}</span>
 		</button>
@@ -94,90 +120,3 @@ const { labels } = Astro.props as Props
 		</button>
 	</div>
 </div>
-
-<script>
-import type { Theme } from '@/lib/theme/read-stored-theme'
-
-import { THEME_STORAGE_KEY } from '@/lib/theme/constants'
-import { readStoredTheme } from '@/lib/theme/read-stored-theme'
-
-function applyTheme(theme: Theme) {
-	const el = document.documentElement
-	if (theme === 'system') {
-		el.classList.toggle('dark', matchMedia('(prefers-color-scheme:dark)').matches)
-		el.classList.remove('light')
-	}
-	else {
-		el.classList.toggle('dark', theme === 'dark')
-		el.classList.toggle('light', theme === 'light')
-	}
-}
-
-function syncCurrentIcon(theme: Theme) {
-	document.querySelectorAll<HTMLElement>('[data-theme-current] [data-icon]').forEach((el) => {
-		el.hidden = el.dataset.icon !== theme
-	})
-	document.querySelectorAll<HTMLButtonElement>('[data-set-theme]').forEach((btn) => {
-		const active = btn.dataset.setTheme === theme
-		btn.classList.toggle('text-foreground', active)
-		btn.classList.toggle('text-muted-foreground', !active)
-	})
-}
-
-function init() {
-	document.querySelectorAll<HTMLElement>('[data-theme-switcher]').forEach((container) => {
-		const toggleBtn = container.querySelector<HTMLButtonElement>('[data-theme-toggle]')
-		const menu = container.querySelector<HTMLElement>('[data-theme-menu]')
-		if (!toggleBtn || !menu)
-			return
-
-		let theme: Theme = readStoredTheme()
-		applyTheme(theme)
-		syncCurrentIcon(theme)
-
-		const close = () => menu.classList.add('hidden')
-		const open = () => menu.classList.remove('hidden')
-		const isOpen = () => !menu.classList.contains('hidden')
-
-		toggleBtn.addEventListener('click', () => {
-			if (isOpen())
-				close()
-			else open()
-		})
-
-		container.querySelectorAll<HTMLButtonElement>('[data-set-theme]').forEach((btn) => {
-			btn.addEventListener('click', () => {
-				const next = btn.dataset.setTheme as Theme
-				try {
-					localStorage.setItem(THEME_STORAGE_KEY, next)
-				}
-				catch {}
-				theme = next
-				applyTheme(theme)
-				syncCurrentIcon(theme)
-				close()
-			})
-		})
-
-		document.addEventListener('pointerdown', (e) => {
-			if (!isOpen())
-				return
-			if (!container.contains(e.target as Node))
-				close()
-		})
-
-		document.addEventListener('keydown', (e) => {
-			if (e.key === 'Escape' && isOpen())
-				close()
-		})
-
-		const mq = matchMedia('(prefers-color-scheme:dark)')
-		mq.addEventListener('change', () => {
-			if (theme === 'system')
-				applyTheme('system')
-		})
-	})
-}
-
-init()
-</script>

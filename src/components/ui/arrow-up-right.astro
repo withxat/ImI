@@ -9,7 +9,7 @@ interface Props {
 const { class: className, size = 28 } = Astro.props as Props
 ---
 
-<div class={cn('arrow-up-right-icon inline-flex shrink-0 text-current', className)}>
+<div class={cn('inline-flex shrink-0 text-current', className)} data-arrow-up-right-icon>
 	<svg
 		fill="none"
 		height={size}
@@ -21,7 +21,7 @@ const { class: className, size = 28 } = Astro.props as Props
 		width={size}
 		xmlns="http://www.w3.org/2000/svg"
 	>
-		<g class="arrow-up-right-g">
+		<g data-arrow-up-right-g>
 			<path d="M7 7h10v10" />
 			<path d="M7 17 17 7" />
 		</g>
@@ -29,12 +29,12 @@ const { class: className, size = 28 } = Astro.props as Props
 </div>
 
 <style>
-	.arrow-up-right-g {
+	[data-arrow-up-right-g] {
 		transform-origin: 100% 0%;
 		transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 	}
-	.arrow-up-right-icon:hover .arrow-up-right-g,
-	.group:hover .arrow-up-right-icon .arrow-up-right-g {
+	[data-arrow-up-right-icon]:hover [data-arrow-up-right-g],
+	.group:hover [data-arrow-up-right-icon] [data-arrow-up-right-g] {
 		animation: arrow-up-right-shake 0.5s ease-in-out;
 	}
 	@keyframes arrow-up-right-shake {
@@ -43,8 +43,8 @@ const { class: className, size = 28 } = Astro.props as Props
 		100% { transform: scale(1) translate(0, 0); }
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.arrow-up-right-icon:hover .arrow-up-right-g,
-		.group:hover .arrow-up-right-icon .arrow-up-right-g {
+		[data-arrow-up-right-icon]:hover [data-arrow-up-right-g],
+		.group:hover [data-arrow-up-right-icon] [data-arrow-up-right-g] {
 			animation: none;
 		}
 	}

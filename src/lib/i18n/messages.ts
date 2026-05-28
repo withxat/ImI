@@ -1,4 +1,7 @@
+import type { CodeBlockCopy } from '@/lib/i18n/code-block-copy.ts'
 import type { Locale } from '@/lib/i18n/constants'
+
+import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 
 export interface CategoryCopy {
 	description: string
@@ -40,6 +43,8 @@ export interface PostTranslatedNoticeCopy {
 	switchToChineseAriaLabel: string
 }
 
+export type { CodeBlockCopy }
+
 export interface Messages {
 	blog: {
 		archiveSubtitle: string
@@ -52,6 +57,7 @@ export interface Messages {
 	}
 	capabilities: CapabilityCopy[]
 	categories: Record<'design' | 'life' | 'tech', CategoryCopy>
+	codeBlock: CodeBlockCopy
 	footer: {
 		connect: string
 		moeIcp: string
@@ -161,6 +167,7 @@ const en: Messages = {
 			name: 'Tech',
 		},
 	},
+	codeBlock: codeBlockByLocale.en,
 	footer: {
 		connect: 'Connect through any of these:',
 		moeIcp: 'Moe ICP Filing No. 20264698',
@@ -277,6 +284,7 @@ const zh: Messages = {
 			name: '技术',
 		},
 	},
+	codeBlock: codeBlockByLocale.zh,
 	footer: {
 		connect: '可以通过这些方式联系：',
 		moeIcp: '萌ICP备20264698号',
@@ -398,6 +406,7 @@ const ja: Messages = {
 			name: 'テック',
 		},
 	},
+	codeBlock: codeBlockByLocale.ja,
 	footer: {
 		connect: 'こちらからどうぞ：',
 		moeIcp: '萌えICP登録済み♡ 20264698号',

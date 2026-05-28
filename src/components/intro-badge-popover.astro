@@ -6,6 +6,7 @@ import GraduationCap from '~icons/local/graduation-cap'
 import Suitcase from '~icons/local/suitcase'
 
 import IntroBadgeDescription from '@/components/intro-badge-description.astro'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 interface Props {
 	kind: IntroBadgeKind
@@ -17,110 +18,35 @@ const { kind, label, locale } = Astro.props as Props
 const Icon = kind === 'products' ? Suitcase : GraduationCap
 ---
 
-<span class="relative inline-block" data-intro-badge-root>
-	<span
+<Popover class="inline-block align-baseline" data-intro-badge-root>
+	<PopoverTrigger
 		class="
-			mx-0.5 inline-flex translate-y-[0.08em] cursor-pointer items-center gap-[0.25em] rounded-md highlight-surface border highlight-surface-hover
-			bg-popover px-[0.35em] py-[0.16em] align-baseline text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong transition-colors
+			mx-0.5 inline-flex h-auto translate-y-[0.08em] cursor-pointer items-center gap-[0.25em] rounded-md highlight-surface border
+			highlight-surface-hover bg-popover px-[0.35em] py-[0.16em] align-baseline text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong
+			transition-colors
 			hover:bg-accent/50
 			focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
-			data-open:highlight-surface-active
 			dark:bg-input/32
 			dark:hover:bg-input/64
+			data-open:highlight-surface-active
 			[&_svg]:block [&_svg]:size-[1em] [&_svg]:shrink-0 [&_svg]:translate-y-[-0.04em] [&_svg]:text-highlight-icon
 		"
-		aria-haspopup="dialog"
-		role="button"
-		tabindex="0"
+		type="button"
 		data-intro-badge-trigger
 	>
 		<Icon aria-hidden />
 		<span class="leading-none">{label}</span>
-	</span>
-	<span
-		class="
-			absolute top-full left-0 z-50 mt-2 hidden w-max max-w-72 -translate-x-1 rounded-lg
-			border bg-popover p-3 text-sm/6 text-muted-foreground shadow-md
-		"
+	</PopoverTrigger>
+	<PopoverContent
+		align="start"
+		alignOffset={-4}
+		class="max-w-72 gap-0 text-sm/6 text-muted-foreground"
 		role="dialog"
+		side="bottom"
+		sideOffset={8}
 		data-intro-badge-popup
 	>
+		<span class="sr-only" tabindex="-1" autofocus data-intro-badge-focus-sentinel></span>
 		<IntroBadgeDescription kind={kind} locale={locale} />
-	</span>
-</span>
-
-<script>
-const OPEN_DELAY = 120
-const CLOSE_DELAY = 80
-
-for (const root of document.querySelectorAll<HTMLElement>('[data-intro-badge-root]')) {
-	if (root.dataset.introInit === '1')
-		continue
-	root.dataset.introInit = '1'
-
-	const trigger = root.querySelector<HTMLElement>('[data-intro-badge-trigger]')
-	const popup = root.querySelector<HTMLElement>('[data-intro-badge-popup]')
-	if (!trigger || !popup)
-		continue
-
-	let openTimer = 0
-	let closeTimer = 0
-	let isOpen = false
-
-	const open = () => {
-		window.clearTimeout(closeTimer)
-		if (isOpen)
-			return
-		isOpen = true
-		popup.classList.remove('hidden')
-		trigger.dataset.open = 'true'
-	}
-	const close = () => {
-		window.clearTimeout(openTimer)
-		if (!isOpen)
-			return
-		isOpen = false
-		popup.classList.add('hidden')
-		delete trigger.dataset.open
-	}
-	const scheduleOpen = () => {
-		window.clearTimeout(closeTimer)
-		openTimer = window.setTimeout(open, OPEN_DELAY)
-	}
-	const scheduleClose = () => {
-		window.clearTimeout(openTimer)
-		closeTimer = window.setTimeout(close, CLOSE_DELAY)
-	}
-
-	trigger.addEventListener('pointerenter', scheduleOpen)
-	trigger.addEventListener('pointerleave', scheduleClose)
-	trigger.addEventListener('focus', open)
-	trigger.addEventListener('blur', close)
-	trigger.addEventListener('click', () => {
-		if (isOpen)
-			close()
-		else open()
-	})
-	trigger.addEventListener('keydown', (e) => {
-		if (e.key === 'Enter' || e.key === ' ') {
-			e.preventDefault()
-			if (isOpen)
-				close()
-			else open()
-		}
-		else if (e.key === 'Escape') {
-			close()
-		}
-	})
-
-	popup.addEventListener('pointerenter', () => window.clearTimeout(closeTimer))
-	popup.addEventListener('pointerleave', scheduleClose)
-
-	document.addEventListener('pointerdown', (e) => {
-		if (!isOpen)
-			return
-		if (!root.contains(e.target as Node))
-			close()
-	})
-}
-</script>
+	</PopoverContent>
+</Popover>

@@ -1,8 +1,5 @@
 ---
-// Triggers the content-keyed MiSans subset bundle (the actual @font-face is injected
-// by vite-plugin-font into the page styles when this module is imported).
+import MisansContentStyles from '@/components/ui-fonts/misans-content-styles.astro'
 ---
 
-<script>
-	import('@/assets/mi-sans-vf.ttf?subsets&key=content').catch(() => {})
-</script>
+<MisansContentStyles />

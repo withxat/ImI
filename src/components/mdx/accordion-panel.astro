@@ -9,7 +9,7 @@ const { class: className } = Astro.props as Props
 ---
 
 <div
-	class={cn('mt-3 rounded-lg border border-dashed border-border px-3.5 py-2.5! text-sm text-muted-foreground', className)}
+	class={cn('mt-3 py-2.5! text-sm text-muted-foreground', className)}
 	data-slot="accordion-panel"
 >
 	<slot />

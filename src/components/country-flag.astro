@@ -5,21 +5,25 @@ interface Props {
 
 const { code } = Astro.props as Props
 
-function toFlagEmoji(iso: string): null | string {
-	if (!/^[A-Z]{2}$/.test(iso))
-		return null
-	const base = 0x1F1E6 - 'A'.charCodeAt(0)
-	return String.fromCodePoint(
-		base + iso.charCodeAt(0),
-		base + iso.charCodeAt(1),
-	)
-}
+const flagSvgs = import.meta.glob<string>('../assets/flags/*.svg', {
+	eager: true,
+	import: 'default',
+	query: '?raw',
+})
 
-const emoji = code ? toFlagEmoji(code.toUpperCase()) : null
+const iso = code?.trim().toUpperCase()
+const svg = iso ? flagSvgs[`../assets/flags/${iso.toLowerCase()}.svg`] : null
 ---
 
-{emoji
+{svg
 	? (
-			<span class="inline-block leading-none" aria-hidden>{emoji}</span>
+			<span
+				class="
+					inline-flex h-[1em] w-[1.33em] shrink-0 items-center leading-none
+					[&_svg]:block [&_svg]:size-full
+				"
+				aria-hidden="true"
+				set:html={svg}
+			/>
 		)
 	: null}

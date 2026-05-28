@@ -1,13 +1,15 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
+import { ClientRouter } from 'astro:transitions'
+
 import Footer from '@/components/footer.astro'
-import LocaleBootstrap from '@/components/locale-bootstrap.astro'
-import MiSansFont from '@/components/mi-sans-font.astro'
+import MisansUi from '@/components/ui-fonts/misans-ui.astro'
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
 import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/rss'
 import { getThemeBootstrapScript } from '@/lib/theme/constants'
+import { pageTransition } from '@/lib/view-transition'
 
 import '@/styles/globals.css'
 
@@ -24,6 +26,7 @@ const rssJa = getMessages('ja').blog
 		<meta content="width=device-width, initial-scale=1" name="viewport" />
 
 		<link crossorigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
+		<link as="font" crossorigin="anonymous" href="/fonts/hanken-grotesk-vf.ttf" rel="preload" type="font/ttf" />
 
 		<link href={RSS_FEED_URL} hreflang="zh" rel="alternate" title={rssZh.pageTitle} type="application/rss+xml" />
 		<link href={RSS_FEED_URL_EN} hreflang="en" rel="alternate" title={rssEn.pageTitle} type="application/rss+xml" />
@@ -35,15 +38,21 @@ const rssJa = getMessages('ja').blog
 
 		<script set:html={getThemeBootstrapScript()} is:inline />
 
-		<MiSansFont />
+		<MisansUi />
+		<ClientRouter />
 
 		<slot name="head" />
 	</head>
 	<body class="relative isolate min-h-screen">
-		<LocaleBootstrap serverLocale={locale} />
-		<main class="min-h-screen">
-			<slot />
-		</main>
-		<Footer locale={locale} />
+		<div class="page-shell min-h-screen" data-site-locale={locale} transition:animate={pageTransition}>
+			<main class="min-h-screen">
+				<slot />
+			</main>
+		</div>
+		<Footer locale={locale} transition:persist="site-footer" />
 	</body>
 </html>
+
+<script>
+import '@/scripts/site-client'
+</script>
