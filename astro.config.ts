@@ -10,9 +10,6 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Icons from 'unplugin-icons/vite'
 import Font from 'vite-plugin-font'
 
-const copyIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`
-const copyIconUrl = `url("data:image/svg+xml,${encodeURIComponent(copyIconSvg)}")`
-
 export default defineConfig({
 	adapter: cloudflare(),
 	integrations: [
@@ -30,7 +27,6 @@ export default defineConfig({
 				borderWidth: '1px',
 				codeFontFamily: 'var(--font-mono)',
 				frames: {
-					copyIcon: copyIconUrl,
 					editorActiveTabIndicatorTopColor: 'transparent',
 					frameBoxShadowCssValue: 'none',
 					inlineButtonBackground: 'rgba(255, 255, 255, 0.06)',
@@ -38,10 +34,8 @@ export default defineConfig({
 					inlineButtonBackgroundIdleOpacity: '1',
 					inlineButtonBorder: 'rgba(255, 255, 255, 0.12)',
 					inlineButtonBorderOpacity: '1',
-					inlineButtonForeground: 'rgba(255, 255, 255, 0.88)',
+					inlineButtonForeground: 'rgba(255, 255, 255, 0.85)',
 					shadowColor: 'transparent',
-					tooltipSuccessBackground: 'transparent',
-					tooltipSuccessForeground: 'transparent',
 				},
 				uiFontFamily: 'var(--font-ui)',
 			},
