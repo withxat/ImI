@@ -223,7 +223,7 @@ function CapabilityProofLink({
 			{href && (
 				<svg
 					className="
-						size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 ease-out
+						mb-[3px] size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 ease-out
 						group-hover/proof:translate-x-0.5 group-hover/proof:-translate-y-0.5 group-hover/proof:text-highlight-icon
 					"
 					aria-hidden="true"
@@ -240,7 +240,7 @@ function CapabilityProofLink({
 			)}
 		</>
 	)
-	const className = `group/proof flex min-w-0 items-center justify-between gap-3 text-left`
+	const className = `group/proof flex min-w-0 items-end justify-between gap-3 text-left`
 
 	if (!href) {
 		return <div className={className}>{content}</div>
