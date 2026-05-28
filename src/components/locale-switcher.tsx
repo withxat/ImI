@@ -43,7 +43,7 @@ export function LocaleSwitcher({ 'aria-label': ariaLabel, className, currentLoca
 											 * clears that cache so navigation uses the new cookie site-wide. */
 											window.location.reload()
 										}}
-										className="text-link-muted cursor-pointer border-none bg-transparent p-0 font-[inherit]"
+										className="text-link-muted cursor-pointer border-none bg-transparent font-[inherit]"
 										lang={locale}
 										type="button"
 									>
