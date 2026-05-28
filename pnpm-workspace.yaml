@@ -3,19 +3,20 @@ trustPolicy: no-downgrade
 
 trustPolicyIgnoreAfter: 535600
 
+trustPolicyExclude:
+  - tinyexec@1.2.2
+
 packages:
   - .
 
 patchedDependencies:
-  '@vitejs/plugin-rsc@0.5.26': patches/@vitejs__plugin-rsc@0.5.26.patch
   cn-font-split@7.4.1: patches/cn-font-split@7.4.1.patch
-  react-server-dom-webpack@19.2.6: patches/react-server-dom-webpack@19.2.6.patch
-  waku@1.0.0-beta.1: patches/waku@1.0.0-beta.1.patch
 allowBuilds:
   cn-font-split: true
   esbuild: false
   koffi: true
   lefthook: true
+  msw: true
   protobufjs: true
   sharp: false
   workerd: false

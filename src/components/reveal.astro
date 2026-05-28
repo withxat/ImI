@@ -1,0 +1,108 @@
+---
+import { cn } from '@/lib/cn'
+
+interface Props {
+	baseDelay?: number
+	blur?: number
+	class?: string
+	staggerIndex?: number
+	staggerStep?: number
+}
+
+const {
+	baseDelay = 0.06,
+	blur = 10,
+	class: className,
+	staggerIndex = 0,
+	staggerStep = 0.048,
+} = Astro.props as Props
+---
+
+<div
+	class={cn('reveal-root opacity-0', className)}
+	data-reveal-base-delay={baseDelay}
+	data-reveal-blur={blur}
+	data-reveal-stagger-index={staggerIndex}
+	data-reveal-stagger-step={staggerStep}
+	style={`filter: blur(${blur}px); transition-property: opacity, filter; transition-duration: 420ms; transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);`}
+	data-reveal
+>
+	<slot />
+</div>
+
+<script>
+const TOP_SCROLL_PX = 16
+const ELEMENTS_TO_REVEAL = document.querySelectorAll<HTMLElement>('[data-reveal]')
+
+for (const el of ELEMENTS_TO_REVEAL) {
+	if (el.dataset.revealInitialized === '1')
+		continue
+	el.dataset.revealInitialized = '1'
+
+	const baseDelay = Number(el.dataset.revealBaseDelay ?? 0.06)
+	const blur = Number(el.dataset.revealBlur ?? 10)
+	const idx = Number(el.dataset.revealStaggerIndex ?? 0)
+	const step = Number(el.dataset.revealStaggerStep ?? 0.048)
+
+	const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
+	const atTop = window.scrollY <= TOP_SCROLL_PX
+	const rect = el.getBoundingClientRect()
+	const vh = window.visualViewport?.height ?? window.innerHeight
+	const pad = 48
+	const intersects = rect.top < vh + pad && rect.bottom > -pad
+	const belowFold = rect.top > vh - 8
+	const aboveViewport = rect.bottom < 8
+
+	const reveal = (delaySec: number, instant: boolean) => {
+		if (instant) {
+			el.style.transitionDuration = '0ms'
+		}
+		el.style.transitionDelay = delaySec ? `${delaySec}s` : ''
+		el.style.filter = 'blur(0px)'
+		el.style.opacity = '1'
+	}
+
+	if (reduceMotion || (!atTop && (intersects || aboveViewport))) {
+		reveal(0, true)
+		continue
+	}
+
+	if ((atTop && belowFold) || (!atTop && belowFold)) {
+		// scroll-in
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting)
+						continue
+					reveal(0, false)
+					io.disconnect()
+				}
+			},
+			{ rootMargin: '0px 0px -10% 0px', threshold: 0.14 },
+		)
+		io.observe(el)
+		continue
+	}
+
+	if (atTop && intersects) {
+		const delay = baseDelay + idx * step
+		el.style.filter = `blur(${blur}px)`
+		requestAnimationFrame(() => reveal(delay, false))
+		continue
+	}
+
+	// Fallback: scroll-in
+	const io = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				if (!entry.isIntersecting)
+					continue
+				reveal(0, false)
+				io.disconnect()
+			}
+		},
+		{ rootMargin: '0px 0px -10% 0px', threshold: 0.14 },
+	)
+	io.observe(el)
+}
+</script>

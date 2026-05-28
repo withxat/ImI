@@ -1,0 +1,19 @@
+---
+// Lazily loads the dynamically subset MiSans font (vite-plugin-font) and applies it
+// to the document via CSS custom properties. SSR renders nothing; the script runs on
+// the client, swapping the font stack once the subsetted woff2 is available.
+---
+
+<script>
+	(async () => {
+		const HANKEN = '"Hanken Grotesk"'
+		try {
+			const { css, fontFamilyFallback } = await import('@/assets/mi-sans-vf.ttf?subsets')
+			const stack = `${HANKEN}, ${css.family}, ${fontFamilyFallback}`
+			document.documentElement.style.setProperty('--font-display', stack)
+			document.documentElement.style.setProperty('--font-text', stack)
+			document.documentElement.style.setProperty('--font-ui', stack)
+		}
+		catch {}
+	})()
+</script>

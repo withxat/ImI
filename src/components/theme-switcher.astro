@@ -1,0 +1,183 @@
+---
+import Monitor from '~icons/lucide/monitor'
+import Moon from '~icons/lucide/moon'
+import Smartphone from '~icons/lucide/smartphone'
+import Sun from '~icons/lucide/sun'
+import Tablet from '~icons/lucide/tablet'
+
+interface Props {
+	labels: {
+		ariaLabel: string
+		dark: string
+		light: string
+		system: string
+	}
+}
+
+const { labels } = Astro.props as Props
+---
+
+<div class="relative" data-theme-switcher>
+	<button
+		class="
+			inline-flex size-8 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-colors
+			hover:bg-accent hover:text-foreground
+		"
+		aria-label={labels.ariaLabel}
+		type="button"
+		data-theme-toggle
+	>
+		<span class="size-4" data-theme-current>
+			<span data-icon="light" hidden>
+				<Sun class="size-full scale-115" />
+			</span>
+			<span data-icon="dark" hidden>
+				<Moon class="size-full" />
+			</span>
+			<span data-icon="system">
+				<Smartphone class="size-full md:hidden" />
+				<Tablet class="hidden size-full md:block lg:hidden" />
+				<Monitor class="hidden size-full lg:block" />
+			</span>
+		</span>
+	</button>
+	<div
+		class="
+			absolute top-full right-0 z-50 mt-1 hidden min-w-32 overflow-hidden rounded-lg border
+			bg-popover p-1 shadow-md
+		"
+		role="menu"
+		data-theme-menu
+	>
+		<button
+			class="
+				flex w-full cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-sm
+				text-muted-foreground transition-colors
+				hover:bg-accent hover:text-foreground
+			"
+			data-set-theme="system"
+			role="menuitem"
+			type="button"
+		>
+			<span class="size-3.5">
+				<Smartphone class="size-full md:hidden" />
+				<Tablet class="hidden size-full md:block lg:hidden" />
+				<Monitor class="hidden size-full lg:block" />
+			</span>
+			<span>{labels.system}</span>
+		</button>
+		<button
+			class="
+				flex w-full cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-sm
+				text-muted-foreground transition-colors
+				hover:bg-accent hover:text-foreground
+			"
+			data-set-theme="light"
+			role="menuitem"
+			type="button"
+		>
+			<Sun class="size-3.5 scale-115" />
+			<span>{labels.light}</span>
+		</button>
+		<button
+			class="
+				flex w-full cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-sm
+				text-muted-foreground transition-colors
+				hover:bg-accent hover:text-foreground
+			"
+			data-set-theme="dark"
+			role="menuitem"
+			type="button"
+		>
+			<Moon class="size-3.5" />
+			<span>{labels.dark}</span>
+		</button>
+	</div>
+</div>
+
+<script>
+import type { Theme } from '@/lib/theme/read-stored-theme'
+
+import { THEME_STORAGE_KEY } from '@/lib/theme/constants'
+import { readStoredTheme } from '@/lib/theme/read-stored-theme'
+
+function applyTheme(theme: Theme) {
+	const el = document.documentElement
+	if (theme === 'system') {
+		el.classList.toggle('dark', matchMedia('(prefers-color-scheme:dark)').matches)
+		el.classList.remove('light')
+	}
+	else {
+		el.classList.toggle('dark', theme === 'dark')
+		el.classList.toggle('light', theme === 'light')
+	}
+}
+
+function syncCurrentIcon(theme: Theme) {
+	document.querySelectorAll<HTMLElement>('[data-theme-current] [data-icon]').forEach((el) => {
+		el.hidden = el.dataset.icon !== theme
+	})
+	document.querySelectorAll<HTMLButtonElement>('[data-set-theme]').forEach((btn) => {
+		const active = btn.dataset.setTheme === theme
+		btn.classList.toggle('text-foreground', active)
+		btn.classList.toggle('text-muted-foreground', !active)
+	})
+}
+
+function init() {
+	document.querySelectorAll<HTMLElement>('[data-theme-switcher]').forEach((container) => {
+		const toggleBtn = container.querySelector<HTMLButtonElement>('[data-theme-toggle]')
+		const menu = container.querySelector<HTMLElement>('[data-theme-menu]')
+		if (!toggleBtn || !menu)
+			return
+
+		let theme: Theme = readStoredTheme()
+		applyTheme(theme)
+		syncCurrentIcon(theme)
+
+		const close = () => menu.classList.add('hidden')
+		const open = () => menu.classList.remove('hidden')
+		const isOpen = () => !menu.classList.contains('hidden')
+
+		toggleBtn.addEventListener('click', () => {
+			if (isOpen())
+				close()
+			else open()
+		})
+
+		container.querySelectorAll<HTMLButtonElement>('[data-set-theme]').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const next = btn.dataset.setTheme as Theme
+				try {
+					localStorage.setItem(THEME_STORAGE_KEY, next)
+				}
+				catch {}
+				theme = next
+				applyTheme(theme)
+				syncCurrentIcon(theme)
+				close()
+			})
+		})
+
+		document.addEventListener('pointerdown', (e) => {
+			if (!isOpen())
+				return
+			if (!container.contains(e.target as Node))
+				close()
+		})
+
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && isOpen())
+				close()
+		})
+
+		const mq = matchMedia('(prefers-color-scheme:dark)')
+		mq.addEventListener('change', () => {
+			if (theme === 'system')
+				applyTheme('system')
+		})
+	})
+}
+
+init()
+</script>

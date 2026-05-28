@@ -1,0 +1,38 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+
+interface Props {
+	serverLocale: Locale
+}
+
+const { serverLocale } = Astro.props as Props
+---
+
+<script data-server-locale={serverLocale} is:inline>
+(() => {
+	const scriptEl = document.currentScript
+	const serverLocale = scriptEl?.dataset?.serverLocale
+	if (!serverLocale)
+		return
+
+	try {
+		const raw = localStorage.getItem('imi_locale')
+		if (!raw)
+			return
+		const allowed = ['en', 'ja', 'zh']
+		const normalized = raw === 'jp' ? 'ja' : raw
+		const stored = allowed.includes(normalized) ? normalized : null
+		if (!stored || stored === serverLocale)
+			return
+		if (raw !== stored) {
+			try {
+				localStorage.setItem('imi_locale', stored)
+			}
+			catch {}
+		}
+		document.cookie = `imi_locale=${stored}; Path=/; Max-Age=31536000; SameSite=Lax`
+		window.location.reload()
+	}
+	catch {}
+})()
+</script>

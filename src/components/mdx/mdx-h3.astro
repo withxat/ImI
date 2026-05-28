@@ -1,0 +1,16 @@
+---
+import { cn } from '@/lib/cn'
+
+const { class: className, id, ...rest } = Astro.props as { [k: string]: unknown, class?: string, id?: string }
+---
+
+<h3
+	class={cn(`
+		mt-8 scroll-m-20 text-lg font-semibold
+		*:[code]:text-lg
+	`, className)}
+	id={id}
+	{...rest}
+>
+	{id ? <a href={`#${id}`}><slot /></a> : <slot />}
+</h3>

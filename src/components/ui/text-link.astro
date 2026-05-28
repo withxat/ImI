@@ -1,0 +1,18 @@
+---
+import { cn } from '@/lib/cn'
+
+interface Props {
+	class?: string
+	href: string
+}
+
+const { class: className, href } = Astro.props as Props
+---
+
+<a
+	class={cn('text-link inline-flex items-center gap-2 font-ui text-sm', className)}
+	href={href}
+	data-astro-prefetch
+>
+	<slot />
+</a>

@@ -1,0 +1,25 @@
+---
+interface Props {
+	code: null | string
+}
+
+const { code } = Astro.props as Props
+
+function toFlagEmoji(iso: string): null | string {
+	if (!/^[A-Z]{2}$/.test(iso))
+		return null
+	const base = 0x1F1E6 - 'A'.charCodeAt(0)
+	return String.fromCodePoint(
+		base + iso.charCodeAt(0),
+		base + iso.charCodeAt(1),
+	)
+}
+
+const emoji = code ? toFlagEmoji(code.toUpperCase()) : null
+---
+
+{emoji
+	? (
+			<span class="inline-block leading-none" aria-hidden>{emoji}</span>
+		)
+	: null}

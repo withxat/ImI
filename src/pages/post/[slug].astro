@@ -1,0 +1,151 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+
+import { render } from 'astro:content'
+
+import ArticleBody from '@/components/article-body.astro'
+import AccordionItem from '@/components/mdx/accordion-item.astro'
+import AccordionPanel from '@/components/mdx/accordion-panel.astro'
+import AccordionTrigger from '@/components/mdx/accordion-trigger.astro'
+import Accordion from '@/components/mdx/accordion.astro'
+import MdxA from '@/components/mdx/mdx-a.astro'
+import MdxBlockquote from '@/components/mdx/mdx-blockquote.astro'
+import MdxCode from '@/components/mdx/mdx-code.astro'
+import MdxFigcaption from '@/components/mdx/mdx-figcaption.astro'
+import MdxFigure from '@/components/mdx/mdx-figure.astro'
+import MdxH1 from '@/components/mdx/mdx-h1.astro'
+import MdxH2 from '@/components/mdx/mdx-h2.astro'
+import MdxH3 from '@/components/mdx/mdx-h3.astro'
+import MdxH4 from '@/components/mdx/mdx-h4.astro'
+import MdxH5 from '@/components/mdx/mdx-h5.astro'
+import MdxH6 from '@/components/mdx/mdx-h6.astro'
+import MdxHr from '@/components/mdx/mdx-hr.astro'
+import MdxImage from '@/components/mdx/mdx-image.astro'
+import MdxLi from '@/components/mdx/mdx-li.astro'
+import MdxOl from '@/components/mdx/mdx-ol.astro'
+import MdxP from '@/components/mdx/mdx-p.astro'
+import MdxPre from '@/components/mdx/mdx-pre.astro'
+import MdxStrong from '@/components/mdx/mdx-strong.astro'
+import MdxTable from '@/components/mdx/mdx-table.astro'
+import MdxTd from '@/components/mdx/mdx-td.astro'
+import MdxTh from '@/components/mdx/mdx-th.astro'
+import MdxTr from '@/components/mdx/mdx-tr.astro'
+import MdxUl from '@/components/mdx/mdx-ul.astro'
+import MiSansContentFont from '@/components/mi-sans-content-font.astro'
+import PostTranslatedNoticeAside from '@/components/post-translated-notice-aside.astro'
+import Seo from '@/components/seo.astro'
+import SiteHeader from '@/components/site-header.astro'
+import StaggerReveal from '@/components/stagger-reveal.astro'
+import Container from '@/components/ui/container.astro'
+import Eyebrow from '@/components/ui/eyebrow.astro'
+import RootLayout from '@/layouts/root-layout.astro'
+import { formatPostDate, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
+import { getMessages } from '@/lib/i18n/messages'
+import { articleBreadcrumbJsonLd, blogPostingJsonLd, SITE_NAME } from '@/lib/seo-data'
+import { toTranslator } from '@/types/translator'
+
+export const prerender = false
+
+const { slug } = Astro.params as { slug: string }
+const locale = (Astro.locals.locale ?? 'en') as Locale
+const m = getMessages(locale)
+const post = await getPostBySlug(slug, locale)
+
+if (!post) {
+	return new Response('Not found', { status: 404 })
+}
+
+const category = await getCategoryBySlug(post.category)
+const localizedCategory = category
+	? m.categories[category.slug as keyof typeof m.categories]
+	: undefined
+const categoryEyebrow = localizedCategory ? localizedCategory.name : post.category
+const canonicalPath = `/post/${post.slug}`
+const articleSection = localizedCategory?.name
+const translator = toTranslator(post.translator)
+
+const { Content } = await render(post.entry)
+const mdxComponents = {
+	a: MdxA,
+	Accordion,
+	AccordionItem,
+	AccordionPanel,
+	AccordionTrigger,
+	blockquote: MdxBlockquote,
+	code: MdxCode,
+	figcaption: MdxFigcaption,
+	figure: MdxFigure,
+	h1: MdxH1,
+	h2: MdxH2,
+	h3: MdxH3,
+	h4: MdxH4,
+	h5: MdxH5,
+	h6: MdxH6,
+	hr: MdxHr,
+	Image: MdxImage,
+	img: MdxImage,
+	li: MdxLi,
+	ol: MdxOl,
+	p: MdxP,
+	pre: MdxPre,
+	strong: MdxStrong,
+	table: MdxTable,
+	td: MdxTd,
+	th: MdxTh,
+	tr: MdxTr,
+	ul: MdxUl,
+}
+---
+
+<RootLayout>
+	<Seo
+		jsonLd={[
+			blogPostingJsonLd({
+				articleSection,
+				canonicalPath,
+				date: post.date,
+				description: post.summary,
+				locale,
+				tags: post.tags,
+				title: post.title,
+			}),
+			articleBreadcrumbJsonLd([
+				{ name: SITE_NAME, path: '/' },
+				{ name: m.blog.title, path: '/post' },
+				{ name: post.title, path: canonicalPath },
+			]),
+		]}
+		canonicalPath={canonicalPath}
+		description={post.summary}
+		locale={locale}
+		slot="head"
+		title={`${post.title} - Xat`}
+		type="article"
+	/>
+
+	<section>
+		<MiSansContentFont />
+		<Container class="page-shell">
+			<StaggerReveal class="flex flex-col space-y-8">
+				<div class="space-y-8">
+					<SiteHeader locale={locale} messages={m} showBack />
+					<div class="space-y-3">
+						<Eyebrow>{categoryEyebrow}</Eyebrow>
+						<h1 class="text-3xl font-medium text-foreground">{post.title}</h1>
+						<p class="text-base/7 text-muted-foreground">{post.summary}</p>
+					</div>
+					<div class="font-ui text-sm text-muted-foreground">
+						<span>{formatPostDate(post.date, locale)}</span>
+					</div>
+					{m.blog.postTranslatedNotice && (
+						<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} translator={translator} />
+					)}
+				</div>
+
+				<ArticleBody>
+					<Content components={mdxComponents} />
+				</ArticleBody>
+			</StaggerReveal>
+		</Container>
+	</section>
+</RootLayout>

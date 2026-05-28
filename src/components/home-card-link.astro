@@ -1,0 +1,97 @@
+---
+import ArrowRight from '~icons/local/arrow-right'
+import ArrowUpRight from '~icons/local/arrow-up-right'
+
+import { cn } from '@/lib/cn'
+
+interface Props {
+	class?: string
+	description: string
+	external?: boolean
+	href?: string
+	prefetchOnView?: boolean
+	title: string
+}
+
+const {
+	class: className,
+	description,
+	external = false,
+	href,
+	prefetchOnView = false,
+	title,
+} = Astro.props as Props
+
+const containerClass = cn(
+	`
+		group flex items-center justify-start gap-3 rounded-xl highlight-surface border highlight-surface-hover bg-popover
+		px-4 py-3.5 text-left font-normal transition-colors
+		not-dark:bg-clip-padding
+		hover:bg-accent/50 hover:text-foreground
+		dark:bg-input/32
+		dark:hover:bg-input/64
+	`,
+	className,
+)
+
+const iconClass = cn(
+	`
+		-mx-0.5 size-4 shrink-0 text-muted-foreground opacity-80 transition-transform duration-150 ease-out
+		group-hover:text-highlight-icon group-hover:opacity-100
+	`,
+	external ? 'group-hover:translate-x-0.5 group-hover:-translate-y-0.5' : 'group-hover:translate-x-0.5',
+)
+
+const hasHref = Boolean(href)
+---
+
+{!hasHref
+	? (
+			<div class={containerClass}>
+				<span class="min-w-0 flex-1 space-y-1">
+					<span class="
+						block text-sm font-medium text-foreground transition-colors
+						group-hover:text-highlight-strong
+					"
+					>
+						{title}
+					</span>
+					<span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>
+				</span>
+			</div>
+		)
+	: external
+		? (
+				<a class={containerClass} href={href} rel="noreferrer" target="_blank">
+					<span class="min-w-0 flex-1 space-y-1">
+						<span class="
+							block text-sm font-medium text-foreground transition-colors
+							group-hover:text-highlight-strong
+						"
+						>
+							{title}
+						</span>
+						<span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>
+					</span>
+					<ArrowUpRight class={iconClass} aria-hidden />
+				</a>
+			)
+		: (
+				<a
+					class={containerClass}
+					data-astro-prefetch={prefetchOnView ? 'viewport' : undefined}
+					href={href}
+				>
+					<span class="min-w-0 flex-1 space-y-1">
+						<span class="
+							block text-sm font-medium text-foreground transition-colors
+							group-hover:text-highlight-strong
+						"
+						>
+							{title}
+						</span>
+						<span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>
+					</span>
+					<ArrowRight class={iconClass} aria-hidden />
+				</a>
+			)}

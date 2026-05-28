@@ -1,0 +1,156 @@
+---
+// Audio playback button with animated volume waves. Click reveals the IPA pronunciation
+// and plays /xat.mp3. The wave paths fade in/out on an rAF loop while audio is playing;
+// when audio ends, the loop continues until both waves complete one full cycle (so the
+// icon settles back to the "rested" speaker with both waves visible).
+
+const SPEAKER_PATH
+	= 'M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z'
+const WAVE_MID = 'M16 9a5 5 0 0 1 0 6'
+const WAVE_OUTER = 'M19.364 18.364a9 9 0 0 0 0-12.728'
+---
+
+<span class="inline-flex items-baseline gap-0.75">
+	<span
+		class="
+			hidden -translate-y-0.75 text-sm whitespace-nowrap text-highlight-strong
+			sm:text-base
+		"
+		data-name-ipa
+	>
+		/ˈeɪtoʊ/
+	</span>
+	<button
+		class="
+			relative inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground transition-colors
+			outline-none
+			hover:bg-accent
+			focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background
+			sm:size-6
+		"
+		aria-label="Play name pronunciation"
+		type="button"
+		data-name-play
+	>
+		<svg
+			class="size-3.5 shrink-0"
+			fill="none"
+			height="18"
+			stroke="currentColor"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="2"
+			viewBox="0 0 24 24"
+			width="18"
+			xmlns="http://www.w3.org/2000/svg"
+			aria-hidden
+			data-name-volume-icon
+		>
+			<path d={SPEAKER_PATH} />
+			<path d={WAVE_MID} data-wave="mid" />
+			<path d={WAVE_OUTER} data-wave="outer" />
+		</svg>
+	</button>
+	<audio preload="none" src="/xat.mp3" data-name-audio hidden></audio>
+</span>
+
+<script>
+const CYCLE = 1.45
+const MID_T = [0, 0.1, 0.28, 0.48, 0.6, 1]
+const MID_V = [0, 1, 1, 1, 0, 0]
+const OUT_T = [0, 0.12, 0.18, 0.28, 0.48, 0.6, 1]
+const OUT_V = [0, 0, 0, 1, 1, 0, 0]
+const BOTH_UP = 0.88
+
+function sample(times: number[], values: number[], u: number): number {
+	if (u <= times[0])
+		return values[0]
+	const last = times.length - 1
+	if (u >= times[last])
+		return values[last]
+	let i = 1
+	while (i <= last && u > times[i]) i++
+	const t0 = times[i - 1]
+	const t1 = times[i]
+	const v0 = values[i - 1]
+	const v1 = values[i]
+	const w = (u - t0) / (t1 - t0)
+	return v0 + (v1 - v0) * w
+}
+
+function waveOpacities(elapsedSec: number) {
+	const mod = ((elapsedSec % CYCLE) + CYCLE) % CYCLE
+	const u = mod / CYCLE
+	return { mid: sample(MID_T, MID_V, u), outer: sample(OUT_T, OUT_V, u) }
+}
+
+function bothUp(mid: number, outer: number) {
+	return mid >= BOTH_UP && outer >= BOTH_UP
+}
+
+for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-name-play]')) {
+	const root = btn.closest('span') as HTMLElement | null
+	if (!root || root.dataset.nameInit === '1')
+		continue
+	root.dataset.nameInit = '1'
+
+	const audio = root.querySelector<HTMLAudioElement>('[data-name-audio]')
+	const ipa = root.querySelector<HTMLElement>('[data-name-ipa]')
+	const svg = btn.querySelector<SVGSVGElement>('[data-name-volume-icon]')
+	const midPath = svg?.querySelector<SVGPathElement>('[data-wave="mid"]')
+	const outerPath = svg?.querySelector<SVGPathElement>('[data-wave="outer"]')
+	if (!audio || !ipa || !svg || !midPath || !outerPath)
+		continue
+
+	let originMs: null | number = null
+	let raf = 0
+	let endSync = false
+
+	function loop() {
+		if (originMs === null) {
+			raf = requestAnimationFrame(loop)
+			return
+		}
+		const elapsed = (performance.now() - originMs) / 1000
+		const { mid, outer } = waveOpacities(elapsed)
+		midPath!.style.opacity = String(mid)
+		outerPath!.style.opacity = String(outer)
+		if (endSync && bothUp(mid, outer)) {
+			cancelAnimationFrame(raf)
+			return
+		}
+		raf = requestAnimationFrame(loop)
+	}
+
+	function startLoop() {
+		if (originMs === null)
+			originMs = performance.now()
+		cancelAnimationFrame(raf)
+		raf = requestAnimationFrame(loop)
+	}
+
+	audio.addEventListener('play', () => {
+		endSync = false
+		startLoop()
+	})
+	audio.addEventListener('pause', () => {
+		if (!audio.ended) {
+			endSync = false
+			cancelAnimationFrame(raf)
+			midPath!.style.opacity = ''
+			outerPath!.style.opacity = ''
+		}
+	})
+	audio.addEventListener('ended', () => {
+		endSync = true
+		startLoop()
+	})
+
+	btn.addEventListener('click', () => {
+		ipa.classList.remove('hidden')
+		ipa.classList.add('inline-flex')
+		audio.currentTime = 0
+		void audio.play()
+	})
+}
+</script>

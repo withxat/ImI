@@ -1,0 +1,64 @@
+---
+import type { VariantProps } from 'class-variance-authority'
+
+import { buttonVariants } from '@/components/ui/button-variants'
+import Spinner from '@/components/ui/spinner.astro'
+import { cn } from '@/lib/cn'
+
+interface Props {
+	'class'?: string
+	'data-slot'?: string
+	'disabled'?: boolean
+	'href'?: string
+	'loading'?: boolean
+	'size'?: VariantProps<typeof buttonVariants>['size']
+	'tag'?: 'a' | 'button'
+	'type'?: 'button' | 'reset' | 'submit'
+	'variant'?: VariantProps<typeof buttonVariants>['variant']
+}
+
+const {
+	class: className,
+	disabled,
+	href,
+	loading = false,
+	size,
+	tag,
+	type = 'button',
+	variant,
+	...rest
+} = Astro.props as Props
+
+const isDisabled = Boolean(disabled || loading)
+const resolvedTag = tag ?? (href ? 'a' : 'button')
+const allClasses = cn(buttonVariants({ size, variant }), className)
+---
+
+{resolvedTag === 'a'
+	? (
+			<a
+				aria-disabled={loading || undefined}
+				class={allClasses}
+				data-loading={loading ? '' : undefined}
+				data-slot="button"
+				href={href}
+				{...rest}
+			>
+				<slot />
+				{loading && <Spinner class="pointer-events-none absolute" data-slot="button-loading-indicator" />}
+			</a>
+		)
+	: (
+			<button
+				aria-disabled={loading || undefined}
+				class={allClasses}
+				data-loading={loading ? '' : undefined}
+				data-slot="button"
+				disabled={isDisabled}
+				type={type}
+				{...rest}
+			>
+				<slot />
+				{loading && <Spinner class="pointer-events-none absolute" data-slot="button-loading-indicator" />}
+			</button>
+		)}

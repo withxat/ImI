@@ -1,9 +1,10 @@
 import { xat } from '@withxat/eslint-config'
+import astro from 'eslint-plugin-astro'
 
 const config = xat()
 
 config.append({
-	ignores: ['.source/**', 'dist/**', 'src/pages.gen.ts'],
+	ignores: ['.source/**', 'dist/**'],
 })
 
 config.append({
@@ -15,30 +16,18 @@ config.append({
 	},
 })
 
-config.append({
-	files: ['src/pages/**/*.{ts,tsx}'],
-	rules: {
-		'react-refresh/only-export-components': [
-			'error',
-			{ allowExportNames: ['getConfig'] },
-		],
-	},
-})
+config.append(astro.configs.recommended)
 
 config.append({
-	files: ['src/components/ui/**/*.{ts,tsx}'],
+	files: ['**/*.astro'],
 	rules: {
-		'react-refresh/only-export-components': [
-			'error',
-			{ allowExportNames: ['badgeVariants', 'buttonVariants'] },
-		],
-	},
-})
-
-config.append({
-	files: ['src/components/mdx/**/*.{ts,tsx}'],
-	rules: {
-		'react-refresh/only-export-components': 'off',
+		// Multi-line tailwind class strings on imported Astro components compile
+		// to literal newlines inside JS template strings, which rolldown rejects
+		// as unterminated. Keep classes on single lines for .astro files.
+		'better-tailwindcss/enforce-consistent-line-wrapping': 'off',
+		// Custom CSS class names from scoped <style> blocks aren't visible to
+		// the tailwind class scanner, so silence false positives here.
+		'better-tailwindcss/no-unknown-classes': 'off',
 	},
 })
 

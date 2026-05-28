@@ -1,16 +1,17 @@
 {
-	"extends": "@withxat/tsconfig",
+	"extends": "astro/tsconfigs/strict",
 	"compilerOptions": {
-		"jsx": "react-jsx",
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"rootDir": ".",
 		"paths": {
-			"@/*": ["./src/*"],
-			"content-collections": ["./.content-collections/generated"]
+			"@/*": ["./src/*"]
 		},
 		"noEmit": true
 	},
 	"include": [
-		"src"
+		".astro/types.d.ts",
+		"src",
+		"astro.config.ts",
+		"src/**/*.astro"
 	]
 }

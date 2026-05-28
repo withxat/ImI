@@ -1,0 +1,47 @@
+---
+import type { PostTranslatedNoticeCopy } from '@/lib/i18n/messages'
+import type { Translator } from '@/types/translator'
+
+import PostTranslatorTitle from '@/components/post-translator-title.astro'
+
+const ZH_LINK_LABEL = '中文'
+
+interface Props {
+	notice: PostTranslatedNoticeCopy
+	translator?: Translator
+}
+
+const { notice, translator } = Astro.props as Props
+---
+
+<aside
+	class="surface-callout px-4 py-3 font-ui text-sm/relaxed text-muted-foreground"
+	role="note"
+>
+	{translator ? <PostTranslatorTitle translator={translator} /> : null}
+	{notice.beforeLink}
+	<button
+		aria-label={notice.switchToChineseAriaLabel}
+		class="text-link cursor-pointer border-none bg-transparent p-0 font-[inherit]"
+		data-switch-locale="zh"
+		lang="zh"
+		type="button"
+	>
+		{ZH_LINK_LABEL}
+	</button>
+	{notice.afterLink}
+</aside>
+
+<script>
+import { persistLocale } from '@/lib/i18n/persist-locale'
+
+document.querySelectorAll<HTMLButtonElement>('button[data-switch-locale]').forEach((btn) => {
+	btn.addEventListener('click', () => {
+		const target = btn.dataset.switchLocale as 'en' | 'ja' | 'zh' | undefined
+		if (!target)
+			return
+		persistLocale(target)
+		window.location.reload()
+	})
+})
+</script>

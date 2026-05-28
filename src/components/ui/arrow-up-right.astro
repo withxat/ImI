@@ -1,0 +1,51 @@
+---
+import { cn } from '@/lib/cn'
+
+interface Props {
+	class?: string
+	size?: number
+}
+
+const { class: className, size = 28 } = Astro.props as Props
+---
+
+<div class={cn('arrow-up-right-icon inline-flex shrink-0 text-current', className)}>
+	<svg
+		fill="none"
+		height={size}
+		stroke="currentColor"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		stroke-width="2"
+		viewBox="0 0 24 24"
+		width={size}
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<g class="arrow-up-right-g">
+			<path d="M7 7h10v10" />
+			<path d="M7 17 17 7" />
+		</g>
+	</svg>
+</div>
+
+<style>
+	.arrow-up-right-g {
+		transform-origin: 100% 0%;
+		transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.arrow-up-right-icon:hover .arrow-up-right-g,
+	.group:hover .arrow-up-right-icon .arrow-up-right-g {
+		animation: arrow-up-right-shake 0.5s ease-in-out;
+	}
+	@keyframes arrow-up-right-shake {
+		0% { transform: scale(1) translate(0, 0); }
+		50% { transform: scale(0.85) translate(-4px, 4px); }
+		100% { transform: scale(1) translate(0, 0); }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.arrow-up-right-icon:hover .arrow-up-right-g,
+		.group:hover .arrow-up-right-icon .arrow-up-right-g {
+			animation: none;
+		}
+	}
+</style>

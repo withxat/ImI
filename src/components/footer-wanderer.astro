@@ -1,0 +1,63 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+import type { FooterWandererCopy } from '@/lib/i18n/messages'
+
+import CountryFlag from '@/components/country-flag.astro'
+import { regionDisplayName } from '@/lib/visitor-geo'
+
+interface Props {
+	copy: FooterWandererCopy
+	locale: Locale
+}
+
+const { copy, locale } = Astro.props as Props
+const geo = Astro.locals.visitorGeo ?? { countryCode: null }
+const countryCode = geo.countryCode
+const countryLabel = countryCode ? regionDisplayName(countryCode, locale) : null
+
+const wandererClass = 'wanderer-gradient-text font-bold'
+
+const useEnglishPattern = countryCode ? copy.withCountry.pattern === 'en' : false
+---
+
+{countryCode && countryLabel
+	? (
+			useEnglishPattern
+				? (
+						<p class="text-foreground">
+							{copy.withCountry.lead}
+							<span class={wandererClass}>{copy.wanderer}</span>
+							{' '}
+							{copy.withCountry.bridge}
+							{' '}
+							<span class="ms-0.5 inline-flex items-baseline gap-x-1">
+								<span class="inline-flex h-[1em] shrink-0 translate-y-[0.12em] items-end leading-none">
+									<CountryFlag code={countryCode} />
+								</span>
+								<span>{countryLabel}</span>
+							</span>
+							{copy.withCountry.closing}
+						</p>
+					)
+				: (
+						<p class="text-foreground">
+							{copy.withCountry.lead}
+							<span class="ms-0.5 inline-flex items-baseline gap-x-1">
+								<span class="inline-flex h-[1em] shrink-0 translate-y-[0.12em] items-end leading-none">
+									<CountryFlag code={countryCode} />
+								</span>
+								<span>{countryLabel}</span>
+							</span>
+							{copy.withCountry.bridge}
+							<span class={wandererClass}>{copy.wanderer}</span>
+							{copy.withCountry.closing}
+						</p>
+					)
+		)
+	: (
+			<p class="text-foreground">
+				{copy.withoutCountry.before}
+				<span class={wandererClass}>{copy.wanderer}</span>
+				{copy.withoutCountry.after}
+			</p>
+		)}

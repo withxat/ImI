@@ -1,0 +1,60 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+
+import { LOCALES } from '@/lib/i18n/constants'
+
+interface Props {
+	'aria-label': string
+	'class'?: string
+	'currentLocale': Locale
+}
+
+const LOCALE_LABEL: Record<Locale, string> = {
+	en: 'EN',
+	ja: '日本語',
+	zh: '中文',
+}
+
+const { 'aria-label': ariaLabel, class: className, currentLocale } = Astro.props as Props
+---
+
+<div aria-label={ariaLabel} class={className} role="navigation">
+	<p class="font-ui text-sm text-muted-foreground">
+		{LOCALES.map((locale, index) => (
+			<span>
+				{index > 0 && <span class="mx-1.5 text-border">·</span>}
+				{locale === currentLocale
+					? (
+							<span class="font-medium text-highlight-strong" lang={locale}>
+								{LOCALE_LABEL[locale]}
+							</span>
+						)
+					: (
+							<button
+								class="text-link-muted cursor-pointer border-none bg-transparent font-[inherit]"
+								data-switch-locale={locale}
+								lang={locale}
+								type="button"
+							>
+								{LOCALE_LABEL[locale]}
+							</button>
+						)}
+			</span>
+		))}
+	</p>
+</div>
+
+<script>
+import { isLocale } from '@/lib/i18n/constants'
+import { persistLocale } from '@/lib/i18n/persist-locale'
+
+document.querySelectorAll<HTMLButtonElement>('button[data-switch-locale]').forEach((btn) => {
+	btn.addEventListener('click', () => {
+		const target = btn.dataset.switchLocale
+		if (!target || !isLocale(target))
+			return
+		persistLocale(target)
+		window.location.reload()
+	})
+})
+</script>
