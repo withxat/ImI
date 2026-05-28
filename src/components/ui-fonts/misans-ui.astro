@@ -2,7 +2,7 @@
 /** Site-wide UI stack (all locales): Hanken Grotesk + MiSans subset. */
 import { css, fontFamilyFallback } from '@/assets/mi-sans-vf.ttf?subsets'
 
-const stack = `"Hanken Grotesk", "${css.family}", ${fontFamilyFallback}`
+const stack = `"Hanken Grotesk", "Hanken Grotesk Fallback", "${css.family}", ${fontFamilyFallback}`
 const rootFontCss = `:root {
   --font-display: ${stack};
   --font-text: ${stack};
