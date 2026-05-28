@@ -21,9 +21,9 @@ const { pathname, search } = Astro.url
 ---
 
 <div aria-label={ariaLabel} class={className} role="navigation">
-	<p class="font-ui text-sm text-muted-foreground">
+	<p class="flex flex-wrap items-center gap-x-0 font-ui text-sm text-muted-foreground">
 		{LOCALES.map((locale, index) => (
-			<span>
+			<span class="inline-flex items-center whitespace-nowrap">
 				{index > 0 && <span class="mx-1.5 text-border">·</span>}
 				{locale === currentLocale
 					? (

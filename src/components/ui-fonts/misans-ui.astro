@@ -1,0 +1,13 @@
+---
+/** zh / ja UI stack — static import so @font-face CSS is linked in HTML. */
+import { css, fontFamilyFallback } from '@/assets/mi-sans-vf.ttf?subsets'
+
+const stack = `"Hanken Grotesk", "${css.family}", ${fontFamilyFallback}`
+const rootFontCss = `:root {
+  --font-display: ${stack};
+  --font-text: ${stack};
+  --font-ui: ${stack};
+}`
+---
+
+<style set:html={rootFontCss} is:global />

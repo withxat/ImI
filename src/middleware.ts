@@ -25,8 +25,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 	if (switchTarget) {
 		const nextUrl = new URL(request.url)
 		nextUrl.searchParams.delete(LOCALE_SWITCH_PARAM)
+		const redirectTo = `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`
 		context.cookies.set(LOCALE_COOKIE_NAME, switchTarget, localeCookieOptions())
-		return context.redirect(nextUrl.toString(), 303)
+		return context.redirect(redirectTo, 303)
 	}
 
 	// 2) Normalize trailing slash (keep behavior consistent with prior drop-trailing-slash).
