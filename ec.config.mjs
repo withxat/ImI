@@ -1,7 +1,7 @@
 import { pluginFramesTexts } from '@expressive-code/plugin-frames'
 import { defineEcConfig } from 'astro-expressive-code'
 
-import { codeBlockCopyFor } from './src/lib/i18n/code-block-copy.ts'
+import { codeBlockCopyFor } from './src/lib/i18n/code-block-copy.mjs'
 
 /** @type {import('./src/lib/i18n/constants.ts').Locale[]} */
 const LOCALES = ['en', 'zh', 'ja']
