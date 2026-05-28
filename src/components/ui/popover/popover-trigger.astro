@@ -1,0 +1,19 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+import { cn } from '@/lib/utils'
+
+interface Props extends HTMLAttributes<'button'> {
+	class?: string
+}
+
+const { class: className = '', ...rest } = Astro.props as Props
+---
+
+<button
+	{...rest}
+	class={cn('inline-flex items-center', className)}
+	data-slot="popover-trigger"
+>
+	<slot />
+</button>

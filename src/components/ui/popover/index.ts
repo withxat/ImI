@@ -1,0 +1,7 @@
+export { default as PopoverClose } from './popover-close.astro'
+export { default as PopoverContent } from './popover-content.astro'
+export { default as PopoverDescription } from './popover-description.astro'
+export { default as PopoverHeader } from './popover-header.astro'
+export { default as PopoverTitle } from './popover-title.astro'
+export { default as PopoverTrigger } from './popover-trigger.astro'
+export { default as Popover } from './popover.astro'
