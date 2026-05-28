@@ -2,10 +2,11 @@ let dispose: (() => void) | null = null
 
 const COPIED_MS = 1600
 
+/** EC stores the tooltip copy in `data-copied` — use a separate flag for the check icon. */
 function showCopiedCheck(trigger: HTMLButtonElement) {
-	trigger.dataset.copied = 'true'
+	trigger.dataset.copyChecked = ''
 	window.setTimeout(() => {
-		delete trigger.dataset.copied
+		delete trigger.dataset.copyChecked
 	}, COPIED_MS)
 }
 
