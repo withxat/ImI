@@ -19,7 +19,9 @@ const jiti = createJiti(import.meta.url, {
 	},
 })
 
-const { getExpressiveCodeBlockLocale } = jiti('./src/lib/expressive-code.ts') as typeof import('./src/lib/expressive-code.ts')
+const { getExpressiveCodeBlockLocale } = await jiti.import<typeof import('./src/lib/expressive-code.ts')>(
+	'./src/lib/expressive-code.ts',
+)
 
 export default defineConfig({
 	adapter: cloudflare(),

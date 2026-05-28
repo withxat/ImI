@@ -13,10 +13,11 @@ const id = `construction-${Math.random().toString(36).slice(2, 10)}`
 
 <div
 	class={cn(
-		'construction-icon inline-flex shrink-0 text-current',
-		autoAnimate ? 'is-auto-animate' : 'is-hover-animate',
+		'inline-flex shrink-0 text-current',
 		className,
 	)}
+	data-construction-motion={autoAnimate ? 'auto' : 'hover'}
+	data-construction-icon
 >
 	<svg
 		fill="none"
@@ -31,11 +32,11 @@ const id = `construction-${Math.random().toString(36).slice(2, 10)}`
 	>
 		<defs>
 			<pattern
-				class="construction-pattern"
 				height="14"
 				id={id}
 				patternUnits="userSpaceOnUse"
 				width="6"
+				data-construction-pattern
 			>
 				<path d="M-4 -2 L14 30" stroke="currentColor" stroke-width="2" />
 			</pattern>
@@ -49,21 +50,21 @@ const id = `construction-${Math.random().toString(36).slice(2, 10)}`
 </div>
 
 <style>
-	.construction-pattern {
+	[data-construction-pattern] {
 		transform: translateX(0);
 	}
 	@keyframes construction-slide {
 		from { transform: translateX(0); }
 		to { transform: translateX(6px); }
 	}
-	.construction-icon.is-auto-animate .construction-pattern {
+	[data-construction-icon][data-construction-motion="auto"] [data-construction-pattern] {
 		animation: construction-slide 1s linear infinite;
 	}
-	.construction-icon.is-hover-animate:hover .construction-pattern,
-	.group:hover .construction-icon.is-hover-animate .construction-pattern {
+	[data-construction-icon][data-construction-motion="hover"]:hover [data-construction-pattern],
+	.group:hover [data-construction-icon][data-construction-motion="hover"] [data-construction-pattern] {
 		animation: construction-slide 1s linear infinite;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.construction-icon .construction-pattern { animation: none !important; }
+		[data-construction-icon] [data-construction-pattern] { animation: none !important; }
 	}
 </style>

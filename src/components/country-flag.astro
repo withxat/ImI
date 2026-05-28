@@ -1,6 +1,4 @@
 ---
-import { nucleoFlagByIso } from '@/lib/nucleo-flag-map'
-
 interface Props {
 	code: null | string
 }
@@ -14,10 +12,7 @@ const flagSvgs = import.meta.glob<string>('../assets/flags/*.svg', {
 })
 
 const iso = code?.trim().toUpperCase()
-const svg
-	= iso && iso in nucleoFlagByIso
-		? flagSvgs[`../assets/flags/${iso.toLowerCase()}.svg`]
-		: null
+const svg = iso ? flagSvgs[`../assets/flags/${iso.toLowerCase()}.svg`] : null
 ---
 
 {svg
