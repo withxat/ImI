@@ -2,12 +2,13 @@
 import { cn } from '@/lib/cn'
 
 interface Props {
+	as?: 'h2' | 'h3' | 'p'
 	class?: string
 }
 
-const { class: className } = Astro.props as Props
+const { as: Tag = 'p', class: className } = Astro.props as Props
 ---
 
-<p class={cn('font-ui text-base font-medium text-foreground', className)}>
+<Tag class={cn('font-ui text-base font-medium text-foreground', className)}>
 	<slot />
-</p>
+</Tag>

@@ -20,10 +20,11 @@ const {
 <div
 	class={className}
 	data-reveal-blur={blur}
+	data-reveal-pending=""
 	data-reveal-pending-base-delay={baseDelay}
 	data-reveal-stagger-index={staggerIndex}
 	data-reveal-stagger-step={staggerStep}
-	style={`--reveal-blur: ${blur}px; transition-property: opacity, filter; transition-duration: 420ms; transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);`}
+	style={`--reveal-blur: ${blur}px; opacity: 0; filter: blur(${blur}px); transition-property: opacity, filter; transition-duration: 420ms; transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);`}
 	data-reveal
 >
 	<slot />

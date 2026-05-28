@@ -123,7 +123,7 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 				<section class="mt-24 space-y-7">
 					<Reveal staggerIndex={0}>
 						<div class="flex items-baseline justify-between gap-6">
-							<Eyebrow class="font-semibold">{m.home.writingEyebrow}</Eyebrow>
+							<Eyebrow as="h2" class="font-semibold">{m.home.writingEyebrow}</Eyebrow>
 							<a class="text-link font-ui text-sm" href="/post" data-astro-prefetch>
 								{m.home.viewAllPosts}
 							</a>
@@ -150,7 +150,7 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 							sm:grid-cols-[10rem_1fr]
 						"
 						>
-							<Eyebrow class="font-semibold">{m.home.capabilitiesEyebrow}</Eyebrow>
+							<Eyebrow as="h2" class="font-semibold">{m.home.capabilitiesEyebrow}</Eyebrow>
 							<p class="max-w-prose text-base/7 text-muted-foreground">{m.home.capabilitiesIntro}</p>
 						</div>
 					</Reveal>

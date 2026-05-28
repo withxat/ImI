@@ -5,12 +5,14 @@ export function setupArticleReveal(root: HTMLElement, animate = true) {
 	if (reduce) {
 		for (const el of [...root.children])
 			el.classList.add('article-reveal-done')
+		root.removeAttribute('data-article-pending')
 		return
 	}
 
 	if (!animate) {
 		for (const el of [...root.children])
 			el.classList.add('article-reveal-skip', 'article-reveal-done')
+		root.removeAttribute('data-article-pending')
 		return
 	}
 
@@ -73,6 +75,9 @@ export function setupArticleReveal(root: HTMLElement, animate = true) {
 		el.classList.add('article-reveal-pending')
 		io.observe(el)
 	}
+
+	/* Remove SSR pending attribute AFTER inline styles/classes are set so children don't flash. */
+	root.removeAttribute('data-article-pending')
 }
 
 export function initArticleBodies(animate = true) {

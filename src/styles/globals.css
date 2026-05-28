@@ -673,8 +673,30 @@
 	filter: blur(var(--reveal-blur, 10px));
 }
 
+/* Stagger children hidden until JS initialises (SSR-hidden for view-transition parity). */
+[data-stagger-reveal][data-stagger-pending] > * {
+	opacity: 0;
+	filter: blur(var(--stagger-blur, 10px));
+}
+
+/* Article body children hidden until JS initialises. */
+[data-article-reveal][data-article-pending] > * {
+	opacity: 0;
+	filter: blur(10px);
+}
+
 @media (prefers-reduced-motion: reduce) {
 	[data-reveal][data-reveal-pending]:not([data-reveal-ready='true']) {
+		opacity: 1;
+		filter: none;
+	}
+
+	[data-stagger-reveal][data-stagger-pending] > * {
+		opacity: 1;
+		filter: none;
+	}
+
+	[data-article-reveal][data-article-pending] > * {
 		opacity: 1;
 		filter: none;
 	}

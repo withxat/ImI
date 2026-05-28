@@ -94,7 +94,7 @@ function initRevealElement(el: HTMLElement, animate: boolean) {
 	io.observe(el)
 }
 
-function initStaggerRoot(root: HTMLElement, animate: boolean) {
+export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 	const blur = Number(root.dataset.staggerBlur ?? 10)
 	const baseDelay = Number(root.dataset.staggerDelay ?? 0.06)
 	const step = Number(root.dataset.staggerStep ?? 0.052)
@@ -145,6 +145,9 @@ function initStaggerRoot(root: HTMLElement, animate: boolean) {
 		)
 		io.observe(child)
 	})
+
+	/* Remove SSR pending attribute AFTER inline styles are set so children don't flash. */
+	root.removeAttribute('data-stagger-pending')
 }
 
 export function initPageReveals({ animate = true }: PageRevealOptions = {}) {
