@@ -110,13 +110,13 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 				>
 					<StaggerReveal class="space-y-1.5" delayChildren={0.03} staggerChildren={0.045}>
 						<p class="text-base/7 text-muted-foreground">{m.home.bioP1}</p>
-						<p class="text-base/7 text-muted-foreground">
-							{m.home.introBeforeSystems}
-							<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
-							{m.home.introBetweenBadges}
-							<IntroBadgePopover kind="products" label={productsLabel} locale={locale} />
-							{m.home.introAfterProducts}
-						</p>
+					<div class="text-base/7 text-muted-foreground">
+						{m.home.introBeforeSystems}
+						<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
+						{m.home.introBetweenBadges}
+						<IntroBadgePopover kind="products" label={productsLabel} locale={locale} />
+						{m.home.introAfterProducts}
+					</div>
 					</StaggerReveal>
 				</section>
 
