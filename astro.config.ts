@@ -53,8 +53,5 @@ export default defineConfig({
 				whiteList: '，。！？、；：「」『』（）《》—…·￥',
 			}),
 		],
-		resolve: {
-			tsconfigPaths: true,
-		},
 	},
 })
