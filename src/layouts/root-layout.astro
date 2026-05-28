@@ -43,7 +43,7 @@ const rssJa = getMessages('ja').blog
 		<slot name="head" />
 	</head>
 	<body class="relative isolate min-h-screen">
-		<div class="page-shell min-h-screen" transition:animate={pageTransition}>
+		<div class="page-shell min-h-screen" data-site-locale={locale} transition:animate={pageTransition}>
 			<main class="min-h-screen">
 				<slot />
 			</main>
