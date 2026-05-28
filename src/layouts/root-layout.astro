@@ -10,7 +10,7 @@ import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
 import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/rss'
 import { getThemeBootstrapScript } from '@/lib/theme/constants'
-import { fadeBlur } from '@/lib/view-transition'
+import { pageTransition } from '@/lib/view-transition'
 
 import '@/styles/globals.css'
 
@@ -18,8 +18,6 @@ const locale = (Astro.locals.locale ?? 'en') as Locale
 const rssZh = getMessages('zh').blog
 const rssEn = getMessages('en').blog
 const rssJa = getMessages('ja').blog
-
-const pageTransition = fadeBlur()
 ---
 
 <!doctype html>
@@ -47,42 +45,15 @@ const pageTransition = fadeBlur()
 	</head>
 	<body class="relative isolate min-h-screen">
 		<LocaleBootstrap serverLocale={locale} />
-		<main class="min-h-screen" transition:animate={pageTransition}>
-			<slot />
-		</main>
+		<div class="page-shell min-h-screen" transition:animate={pageTransition}>
+			<main class="min-h-screen">
+				<slot />
+			</main>
+		</div>
 		<Footer locale={locale} transition:persist="site-footer" />
 	</body>
 </html>
 
 <script>
-import { initArticleBodies } from '@/lib/article-reveal'
-import {
-	initPageReveals,
-	markClientNavigationPending,
-	shouldAnimatePageEntrance,
-} from '@/lib/page-reveal'
-import { attachArticlePhotoswipe } from '@/lib/photoswipe-gallery'
-
-document.addEventListener('astro:before-preparation', (event) => {
-	if (event.from)
-		markClientNavigationPending()
-})
-
-function onPageReady() {
-	requestAnimationFrame(() => {
-		const animate = shouldAnimatePageEntrance()
-		initPageReveals({ animate })
-		initArticleBodies(animate)
-
-		for (const root of document.querySelectorAll<HTMLElement>('[data-article-reveal], [data-article-plain]')) {
-			if (root.dataset.photoswipeInit === '1')
-				continue
-			attachArticlePhotoswipe(root)
-			root.dataset.photoswipeInit = '1'
-		}
-	})
-}
-
-document.addEventListener('astro:page-load', onPageReady)
-onPageReady()
+import '@/scripts/site-client'
 </script>

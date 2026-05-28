@@ -575,29 +575,16 @@
 	}
 }
 
-/* Astro ClientRouter view transitions (see src/lib/view-transition.ts) */
-@keyframes xatFadeBlurIn {
-	from {
-		opacity: 0;
-		filter: blur(10px);
-	}
-
-	to {
-		opacity: 1;
-		filter: blur(0);
+/* Astro ClientRouter — keep bordered surfaces out of nested VT groups (avoids double borders). */
+@supports (view-transition-name: none) {
+	.highlight-surface,
+	.surface-callout {
+		view-transition-name: none;
 	}
 }
 
-@keyframes xatFadeBlurOut {
-	from {
-		opacity: 1;
-		filter: blur(0);
-	}
-
-	to {
-		opacity: 0;
-		filter: blur(10px);
-	}
+html[data-astro-transition] .highlight-surface {
+	filter: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

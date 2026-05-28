@@ -31,17 +31,3 @@ const { notice, translator } = Astro.props as Props
 	</button>
 	{notice.afterLink}
 </aside>
-
-<script>
-import { persistLocale } from '@/lib/i18n/persist-locale'
-
-document.querySelectorAll<HTMLButtonElement>('button[data-switch-locale]').forEach((btn) => {
-	btn.addEventListener('click', () => {
-		const target = btn.dataset.switchLocale as 'en' | 'ja' | 'zh' | undefined
-		if (!target)
-			return
-		persistLocale(target)
-		window.location.reload()
-	})
-})
-</script>

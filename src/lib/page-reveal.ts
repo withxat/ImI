@@ -7,12 +7,6 @@ export interface PageRevealOptions {
 	animate?: boolean
 }
 
-let pendingClientNavigation = false
-
-export function markClientNavigationPending() {
-	pendingClientNavigation = true
-}
-
 function prefersReducedMotion() {
 	return matchMedia('(prefers-reduced-motion: reduce)').matches
 }
@@ -28,7 +22,7 @@ function revealElement(el: HTMLElement, delaySec: number, instant: boolean) {
 	el.style.transitionTimingFunction = EASING
 	el.style.transitionDuration = instant ? '0ms' : `${REVEAL_DURATION_MS}ms`
 	el.style.transitionDelay = delaySec ? `${delaySec}s` : ''
-	el.style.filter = 'blur(0px)'
+	el.style.filter = 'none'
 	el.style.opacity = '1'
 }
 
@@ -153,27 +147,9 @@ function initStaggerRoot(root: HTMLElement, animate: boolean) {
 }
 
 export function initPageReveals({ animate = true }: PageRevealOptions = {}) {
-	for (const el of document.querySelectorAll<HTMLElement>('[data-reveal]')) {
-		if (el.dataset.revealInitPass === '1')
-			continue
-		el.dataset.revealInitPass = '1'
+	for (const el of document.querySelectorAll<HTMLElement>('[data-reveal]'))
 		initRevealElement(el, animate)
-	}
 
-	for (const root of document.querySelectorAll<HTMLElement>('[data-stagger-reveal]')) {
-		if (root.dataset.staggerInitPass === '1')
-			continue
-		root.dataset.staggerInitPass = '1'
+	for (const root of document.querySelectorAll<HTMLElement>('[data-stagger-reveal]'))
 		initStaggerRoot(root, animate)
-	}
-}
-
-export function shouldAnimatePageEntrance() {
-	if (prefersReducedMotion())
-		return false
-	if (pendingClientNavigation) {
-		pendingClientNavigation = false
-		return false
-	}
-	return true
 }
