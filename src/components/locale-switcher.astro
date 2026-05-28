@@ -34,6 +34,7 @@ const { pathname, search } = Astro.url
 					: (
 							<a
 								class="text-link-muted"
+								data-astro-prefetch="tap"
 								href={buildLocaleSwitchHref(pathname, search, locale)}
 								lang={locale}
 							>
