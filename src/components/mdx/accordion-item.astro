@@ -16,6 +16,17 @@ const { class: className, defaultOpen = false, value } = Astro.props as Props
 </details>
 
 <style>
+	.accordion-item {
+		position: relative;
+	}
+	.accordion-item::before {
+		position: absolute;
+		inset: -0.625rem -0.875rem;
+		border: 1px dashed var(--color-border);
+		border-radius: var(--radius-lg);
+		content: '';
+		pointer-events: none;
+	}
 	.accordion-item :global([data-slot='accordion-trigger']) {
 		display: flex;
 		flex: 1;
