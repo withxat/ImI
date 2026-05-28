@@ -5,7 +5,6 @@ import claudeLogo from '@/assets/claude.svg?raw'
 import geminiLogo from '@/assets/gemini.svg?raw'
 import openAiLogo from '@/assets/openai.svg?raw'
 import qwenLogo from '@/assets/qwen.svg?raw'
-import { cn } from '@/lib/cn'
 
 interface Props {
 	translator: Translator
@@ -14,10 +13,10 @@ interface Props {
 const { translator } = Astro.props as Props
 const [brand, model] = translator
 
-const TRANSLATOR_META: Record<TranslatorBrand, { label: string, logo: string, logoClassName?: string }> = {
+const TRANSLATOR_META: Record<TranslatorBrand, { label: string, logo: string }> = {
 	claude: { label: 'Claude', logo: claudeLogo },
 	gemini: { label: 'Gemini', logo: geminiLogo },
-	openai: { label: 'OpenAI', logo: openAiLogo, logoClassName: 'dark:invert' },
+	openai: { label: 'OpenAI', logo: openAiLogo },
 	qwen: { label: 'Qwen', logo: qwenLogo },
 }
 
@@ -27,10 +26,10 @@ const meta = TRANSLATOR_META[brand]
 <div class="mb-1.5 flex items-center gap-2 font-ui text-sm font-medium text-foreground">
 	<span class="flex size-5 items-center justify-center rounded-full bg-background text-foreground shadow-xs ring-1 ring-border/80">
 		<span
-			class={cn(`
-				inline-flex size-3.5
-				[&_svg]:size-full
-			`, meta.logoClassName)}
+			class="
+				inline-flex size-3.5 text-foreground
+				[&_svg]:size-full [&_svg]:fill-current
+			"
 			aria-hidden="true"
 			set:html={meta.logo}
 		/>
