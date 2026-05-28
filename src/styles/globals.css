@@ -5,7 +5,7 @@
 	font-style: normal;
 	font-weight: 100 900;
 	font-display: swap;
-	src: url('../assets/hanken-grotesk-vf.ttf') format('truetype');
+	src: url('/fonts/hanken-grotesk-vf.ttf') format('truetype');
 }
 
 @font-face {
@@ -13,7 +13,7 @@
 	font-style: italic;
 	font-weight: 100 900;
 	font-display: swap;
-	src: url('../assets/hanken-grotesk-italic-vf.ttf') format('truetype');
+	src: url('/fonts/hanken-grotesk-italic-vf.ttf') format('truetype');
 }
 
 /* Latin fallback tuned to Hanken Grotesk metrics so `font-display: swap` does not

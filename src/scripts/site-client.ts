@@ -1,6 +1,7 @@
 import { initArticleBodies } from '@/lib/article-reveal'
 import { consumeClientNavigationPending, onAstroPageLoad } from '@/lib/astro-page-lifecycle'
 import { initIntroBadges } from '@/lib/intro-badge-client'
+import { initLinkedPageFontPrefetch } from '@/lib/linked-page-font-prefetch-client'
 import { initMdxCopyButtons } from '@/lib/mdx-copy-client'
 import { initNameAudioButtons } from '@/lib/name-audio-client'
 import { initPageReveals } from '@/lib/page-reveal'
@@ -40,6 +41,7 @@ function runPageClient() {
 	initIntroBadges()
 	initNameAudioButtons()
 	initMdxCopyButtons()
+	initLinkedPageFontPrefetch()
 }
 
 onAstroPageLoad(runPageClient)
