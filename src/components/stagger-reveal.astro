@@ -1,0 +1,28 @@
+---
+interface Props {
+	blur?: number
+	class?: string
+	delayChildren?: number
+	itemClass?: string
+	staggerChildren?: number
+}
+
+const {
+	blur = 10,
+	class: className,
+	delayChildren = 0.06,
+	itemClass,
+	staggerChildren = 0.052,
+} = Astro.props as Props
+---
+
+<div
+	class={className}
+	data-stagger-blur={blur}
+	data-stagger-delay={delayChildren}
+	data-stagger-item-class={itemClass ?? ''}
+	data-stagger-step={staggerChildren}
+	data-stagger-reveal
+>
+	<slot />
+</div>

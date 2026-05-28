@@ -1,0 +1,52 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+import type { IntroBadgeKind } from '@/lib/i18n/intro-badges'
+
+import GraduationCap from '~icons/local/graduation-cap'
+import Suitcase from '~icons/local/suitcase'
+
+import IntroBadgeDescription from '@/components/intro-badge-description.astro'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+
+interface Props {
+	kind: IntroBadgeKind
+	label: string
+	locale: Locale
+}
+
+const { kind, label, locale } = Astro.props as Props
+const Icon = kind === 'products' ? Suitcase : GraduationCap
+---
+
+<Popover class="inline-block align-baseline" data-intro-badge-root>
+	<PopoverTrigger
+		class="
+			mx-0.5 inline-flex h-auto translate-y-[0.08em] cursor-pointer items-center gap-[0.25em] rounded-md highlight-surface border
+			highlight-surface-hover bg-popover px-[0.35em] py-[0.16em] align-baseline text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong
+			transition-colors
+			hover:bg-accent/50
+			focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:outline-none
+			dark:bg-input/32
+			dark:hover:bg-input/64
+			data-open:highlight-surface-active
+			[&_svg]:block [&_svg]:size-[1em] [&_svg]:shrink-0 [&_svg]:translate-y-[-0.04em] [&_svg]:text-highlight-icon
+		"
+		type="button"
+		data-intro-badge-trigger
+	>
+		<Icon aria-hidden />
+		<span class="leading-none">{label}</span>
+	</PopoverTrigger>
+	<PopoverContent
+		align="start"
+		alignOffset={-4}
+		class="max-w-72 gap-0 text-sm/6 text-muted-foreground"
+		role="dialog"
+		side="bottom"
+		sideOffset={8}
+		data-intro-badge-popup
+	>
+		<span class="sr-only" tabindex="-1" autofocus data-intro-badge-focus-sentinel></span>
+		<IntroBadgeDescription kind={kind} locale={locale} />
+	</PopoverContent>
+</Popover>

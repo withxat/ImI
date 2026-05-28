@@ -1,0 +1,30 @@
+---
+
+interface Props {
+	baseDelay?: number
+	blur?: number
+	class?: string
+	staggerIndex?: number
+	staggerStep?: number
+}
+
+const {
+	baseDelay = 0.06,
+	blur = 10,
+	class: className,
+	staggerIndex = 0,
+	staggerStep = 0.048,
+} = Astro.props as Props
+---
+
+<div
+	class={className}
+	data-reveal-blur={blur}
+	data-reveal-pending-base-delay={baseDelay}
+	data-reveal-stagger-index={staggerIndex}
+	data-reveal-stagger-step={staggerStep}
+	style={`--reveal-blur: ${blur}px; transition-property: opacity, filter; transition-duration: 420ms; transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);`}
+	data-reveal
+>
+	<slot />
+</div>

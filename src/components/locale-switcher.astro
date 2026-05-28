@@ -1,0 +1,47 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+
+import { LOCALES } from '@/lib/i18n/constants'
+import { buildLocaleSwitchHref } from '@/lib/i18n/locale-switch'
+
+interface Props {
+	'aria-label': string
+	'class'?: string
+	'currentLocale': Locale
+}
+
+const LOCALE_LABEL: Record<Locale, string> = {
+	en: 'EN',
+	ja: '日本語',
+	zh: '中文',
+}
+
+const { 'aria-label': ariaLabel, class: className, currentLocale } = Astro.props as Props
+const { pathname, search } = Astro.url
+---
+
+<div aria-label={ariaLabel} class={className} role="navigation">
+	<p class="flex flex-wrap items-center gap-x-0 font-ui text-sm text-muted-foreground">
+		{LOCALES.map((locale, index) => (
+			<span class="inline-flex items-center whitespace-nowrap">
+				{index > 0 && <span class="mx-1.5 text-border">·</span>}
+				{locale === currentLocale
+					? (
+							<span class="font-medium text-highlight-strong" lang={locale}>
+								{LOCALE_LABEL[locale]}
+							</span>
+						)
+					: (
+							<a
+								class="text-link-muted"
+								data-astro-prefetch="tap"
+								href={buildLocaleSwitchHref(pathname, search, locale)}
+								lang={locale}
+							>
+								{LOCALE_LABEL[locale]}
+							</a>
+						)}
+			</span>
+		))}
+	</p>
+</div>

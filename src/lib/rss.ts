@@ -1,5 +1,3 @@
-import type { allPosts } from 'content-collections'
-
 import type { Locale } from '@/lib/i18n/constants'
 
 import { htmlLangFor } from '@/lib/i18n/constants'
@@ -7,7 +5,13 @@ import { getMessages } from '@/lib/i18n/messages'
 
 const SITE_URL = 'https://xat.sh'
 
-type Post = (typeof allPosts)[number]
+interface Post {
+	date: Date
+	slug: string
+	summary: string
+	tags: string[]
+	title: string
+}
 
 function escapeXml(value: string) {
 	return value

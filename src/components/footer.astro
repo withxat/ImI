@@ -1,0 +1,45 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+
+import FooterNav from '@/components/footer-nav.astro'
+import FooterWanderer from '@/components/footer-wanderer.astro'
+import Container from '@/components/ui/container.astro'
+import { getMessages } from '@/lib/i18n/messages'
+
+interface Props {
+	locale: Locale
+}
+
+const { locale } = Astro.props as Props
+const m = getMessages(locale)
+
+const moeIcp = (await import('@/assets/icons/moe-icp.svg?raw')).default
+---
+
+<footer>
+	<Container class="pt-28 pb-8 text-base/7 text-muted-foreground">
+		<div class="space-y-3">
+			<FooterWanderer copy={m.wanderer} locale={locale} />
+			<p class="text-sm text-muted-foreground">
+				{m.footer.connect}
+			</p>
+			<FooterNav />
+			<a
+				class="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
+				href="https://icp.gov.moe/?keyword=20264698"
+				rel="noreferrer"
+				target="_blank"
+			>
+				<span
+					class="
+						size-3.5 animate-pulse text-primary
+						[&_svg]:size-full
+					"
+					set:html={moeIcp}
+					aria-hidden
+				/>
+				{m.footer.moeIcp}
+			</a>
+		</div>
+	</Container>
+</footer>

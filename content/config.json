@@ -1,68 +1,70 @@
 {
-	"capabilities": [
-		{
-			"title": "AI Product Experiences",
-			"summary": "Chat surfaces, agents, orchestration, and treating intelligence as UX—not a bolt-on.",
-			"items": [
-				{
-					"title": "OpenCat.app",
-					"description": "👨‍🎨 Redesign OpenCat website",
-					"link": "https://github.com/waylybaye/opencat.app"
+	"site": {
+		"capabilities": [
+			{
+				"title": "AI Product Experiences",
+				"summary": "Chat surfaces, agents, orchestration, and treating intelligence as UX—not a bolt-on.",
+				"items": [
+					{
+						"title": "OpenCat.app",
+						"description": "👨‍🎨 Redesign OpenCat website",
+						"link": "https://github.com/waylybaye/opencat.app"
+					}
+				]
+			},
+			{
+				"title": "Frontend Systems",
+				"summary": "Architecture, performance budgets, and component systems that scale with the product.",
+				"items": [
+					{
+						"title": "Monorepo Template",
+						"description": "🍤 Just a template",
+						"link": "https://github.com/withxat/monorepo-template"
+					}
+				]
+			},
+			{
+				"title": "Developer Experience",
+				"summary": "Strict defaults, lint rules, and workflows that keep teams shipping safely.",
+				"items": [
+					{
+						"title": "TSConfig",
+						"description": "📒 A strict TypeScript configuration for modern project",
+						"link": "https://github.com/withxat/tsconfig"
+					},
+					{
+						"title": "ESLint-Config",
+						"description": "🧃 Xat's ESLint config preset",
+						"link": "https://github.com/withxat/eslint-config"
+					}
+				]
+			},
+			{
+				"title": "Interface Craft",
+				"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
+				"items": [],
+				"emptyState": {
+					"title": "Work in progress",
+					"description": "Quiet motion R&D—links when it's showtime."
 				}
-			]
-		},
-		{
-			"title": "Frontend Systems",
-			"summary": "Architecture, performance budgets, and component systems that scale with the product.",
-			"items": [
-				{
-					"title": "Monorepo Template",
-					"description": "🍤 Just a template",
-					"link": "https://github.com/withxat/monorepo-template"
-				}
-			]
-		},
-		{
-			"title": "Developer Experience",
-			"summary": "Strict defaults, lint rules, and workflows that keep teams shipping safely.",
-			"items": [
-				{
-					"title": "TSConfig",
-					"description": "📒 A strict TypeScript configuration for modern project",
-					"link": "https://github.com/withxat/tsconfig"
-				},
-				{
-					"title": "ESLint-Config",
-					"description": "🧃 Xat's ESLint config preset",
-					"link": "https://github.com/withxat/eslint-config"
-				}
-			]
-		},
-		{
-			"title": "Interface Craft",
-			"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
-			"items": [],
-			"emptyState": {
-				"title": "Work in progress",
-				"description": "Quiet motion R&D—links when it's showtime."
 			}
-		}
-	],
-	"categories": [
-		{
-			"name": "Life",
-			"slug": "life",
-			"description": "Bubbles of simple life"
-		},
-		{
-			"name": "Tech",
-			"slug": "tech",
-			"description": "Thoughts on technology"
-		},
-		{
-			"name": "Design",
-			"slug": "design",
-			"description": "Satisfying my aesthetic"
-		}
-	]
+		],
+		"categories": [
+			{
+				"name": "Life",
+				"slug": "life",
+				"description": "Bubbles of simple life"
+			},
+			{
+				"name": "Tech",
+				"slug": "tech",
+				"description": "Thoughts on technology"
+			},
+			{
+				"name": "Design",
+				"slug": "design",
+				"description": "Satisfying my aesthetic"
+			}
+		]
+	}
 }

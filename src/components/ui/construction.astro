@@ -1,0 +1,70 @@
+---
+import { cn } from '@/lib/cn'
+
+interface Props {
+	autoAnimate?: boolean
+	class?: string
+	size?: number
+}
+
+const { autoAnimate = false, class: className, size = 28 } = Astro.props as Props
+const id = `construction-${Math.random().toString(36).slice(2, 10)}`
+---
+
+<div
+	class={cn(
+		'inline-flex shrink-0 text-current',
+		className,
+	)}
+	data-construction-motion={autoAnimate ? 'auto' : 'hover'}
+	data-construction-icon
+>
+	<svg
+		fill="none"
+		height={size}
+		stroke="currentColor"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		stroke-width="2"
+		viewBox="0 0 24 24"
+		width={size}
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<defs>
+			<pattern
+				height="14"
+				id={id}
+				patternUnits="userSpaceOnUse"
+				width="6"
+				data-construction-pattern
+			>
+				<path d="M-4 -2 L14 30" stroke="currentColor" stroke-width="2" />
+			</pattern>
+		</defs>
+		<rect fill={`url(#${id})`} height="8" rx="1" width="20" x="2" y="6" />
+		<path d="M17 14v7" />
+		<path d="M7 14v7" />
+		<path d="M17 3v3" />
+		<path d="M7 3v3" />
+	</svg>
+</div>
+
+<style>
+	[data-construction-pattern] {
+		transform: translateX(0);
+	}
+	@keyframes construction-slide {
+		from { transform: translateX(0); }
+		to { transform: translateX(6px); }
+	}
+	[data-construction-icon][data-construction-motion="auto"] [data-construction-pattern] {
+		animation: construction-slide 1s linear infinite;
+	}
+	[data-construction-icon][data-construction-motion="hover"]:hover [data-construction-pattern],
+	.group:hover [data-construction-icon][data-construction-motion="hover"] [data-construction-pattern] {
+		animation: construction-slide 1s linear infinite;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		[data-construction-icon] [data-construction-pattern] { animation: none !important; }
+	}
+</style>

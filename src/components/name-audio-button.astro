@@ -1,0 +1,53 @@
+---
+// Audio playback button with animated volume waves. Click reveals the IPA pronunciation
+// and plays /xat.mp3. Client behavior lives in src/lib/name-audio-client.ts.
+
+const SPEAKER_PATH
+	= 'M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z'
+const WAVE_MID = 'M16 9a5 5 0 0 1 0 6'
+const WAVE_OUTER = 'M19.364 18.364a9 9 0 0 0 0-12.728'
+---
+
+<span class="inline-flex items-baseline gap-0.75">
+	<span
+		class="
+			hidden -translate-y-0.75 text-sm whitespace-nowrap text-highlight-strong
+			sm:text-base
+		"
+		data-name-ipa
+	>
+		/ˈeɪtoʊ/
+	</span>
+	<button
+		class="
+			relative inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground transition-colors
+			outline-none
+			hover:bg-accent
+			focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background
+			sm:size-6
+		"
+		aria-label="Play name pronunciation"
+		type="button"
+		data-name-play
+	>
+		<svg
+			class="size-3.5 shrink-0"
+			fill="none"
+			height="18"
+			stroke="currentColor"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="2"
+			viewBox="0 0 24 24"
+			width="18"
+			xmlns="http://www.w3.org/2000/svg"
+			aria-hidden
+			data-name-volume-icon
+		>
+			<path d={SPEAKER_PATH} />
+			<path d={WAVE_MID} data-wave="mid" />
+			<path d={WAVE_OUTER} data-wave="outer" />
+		</svg>
+	</button>
+	<audio preload="none" src="/xat.mp3" data-name-audio hidden></audio>
+</span>

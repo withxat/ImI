@@ -3,10 +3,6 @@ import { xat } from '@withxat/eslint-config'
 const config = xat()
 
 config.append({
-	ignores: ['.source/**', 'dist/**', 'src/pages.gen.ts'],
-})
-
-config.append({
 	settings: {
 		'better-tailwindcss': {
 			detectComponentClasses: true,
@@ -15,30 +11,18 @@ config.append({
 	},
 })
 
+// Vite loads astro.config.ts before path aliases exist — @/ imports break CI builds.
 config.append({
-	files: ['src/pages/**/*.{ts,tsx}'],
+	files: ['astro.config.ts'],
 	rules: {
-		'react-refresh/only-export-components': [
-			'error',
-			{ allowExportNames: ['getConfig'] },
-		],
-	},
-})
-
-config.append({
-	files: ['src/components/ui/**/*.{ts,tsx}'],
-	rules: {
-		'react-refresh/only-export-components': [
-			'error',
-			{ allowExportNames: ['badgeVariants', 'buttonVariants'] },
-		],
-	},
-})
-
-config.append({
-	files: ['src/components/mdx/**/*.{ts,tsx}'],
-	rules: {
-		'react-refresh/only-export-components': 'off',
+		// Alias rewrite breaks Cloudflare config bootstrap (see lefthook: lint-astro-config skips --fix).
+		'import-x/no-relative-packages': 'off',
+		'no-restricted-imports': ['error', {
+			patterns: [{
+				group: ['@/*', '@/**'],
+				message: 'Use ./src/... relative imports; @/ is not resolved when loading astro.config.ts.',
+			}],
+		}],
 	},
 })
 

@@ -1,7 +1,5 @@
 import type { Locale } from '@/lib/i18n/constants'
 
-import { unstable_getHeaders } from 'waku/server'
-
 import {
 	DEFAULT_LOCALE,
 	isLocale,
@@ -91,13 +89,6 @@ export function resolveLocaleFromHeaders(
 }
 
 export function getRequestLocale(): Locale {
-	try {
-		const headers = unstable_getHeaders()
-		const cookie = headers.cookie
-		const accept = headers['accept-language']
-		return resolveLocaleFromHeaders(cookie, accept)
-	}
-	catch {
-		return DEFAULT_LOCALE
-	}
+	// In Astro, read request headers in middleware and pass the locale via `Astro.locals`.
+	return DEFAULT_LOCALE
 }

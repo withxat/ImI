@@ -1,36 +1,94 @@
+import type { CollectionEntry } from 'astro:content'
+
 import type { Locale } from '@/lib/i18n/constants'
 
-import { allPosts, config } from 'content-collections'
+import { getCollection } from 'astro:content'
 
-export const BLOG_CATEGORIES = config.categories
+type PostEntry = CollectionEntry<'posts'>
+type ConfigEntry = CollectionEntry<'config'>
+
+let postsPromise: Promise<PostEntry[]> | undefined
+let configPromise: Promise<ConfigEntry | null> | undefined
+
+function getPostsCollection(): Promise<PostEntry[]> {
+	postsPromise ??= getCollection('posts') as Promise<PostEntry[]>
+	return postsPromise
+}
+
+function getConfigEntry(): Promise<ConfigEntry | null> {
+	configPromise ??= (getCollection('config') as Promise<ConfigEntry[]>).then(entries => entries[0] ?? null)
+	return configPromise
+}
+
+function parsePostId(id: string): null | { locale: Locale, slug: string } {
+	const segments = id.split('/')
+	const locale = segments[0]
+	if (locale !== 'en' && locale !== 'zh' && locale !== 'ja')
+		return null
+	const slug = segments.slice(1).join('/')
+	if (!slug)
+		return null
+	return { locale, slug }
+}
+
+export type BlogCategory = ConfigEntry['data']['categories'][number]
+
+export async function getBlogCategories(): Promise<BlogCategory[]> {
+	const cfg = await getConfigEntry()
+	return cfg?.data.categories ?? []
+}
 
 /** RSS and sitemap use Chinese posts as the canonical writing locale. */
 export const BLOG_PRIMARY_LOCALE: Locale = 'zh'
 
-function allPostsSorted() {
-	return [...allPosts].sort((a, b) => b.date.getTime() - a.date.getTime())
+async function allPostsSorted(): Promise<PostEntry[]> {
+	const posts = await getPostsCollection()
+	return [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 }
 
-export function getAllPosts(locale: Locale) {
-	return allPostsSorted().filter(post => post.locale === locale)
+export async function getAllPosts(locale: Locale) {
+	const posts = await allPostsSorted()
+	return posts
+		.map((entry) => {
+			const parsed = parsePostId(entry.id)
+			if (!parsed)
+				return null
+			return {
+				...entry.data,
+				entry,
+				locale: parsed.locale,
+				slug: parsed.slug,
+			}
+		})
+		.filter((post): post is NonNullable<typeof post> => post !== null)
+		.filter(post => post.locale === locale)
 }
 
-export function getPostSlugs() {
-	return [...new Set(allPostsSorted().map(post => post.slug))]
+export async function getPostSlugs() {
+	const posts = await allPostsSorted()
+	const slugs = posts
+		.map(entry => parsePostId(entry.id)?.slug)
+		.filter(Boolean)
+	return [...new Set(slugs)]
 }
 
-export function getPostBySlug(slug: string, locale: Locale) {
-	return allPostsSorted().find(post => post.slug === slug && post.locale === locale)
+export async function getPostBySlug(slug: string, locale: Locale) {
+	const posts = await getAllPosts(locale)
+	return posts.find(post => post.slug === slug)
 }
 
-export function getCategoryBySlug(slug: string) {
-	return BLOG_CATEGORIES.find(category => category.slug === slug)
+export async function getCategoryBySlug(slug: string) {
+	const categories = await getBlogCategories()
+	return categories.find(category => category.slug === slug)
 }
 
-export function getPostsByCategory(locale: Locale) {
-	const posts = getAllPosts(locale)
+export async function getPostsByCategory(locale: Locale) {
+	const [posts, categories] = await Promise.all([
+		getAllPosts(locale),
+		getBlogCategories(),
+	])
 
-	return BLOG_CATEGORIES
+	return categories
 		.map(category => ({
 			category,
 			posts: posts.filter(post => post.category === category.slug),

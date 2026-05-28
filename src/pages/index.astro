@@ -1,0 +1,240 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+
+import ArrowUpRight from '~icons/local/arrow-up-right'
+
+import HomeCardLink from '@/components/home-card-link.astro'
+import IntroBadgePopover from '@/components/intro-badge-popover.astro'
+import NameAudioButton from '@/components/name-audio-button.astro'
+import Reveal from '@/components/reveal.astro'
+import Seo from '@/components/seo.astro'
+import SiteHeader from '@/components/site-header.astro'
+import StaggerReveal from '@/components/stagger-reveal.astro'
+import Container from '@/components/ui/container.astro'
+import Eyebrow from '@/components/ui/eyebrow.astro'
+import RootLayout from '@/layouts/root-layout.astro'
+import { getAllPosts } from '@/lib/blog'
+import { htmlLangFor } from '@/lib/i18n/constants'
+import { getIntroBadgeLabel } from '@/lib/i18n/intro-badges'
+import { getMessages } from '@/lib/i18n/messages'
+import { getCapabilities } from '@/lib/projects'
+import { personJsonLd, PROFILE_AVATAR_SRC, websiteJsonLd } from '@/lib/seo-data'
+
+const locale = (Astro.locals.locale ?? 'en') as Locale
+const m = getMessages(locale)
+const systemsLabel = getIntroBadgeLabel(locale, 'systems')
+const productsLabel = getIntroBadgeLabel(locale, 'products')
+const allPosts = await getAllPosts(locale)
+const posts = allPosts.slice(0, 4)
+const baseCapabilities = await getCapabilities()
+const capabilities = baseCapabilities.map((cap, i) => {
+	const copy = m.capabilities[i]
+	if (!copy)
+		return cap
+	return {
+		...cap,
+		emptyState: copy.emptyState ?? cap.emptyState,
+		items: cap.items.map((item, j) => ({
+			...item,
+			description: copy.items[j]?.description ?? item.description,
+			title: copy.items[j]?.title ?? item.title,
+		})),
+		summary: copy.summary,
+		title: copy.title,
+	}
+})
+
+const proofLinkClass = 'group/proof flex min-w-0 items-end justify-between gap-3 text-left'
+const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 ease-out group-hover/proof:translate-x-0.5 group-hover/proof:-translate-y-0.5 group-hover/proof:text-highlight-icon'
+---
+
+<RootLayout>
+	<Seo
+		jsonLd={[
+			personJsonLd({ description: m.home.metaDescription }),
+			websiteJsonLd({ description: m.home.metaDescription }),
+		]}
+		canonicalPath="/"
+		description={m.home.metaDescription}
+		locale={locale}
+		slot="head"
+		title={m.home.title}
+		type="profile"
+	>
+		<link as="font" crossorigin="anonymous" href="/fonts/fugaz-one-regular-subset.woff2" rel="preload" type="font/woff2" />
+		<link as="image" href={PROFILE_AVATAR_SRC} rel="preload" />
+	</Seo>
+
+	<section>
+		<Container class="page-shell">
+			<div class="flex flex-col">
+				<div class="flex flex-col gap-4">
+					<SiteHeader locale={locale} messages={m} />
+					<div class="flex min-w-0 flex-col gap-4">
+						<img
+							class="
+								size-14 rounded-xl border border-border object-cover
+								sm:size-16
+							"
+							alt="Xat"
+							fetchpriority="high"
+							height={64}
+							referrerpolicy="no-referrer"
+							src={PROFILE_AVATAR_SRC}
+							width={64}
+						/>
+						<div class="space-y-0">
+							<h1 class="
+								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
+								sm:text-3xl
+							"
+							>
+								<span class="font-fugaz-one font-normal text-highlight-strong">Xat</span>
+								<NameAudioButton />
+							</h1>
+							<p class="text-muted-foreground">{m.home.role}</p>
+						</div>
+					</div>
+					<p
+						class="home-bio-lead max-w-prose font-serif text-base/7 font-semibold text-foreground"
+						lang={htmlLangFor(locale)}
+					>
+						{m.home.bioLead}
+					</p>
+				</div>
+
+				<section class="
+					mt-28
+					md:mt-32
+				"
+				>
+					<StaggerReveal class="space-y-1.5" delayChildren={0.03} staggerChildren={0.045}>
+						<p class="text-base/7 text-muted-foreground">{m.home.bioP1}</p>
+						<p class="text-base/7 text-muted-foreground">
+							{m.home.introBeforeSystems}
+							<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
+							{m.home.introBetweenBadges}
+							<IntroBadgePopover kind="products" label={productsLabel} locale={locale} />
+							{m.home.introAfterProducts}
+						</p>
+					</StaggerReveal>
+				</section>
+
+				<section class="mt-24 space-y-7">
+					<Reveal staggerIndex={0}>
+						<div class="flex items-baseline justify-between gap-6">
+							<Eyebrow class="font-semibold">{m.home.writingEyebrow}</Eyebrow>
+							<a class="text-link font-ui text-sm" href="/post" data-astro-prefetch>
+								{m.home.viewAllPosts}
+							</a>
+						</div>
+					</Reveal>
+					<div class="space-y-3">
+						{posts.map((post, index) => (
+							<Reveal staggerIndex={index + 1}>
+								<HomeCardLink
+									description={post.summary}
+									href={`/post/${post.slug}`}
+									title={post.title}
+									prefetchOnView
+								/>
+							</Reveal>
+						))}
+					</div>
+				</section>
+
+				<section class="mt-28 space-y-8">
+					<Reveal staggerIndex={0}>
+						<div class="
+							grid gap-3
+							sm:grid-cols-[10rem_1fr]
+						"
+						>
+							<Eyebrow class="font-semibold">{m.home.capabilitiesEyebrow}</Eyebrow>
+							<p class="max-w-prose text-base/7 text-muted-foreground">{m.home.capabilitiesIntro}</p>
+						</div>
+					</Reveal>
+					<div class="space-y-10">
+						{capabilities.map((cap, index) => (
+							<Reveal staggerIndex={index + 1}>
+								<article class="
+									grid gap-3
+									sm:grid-cols-[3.25rem_1fr_15rem] sm:gap-6
+								"
+								>
+									<p class="font-mono text-xs/6 text-muted-foreground">
+										{String(index + 1).padStart(2, '0')}
+									</p>
+									<div class="min-w-0">
+										<div class="max-w-prose">
+											<h3 class="text-lg/6 font-semibold tracking-tight text-foreground">{cap.title}</h3>
+											<p class="mt-1 text-base/7 text-muted-foreground">{cap.summary}</p>
+										</div>
+									</div>
+									<div class="
+										min-w-0 space-y-2
+										sm:pt-0.5
+									"
+									>
+										{cap.items.map(item => (
+											item.link
+												? (
+														<a class={proofLinkClass} href={item.link} rel="noreferrer" target="_blank">
+															<span class="min-w-0 space-y-1">
+																<span class="
+																	block text-sm/5 font-medium text-foreground transition-colors
+																	group-hover/proof:text-highlight-strong
+																"
+																>
+																	{item.title}
+																</span>
+																<span class="block truncate text-sm/5 text-muted-foreground" title={item.description}>
+																	{item.description}
+																</span>
+															</span>
+															<ArrowUpRight class={proofIconClass} aria-hidden />
+														</a>
+													)
+												: (
+														<div class={proofLinkClass}>
+															<span class="min-w-0 space-y-1">
+																<span class="
+																	block text-sm/5 font-medium text-foreground transition-colors
+																	group-hover/proof:text-highlight-strong
+																"
+																>
+																	{item.title}
+																</span>
+																<span class="block truncate text-sm/5 text-muted-foreground" title={item.description}>
+																	{item.description}
+																</span>
+															</span>
+														</div>
+													)
+										))}
+										{cap.items.length === 0 && (
+											<div class={proofLinkClass}>
+												<span class="min-w-0 space-y-1">
+													<span class="
+														block text-sm/5 font-medium text-foreground transition-colors
+														group-hover/proof:text-highlight-strong
+													"
+													>
+														{cap.emptyState?.title ?? m.home.emptyCapabilityTitle}
+													</span>
+													<span class="block truncate text-sm/5 text-muted-foreground">
+														{cap.emptyState?.description ?? m.home.emptyCapabilityDescription}
+													</span>
+												</span>
+											</div>
+										)}
+									</div>
+								</article>
+							</Reveal>
+						))}
+					</div>
+				</section>
+			</div>
+		</Container>
+	</section>
+</RootLayout>

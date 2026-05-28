@@ -2,16 +2,10 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "imi",
 	"compatibility_date": "2026-05-09",
-	"observability": {
-		"enabled": true
-	},
-	"main": "./src/waku.server",
-	"assets": {
-		"binding": "ASSETS",
-		"directory": "./dist/public",
-		"html_handling": "drop-trailing-slash"
-	},
 	"compatibility_flags": [
 		"nodejs_compat"
-	]
+	],
+	"observability": {
+		"enabled": true
+	}
 }

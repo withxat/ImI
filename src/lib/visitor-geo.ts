@@ -1,7 +1,5 @@
 import type { Locale } from '@/lib/i18n/constants'
 
-import { unstable_getHeaders } from 'waku/server'
-
 import { intlLocaleFor } from '@/lib/i18n/constants'
 
 interface Cf { country?: string }
@@ -41,12 +39,6 @@ export function readVisitorGeoFromRequest(req: Request): VisitorGeo {
 }
 
 export function getRequestVisitorGeo(): VisitorGeo {
-	try {
-		const headers = unstable_getHeaders()
-		const countryCode = normalizedCountryCode(headers['cf-ipcountry'])
-		return { countryCode, countryName: null }
-	}
-	catch {
-		return { countryCode: null, countryName: null }
-	}
+	// In Astro, read visitor geo in middleware and pass it via `Astro.locals`.
+	return { countryCode: null, countryName: null }
 }

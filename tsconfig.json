@@ -1,16 +1,20 @@
 {
 	"extends": "@withxat/tsconfig",
 	"compilerOptions": {
-		"jsx": "react-jsx",
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"jsx": "preserve",
+		"lib": ["ESNext", "DOM"],
 		"rootDir": ".",
+		"moduleResolution": "Bundler",
 		"paths": {
-			"@/*": ["./src/*"],
-			"content-collections": ["./.content-collections/generated"]
+			"@/*": ["./src/*"]
 		},
-		"noEmit": true
+		"allowImportingTsExtensions": true,
+		"isolatedModules": true
 	},
 	"include": [
-		"src"
+		".astro/types.d.ts",
+		"src",
+		"astro.config.ts",
+		"src/**/*.astro"
 	]
 }
