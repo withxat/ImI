@@ -31,7 +31,7 @@ export function PostTranslatorTitle({ translator }: { translator: Translator }) 
 	const meta = TRANSLATOR_META[brand]
 
 	return (
-		<div className="mb-2.5 flex items-center gap-2 font-ui text-sm font-medium text-foreground">
+		<div className="mb-1.5 flex items-center gap-2 font-ui text-sm font-medium text-foreground">
 			<span className="flex size-5 items-center justify-center rounded-full bg-background text-foreground shadow-xs ring-1 ring-border/80">
 				<img alt={meta.label} className={cn('size-3.5', meta.logoClassName)} src={meta.logo} />
 			</span>
