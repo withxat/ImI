@@ -1,5 +1,5 @@
 ---
-import { renderNucleoFlagSvg } from '@/lib/render-nucleo-flag'
+import { nucleoFlagByIso } from '@/lib/nucleo-flag-map'
 
 interface Props {
 	code: null | string
@@ -7,7 +7,17 @@ interface Props {
 
 const { code } = Astro.props as Props
 
-const svg = code ? await renderNucleoFlagSvg(code.toUpperCase(), '1em') : null
+const flagSvgs = import.meta.glob<string>('../assets/flags/*.svg', {
+	eager: true,
+	import: 'default',
+	query: '?raw',
+})
+
+const iso = code?.trim().toUpperCase()
+const svg
+	= iso && iso in nucleoFlagByIso
+		? flagSvgs[`../assets/flags/${iso.toLowerCase()}.svg`]
+		: null
 ---
 
 {svg

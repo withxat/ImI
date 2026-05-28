@@ -56,21 +56,33 @@ const pageTransition = fadeBlur()
 
 <script>
 import { initArticleBodies } from '@/lib/article-reveal'
-import { runPageRevealCycle } from '@/lib/page-reveal'
+import {
+	initPageReveals,
+	markClientNavigationPending,
+	shouldAnimatePageEntrance,
+} from '@/lib/page-reveal'
 import { attachArticlePhotoswipe } from '@/lib/photoswipe-gallery'
 
-function onPageReady() {
-	const animate = runPageRevealCycle()
-	initArticleBodies(animate)
+document.addEventListener('astro:before-preparation', (event) => {
+	if (event.from)
+		markClientNavigationPending()
+})
 
-	for (const root of document.querySelectorAll<HTMLElement>('[data-article-reveal], [data-article-plain]')) {
-		if (root.dataset.photoswipeInit === '1')
-			continue
-		attachArticlePhotoswipe(root)
-		root.dataset.photoswipeInit = '1'
-	}
+function onPageReady() {
+	requestAnimationFrame(() => {
+		const animate = shouldAnimatePageEntrance()
+		initPageReveals({ animate })
+		initArticleBodies(animate)
+
+		for (const root of document.querySelectorAll<HTMLElement>('[data-article-reveal], [data-article-plain]')) {
+			if (root.dataset.photoswipeInit === '1')
+				continue
+			attachArticlePhotoswipe(root)
+			root.dataset.photoswipeInit = '1'
+		}
+	})
 }
 
-onPageReady()
 document.addEventListener('astro:page-load', onPageReady)
+onPageReady()
 </script>

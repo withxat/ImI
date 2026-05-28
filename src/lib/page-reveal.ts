@@ -7,6 +7,12 @@ export interface PageRevealOptions {
 	animate?: boolean
 }
 
+let pendingClientNavigation = false
+
+export function markClientNavigationPending() {
+	pendingClientNavigation = true
+}
+
 function prefersReducedMotion() {
 	return matchMedia('(prefers-reduced-motion: reduce)').matches
 }
@@ -16,6 +22,8 @@ function viewportHeight() {
 }
 
 function revealElement(el: HTMLElement, delaySec: number, instant: boolean) {
+	el.removeAttribute('data-reveal-pending')
+	el.dataset.revealReady = 'true'
 	el.style.transitionProperty = 'opacity, filter'
 	el.style.transitionTimingFunction = EASING
 	el.style.transitionDuration = instant ? '0ms' : `${REVEAL_DURATION_MS}ms`
@@ -25,12 +33,14 @@ function revealElement(el: HTMLElement, delaySec: number, instant: boolean) {
 }
 
 function initRevealElement(el: HTMLElement, animate: boolean) {
-	delete el.dataset.revealInitialized
-
 	const baseDelay = Number(el.dataset.revealBaseDelay ?? 0.06)
 	const blur = Number(el.dataset.revealBlur ?? 10)
 	const idx = Number(el.dataset.revealStaggerIndex ?? 0)
 	const step = Number(el.dataset.revealStaggerStep ?? 0.048)
+
+	el.setAttribute('data-reveal-pending', '')
+	el.dataset.revealReady = 'false'
+	el.style.setProperty('--reveal-blur', `${blur}px`)
 
 	if (!animate || prefersReducedMotion()) {
 		revealElement(el, 0, true)
@@ -90,8 +100,6 @@ function initRevealElement(el: HTMLElement, animate: boolean) {
 }
 
 function initStaggerRoot(root: HTMLElement, animate: boolean) {
-	delete root.dataset.staggerInitialized
-
 	const blur = Number(root.dataset.staggerBlur ?? 10)
 	const baseDelay = Number(root.dataset.staggerDelay ?? 0.06)
 	const step = Number(root.dataset.staggerStep ?? 0.052)
@@ -146,29 +154,26 @@ function initStaggerRoot(root: HTMLElement, animate: boolean) {
 
 export function initPageReveals({ animate = true }: PageRevealOptions = {}) {
 	for (const el of document.querySelectorAll<HTMLElement>('[data-reveal]')) {
-		if (el.dataset.revealInitialized === '1')
+		if (el.dataset.revealInitPass === '1')
 			continue
-		el.dataset.revealInitialized = '1'
+		el.dataset.revealInitPass = '1'
 		initRevealElement(el, animate)
 	}
 
 	for (const root of document.querySelectorAll<HTMLElement>('[data-stagger-reveal]')) {
-		if (root.dataset.staggerInitialized === '1')
+		if (root.dataset.staggerInitPass === '1')
 			continue
-		root.dataset.staggerInitialized = '1'
+		root.dataset.staggerInitPass = '1'
 		initStaggerRoot(root, animate)
 	}
 }
 
-declare global {
-	interface Window {
-		__xatRevealBootstrapped?: boolean
+export function shouldAnimatePageEntrance() {
+	if (prefersReducedMotion())
+		return false
+	if (pendingClientNavigation) {
+		pendingClientNavigation = false
+		return false
 	}
-}
-
-export function runPageRevealCycle() {
-	const animate = !window.__xatRevealBootstrapped
-	initPageReveals({ animate })
-	window.__xatRevealBootstrapped = true
-	return animate
+	return true
 }

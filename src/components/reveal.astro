@@ -1,5 +1,4 @@
 ---
-import { cn } from '@/lib/cn'
 
 interface Props {
 	baseDelay?: number
@@ -19,12 +18,13 @@ const {
 ---
 
 <div
-	class={cn('opacity-0', className)}
-	data-reveal-base-delay={baseDelay}
+	class={className}
 	data-reveal-blur={blur}
+	data-reveal-pending-base-delay={baseDelay}
 	data-reveal-stagger-index={staggerIndex}
 	data-reveal-stagger-step={staggerStep}
-	style={`filter: blur(${blur}px); transition-property: opacity, filter; transition-duration: 420ms; transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);`}
+	style={`--reveal-blur: ${blur}px; transition-property: opacity, filter; transition-duration: 420ms; transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);`}
+	data-reveal
 	data-reveal
 >
 	<slot />

@@ -77,8 +77,9 @@ export function setupArticleReveal(root: HTMLElement, animate = true) {
 
 export function initArticleBodies(animate = true) {
 	for (const root of document.querySelectorAll<HTMLElement>('[data-article-reveal]')) {
-		delete root.dataset.articleInit
+		if (root.dataset.articleInitPass === '1')
+			continue
+		root.dataset.articleInitPass = '1'
 		setupArticleReveal(root, animate)
-		root.dataset.articleInit = '1'
 	}
 }

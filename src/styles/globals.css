@@ -562,6 +562,19 @@
 	}
 }
 
+/* Page reveal (see src/lib/page-reveal.ts) */
+[data-reveal][data-reveal-pending]:not([data-reveal-ready='true']) {
+	opacity: 0;
+	filter: blur(var(--reveal-blur, 10px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-reveal][data-reveal-pending]:not([data-reveal-ready='true']) {
+		opacity: 1;
+		filter: none;
+	}
+}
+
 /* Astro ClientRouter view transitions (see src/lib/view-transition.ts) */
 @keyframes xatFadeBlurIn {
 	from {

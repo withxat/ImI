@@ -20,18 +20,9 @@ importers:
       motion:
         specifier: ^12.40.0
         version: 12.40.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      nucleo-flags:
-        specifier: 1.1.3
-        version: 1.1.3(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       photoswipe:
         specifier: ^5.4.4
         version: 5.4.4
-      react:
-        specifier: ^19.2.6
-        version: 19.2.6
-      react-dom:
-        specifier: ^19.2.6
-        version: 19.2.6(react@19.2.6)
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.9
@@ -75,6 +66,15 @@ importers:
       lefthook:
         specifier: ^2.1.8
         version: 2.1.8
+      nucleo-flags:
+        specifier: 1.1.3
+        version: 1.1.3(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      react:
+        specifier: ^19.2.6
+        version: 19.2.6
+      react-dom:
+        specifier: ^19.2.6
+        version: 19.2.6(react@19.2.6)
       rehype-pretty-code:
         specifier: ^0.14.3
         version: 0.14.3(shiki@4.1.0)
