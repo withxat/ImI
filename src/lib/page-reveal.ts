@@ -32,14 +32,15 @@ function initRevealElement(el: HTMLElement, animate: boolean) {
 	const idx = Number(el.dataset.revealStaggerIndex ?? 0)
 	const step = Number(el.dataset.revealStaggerStep ?? 0.048)
 
-	el.setAttribute('data-reveal-pending', '')
-	el.dataset.revealReady = 'false'
 	el.style.setProperty('--reveal-blur', `${blur}px`)
 
 	if (!animate || prefersReducedMotion()) {
 		revealElement(el, 0, true)
 		return
 	}
+
+	el.setAttribute('data-reveal-pending', '')
+	el.dataset.revealReady = 'false'
 
 	const atTop = window.scrollY <= TOP_SCROLL_PX
 	const rect = el.getBoundingClientRect()

@@ -577,6 +577,8 @@
 
 /* Astro ClientRouter — keep bordered surfaces out of nested VT groups (avoids double borders). */
 @supports (view-transition-name: none) {
+	[data-reveal],
+	[data-stagger-reveal],
 	.highlight-surface,
 	.surface-callout {
 		view-transition-name: none;
