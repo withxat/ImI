@@ -1,12 +1,15 @@
 {
-	"extends": "astro/tsconfigs/strict",
+	"extends": "@withxat/tsconfig",
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"jsx": "preserve",
+		"lib": ["ESNext", "DOM"],
 		"rootDir": ".",
+		"moduleResolution": "Bundler",
 		"paths": {
 			"@/*": ["./src/*"]
 		},
-		"noEmit": true
+		"allowImportingTsExtensions": true,
+		"isolatedModules": true
 	},
 	"include": [
 		".astro/types.d.ts",
