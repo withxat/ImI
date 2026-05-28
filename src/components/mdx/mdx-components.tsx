@@ -7,6 +7,7 @@ import { CodeCollapsibleWrapper } from '@/components/mdx/code-collapsible-wrappe
 import { CodeTabs } from '@/components/mdx/code-tabs'
 import { ComponentPreview } from '@/components/mdx/component-preview'
 import { ComponentSource } from '@/components/mdx/component-source'
+import { MdxImage } from '@/components/mdx/mdx-image'
 import { MediaQueryDemo } from '@/components/mdx/media-query-demo'
 import { CopyButton } from '@/components/mdx/shared/copy-button'
 import { getIconForLanguageExtension } from '@/components/mdx/shared/icons'
@@ -344,9 +345,9 @@ export const mdxComponents = {
 		width,
 		...props
 	}: React.ComponentProps<'img'>) => (
-		<img
+		<MdxImage
 			alt={alt || ''}
-			className={cn('mt-6 rounded-md border', className)}
+			className={cn('mt-6', className)}
 			height={height}
 			src={typeof src === 'string' ? src : ''}
 			width={width}
@@ -354,7 +355,7 @@ export const mdxComponents = {
 		/>
 	),
 	img: ({ alt, className, ...props }: React.ComponentProps<'img'>) => (
-		<img alt={alt} className={cn('rounded-md', className)} {...props} />
+		<MdxImage alt={alt} className={className} {...props} />
 	),
 	InfoIcon,
 	li: ({ className, ...props }: React.ComponentProps<'li'>) => (

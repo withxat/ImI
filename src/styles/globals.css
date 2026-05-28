@@ -452,6 +452,59 @@
 		cursor: zoom-in;
 	}
 
+	.article-body .mdx-image {
+		background:
+			linear-gradient(
+				120deg,
+				transparent 30%,
+				color-mix(in oklab, var(--color-highlight-soft) 34%, transparent),
+				transparent 70%
+			),
+			var(--color-muted);
+		background-size:
+			220% 100%,
+			100% 100%;
+		background-position:
+			120% 0,
+			0 0;
+		box-shadow: 0 1px 2px color-mix(in oklab, var(--color-highlight-soft) 18%, transparent);
+		opacity: 0.74;
+		filter: blur(12px);
+		transform: scale(1.01);
+		transition:
+			opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+			filter 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+			transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.article-body .mdx-image:not([data-loaded]) {
+		animation: mdx-image-loading 1.35s ease-in-out infinite;
+	}
+
+	.article-body .mdx-image[data-loaded] {
+		background-position:
+			0 0,
+			0 0;
+		opacity: 1;
+		filter: blur(0);
+		transform: scale(1);
+		animation: none;
+	}
+
+	@keyframes mdx-image-loading {
+		from {
+			background-position:
+				120% 0,
+				0 0;
+		}
+
+		to {
+			background-position:
+				-120% 0,
+				0 0;
+		}
+	}
+
 	.article-body li,
 	.article-body p {
 		@apply text-muted-foreground;
@@ -541,6 +594,15 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.article-body .mdx-image,
+		.article-body .mdx-image:not([data-loaded]) {
+			opacity: 1;
+			filter: none;
+			transform: none;
+			transition: none;
+			animation: none;
+		}
+
 		.article-body > *.article-reveal-stagger,
 		.article-body > *.article-reveal-pending {
 			animation: none;
