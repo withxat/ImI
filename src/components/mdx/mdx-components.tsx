@@ -344,7 +344,7 @@ export const mdxComponents = {
 		src,
 		width,
 		...props
-	}: React.ComponentProps<'img'>) => (
+	}: React.ComponentProps<typeof MdxImage>) => (
 		<MdxImage
 			alt={alt || ''}
 			className={cn('mt-6', className)}
@@ -354,7 +354,7 @@ export const mdxComponents = {
 			{...props}
 		/>
 	),
-	img: ({ alt, className, ...props }: React.ComponentProps<'img'>) => (
+	img: ({ alt, className, ...props }: React.ComponentProps<typeof MdxImage>) => (
 		<MdxImage alt={alt} className={className} {...props} />
 	),
 	InfoIcon,
