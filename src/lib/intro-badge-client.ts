@@ -1,3 +1,5 @@
+import { createPopover } from '@data-slot/popover'
+
 const OPEN_DELAY = 120
 const CLOSE_DELAY = 80
 
@@ -7,6 +9,7 @@ export function initIntroBadges() {
 	dispose?.()
 	const ac = new AbortController()
 	const { signal } = ac
+	const controllers: Array<ReturnType<typeof createPopover>> = []
 
 	for (const root of document.querySelectorAll<HTMLElement>('[data-intro-badge-root]')) {
 		const trigger = root.querySelector<HTMLElement>('[data-intro-badge-trigger]')
@@ -14,26 +17,34 @@ export function initIntroBadges() {
 		if (!trigger || !popup)
 			continue
 
+		const controller = createPopover(root)
+		controllers.push(controller)
+
 		let openTimer = 0
 		let closeTimer = 0
-		let isOpen = false
+
+		const setTriggerOpenState = (open: boolean) => {
+			if (open)
+				trigger.dataset.open = 'true'
+			else delete trigger.dataset.open
+		}
+
+		setTriggerOpenState(controller.isOpen)
+
+		const setOpen = (open: boolean) => {
+			root.dispatchEvent(new CustomEvent('popover:set', { detail: { open } }))
+		}
 
 		const open = () => {
 			window.clearTimeout(closeTimer)
-			if (isOpen)
-				return
-			isOpen = true
-			popup.classList.remove('hidden')
-			trigger.dataset.open = 'true'
+			setOpen(true)
 		}
+
 		const close = () => {
 			window.clearTimeout(openTimer)
-			if (!isOpen)
-				return
-			isOpen = false
-			popup.classList.add('hidden')
-			delete trigger.dataset.open
+			setOpen(false)
 		}
+
 		const scheduleOpen = () => {
 			window.clearTimeout(closeTimer)
 			openTimer = window.setTimeout(open, OPEN_DELAY)
@@ -43,37 +54,21 @@ export function initIntroBadges() {
 			closeTimer = window.setTimeout(close, CLOSE_DELAY)
 		}
 
-		trigger.addEventListener('pointerenter', scheduleOpen, { signal })
-		trigger.addEventListener('pointerleave', scheduleClose, { signal })
-		trigger.addEventListener('focus', open, { signal })
-		trigger.addEventListener('blur', close, { signal })
-		trigger.addEventListener('click', () => {
-			if (isOpen)
-				close()
-			else open()
-		}, { signal })
-		trigger.addEventListener('keydown', (e) => {
-			if (e.key === 'Enter' || e.key === ' ') {
-				e.preventDefault()
-				if (isOpen)
-					close()
-				else open()
-			}
-			else if (e.key === 'Escape') {
-				close()
-			}
+		root.addEventListener('popover:change', (event) => {
+			setTriggerOpenState((event as CustomEvent<{ open: boolean }>).detail.open)
 		}, { signal })
 
-		popup.addEventListener('pointerenter', () => window.clearTimeout(closeTimer), { signal })
-		popup.addEventListener('pointerleave', scheduleClose, { signal })
-
-		document.addEventListener('pointerdown', (e) => {
-			if (!isOpen)
-				return
-			if (!root.contains(e.target as Node))
-				close()
-		}, { signal })
+		if (window.matchMedia('(hover: hover)').matches) {
+			trigger.addEventListener('pointerenter', scheduleOpen, { signal })
+			trigger.addEventListener('pointerleave', scheduleClose, { signal })
+			popup.addEventListener('pointerenter', () => window.clearTimeout(closeTimer), { signal })
+			popup.addEventListener('pointerleave', scheduleClose, { signal })
+		}
 	}
 
-	dispose = () => ac.abort()
+	dispose = () => {
+		ac.abort()
+		for (const controller of controllers)
+			controller.destroy()
+	}
 }
