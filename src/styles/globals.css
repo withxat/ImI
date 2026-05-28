@@ -452,26 +452,6 @@
 		cursor: zoom-in;
 	}
 
-	.article-body .mdx-image {
-		background-color: var(--color-muted);
-		background-position: center;
-		background-size: cover;
-		box-shadow: 0 1px 2px color-mix(in oklab, var(--color-highlight-soft) 18%, transparent);
-		opacity: 0.74;
-		filter: blur(12px);
-		transform: scale(1.01);
-		transition:
-			opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-			filter 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-			transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-	}
-
-	.article-body .mdx-image[data-loaded] {
-		opacity: 1;
-		filter: blur(0);
-		transform: scale(1);
-	}
-
 	.article-body li,
 	.article-body p {
 		@apply text-muted-foreground;
@@ -561,13 +541,6 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.article-body .mdx-image {
-			opacity: 1;
-			filter: none;
-			transform: none;
-			transition: none;
-		}
-
 		.article-body > *.article-reveal-stagger,
 		.article-body > *.article-reveal-pending {
 			animation: none;

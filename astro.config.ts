@@ -10,21 +10,11 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Icons from 'unplugin-icons/vite'
 import Font from 'vite-plugin-font'
 
-// Relative path because this file is loaded before vite tsconfigPaths resolution.
-// eslint-disable-next-line paths/import-alias
-import { rehypeImageMetadata } from './src/lib/mdx/rehype-image-metadata'
-
 export default defineConfig({
 	adapter: cloudflare(),
-	image: {
-		// Cloudflare workers cannot run sharp; only optimize at build time
-		// for prerendered pages.
-		service: { entrypoint: 'astro/assets/services/compile' },
-	},
 	integrations: [
 		mdx({
 			rehypePlugins: [
-				rehypeImageMetadata,
 				[
 					rehypePrettyCode,
 					{
