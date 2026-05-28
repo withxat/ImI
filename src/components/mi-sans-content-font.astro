@@ -1,8 +1,15 @@
 ---
-// Triggers the content-keyed MiSans subset bundle (the actual @font-face is injected
-// by vite-plugin-font into the page styles when this module is imported).
----
+import type { Locale } from '@/lib/i18n/constants'
 
-<script>
-	import('@/assets/mi-sans-vf.ttf?subsets&key=content').catch(() => {})
-</script>
+import { localeUsesCjkUiFont } from '@/lib/i18n/locale-switch'
+
+interface Props {
+	locale: Locale
+}
+
+const { locale } = Astro.props as Props
+
+if (localeUsesCjkUiFont(locale)) {
+	await import('@/assets/mi-sans-vf.ttf?subsets&key=content')
+}
+---

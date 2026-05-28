@@ -3,6 +3,7 @@ import type { PostTranslatedNoticeCopy } from '@/lib/i18n/messages'
 import type { Translator } from '@/types/translator'
 
 import PostTranslatorTitle from '@/components/post-translator-title.astro'
+import { buildLocaleSwitchHref } from '@/lib/i18n/locale-switch'
 
 const ZH_LINK_LABEL = '中文'
 
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const { notice, translator } = Astro.props as Props
+const { pathname, search } = Astro.url
+const switchToZhHref = buildLocaleSwitchHref(pathname, search, 'zh')
 ---
 
 <aside
@@ -20,14 +23,8 @@ const { notice, translator } = Astro.props as Props
 >
 	{translator ? <PostTranslatorTitle translator={translator} /> : null}
 	{notice.beforeLink}
-	<button
-		aria-label={notice.switchToChineseAriaLabel}
-		class="text-link cursor-pointer border-none bg-transparent p-0 font-[inherit]"
-		data-switch-locale="zh"
-		lang="zh"
-		type="button"
-	>
+	<a class="text-link" href={switchToZhHref} lang="zh" data-astro-reload>
 		{ZH_LINK_LABEL}
-	</button>
+	</a>
 	{notice.afterLink}
 </aside>

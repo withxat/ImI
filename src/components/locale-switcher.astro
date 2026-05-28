@@ -2,6 +2,7 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { LOCALES } from '@/lib/i18n/constants'
+import { buildLocaleSwitchHref } from '@/lib/i18n/locale-switch'
 
 interface Props {
 	'aria-label': string
@@ -16,6 +17,7 @@ const LOCALE_LABEL: Record<Locale, string> = {
 }
 
 const { 'aria-label': ariaLabel, class: className, currentLocale } = Astro.props as Props
+const { pathname, search } = Astro.url
 ---
 
 <div aria-label={ariaLabel} class={className} role="navigation">
@@ -30,14 +32,13 @@ const { 'aria-label': ariaLabel, class: className, currentLocale } = Astro.props
 							</span>
 						)
 					: (
-							<button
-								class="text-link-muted cursor-pointer border-none bg-transparent font-[inherit]"
-								data-switch-locale={locale}
+							<a
+								class="text-link-muted"
+								href={buildLocaleSwitchHref(pathname, search, locale)}
 								lang={locale}
-								type="button"
 							>
 								{LOCALE_LABEL[locale]}
-							</button>
+							</a>
 						)}
 			</span>
 		))}

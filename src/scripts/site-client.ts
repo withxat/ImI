@@ -1,13 +1,10 @@
 import { initArticleBodies } from '@/lib/article-reveal'
 import { consumeClientNavigationPending, onAstroPageLoad } from '@/lib/astro-page-lifecycle'
 import { initIntroBadges } from '@/lib/intro-badge-client'
-import { initLocaleSwitcher } from '@/lib/locale-switcher-client'
 import { initMdxCopyButtons } from '@/lib/mdx-copy-client'
-import { ensureMiSansFont } from '@/lib/mi-sans-client'
 import { initNameAudioButtons } from '@/lib/name-audio-client'
 import { initPageReveals } from '@/lib/page-reveal'
 import { attachArticlePhotoswipe } from '@/lib/photoswipe-gallery'
-import { initPostTranslatedNotice } from '@/lib/post-notice-client'
 import { initThemeSwitcher } from '@/lib/theme-switcher-client'
 
 const photoswipeDisposers = new Map<HTMLElement, () => void>()
@@ -40,12 +37,9 @@ function runPageClient() {
 	}
 
 	initThemeSwitcher()
-	initLocaleSwitcher()
-	initPostTranslatedNotice()
 	initIntroBadges()
 	initNameAudioButtons()
 	initMdxCopyButtons()
-	void ensureMiSansFont()
 }
 
 onAstroPageLoad(runPageClient)

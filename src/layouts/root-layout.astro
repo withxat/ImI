@@ -4,7 +4,6 @@ import type { Locale } from '@/lib/i18n/constants'
 import { ClientRouter } from 'astro:transitions'
 
 import Footer from '@/components/footer.astro'
-import LocaleBootstrap from '@/components/locale-bootstrap.astro'
 import MiSansFont from '@/components/mi-sans-font.astro'
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
@@ -38,13 +37,12 @@ const rssJa = getMessages('ja').blog
 
 		<script set:html={getThemeBootstrapScript()} is:inline />
 
-		<MiSansFont />
+		<MiSansFont locale={locale} />
 		<ClientRouter />
 
 		<slot name="head" />
 	</head>
 	<body class="relative isolate min-h-screen">
-		<LocaleBootstrap serverLocale={locale} />
 		<div class="page-shell min-h-screen" transition:animate={pageTransition}>
 			<main class="min-h-screen">
 				<slot />

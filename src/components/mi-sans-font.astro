@@ -1,3 +1,31 @@
 ---
-// MiSans subset for UI is loaded in src/scripts/site-client.ts (ensureMiSansFont).
+import type { Locale } from '@/lib/i18n/constants'
+
+import { localeUsesCjkUiFont } from '@/lib/i18n/locale-switch'
+
+interface Props {
+	locale: Locale
+}
+
+const { locale } = Astro.props as Props
+const HANKEN = '"Hanken Grotesk"'
+
+let fontStack: null | string = null
+
+if (localeUsesCjkUiFont(locale)) {
+	const { css, fontFamilyFallback } = await import('@/assets/mi-sans-vf.ttf?subsets')
+	fontStack = `${HANKEN}, ${css.family}, ${fontFamilyFallback}`
+}
 ---
+
+{fontStack
+	? (
+			<style is:global>
+				:root {
+					--font-display: {fontStack};
+					--font-text: {fontStack};
+					--font-ui: {fontStack};
+				}
+			</style>
+		)
+	: null}

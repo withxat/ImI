@@ -4,10 +4,8 @@ export type Locale = (typeof LOCALES)[number]
 
 export const DEFAULT_LOCALE: Locale = 'en'
 
-/** Cookie and localStorage key for the UI locale (`en` | `zh` | `ja`). */
+/** Cookie for the UI locale (`en` | `zh` | `ja`). */
 export const LOCALE_COOKIE_NAME = 'imi_locale'
-
-export const LOCALE_STORAGE_KEY = 'imi_locale'
 
 /** Map legacy stored tags to the current set (e.g. older `jp` cookie → `ja`). */
 export function normalizeStoredLocale(value: string): string {
