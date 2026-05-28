@@ -10,13 +10,10 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import Icons from 'unplugin-icons/vite'
 import Font from 'vite-plugin-font'
 
-import { getExpressiveCodeBlockLocale } from '@/lib/expressive-code-i18n.ts'
-
 export default defineConfig({
 	adapter: cloudflare(),
 	integrations: [
 		expressiveCode({
-			defaultLocale: 'en',
 			defaultProps: {
 				wrap: false,
 			},
@@ -24,7 +21,6 @@ export default defineConfig({
 			frames: {
 				showCopyToClipboardButton: true,
 			},
-			getBlockLocale: getExpressiveCodeBlockLocale,
 			styleOverrides: {
 				borderColor: 'color-mix(in oklab, var(--foreground) 10%, transparent)',
 				borderRadius: '0.75rem',
