@@ -66,6 +66,11 @@ export function initIntroBadges() {
 			if (!open)
 				return
 
+			for (const otherController of controllers) {
+				if (otherController !== controller)
+					otherController.close()
+			}
+
 			requestAnimationFrame(() => {
 				requestAnimationFrame(() => {
 					if (!popup.contains(document.activeElement))
