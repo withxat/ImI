@@ -55,7 +55,23 @@ export function initIntroBadges() {
 		}
 
 		root.addEventListener('popover:change', (event) => {
-			setTriggerOpenState((event as CustomEvent<{ open: boolean }>).detail.open)
+			const { open } = (event as CustomEvent<{ open: boolean }>).detail
+			const focusBeforeAutoFocus = document.activeElement
+
+			setTriggerOpenState(open)
+
+			if (!open)
+				return
+
+			requestAnimationFrame(() => {
+				if (!popup.contains(document.activeElement))
+					return
+
+				if (focusBeforeAutoFocus instanceof HTMLElement && document.contains(focusBeforeAutoFocus))
+					focusBeforeAutoFocus.focus({ preventScroll: true })
+				else if (document.activeElement instanceof HTMLElement)
+					document.activeElement.blur()
+			})
 		}, { signal })
 
 		if (window.matchMedia('(hover: hover)').matches) {
