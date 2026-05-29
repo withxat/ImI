@@ -25,6 +25,9 @@ const { getExpressiveCodeBlockLocale } = await jiti.import<typeof import('./src/
 
 export default defineConfig({
 	adapter: cloudflare(),
+	image: {
+		domains: ['assets.xat.sh', 'avatars.githubusercontent.com', 'github.com', 'raw.githubusercontent.com'],
+	},
 	integrations: [
 		expressiveCode({
 			defaultLocale: 'en',

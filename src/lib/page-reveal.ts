@@ -1,29 +1,14 @@
-const TOP_SCROLL_PX = 16
-const REVEAL_DURATION_MS = 420
-const EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
+import {
+	classifyRevealPosition,
+	createScrollObserver,
+	initRevealHidden,
+	prefersReducedMotion,
+	revealElement,
+} from '@/lib/reveal-engine'
 
 export interface PageRevealOptions {
 	/** When false, show content immediately (client navigations). */
 	animate?: boolean
-}
-
-function prefersReducedMotion() {
-	return matchMedia('(prefers-reduced-motion: reduce)').matches
-}
-
-function viewportHeight() {
-	return window.visualViewport?.height ?? window.innerHeight
-}
-
-function revealElement(el: HTMLElement, delaySec: number, instant: boolean) {
-	el.removeAttribute('data-reveal-pending')
-	el.dataset.revealReady = 'true'
-	el.style.transitionProperty = 'opacity, filter'
-	el.style.transitionTimingFunction = EASING
-	el.style.transitionDuration = instant ? '0ms' : `${REVEAL_DURATION_MS}ms`
-	el.style.transitionDelay = delaySec ? `${delaySec}s` : ''
-	el.style.filter = 'none'
-	el.style.opacity = '1'
 }
 
 function initRevealElement(el: HTMLElement, animate: boolean) {
@@ -34,64 +19,37 @@ function initRevealElement(el: HTMLElement, animate: boolean) {
 
 	el.style.setProperty('--reveal-blur', `${blur}px`)
 
-	if (!animate || prefersReducedMotion()) {
-		revealElement(el, 0, true)
-		return
-	}
-
-	el.setAttribute('data-reveal-pending', '')
-	el.dataset.revealReady = 'false'
-
-	const atTop = window.scrollY <= TOP_SCROLL_PX
 	const rect = el.getBoundingClientRect()
-	const vh = viewportHeight()
-	const pad = 48
-	const intersects = rect.top < vh + pad && rect.bottom > -pad
-	const belowFold = rect.top > vh - 8
-	const aboveViewport = rect.bottom < 8
+	const strategy = classifyRevealPosition(rect, animate, prefersReducedMotion())
 
-	if (!atTop && (intersects || aboveViewport)) {
-		revealElement(el, 0, true)
-		return
+	switch (strategy) {
+		case 'skip':
+			revealElement(el, { instant: true })
+			break
+
+		case 'stagger': {
+			const delay = baseDelay + idx * step
+			initRevealHidden(el, blur)
+			requestAnimationFrame(() => revealElement(el, { instant: false }))
+			el.style.transitionDelay = `${delay}s`
+			break
+		}
+
+		case 'observe': {
+			initRevealHidden(el, blur)
+			const io = createScrollObserver((observedEl) => {
+				revealElement(observedEl, { instant: false })
+				io.unobserve(observedEl)
+			})
+			io.observe(el)
+			break
+		}
+
+		case 'instant':
+		default:
+			revealElement(el, { instant: true })
+			break
 	}
-
-	el.style.opacity = '0'
-	el.style.filter = `blur(${blur}px)`
-
-	if ((atTop && belowFold) || (!atTop && belowFold)) {
-		const io = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (!entry.isIntersecting)
-						continue
-					revealElement(el, 0, false)
-					io.disconnect()
-				}
-			},
-			{ rootMargin: '0px 0px -10% 0px', threshold: 0.14 },
-		)
-		io.observe(el)
-		return
-	}
-
-	if (atTop && intersects) {
-		const delay = baseDelay + idx * step
-		requestAnimationFrame(() => revealElement(el, delay, false))
-		return
-	}
-
-	const io = new IntersectionObserver(
-		(entries) => {
-			for (const entry of entries) {
-				if (!entry.isIntersecting)
-					continue
-				revealElement(el, 0, false)
-				io.disconnect()
-			}
-		},
-		{ rootMargin: '0px 0px -10% 0px', threshold: 0.14 },
-	)
-	io.observe(el)
 }
 
 export function initStaggerRoot(root: HTMLElement, animate: boolean) {
@@ -101,10 +59,6 @@ export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 	const itemClass = root.dataset.staggerItemClass ?? ''
 
 	const reduce = prefersReducedMotion()
-	const atTop = window.scrollY <= TOP_SCROLL_PX
-	const vh = viewportHeight()
-	const pad = 48
-
 	const children = [...root.children] as HTMLElement[]
 
 	children.forEach((child, index) => {
@@ -112,38 +66,43 @@ export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 			child.classList.add(...itemClass.split(/\s+/).filter(Boolean))
 
 		child.style.transitionProperty = 'opacity, filter'
-		child.style.transitionTimingFunction = EASING
+		child.style.transitionTimingFunction = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
-		const r = child.getBoundingClientRect()
-		const intersects = r.top < vh + pad && r.bottom > -pad
-		const aboveViewport = r.bottom < 8
+		const rect = child.getBoundingClientRect()
+		const strategy = classifyRevealPosition(rect, animate, reduce)
 
-		if (!animate || reduce || (!atTop && (intersects || aboveViewport))) {
-			revealElement(child, 0, true)
-			return
+		switch (strategy) {
+			case 'skip':
+				revealElement(child, { instant: true })
+				break
+
+			case 'stagger': {
+				const delay = baseDelay + index * step
+				child.style.opacity = '0'
+				child.style.filter = `blur(${blur}px)`
+				requestAnimationFrame(() => {
+					child.style.transitionDelay = `${delay}s`
+					revealElement(child, { instant: false })
+				})
+				break
+			}
+
+			case 'observe': {
+				child.style.opacity = '0'
+				child.style.filter = `blur(${blur}px)`
+				const io = createScrollObserver((observedEl) => {
+					revealElement(observedEl, { instant: false })
+					io.unobserve(observedEl)
+				})
+				io.observe(child)
+				break
+			}
+
+			case 'instant':
+			default:
+				revealElement(child, { instant: true })
+				break
 		}
-
-		child.style.opacity = '0'
-		child.style.filter = `blur(${blur}px)`
-
-		if (atTop && intersects) {
-			const delay = baseDelay + index * step
-			requestAnimationFrame(() => revealElement(child, delay, false))
-			return
-		}
-
-		const io = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (!entry.isIntersecting)
-						continue
-					revealElement(child, 0, false)
-					io.disconnect()
-				}
-			},
-			{ rootMargin: '0px 0px -10% 0px', threshold: 0.14 },
-		)
-		io.observe(child)
 	})
 
 	/* Remove SSR pending attribute AFTER inline styles are set so children don't flash. */

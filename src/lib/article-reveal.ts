@@ -1,7 +1,12 @@
-const TOP_SCROLL_PX = 16
+import {
+	classifyRevealPosition,
+	createScrollObserver,
+	prefersReducedMotion,
+} from '@/lib/reveal-engine'
 
 export function setupArticleReveal(root: HTMLElement, animate = true) {
-	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+	const reduce = prefersReducedMotion()
+
 	if (reduce) {
 		for (const el of [...root.children])
 			el.classList.add('article-reveal-done')
@@ -16,64 +21,42 @@ export function setupArticleReveal(root: HTMLElement, animate = true) {
 		return
 	}
 
-	const atTop = window.scrollY <= TOP_SCROLL_PX
-	const vh = window.visualViewport?.height ?? window.innerHeight
-	const pad = 48
-
-	const revealEl = (el: Element) => {
-		el.classList.remove('article-reveal-pending')
-		el.classList.add('article-reveal-done')
-	}
-
-	const io = new IntersectionObserver(
-		(entries) => {
-			for (const e of entries) {
-				if (e.isIntersecting) {
-					revealEl(e.target)
-					io.unobserve(e.target)
-				}
-			}
+	const io = createScrollObserver(
+		(el) => {
+			el.classList.remove('article-reveal-pending')
+			el.classList.add('article-reveal-done')
+			io.unobserve(el)
 		},
-		{ root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+		{ rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
 	)
 
 	let topRank = 0
 	for (const child of [...root.children]) {
 		const el = child as HTMLElement
-		const r = el.getBoundingClientRect()
-		const intersects = r.top < vh + pad && r.bottom > -pad
-		const belowFold = r.top > vh - 8
-		const aboveViewport = r.bottom < 8
+		const rect = el.getBoundingClientRect()
+		const strategy = classifyRevealPosition(rect, animate, reduce)
 
-		if (!atTop && intersects) {
-			el.classList.add('article-reveal-skip', 'article-reveal-done')
-			continue
-		}
-		if (!atTop && aboveViewport) {
-			el.classList.add('article-reveal-skip', 'article-reveal-done')
-			continue
-		}
-		if (!atTop && belowFold) {
-			el.classList.add('article-reveal-pending')
-			io.observe(el)
-			continue
-		}
+		switch (strategy) {
+			case 'skip':
+				el.classList.add('article-reveal-skip', 'article-reveal-done')
+				break
 
-		if (atTop && belowFold) {
-			el.classList.add('article-reveal-pending')
-			io.observe(el)
-			continue
-		}
+			case 'stagger':
+				el.style.setProperty('--article-reveal-delay', `${topRank * 48}ms`)
+				topRank++
+				el.classList.add('article-reveal-stagger')
+				break
 
-		if (atTop && intersects) {
-			el.style.setProperty('--article-reveal-delay', `${topRank * 48}ms`)
-			topRank++
-			el.classList.add('article-reveal-stagger')
-			continue
-		}
+			case 'observe':
+				el.classList.add('article-reveal-pending')
+				io.observe(el)
+				break
 
-		el.classList.add('article-reveal-pending')
-		io.observe(el)
+			case 'instant':
+			default:
+				el.classList.add('article-reveal-skip', 'article-reveal-done')
+				break
+		}
 	}
 
 	/* Remove SSR pending attribute AFTER inline styles/classes are set so children don't flash. */

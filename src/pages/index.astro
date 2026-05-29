@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
+import { Image } from 'astro:assets'
 import ArrowUpRight from '~icons/local/arrow-up-right'
 
 import HomeCardLink from '@/components/home-card-link.astro'
@@ -71,17 +72,16 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 				<div class="flex flex-col gap-4">
 					<SiteHeader locale={locale} messages={m} />
 					<div class="flex min-w-0 flex-col gap-4">
-						<img
+						<Image
 							class="
 								size-14 rounded-xl border border-border object-cover
 								sm:size-16
 							"
 							alt="Xat"
 							fetchpriority="high"
-							height={64}
 							referrerpolicy="no-referrer"
 							src={PROFILE_AVATAR_SRC}
-							width={64}
+							inferSize
 						/>
 						<div class="space-y-0">
 							<h1 class="
@@ -110,13 +110,13 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 				>
 					<StaggerReveal class="space-y-1.5" delayChildren={0.03} staggerChildren={0.045}>
 						<p class="text-base/7 text-muted-foreground">{m.home.bioP1}</p>
-					<div class="text-base/7 text-muted-foreground">
-						{m.home.introBeforeSystems}
-						<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
-						{m.home.introBetweenBadges}
-						<IntroBadgePopover kind="products" label={productsLabel} locale={locale} />
-						{m.home.introAfterProducts}
-					</div>
+						<div class="text-base/7 text-muted-foreground">
+							{m.home.introBeforeSystems}
+							<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
+							{m.home.introBetweenBadges}
+							<IntroBadgePopover kind="products" label={productsLabel} locale={locale} />
+							{m.home.introAfterProducts}
+						</div>
 					</StaggerReveal>
 				</section>
 

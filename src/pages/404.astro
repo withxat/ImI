@@ -1,0 +1,53 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+
+import HomeCardLink from '@/components/home-card-link.astro'
+import Seo from '@/components/seo.astro'
+import SiteHeader from '@/components/site-header.astro'
+import StaggerReveal from '@/components/stagger-reveal.astro'
+import Container from '@/components/ui/container.astro'
+import RootLayout from '@/layouts/root-layout.astro'
+import { getMessages } from '@/lib/i18n/messages'
+
+const locale = (Astro.locals.locale ?? 'en') as Locale
+const m = getMessages(locale)
+const { notFound } = m.home
+---
+
+<RootLayout>
+	<Seo
+		canonicalPath="/404"
+		description={notFound.description}
+		locale={locale}
+		slot="head"
+		title={`${notFound.title} - Xat`}
+	/>
+
+	<section>
+		<Container class="page-shell">
+			<StaggerReveal class="flex flex-col">
+				<div class="space-y-8">
+					<SiteHeader locale={locale} messages={m} showBack />
+				</div>
+
+				<div class="
+					mt-28 space-y-6
+					md:mt-32
+				"
+				>
+					<div class="space-y-3">
+						<p class="font-mono text-xs/6 text-muted-foreground">404</p>
+						<h1 class="text-3xl font-medium tracking-tight text-foreground">{notFound.title}</h1>
+						<p class="max-w-prose text-base/7 text-muted-foreground">{notFound.description}</p>
+					</div>
+
+					<HomeCardLink
+						description=""
+						href="/"
+						title={notFound.goHome}
+					/>
+				</div>
+			</StaggerReveal>
+		</Container>
+	</section>
+</RootLayout>

@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets'
+
+import { cn } from '@/lib/cn'
+
+interface Props {
+	alt: string
+	class?: string
+	decoding?: 'async' | 'sync'
+	fetchpriority?: 'auto' | 'high' | 'low'
+	height?: number
+	loading?: 'eager' | 'lazy'
+	sizes?: string
+	src: string
+	width?: number
+}
+
+const {
+	alt,
+	class: className,
+	decoding = 'async',
+	fetchpriority = 'auto',
+	height,
+	loading = 'lazy',
+	sizes,
+	src,
+	width,
+	...rest
+} = Astro.props as Props
+
+const isRemote = src.startsWith('http://') || src.startsWith('https://')
+---
+
+<figure class={cn('my-8', className)}>
+	{isRemote
+		? (
+				<Image
+					alt={alt}
+					class="rounded-lg"
+					decoding={decoding}
+					fetchpriority={fetchpriority}
+					loading={loading}
+					sizes={sizes ?? '(min-width: 768px) 640px, 100vw'}
+					src={src}
+					inferSize
+					{...rest}
+				/>
+			)
+		: (
+				<Image
+					alt={alt}
+					class="rounded-lg"
+					decoding={decoding}
+					fetchpriority={fetchpriority}
+					height={height ?? 720}
+					loading={loading}
+					sizes={sizes ?? '(min-width: 768px) 640px, 100vw'}
+					src={src}
+					width={width ?? 1280}
+					{...rest}
+				/>
+			)}
+	{alt && (
+		<figcaption class="mt-2 text-center text-sm text-muted-foreground">
+			{alt}
+		</figcaption>
+	)}
+</figure>

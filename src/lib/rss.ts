@@ -2,6 +2,7 @@ import type { Locale } from '@/lib/i18n/constants'
 
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
+import { escapeCdata, escapeXml } from '@/lib/xml-utils'
 
 const SITE_URL = 'https://xat.sh'
 
@@ -11,19 +12,6 @@ interface Post {
 	summary: string
 	tags: string[]
 	title: string
-}
-
-function escapeXml(value: string) {
-	return value
-		.replaceAll('&', '&amp;')
-		.replaceAll('<', '&lt;')
-		.replaceAll('>', '&gt;')
-		.replaceAll('"', '&quot;')
-		.replaceAll('\'', '&apos;')
-}
-
-function escapeCdata(value: string) {
-	return value.replaceAll(']]>', ']]]]><![CDATA[>')
 }
 
 function postUrl(post: Pick<Post, 'slug'>) {

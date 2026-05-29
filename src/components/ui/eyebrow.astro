@@ -1,14 +1,13 @@
 ---
+import type { HTMLTag, Polymorphic } from 'astro/types'
+
 import { cn } from '@/lib/cn'
 
-interface Props {
-	as?: 'h2' | 'h3' | 'p'
-	class?: string
-}
+type Props<Tag extends HTMLTag = 'p'> = Polymorphic<{ as: Tag }>
 
-const { as: Tag = 'p', class: className } = Astro.props as Props
+const { as: Tag = 'p', class: className, ...rest } = Astro.props as Props
 ---
 
-<Tag class={cn('font-ui text-base font-medium text-foreground', className)}>
+<Tag class={cn('font-ui text-base font-medium text-foreground', className)} {...rest}>
 	<slot />
 </Tag>

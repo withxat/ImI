@@ -2,21 +2,13 @@ import type { APIRoute } from 'astro'
 
 import { BLOG_PRIMARY_LOCALE, getAllPosts } from '@/lib/blog'
 import { absoluteUrl } from '@/lib/seo-data'
+import { escapeXml, xmlResponse } from '@/lib/xml-utils'
 
 interface SitemapEntry {
 	changefreq?: 'daily' | 'monthly' | 'weekly' | 'yearly'
 	lastmod?: Date
 	path: string
 	priority?: number
-}
-
-function escapeXml(value: string) {
-	return value
-		.replaceAll('&', '&amp;')
-		.replaceAll('<', '&lt;')
-		.replaceAll('>', '&gt;')
-		.replaceAll('"', '&quot;')
-		.replaceAll('\'', '&apos;')
 }
 
 function createUrlEntry({ changefreq, lastmod, path, priority }: SitemapEntry) {
@@ -44,18 +36,12 @@ export const GET: APIRoute = async () => {
 		})),
 	]
 
-	return new Response(
+	return xmlResponse(
 		[
 			'<?xml version="1.0" encoding="UTF-8"?>',
 			'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
 			...entries.map(createUrlEntry),
 			'</urlset>',
 		].join(''),
-		{
-			headers: {
-				'Cache-Control': 'public, max-age=3600, s-maxage=86400',
-				'Content-Type': 'application/xml; charset=utf-8',
-			},
-		},
 	)
 }

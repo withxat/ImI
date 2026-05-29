@@ -1,0 +1,12 @@
+@import 'photoswipe/style.css';
+
+/* Minimal article lightbox: no control chrome, no preloader dots */
+.pswp--article-minimal .pswp__top-bar,
+.pswp--article-minimal .pswp__preloader {
+	display: none !important;
+}
+
+/* Ensure PhotoSwipe portals above everything */
+.pswp {
+	z-index: 99999;
+}
