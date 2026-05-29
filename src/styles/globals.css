@@ -482,7 +482,7 @@
 	}
 
 	.article-body img {
-		@apply my-8 w-full;
+		@apply my-2 w-full;
 		cursor: zoom-in;
 	}
 
