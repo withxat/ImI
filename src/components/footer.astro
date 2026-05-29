@@ -1,6 +1,10 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
+import { Image } from 'astro:assets'
+
+import { version as appVersion } from '../../package.json'
+import shinyTf from '@/assets/shiny-tf.png'
 import FooterNav from '@/components/footer-nav.astro'
 import FooterWanderer from '@/components/footer-wanderer.astro'
 import Container from '@/components/ui/container.astro'
@@ -14,6 +18,8 @@ const { locale } = Astro.props as Props
 const m = getMessages(locale)
 
 const moeIcp = (await import('@/assets/icons/moe-icp.svg?raw')).default
+
+const isOnDesignPage = Astro.url.pathname === '/design'
 ---
 
 <footer>
@@ -24,15 +30,52 @@ const moeIcp = (await import('@/assets/icons/moe-icp.svg?raw')).default
 				{m.footer.connect}
 			</p>
 			<FooterNav />
+			<div class="mt-16 flex items-center gap-2" hidden={isOnDesignPage}>
+				<a
+					class="
+						group inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors
+						hover:text-highlight-text
+					"
+					href="/design"
+					data-design-link
+				>
+					<Image
+						class="
+							size-4 shrink-0 transition-transform duration-300 ease-out
+							group-hover:rotate-12
+						"
+						alt=""
+						densities={[1, 2]}
+						height={20}
+						src={shinyTf}
+						width={20}
+					/>
+					Design System
+				</a>
+				<span class="text-xs">|</span>
+				<a
+					class="
+						group inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors
+						hover:text-highlight-text
+					"
+					href="https://github.com/withxat/imi"
+					target="_blank"
+				>
+					ImI v{appVersion}
+				</a>
+			</div>
 			<a
-				class="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
+				class="
+					flex items-center gap-1.5 text-sm text-muted-foreground
+					hover:text-highlight-text
+				"
 				href="https://icp.gov.moe/?keyword=20264698"
 				rel="noreferrer"
 				target="_blank"
 			>
 				<span
 					class="
-						size-3.5 animate-pulse text-primary
+						size-4 text-primary
 						[&_svg]:size-full
 					"
 					aria-hidden="true"
@@ -43,3 +86,14 @@ const moeIcp = (await import('@/assets/icons/moe-icp.svg?raw')).default
 		</div>
 	</Container>
 </footer>
+
+<script>
+import { onAstroPageLoad } from '@/lib/astro-page-lifecycle'
+
+onAstroPageLoad(() => {
+	const isOnDesign = window.location.pathname === '/design'
+	document.querySelectorAll<HTMLElement>('[data-design-link]').forEach((el) => {
+		el.hidden = isOnDesign
+	})
+})
+</script>

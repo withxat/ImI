@@ -1,8 +1,10 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
+import { getImage } from 'astro:assets'
 import { ClientRouter } from 'astro:transitions'
 
+import shinyTf from '@/assets/shiny-tf.png'
 import Footer from '@/components/footer.astro'
 import MisansUi from '@/components/ui-fonts/misans-ui.astro'
 import { htmlLangFor } from '@/lib/i18n/constants'
@@ -17,6 +19,11 @@ const locale = (Astro.locals.locale ?? 'en') as Locale
 const rssZh = getMessages('zh').blog
 const rssEn = getMessages('en').blog
 const rssJa = getMessages('ja').blog
+
+const isOnDesignPage = Astro.url.pathname === '/design'
+const designFavicon = isOnDesignPage
+	? await getImage({ format: 'png', height: 64, src: shinyTf, width: 64 })
+	: null
 ---
 
 <!doctype html>
@@ -32,9 +39,15 @@ const rssJa = getMessages('ja').blog
 		<link href={RSS_FEED_URL_EN} hreflang="en" rel="alternate" title={rssEn.pageTitle} type="application/rss+xml" />
 		<link href={RSS_FEED_URL_JA} hreflang="ja" rel="alternate" title={rssJa.pageTitle} type="application/rss+xml" />
 
-		<link href="/favicon.ico" rel="icon" sizes="32x32" />
-		<link href="/icon.svg" rel="icon" type="image/svg+xml" />
-		<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
+		{designFavicon
+			? <link href={designFavicon.src} rel="icon" type="image/png" />
+			: (
+					<>
+						<link href="/favicon.ico" rel="icon" sizes="32x32" />
+						<link href="/icon.svg" rel="icon" type="image/svg+xml" />
+					</>
+				)}
+		<link href={designFavicon?.src ?? '/apple-touch-icon.png'} rel="apple-touch-icon" />
 
 		<script set:html={getThemeBootstrapScript()} is:inline />
 

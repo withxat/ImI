@@ -70,6 +70,71 @@ const zh: Messages = {
 		},
 	},
 	codeBlock: codeBlockByLocale.zh,
+	design: {
+		colors: {
+			groups: {
+				content: {
+					description: '文字与图标的前景色阶。',
+					title: '内容',
+				},
+				highlight: {
+					description: '品牌色。克制地用于标识、强调与链接示意。',
+					title: '高亮',
+				},
+				status: {
+					description: '语义化反馈。以意图驱动，而非装饰。',
+					title: '状态',
+				},
+				surface: {
+					description: '页面画布、抬升的面板与浮层。暗色模式下层级有差异，亮色模式下统一为白，靠边框而非填充区分。',
+					title: '表面',
+				},
+				washEdges: {
+					description: '用于 hover/选中态的弱底色，以及结构性的细线分隔。',
+					title: '底色与边线',
+				},
+			},
+			intro: {
+				after: ' 渲染，永远以源文件为准 —— 即使在相反主题下预览，也能看到真实的亮 / 暗色值。',
+				before: '色彩 token 定义在 ',
+				middle1: ' 中。下方两个色板通过作用域类 ',
+				middle2: ' / ',
+			},
+			roles: {
+				accent: '交互态底色（hover、pressed）',
+				background: '页面画布',
+				border: '细线分隔',
+				card: '卡片填色（surface 的别名）',
+				destructive: '错误、破坏性操作',
+				foreground: '主文字色',
+				highlightIcon: '品牌图标着色',
+				highlightSoft: '品牌弱底',
+				highlightText: '品牌强调文字',
+				info: '信息',
+				muted: '静态弱底色',
+				mutedForeground: '次级文字色',
+				popover: '浮层（popover、菜单）',
+				primary: '主操作填色（墨色反转）',
+				success: '确认、正向',
+				surface: '内嵌承载面（卡片、面板）',
+				warning: '警示',
+			},
+			title: '色彩',
+		},
+		eyebrow: '设计系统',
+		pageDescription: '驱动 xat.sh 的设计系统 —— 字体、色彩 token，以及保持界面一致的规则。',
+		pageTitle: '设计系统 - Xat',
+		typography: {
+			sampleDescriptors: {
+				accent: '点缀',
+				cjk: '中日韩',
+				display: '显示与界面',
+				mono: '等宽',
+				serif: '衬线',
+			},
+			title: '字体',
+		},
+	},
 	footer: {
 		connect: '可以通过这些方式联系：',
 		moeIcp: '萌ICP备20264698号',

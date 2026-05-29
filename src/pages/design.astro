@@ -1,0 +1,239 @@
+---
+import type { Locale } from '@/lib/i18n/constants'
+import type { ColorGroupKey, ColorRoleKey } from '@/lib/i18n/messages/types'
+
+import { Image } from 'astro:assets'
+
+import shinyTf from '@/assets/shiny-tf.png'
+import Seo from '@/components/seo.astro'
+import SiteHeader from '@/components/site-header.astro'
+import Container from '@/components/ui/container.astro'
+import Eyebrow from '@/components/ui/eyebrow.astro'
+import Separator from '@/components/ui/separator.astro'
+import RootLayout from '@/layouts/root-layout.astro'
+import { getMessages } from '@/lib/i18n/messages'
+
+const locale = (Astro.locals.locale ?? 'en') as Locale
+const m = getMessages(locale)
+
+interface ColorToken {
+	name: string
+	role: ColorRoleKey
+	var: string
+}
+
+const colorGroups: { key: ColorGroupKey, tokens: ColorToken[] }[] = [
+	{
+		key: 'surface',
+		tokens: [
+			{ name: 'background', role: 'background', var: '--background' },
+			{ name: 'surface', role: 'surface', var: '--surface' },
+			{ name: 'card', role: 'card', var: '--card' },
+			{ name: 'popover', role: 'popover', var: '--popover' },
+		],
+	},
+	{
+		key: 'content',
+		tokens: [
+			{ name: 'foreground', role: 'foreground', var: '--foreground' },
+			{ name: 'muted-foreground', role: 'mutedForeground', var: '--muted-foreground' },
+			{ name: 'primary', role: 'primary', var: '--primary' },
+		],
+	},
+	{
+		key: 'washEdges',
+		tokens: [
+			{ name: 'muted', role: 'muted', var: '--muted' },
+			{ name: 'accent', role: 'accent', var: '--accent' },
+			{ name: 'border', role: 'border', var: '--border' },
+		],
+	},
+	{
+		key: 'highlight',
+		tokens: [
+			{ name: 'highlight-soft', role: 'highlightSoft', var: '--highlight-soft' },
+			{ name: 'highlight-text', role: 'highlightText', var: '--highlight-text' },
+			{ name: 'highlight-icon', role: 'highlightIcon', var: '--highlight-icon' },
+		],
+	},
+	{
+		key: 'status',
+		tokens: [
+			{ name: 'destructive', role: 'destructive', var: '--destructive' },
+			{ name: 'info', role: 'info', var: '--info' },
+			{ name: 'success', role: 'success', var: '--success' },
+			{ name: 'warning', role: 'warning', var: '--warning' },
+		],
+	},
+]
+---
+
+<RootLayout>
+	<Seo
+		canonicalPath="/design"
+		description={m.design.pageDescription}
+		locale={locale}
+		slot="head"
+		title={m.design.pageTitle}
+	/>
+
+	<section>
+		<Container class="page-shell">
+			<div class="space-y-8">
+				<SiteHeader locale={locale} messages={m} showBack />
+				<div class="flex flex-col space-y-24">
+					<div class="space-y-4">
+						<h1 class="text-3xl font-medium text-foreground">
+							<span class="font-fugaz-one text-highlight-text">Xat</span>
+							<span
+								class="
+									font-mono text-lg text-highlight-soft/50
+									dark:text-highlight-soft/20
+								"
+							>
+								.sh
+							</span>
+						</h1>
+						<Eyebrow class="flex items-center gap-3">
+							{m.design.eyebrow}
+							<Image
+								alt="shiny-tf"
+								class="size-5"
+								loading="eager"
+								src={shinyTf}
+							/>
+						</Eyebrow>
+					</div>
+
+					<!-- Typography -->
+					<section class="space-y-8">
+						<h2 class="text-2xl font-medium text-foreground">{m.design.typography.title}</h2>
+
+						<div class="space-y-8">
+							<div class="space-y-3">
+								<p class="font-mono text-sm text-muted-foreground">Hanken Grotesk — {m.design.typography.sampleDescriptors.display}</p>
+								<p class="text-3xl font-medium">The quick brown fox jumps over the lazy dog</p>
+								<p class="text-3xl font-medium italic">The quick brown fox jumps over the lazy dog</p>
+							</div>
+
+							<Separator />
+
+							<div class="space-y-3">
+								<p class="font-mono text-sm text-muted-foreground">MiSans — {m.design.typography.sampleDescriptors.cjk}</p>
+								<p class="text-3xl font-medium">打造生产级界面与 AI 原生产品</p>
+								<p class="text-3xl font-medium">本番品質の UI と AI ネイティブなプロダクトをつくる</p>
+							</div>
+
+							<Separator />
+
+							<div class="space-y-3">
+								<p class="font-mono text-sm text-muted-foreground">Fugaz One — {m.design.typography.sampleDescriptors.accent}</p>
+								<p class="font-fugaz-one text-3xl text-highlight-strong">Xat</p>
+							</div>
+
+							<Separator />
+
+							<div class="space-y-3">
+								<p class="font-mono text-sm text-muted-foreground">Calling Code — {m.design.typography.sampleDescriptors.mono}</p>
+								<p class="font-mono text-3xl">const greeting = "Hello"</p>
+							</div>
+
+							<Separator />
+
+							<div class="space-y-3">
+								<p class="font-mono text-sm text-muted-foreground">Source Han Serif — {m.design.typography.sampleDescriptors.serif}</p>
+								<p class="font-serif text-3xl font-semibold">Building production-quality interfaces</p>
+							</div>
+						</div>
+					</section>
+
+					<!-- Colors -->
+					<section class="space-y-8">
+						<div class="space-y-3">
+							<h2 class="text-2xl font-medium text-foreground">{m.design.colors.title}</h2>
+							<p class="max-w-prose text-base/7 text-muted-foreground">
+								{m.design.colors.intro.before}<code class="font-mono text-sm">src/styles/globals.css</code>{m.design.colors.intro.middle1}<code class="font-mono text-sm">.theme-light</code>{m.design.colors.intro.middle2}<code class="font-mono text-sm">.theme-dark</code>{m.design.colors.intro.after}
+							</p>
+						</div>
+
+						<div class="space-y-12">
+							{colorGroups.map((group) => {
+								const groupCopy = m.design.colors.groups[group.key]
+								return (
+									<div class="space-y-5">
+										<div class="space-y-1.5">
+											<h3 class="text-lg font-medium text-foreground">{groupCopy.title}</h3>
+											<p class="max-w-prose text-sm text-muted-foreground">{groupCopy.description}</p>
+										</div>
+
+										<div class="
+											grid grid-cols-1 gap-6
+											lg:grid-cols-2
+										"
+										>
+											{(['light', 'dark'] as const).map((mode) => {
+												const scopeClass = mode === 'light' ? 'theme-light' : 'theme-dark'
+												return (
+													<div class={`
+														${scopeClass}
+														overflow-hidden rounded-xl border border-border bg-background
+													`}
+													>
+														<div class="flex items-center justify-between border-b border-border px-5 py-3">
+															<p class="font-mono text-xs font-medium text-muted-foreground">.{mode}</p>
+														</div>
+														<ul class="divide-y divide-border">
+															{group.tokens.map(token => (
+																<li
+																	class="flex items-center gap-4 px-5 py-3.5"
+																	data-color-row={token.var}
+																>
+																	<span
+																		aria-hidden="true"
+																		class="size-11 shrink-0 rounded-md border border-border"
+																		style={`background: var(${token.var})`}
+																	/>
+																	<div class="min-w-0 flex-1 space-y-0.5">
+																		<p class="truncate text-sm font-medium text-foreground">{token.name}</p>
+																		<p class="truncate text-xs text-muted-foreground">{m.design.colors.roles[token.role]}</p>
+																		<code
+																			class="block truncate font-mono text-[10.5px] text-muted-foreground/85 tabular-nums"
+																			data-color-value
+																		>
+																			—
+																		</code>
+																	</div>
+																</li>
+															))}
+														</ul>
+													</div>
+												)
+											})}
+										</div>
+									</div>
+								)
+							})}
+						</div>
+					</section>
+				</div>
+			</div>
+		</Container>
+	</section>
+</RootLayout>
+
+<script>
+import { onAstroPageLoad } from '@/lib/astro-page-lifecycle'
+
+onAstroPageLoad(() => {
+	const rows = document.querySelectorAll<HTMLElement>('[data-color-row]')
+	rows.forEach((row) => {
+		const varName = row.dataset.colorRow
+		if (!varName)
+			return
+		const value = getComputedStyle(row).getPropertyValue(varName).trim()
+		const target = row.querySelector<HTMLElement>('[data-color-value]')
+		if (target && value)
+			target.textContent = value
+	})
+})
+</script>

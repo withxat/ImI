@@ -79,6 +79,7 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 							"
 							alt="Xat"
 							fetchpriority="high"
+							loading="eager"
 							referrerpolicy="no-referrer"
 							src={PROFILE_AVATAR_SRC}
 							inferSize
@@ -192,7 +193,7 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 																	{item.description}
 																</span>
 															</span>
-															<ArrowUpRight class={proofIconClass} aria-hidden />
+															<ArrowUpRight aria-hidden="true" class={proofIconClass} />
 														</a>
 													)
 												: (

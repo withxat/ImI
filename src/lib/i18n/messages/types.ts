@@ -42,6 +42,59 @@ export interface PostTranslatedNoticeCopy {
 
 export type { CodeBlockCopy }
 
+export type ColorRoleKey
+	= | 'accent'
+		| 'background'
+		| 'border'
+		| 'card'
+		| 'destructive'
+		| 'foreground'
+		| 'highlightIcon'
+		| 'highlightSoft'
+		| 'highlightText'
+		| 'info'
+		| 'muted'
+		| 'mutedForeground'
+		| 'popover'
+		| 'primary'
+		| 'success'
+		| 'surface'
+		| 'warning'
+
+export type ColorGroupKey = 'content' | 'highlight' | 'status' | 'surface' | 'washEdges'
+
+export interface ColorGroupCopy {
+	description: string
+	title: string
+}
+
+export interface DesignSystemCopy {
+	colors: {
+		groups: Record<ColorGroupKey, ColorGroupCopy>
+		intro: {
+			after: string
+			before: string
+			middle1: string
+			middle2: string
+		}
+		roles: Record<ColorRoleKey, string>
+		title: string
+	}
+	eyebrow: string
+	pageDescription: string
+	pageTitle: string
+	typography: {
+		sampleDescriptors: {
+			accent: string
+			cjk: string
+			display: string
+			mono: string
+			serif: string
+		}
+		title: string
+	}
+}
+
 export interface Messages {
 	blog: {
 		archiveSubtitle: string
@@ -55,6 +108,7 @@ export interface Messages {
 	capabilities: CapabilityCopy[]
 	categories: Record<'design' | 'life' | 'tech', CategoryCopy>
 	codeBlock: CodeBlockCopy
+	design: DesignSystemCopy
 	footer: {
 		connect: string
 		moeIcp: string

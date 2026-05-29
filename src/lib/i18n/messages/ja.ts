@@ -75,6 +75,71 @@ const ja: Messages = {
 		},
 	},
 	codeBlock: codeBlockByLocale.ja,
+	design: {
+		colors: {
+			groups: {
+				content: {
+					description: 'テキストとアイコンの前景色。',
+					title: 'コンテンツ',
+				},
+				highlight: {
+					description: 'ブランドの声。アイデンティティ、強調、リンクの示唆に控えめに使う。',
+					title: 'ハイライト',
+				},
+				status: {
+					description: 'セマンティックなフィードバック。装飾ではなく意図で使う。',
+					title: 'ステータス',
+				},
+				surface: {
+					description: 'ページのキャンバス、せり上がったパネル、オーバーレイ。ダークでは層が段差を持ち、ライトでは白に揃え、塗りではなくボーダーで分ける。',
+					title: 'サーフェス',
+				},
+				washEdges: {
+					description: 'ホバー / 選択ステートの薄塗りと、構造を支える細線。',
+					title: 'ウォッシュとエッジ',
+				},
+			},
+			intro: {
+				after: ' クラスで描画されるため、別モードでプレビューしてもソースに忠実な値を保ちます。',
+				before: 'トークンは ',
+				middle1: ' に定義されています。両パレットはスコープ付きの ',
+				middle2: ' / ',
+			},
+			roles: {
+				accent: 'インタラクティブウォッシュ（hover、pressed）',
+				background: 'ページキャンバス',
+				border: 'ヘアラインの区切り',
+				card: 'カードの塗り（surface のエイリアス）',
+				destructive: 'エラー、破壊的操作',
+				foreground: '主要なインク',
+				highlightIcon: 'ブランドのアイコン色',
+				highlightSoft: 'ブランドの薄塗り',
+				highlightText: 'ブランドの文字色',
+				info: '情報',
+				muted: '静的ウォッシュ',
+				mutedForeground: '副次的なインク',
+				popover: 'フローティング層（ポップオーバー、メニュー）',
+				primary: '主アクションの塗り（モノインク）',
+				success: '確認、ポジティブ',
+				surface: 'インラインサーフェス（カード、パネル）',
+				warning: '注意',
+			},
+			title: 'カラー',
+		},
+		eyebrow: 'デザインシステム',
+		pageDescription: 'xat.sh を支えるデザインシステム — タイポグラフィ、カラートークン、そして表面の一貫性を保つルール。',
+		pageTitle: 'Design System - Xat',
+		typography: {
+			sampleDescriptors: {
+				accent: 'アクセント',
+				cjk: 'CJK',
+				display: 'Display & UI',
+				mono: '等幅',
+				serif: 'セリフ',
+			},
+			title: 'タイポグラフィ',
+		},
+	},
 	footer: {
 		connect: 'こちらからどうぞ：',
 		moeIcp: '萌えICP登録済み♡ 20264698号',

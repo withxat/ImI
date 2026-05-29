@@ -75,6 +75,71 @@ const en: Messages = {
 		},
 	},
 	codeBlock: codeBlockByLocale.en,
+	design: {
+		colors: {
+			groups: {
+				content: {
+					description: 'Foreground tones for text and iconography.',
+					title: 'Content',
+				},
+				highlight: {
+					description: 'Brand voice. Used sparingly to mark identity, emphasis, and link affordance.',
+					title: 'Highlight',
+				},
+				status: {
+					description: 'Semantic feedback. Use intent over decoration.',
+					title: 'Status',
+				},
+				surface: {
+					description: 'Page canvas, raised panels, and overlays. In dark mode the layers are stepped; in light mode they collapse to white and are separated by border instead of fill.',
+					title: 'Surface',
+				},
+				washEdges: {
+					description: 'Soft fills for hover/selected states and structural lines.',
+					title: 'Wash & Edges',
+				},
+			},
+			intro: {
+				after: ' classes, so the swatches always reflect the source of truth — even when you\'re previewing in the opposite mode.',
+				before: 'Tokens live in ',
+				middle1: '. Both palettes here are rendered through scoped ',
+				middle2: ' / ',
+			},
+			roles: {
+				accent: 'Interactive wash (hover, pressed)',
+				background: 'Page canvas',
+				border: 'Hairline separators',
+				card: 'Card fill (alias of surface)',
+				destructive: 'Error, destructive action',
+				foreground: 'Primary ink',
+				highlightIcon: 'Brand icon tint',
+				highlightSoft: 'Soft brand wash',
+				highlightText: 'Brand text accent',
+				info: 'Informational',
+				muted: 'Static wash',
+				mutedForeground: 'Secondary ink',
+				popover: 'Floating layer (popover, menu)',
+				primary: 'Primary action fill (mono-ink)',
+				success: 'Confirmation, positive',
+				surface: 'Inline surface (cards, panels)',
+				warning: 'Caution',
+			},
+			title: 'Colors',
+		},
+		eyebrow: 'Design System',
+		pageDescription: 'The design system that powers xat.sh — typography, color tokens, and the rules that keep the surface coherent.',
+		pageTitle: 'Design System - Xat',
+		typography: {
+			sampleDescriptors: {
+				accent: 'Accent',
+				cjk: 'CJK',
+				display: 'Display & UI',
+				mono: 'Monospace',
+				serif: 'Serif',
+			},
+			title: 'Typography',
+		},
+	},
 	footer: {
 		connect: 'Connect through any of these:',
 		moeIcp: 'Moe ICP Filing No. 20264698',
