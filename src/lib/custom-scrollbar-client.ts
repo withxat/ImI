@@ -239,10 +239,9 @@ export function initCustomScrollbar() {
 
 		shell.classList.toggle('has-scroll', hasScroll)
 
-		const maxMarkerY = Math.max(1, scrollHeight - viewportHeight)
 		for (const marker of markers) {
 			const absoluteTop = marker.element.getBoundingClientRect().top + window.scrollY
-			marker.y = TRACK_TOP + clamp(absoluteTop / maxMarkerY, 0, 1) * trackHeight
+			marker.y = TRACK_TOP + clamp(absoluteTop / Math.max(1, scrollHeight), 0, 1) * trackHeight
 			marker.button.style.top = `${marker.y}px`
 		}
 
