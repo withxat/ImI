@@ -238,14 +238,32 @@ export function initCustomScrollbar() {
 		return markers.find(marker => Math.abs(marker.currentY - clientY) <= 9) ?? null
 	}
 
-	function scrollToClientY(clientY: number) {
+	function scrollTopForClientY(clientY: number) {
 		const { maxScroll } = getScrollMetrics()
 		if (maxScroll <= 0) {
-			return
+			return null
 		}
 
 		const ratio = clamp((clientY - trackTop - thumbHeight / 2) / Math.max(1, trackHeight - thumbHeight), 0, 1)
-		scrollToTopInstant(ratio * maxScroll)
+		return ratio * maxScroll
+	}
+
+	function scrollToClientY(clientY: number) {
+		const top = scrollTopForClientY(clientY)
+		if (top !== null) {
+			scrollToTopInstant(top)
+		}
+	}
+
+	function scrollToClientYSmooth(clientY: number) {
+		const top = scrollTopForClientY(clientY)
+		if (top !== null) {
+			scrollToTopSmooth(top)
+		}
+	}
+
+	function isPointInsideThumb(clientY: number) {
+		return clientY >= thumbTop && clientY <= thumbTop + thumbHeight
 	}
 
 	function drawRoundedRect(x: number, y: number, width: number, height: number, radius: number) {
@@ -373,8 +391,11 @@ export function initCustomScrollbar() {
 		if (marker) {
 			scrollToTopSmooth(marker.element.getBoundingClientRect().top + window.scrollY)
 		}
-		else {
+		else if (isPointInsideThumb(event.clientY)) {
 			scrollToClientY(event.clientY)
+		}
+		else {
+			scrollToClientYSmooth(event.clientY)
 		}
 
 		showTemporarily()
