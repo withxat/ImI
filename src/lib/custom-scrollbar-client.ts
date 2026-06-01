@@ -16,6 +16,7 @@ interface SectionMarker {
 }
 
 const HOTZONE_WIDTH = 24
+const MIN_TRACK_WIDTH = 768
 const TRACK_WIDTH = 7
 const TRACK_CENTER_X = HOTZONE_WIDTH - 7
 const THUMB_WIDTH = 4
@@ -106,6 +107,10 @@ function supportsCustomScrollbar() {
 	return !reducedMotion.matches
 }
 
+function supportsTrackHover(canHover: MediaQueryList) {
+	return canHover.matches && window.innerWidth >= MIN_TRACK_WIDTH
+}
+
 export function destroyCustomScrollbar() {
 	cleanup?.()
 	cleanup = null
@@ -136,6 +141,7 @@ export function initCustomScrollbar() {
 	const tooltip = createTooltip()
 	const abortController = new AbortController()
 	const { signal } = abortController
+	const canHover = matchMedia('(hover: hover) and (pointer: fine)')
 	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 
 	let activePointerId: null | number = null
@@ -156,6 +162,7 @@ export function initCustomScrollbar() {
 	let thumbHeight = MIN_THUMB_HEIGHT
 	let thumbTop = 0
 	let thumbWidth = THUMB_WIDTH
+	let trackAlpha = 0
 
 	const markers = collectSectionMarkers()
 	const resizeObserver = new ResizeObserver(() => {
@@ -298,6 +305,8 @@ export function initCustomScrollbar() {
 		thumbWidth = lerp(thumbWidth, targetThumbWidth, 0.22)
 		alpha = lerp(alpha, hasScroll ? targetAlpha : 0, 0.16)
 		offsetX = lerp(offsetX, targetOffsetX, 0.16)
+		const targetTrackAlpha = supportsTrackHover(canHover) && (dragging || hover) ? 1 : 0
+		trackAlpha = lerp(trackAlpha, targetTrackAlpha, 0.18)
 
 		context.clearRect(0, 0, HOTZONE_WIDTH, window.innerHeight)
 
@@ -308,11 +317,16 @@ export function initCustomScrollbar() {
 			context.save()
 			context.globalAlpha = alpha
 
-			context.fillStyle = palette.shadow
-			drawRoundedRect(TRACK_CENTER_X + TRACK_WIDTH / 2 - 1 + offsetX, 0, HOTZONE_WIDTH - TRACK_CENTER_X, window.innerHeight, 0)
+			if (trackAlpha > 0.01) {
+				context.save()
+				context.globalAlpha = alpha * trackAlpha
+				context.fillStyle = palette.shadow
+				drawRoundedRect(TRACK_CENTER_X + TRACK_WIDTH / 2 - 1 + offsetX, 0, HOTZONE_WIDTH - TRACK_CENTER_X, window.innerHeight, 0)
 
-			context.fillStyle = palette.track
-			drawRoundedRect(trackX, trackTop, TRACK_WIDTH, trackHeight, TRACK_WIDTH / 2)
+				context.fillStyle = palette.track
+				drawRoundedRect(trackX, trackTop, TRACK_WIDTH, trackHeight, TRACK_WIDTH / 2)
+				context.restore()
+			}
 
 			context.fillStyle = dragging || hover ? palette.thumbActive : palette.thumb
 			drawRoundedRect(thumbX, thumbTop, thumbWidth, thumbHeight, thumbWidth / 2)
@@ -338,6 +352,7 @@ export function initCustomScrollbar() {
 				|| Math.abs(offsetX - targetOffsetX) > 0.1
 				|| Math.abs(thumbTop - targetThumbTop) > 0.1
 				|| Math.abs(thumbHeight - targetThumbHeight) > 0.1
+				|| Math.abs(trackAlpha - targetTrackAlpha) > 0.01
 				|| markers.some(marker => Math.abs(marker.currentY - marker.targetY) > 0.1)
 
 		if (needsMoreFrames) {
@@ -446,6 +461,7 @@ export function initCustomScrollbar() {
 		startAnimation()
 	}, { passive: true, signal })
 	window.addEventListener('resize', handleResize, { passive: true, signal })
+	canHover.addEventListener('change', handleResize, { signal })
 	reducedMotion.addEventListener('change', handleResize, { signal })
 	canvas.addEventListener('pointermove', handlePointerMove, { signal })
 	canvas.addEventListener('pointerleave', handlePointerLeave, { signal })
