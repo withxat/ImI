@@ -54,7 +54,7 @@ function scrollToTopSmooth(top: number) {
 }
 
 function collectSectionMarkers(markersHost: HTMLElement): SectionMarker[] {
-	return Array.from(document.querySelectorAll<HTMLElement>('.article-body h2[id]'))
+	return Array.from(document.querySelectorAll<HTMLElement>('main h2'))
 		.map((element) => {
 			const title = element.textContent?.trim() ?? ''
 			const button = document.createElement('button')
@@ -448,7 +448,7 @@ export function initCustomScrollbar() {
 		const allowsTrackClick = supportsTrackHover(canHover)
 		const isTouchLike = event.pointerType === 'touch' || !allowsTrackClick
 		const isThumbPress = isPointInsideThumb(event.clientY, isTouchLike ? THUMB_TOUCH_HIT_SLOP : 0)
-		const marker = isThumbPress ? null : findMarkerAt(event.clientY)
+		const marker = findMarkerAt(event.clientY)
 		const isTouch = event.pointerType === 'touch'
 
 		if (marker) {
