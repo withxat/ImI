@@ -11,9 +11,9 @@ const { class: className, reveal = true } = Astro.props as Props
 
 {reveal
 	? (
-		<div class={cn('article-body', className)} data-article-pending="" data-article-reveal>
-			<slot />
-		</div>
+			<div class={cn('article-body', className)} data-article-pending="" data-article-reveal>
+				<slot />
+			</div>
 		)
 	: (
 			<div class={cn('article-body', className)} data-article-plain>

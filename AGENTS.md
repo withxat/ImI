@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Build a personal portfolio + blog website for a design engineer / frontend engineer.
+Personal portfolio + blog for a design engineer / frontend engineer.
 
 Core positioning:
 
@@ -12,46 +12,31 @@ Core positioning:
 - Should feel crafted, fast, modern, minimal, slightly playful
 - Technical implementation itself is part of the portfolio
 
-This project should showcase:
+This project showcases:
 
 - design taste
 - frontend engineering quality
 - systems thinking
-- modern React / edge architecture
+- modern Astro / edge architecture
 - product sense
 
 ---
 
-## Tech Stack (fixed decisions)
+## Tech Stack
 
 Framework:
 
-- Waku (React 19 + RSC capable)
+- Astro 6 (server output, SSR by default)
+- `@astrojs/cloudflare` adapter
+- `@astrojs/mdx` for MDX content
 
 Deployment:
 
-- Cloudflare Workers
-
-Storage:
-
-- Cloudflare D1 (SQLite)
-
-Static assets:
-
-- Cloudflare R2 (if needed)
-
-Caching:
-
-- Cloudflare Cache API
-- optionally KV for lightweight aggregated stats cache
-
-Protection:
-
-- Cloudflare Turnstile
+- Cloudflare Workers (`wrangler.jsonc`)
 
 Language:
 
-- TypeScript (strict mode)
+- TypeScript (strict mode, `@withxat/tsconfig`)
 
 Package manager:
 
@@ -63,287 +48,193 @@ Module system:
 
 Styling:
 
-- Tailwind CSS preferred
-- modern minimal aesthetic
-- avoid heavy UI frameworks unless necessary
+- Tailwind CSS v4 (`@tailwindcss/vite`)
+- `bejamas` UI component system (bejamas-juno style)
+- `shadcn` CLI for adding UI primitives
+- `tw-animate-css` for animation utilities
+- CSS custom properties for light/dark theming (oklch palette)
+- path alias: `@/` → `./src/`
+
+Icons:
+
+- `@iconify-json/lucide` via `unplugin-icons`
+- Local SVG icons via `FileSystemIconLoader` from `./src/assets/icons`
+- Usage: `import Icon from '~icons/local/arrow-up-right'`
+
+Animation:
+
+- `motion` (Framer Motion)
+- Custom reveal engine (`src/lib/reveal-engine.ts`)
+- Stagger reveals, article line reveals, page transitions
 
 Content:
 
-- MDX-based
-- Git-managed content
-- NO CMS
+- MDX-based, git-managed, no CMS
+- Astro content collections with glob loader
+- Organized by locale: `content/posts/{en,zh,ja}/*.mdx`
+- `content/config.json` for site-level structured data (capabilities, categories)
+
+Fonts (self-hosted, `public/fonts/`):
+
+- **Hanken Grotesk** (variable, roman + italic) — display / headings
+- **Fugaz One** (subset) — brand accent
+- **Calling Code** (regular, bold, italic) — monospace / code
+- **Source Han Serif SC** (subset) — serif bio lead
+- **MiSans VF** (via `vite-plugin-font`) — CJK content font, auto-generated fallbacks
+
+Linting:
+
+- ESLint with `@withxat/eslint-config`
+- `better-tailwindcss` plugin (detects component classes, entry: `src/styles/globals.css`)
+- `eslint-plugin-astro`
+
+Git hooks:
+
+- Lefthook
+
+Content search / syntax highlighting:
+
+- Expressive Code (Vesper theme) via `astro-expressive-code`
+
+Gallery:
+
+- PhotoSwipe (`photoswipe`)
+
+Code formatting:
+
+- `prettier` / `biome` or similar (check before assuming)
 
 ---
 
 ## Architecture Principles
 
-### 1. Content-first, database-second
+### 1. Content-first, no database
 
-Blog posts and portfolio projects should NOT be stored in the database.
+Blog posts live in `content/posts/{locale}/*.mdx`.
 
-Use filesystem content:
+No database, no D1, no comments system, no analytics tracking.
 
-```txt
-/content
-  /posts
-    *.mdx
-  /projects
-    *.mdx
-```
-
-Database is ONLY for dynamic interaction data:
-
-- comments
-- page views
-- reactions / likes
-- guestbook
-- lightweight analytics
+Site-level structured data (capabilities, categories) lives in `content/config.json`.
 
 ---
 
-### 2. SSR-first, but not fully dynamic
+### 2. SSR-first with selective prerendering
 
-We are intentionally embracing SSR / edge rendering.
+`output: 'server'` in `astro.config.ts`.
 
-However:
+Per-route control:
 
-DO NOT make everything dynamic.
+- `export const prerender = true` → static at build time (preferred for stable content)
+- `export const prerender = false` (or default) → SSR at request time
 
-Preferred rendering strategy:
+Current pages:
 
-Home:
-
-- SSR + aggressive edge cache
-
-Portfolio detail pages:
-
-- SSG / prerender preferred
-
-Blog article pages:
-
-- SSG / prerender preferred
-
-Tag / archive pages:
-
-- SSR + cache
-
-Comment sections:
-
-- dynamic client fetch
-
-Analytics:
-
-- dynamic API only
-
-RSS:
-
-- generated
-
-Sitemap:
-
-- generated
-
-OG images:
-
-- generated dynamically if feasible
-
-Goal:
-best perceived performance + SEO + architectural clarity.
+| Route | Prerendered | Notes |
+|---|---|---|
+| `/` (home) | SSR | locale-dependent |
+| `/post` (list) | SSR | locale-dependent |
+| `/post/[slug]` | SSR | locale-dependent, 404 if missing |
+| `/design` | SSR | design system reference |
+| `/404` | SSR | fallback |
+| `feed.xml`, `feed.en.xml`, `feed.ja.xml` | SSR | RSS feeds |
+| `sitemap.xml` | SSR | sitemap |
 
 ---
 
 ### 3. Edge-native design
 
-Assume Cloudflare runtime constraints.
+Assume Cloudflare runtime constraints (`nodejs_compat` flag enabled).
 
-Avoid Node-only APIs unless compatibility is explicitly supported.
+Prefer Web APIs (`fetch`, `Request` / `Response`).
 
-Prefer:
-
-- Web APIs
-- fetch
-- Request / Response
-- edge-compatible libraries
-
-Be careful with:
-
-- fs usage in runtime code
-- node crypto assumptions
-- native binaries
+Be careful with Node-only APIs, `fs` in runtime code, native binaries.
 
 ---
 
-## Product Features (MVP)
+### 4. Internationalization (i18n)
+
+Cookie-based locale: `imi_locale` cookie (`en`, `zh`, `ja`).
+
+No URL prefix routing — all locales share the same paths.
+
+Middleware (`src/middleware.ts`):
+
+1. Reads `?set_locale=` query param → sets cookie → redirects (303)
+2. Normalizes trailing slashes (308 redirect)
+3. Resolves locale from cookie, then `Accept-Language` header
+4. Reads Cloudflare visitor geo from `request.cf.country`
+
+Messages live in `src/lib/i18n/messages/{en,zh,ja}.ts`, typed via `src/lib/i18n/messages/types.ts`.
+
+Blog primary locale: `zh` (used for RSS and sitemap canonical).
+
+Translation notices shown on non-Chinese post views when the source is Chinese.
+
+---
+
+### 5. Theming
+
+Dark/light mode via `html.dark` class.
+
+`localStorage` key: `theme` (values: `dark`, `light`, or absent for system).
+
+Bootstrap script in `<head>` runs before paint to prevent flash.
+
+Supports `prefers-color-scheme` as fallback.
+
+Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-color-scheme`) using oklch.
+
+---
+
+## Product Features
 
 ### Core Pages
 
-Required:
-
-- Home
-- About
-- Portfolio list
-- Portfolio detail
-- Blog list
-- Blog detail
-- Guestbook / Notes
-- 404 page
-
-Optional:
-
-- Uses / Setup
-- Changelog
-- Experiments
-- Lab
+- Home (`/`) — profile, bio, recent posts, capabilities grid
+- Blog list (`/post`) — grouped by category
+- Blog detail (`/post/[slug]`) — MDX with TOC, reading time, tags, prev/next nav, translator info
+- Design system (`/design`) — color tokens, typography showcase
+- 404
 
 ---
 
 ### Blog Features
 
-Required:
-
-- MDX rendering
-- syntax highlighting
-- headings TOC
-- reading time
-- tags
-- previous / next navigation
-- RSS
-- sitemap
-- canonical URLs
-- Open Graph metadata
-
-Optional:
-
-- footnotes
-- callouts
-- embedded demos
+- MDX rendering with Astro content collections
+- Expressive Code syntax highlighting (Vesper theme)
+- Heading anchor links
+- Reading time
+- Tags and categories
+- Previous / next navigation
+- Translator metadata (optional, for AI-translated posts)
+- Per-locale RSS feeds
+- Sitemap
+- Canonical URLs
+- Open Graph + Twitter card metadata
+- JSON-LD structured data (Person, WebSite, BlogPosting, BreadcrumbList)
+- PhotoSwipe image galleries
+- Article reveal animations (staggered blur-in)
+- CJK-friendly remark plugins (`remark-gfm`, `remark-cjk-friendly`)
 
 ---
 
-### Portfolio Features
+### Home Page Features
 
-Each project page may include:
-
-- overview
-- problem
-- design thinking
-- implementation details
-- technical decisions
-- lessons learned
-
-This is NOT just a screenshot gallery.
+- Avatar with preload
+- Name with audio pronunciation button
+- Bio lead in serif font (CJK-subset Source Han Serif)
+- Intro badges with popover descriptions (systems / products)
+- Recent posts (4 latest)
+- Capabilities section with proof links
 
 ---
 
-## Dynamic Features
+### Footer
 
-### Comments
-
-Anonymous comments only for MVP.
-
-No login system.
-
-Schema:
-
-```sql
-comments
-- id
-- slug
-- author_name
-- author_url nullable
-- content
-- status
-- ip_hash
-- created_at
-```
-
-status:
-
-- pending
-- approved
-- spam
-
-Rules:
-
-- all new comments default to pending
-- no public auto-publish
-
-Anti-spam:
-
-- Turnstile
-- honeypot field
-- rate limiting
-- IP hashing (not raw storage)
-
----
-
-### Page Views
-
-Track lightweight analytics.
-
-Schema:
-
-```sql
-page_views
-- id
-- slug
-- visitor_hash
-- referrer nullable
-- country nullable
-- created_at
-```
-
-Rules:
-
-- never block page rendering
-- send via client beacon
-- API endpoint handles ingestion
-- deduplicate obvious refresh spam
-
----
-
-### Aggregated Stats
-
-Optional table:
-
-```sql
-post_stats
-- slug
-- views
-- likes
-- updated_at
-```
-
-Use for:
-
-- fast reads
-- avoid counting raw page_views every render
-
----
-
-### Reactions
-
-Optional:
-simple emoji reactions.
-
-Example:
-
-- like
-- insightful
-- fun
-
-Keep implementation simple.
-
----
-
-### Guestbook
-
-Preferred over traditional comments branding.
-
-Tone:
-friendly / notebook / public notes
-
-Schema similar to comments.
+- Wanderer gradient text animation (CSS-only, respects `prefers-reduced-motion`)
+- Visitor country detection (Cloudflare `cf.country`) with localized country name
+- Locale switcher
+- RSS links
 
 ---
 
@@ -366,185 +257,112 @@ Keywords:
 - crafted indie hacker
 - design engineer portfolio
 
-Typography:
-high priority
+Typography: high priority — custom variable fonts, fallback stacks tuned per script (Latin, CJK).
 
-Animation:
-subtle, intentional
+Animation: subtle, intentional, respects `prefers-reduced-motion`.
 
-Micro interactions:
-encouraged
-
-Avoid:
-gratuitous motion.
+Micro interactions: encouraged.
 
 ---
 
 ## Performance Targets
 
-Target:
-excellent Lighthouse / real performance.
-
-Goals:
-
 - LCP < 2s
-- minimal JS
+- Minimal client JS (Astro islands architecture, zero JS by default)
 - SSR-first HTML
-- stream where useful
-- avoid hydration bloat
-
-Prefer:
-React Server Components where they make sense.
-
-Do NOT force RSC everywhere.
-
----
-
-## Security
-
-Required:
-
-- Turnstile for public submission
-- basic rate limiting
-- sanitize user content
-- escape rendered comments
-- validate payloads
-- prevent XSS
-- prevent spam flooding
-
-Never:
-store raw IP addresses if avoidable.
+- Font preload for critical faces
+- View transitions (fade, 320ms) via Astro ClientRouter
 
 ---
 
 ## SEO
 
-Required:
-
-- metadata
-- OG tags
-- twitter cards
-- canonical
-- sitemap
-- RSS
-- robots.txt
-- structured data where useful
+- Metadata per page via `<Seo>` component
+- OG tags + Twitter cards
+- Canonical URLs
+- Sitemap (`/sitemap.xml`)
+- RSS per locale (`/feed.xml`, `/feed.en.xml`, `/feed.ja.xml`)
+- JSON-LD structured data
+- `robots.txt` (if present)
+- `hreflang` links for locale feeds
 
 ---
 
-## Content Authoring Experience
+## Security
 
-Desired:
-pleasant MDX authoring.
-
-Support:
-
-- code blocks
-- images
-- callouts
-- custom components
-
-Content authoring should remain simple.
-
-No admin CMS.
-
-Git workflow only.
+- Sanitize user content (if/when added)
+- Validate payloads
+- Prevent XSS
 
 ---
 
-## DX Requirements
-
-Good developer experience matters.
-
-Required:
-
-- clean project structure
-- strict TS
-- reusable utilities
-- env validation
-- minimal abstraction
-- edge-compatible architecture
-
-Avoid:
-overengineering.
-
----
-
-## Suggested Project Structure
+## Project Structure
 
 ```txt
-/src
-  /app
-  /components
-  /content
-  /lib
-    /db
-    /analytics
-    /comments
-    /seo
-    /security
-  /routes
-  /styles
-  /types
+/content
+  /posts
+    /en          # English MDX posts
+    /zh          # Chinese MDX posts (primary)
+    /ja          # Japanese MDX posts
+  config.json    # capabilities, categories
 
-/schema
-  db.sql
+/public
+  /fonts         # self-hosted variable/subset fonts
+
+/src
+  /assets
+    /icons       # local SVG icons (loaded by unplugin-icons)
+  /components
+    /mdx         # MDX element overrides (a, h1-h6, img, table, etc.)
+    /ui          # reusable UI primitives (button, badge, container, popover, etc.)
+    /ui-fonts    # font loading components
+    *.astro      # page-level components (header, footer, seo, reveal, etc.)
+  /layouts
+    root-layout.astro
+  /lib
+    /i18n
+      /messages  # per-locale message files + types
+      *.ts       # locale resolution, cookie, switch logic
+    /theme       # theme bootstrap + constants
+    *.ts         # blog, seo-data, rss, reveal-engine, view-transition, etc.
+  /pages
+    index.astro
+    404.astro
+    design.astro
+    /post
+      index.astro
+      [slug].astro
+    feed.xml.ts
+    feed.en.xml.ts
+    feed.ja.xml.ts
+    sitemap.xml.ts
+  /scripts
+    site-client.ts
+  /styles
+    globals.css
+    photoswipe.css
+  /types
+    translator.ts
+  content.config.ts
+  env.d.ts
+  global.d.ts
+  middleware.ts
 ```
 
-Adjust if Waku conventions suggest better structure.
-
 ---
 
-## Cloudflare Notes
+## Key Conventions
 
-Use current best practices for:
-
-- Waku on Workers
-- Wrangler config
-- D1 bindings
-- Turnstile validation
-- edge deployment
-
-Cloudflare officially supports Waku deployment via Workers:
-https://developers.cloudflare.com/workers/framework-guides/web-apps/more-web-frameworks/waku/
-
-Use modern supported patterns only.
-
----
-
-## Implementation Strategy
-
-Recommended order:
-
-Phase 1:
-
-- base Waku setup
-- routing
-- design system
-- MDX content pipeline
-- blog rendering
-- portfolio rendering
-
-Phase 2:
-
-- SEO
-- RSS
-- sitemap
-- OG images
-
-Phase 3:
-
-- D1 integration
-- comments
-- guestbook
-- analytics
-
-Phase 4:
-
-- polish
-- animations
-- micro interactions
-- performance tuning
+- Commit frequently, conventional commit style.
+- Run `lint` and `lint:fix` after tasks; fix before commit.
+- Path alias `@/` maps to `./src/` (configured in `tsconfig.json` and `astro.config.ts` via `jiti`).
+- In `astro.config.ts`, use relative imports for `./src/...` because `@/` is not resolved during config loading.
+- Components are `.astro` files (not `.tsx`) — zero client JS by default.
+- Client-side JS is loaded via Astro islands or `<script>` tags that import from `/src/scripts/` or `/src/lib/*-client.ts`.
+- `data-astro-prefetch` on links for prefetch-on-hover.
+- `transition:animate` and `transition:persist` for Astro view transitions.
+- Content collections are typed via `src/content.config.ts` using Zod schemas.
+- i18n: use `getMessages(locale)` to get typed copy; add new strings to all three locale files + the types file.
 
 ---
 
