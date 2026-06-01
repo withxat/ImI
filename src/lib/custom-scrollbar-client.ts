@@ -362,7 +362,7 @@ export function initCustomScrollbar() {
 	}
 
 	function handleScroll() {
-		showTemporarily({ active: !supportsTrackHover(canHover) })
+		showTemporarily()
 		if (!scrollDriven) {
 			syncThumbFromScroll()
 		}
