@@ -114,10 +114,13 @@ function createScrollbarShell() {
 	const markersHost = document.createElement('div')
 	markersHost.className = 'custom-scrollbar-markers'
 
-	shell.append(trackShadow, track, thumb, markersHost)
+	const surface = document.createElement('div')
+	surface.className = 'custom-scrollbar-surface'
+	surface.append(trackShadow, track, thumb, markersHost)
+	shell.append(surface)
 	document.body.append(shell)
 
-	return { markersHost, shell, thumb, track, trackShadow }
+	return { markersHost, shell, surface, thumb, track, trackShadow }
 }
 
 export function destroyCustomScrollbar() {
@@ -135,7 +138,7 @@ export function initCustomScrollbar() {
 		return
 	}
 
-	const { markersHost, shell, thumb } = createScrollbarShell()
+	const { markersHost, shell, surface, thumb } = createScrollbarShell()
 	const tooltip = createTooltip()
 	const abortController = new AbortController()
 	const { signal } = abortController
@@ -208,6 +211,8 @@ export function initCustomScrollbar() {
 	}
 
 	function clearShellVisibilityInlineStyles() {
+		surface.style.removeProperty('opacity')
+		surface.style.removeProperty('transform')
 		shell.style.removeProperty('opacity')
 		shell.style.removeProperty('right')
 		shell.style.removeProperty('transform')
@@ -249,13 +254,6 @@ export function initCustomScrollbar() {
 		}
 	}
 
-	function finishLeave() {
-		clearLeaveFallback()
-		clearLeaveState()
-		clearShellVisibilityInlineStyles()
-		suppressShowUntil = performance.now() + SHELL_HIDE_MS + 80
-	}
-
 	function hideShell() {
 		if (shell.classList.contains('is-leaving')) {
 			return
@@ -267,17 +265,21 @@ export function initCustomScrollbar() {
 
 		visible = false
 		clearLeaveFallback()
-		clearShellVisibilityInlineStyles()
 
 		if (reducedMotion.matches) {
+			clearShellVisibilityInlineStyles()
 			shell.classList.remove('is-visible')
 			clearLeaveState()
 			return
 		}
 
+		if (!shell.classList.contains('is-visible')) {
+			return
+		}
+
+		// Keep is-visible during the exit keyframe so iOS does not snap to opacity: 0.
 		shell.classList.add('is-leaving')
-		shell.classList.remove('is-visible')
-		void shell.offsetWidth
+		void surface.offsetWidth
 
 		leaveFallbackTimer = window.setTimeout(() => {
 			leaveFallbackTimer = 0
@@ -288,7 +290,7 @@ export function initCustomScrollbar() {
 	}
 
 	function handleShellAnimationEnd(event: AnimationEvent) {
-		if (event.target !== shell || event.animationName !== SHELL_LEAVE_ANIMATION) {
+		if (event.target !== surface || !event.animationName.includes(SHELL_LEAVE_ANIMATION)) {
 			return
 		}
 
@@ -297,6 +299,14 @@ export function initCustomScrollbar() {
 		}
 
 		finishLeave()
+	}
+
+	function finishLeave() {
+		clearLeaveFallback()
+		clearLeaveState()
+		shell.classList.remove('is-visible')
+		clearShellVisibilityInlineStyles()
+		suppressShowUntil = performance.now() + SHELL_HIDE_MS + 80
 	}
 
 	function setVisible(nextVisible: boolean) {
@@ -709,7 +719,7 @@ export function initCustomScrollbar() {
 		})
 	})
 	window.addEventListener('pageshow', syncLayout, { signal })
-	shell.addEventListener('animationend', handleShellAnimationEnd, { signal })
+	surface.addEventListener('animationend', handleShellAnimationEnd, { signal })
 
 	window.addEventListener('scroll', handleScroll, { passive: true, signal })
 	window.addEventListener('resize', handleResize, { passive: true, signal })
