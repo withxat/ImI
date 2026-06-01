@@ -30,7 +30,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 				{m.footer.connect}
 			</p>
 			<FooterNav />
-			<div class="mt-16 flex items-center gap-2" hidden={isOnDesignPage}>
+			<div class="mt-16 flex items-center gap-2">
 				<a
 					class="
 						group inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors
@@ -52,12 +52,13 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 					/>
 					ImI v{appVersion}
 				</a>
-				<span class="text-xs">|</span>
+				<span class="text-xs" hidden={isOnDesignPage}>|</span>
 				<a
 					class="
 						group inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors
 						hover:text-highlight-text
 					"
+					hidden={isOnDesignPage}
 					href="/design"
 					data-design-link
 				>
