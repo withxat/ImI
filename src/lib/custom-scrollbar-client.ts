@@ -212,6 +212,18 @@ export function initCustomScrollbar() {
 		needsMeasure = false
 	}
 
+	function syncThumbFromScroll() {
+		const { maxScroll, scrollHeight, scrollTop, viewportHeight } = getScrollMetrics()
+		if (maxScroll <= 1) {
+			thumbHeight = trackHeight
+			thumbTop = trackTop
+			return
+		}
+
+		thumbHeight = clamp((viewportHeight / scrollHeight) * trackHeight, MIN_THUMB_HEIGHT, trackHeight)
+		thumbTop = trackTop + (scrollTop / maxScroll) * (trackHeight - thumbHeight)
+	}
+
 	function showTemporarily() {
 		if (hideTimer) {
 			window.clearTimeout(hideTimer)
@@ -400,8 +412,9 @@ export function initCustomScrollbar() {
 			return
 		}
 
-		const marker = findMarkerAt(event.clientY)
+		syncThumbFromScroll()
 		const isThumbPress = isPointInsideThumb(event.clientY)
+		const marker = isThumbPress ? null : findMarkerAt(event.clientY)
 		event.preventDefault()
 		canvas.setPointerCapture(event.pointerId)
 		activePointerId = event.pointerId
@@ -423,6 +436,12 @@ export function initCustomScrollbar() {
 
 		showTemporarily()
 		startAnimation()
+	}
+
+	function preventTouchScroll(event: TouchEvent) {
+		if (activePointerId !== null) {
+			event.preventDefault()
+		}
 	}
 
 	function handlePointerUp(event: PointerEvent) {
@@ -476,6 +495,7 @@ export function initCustomScrollbar() {
 	canvas.addEventListener('pointerdown', handlePointerDown, { signal })
 	canvas.addEventListener('pointerup', handlePointerUp, { signal })
 	canvas.addEventListener('pointercancel', handlePointerUp, { signal })
+	canvas.addEventListener('touchmove', preventTouchScroll, { passive: false, signal })
 	document.addEventListener('astro:after-swap', handleThemeChange, { signal })
 
 	cleanup = () => {
