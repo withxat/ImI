@@ -310,6 +310,14 @@ export function initCustomScrollbar() {
 		return markers.find(marker => Math.abs(marker.y - clientY) <= MARKER_HIT_RADIUS) ?? null
 	}
 
+	function findMarkerInsideThumb() {
+		const thumbBottom = thumbTop + thumbHeight
+		const thumbCenter = thumbTop + thumbHeight / 2
+		return markers
+			.filter(marker => marker.y >= thumbTop - 4 && marker.y <= thumbBottom + 4)
+			.sort((a, b) => Math.abs(a.y - thumbCenter) - Math.abs(b.y - thumbCenter))[0] ?? null
+	}
+
 	function scrollTopForClientY(clientY: number, offset = thumbHeight / 2) {
 		const { maxScroll } = getScrollMetrics()
 		if (maxScroll <= 0) {
@@ -361,6 +369,11 @@ export function initCustomScrollbar() {
 		}
 	}
 
+	function updateDragTooltip() {
+		const marker = findMarkerInsideThumb()
+		updateTooltip(marker, marker?.y ?? 0)
+	}
+
 	function handleScroll() {
 		showTemporarily()
 		if (!scrollDriven) {
@@ -371,6 +384,9 @@ export function initCustomScrollbar() {
 			thumbTop = TRACK_TOP + (maxScroll > 1 ? (scrollTop / maxScroll) * thumbTravel : 0)
 		}
 		updateMarkerStates()
+		if (dragging) {
+			updateDragTooltip()
+		}
 	}
 
 	function handlePointerMove(event: PointerEvent) {
@@ -382,6 +398,9 @@ export function initCustomScrollbar() {
 		if (dragging) {
 			event.preventDefault()
 			scrollToClientY(event.clientY)
+			syncThumbFromScroll()
+			updateMarkerStates()
+			updateDragTooltip()
 		}
 		else {
 			const marker = findMarkerAt(event.clientY)
@@ -410,6 +429,9 @@ export function initCustomScrollbar() {
 			}
 			event.preventDefault()
 			scrollToClientY(event.touches[0].clientY)
+			syncThumbFromScroll()
+			updateMarkerStates()
+			updateDragTooltip()
 			showTemporarily()
 		}
 
@@ -436,6 +458,7 @@ export function initCustomScrollbar() {
 		document.body.classList.remove('custom-scrollbar-dragging')
 		setInteracting(hover)
 		updateMarkerStates()
+		updateTooltip(null)
 		showTemporarily()
 	}
 
@@ -472,6 +495,7 @@ export function initCustomScrollbar() {
 			setInteracting(true)
 			updateThumbPointerOffset(event.clientY)
 			document.body.classList.add('custom-scrollbar-dragging')
+			updateDragTooltip()
 			if (isTouch) {
 				setupTouchDrag()
 			}
