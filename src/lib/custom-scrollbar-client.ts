@@ -21,6 +21,7 @@ const TRACK_WIDTH = 7
 const TRACK_CENTER_X = HOTZONE_WIDTH - 7
 const THUMB_WIDTH = 4
 const THUMB_ACTIVE_WIDTH = 6
+const THUMB_TOUCH_HIT_SLOP = 18
 const DOT_RADIUS = 2.5
 const MIN_THUMB_HEIGHT = 44
 const HIDE_DELAY = 1600
@@ -282,8 +283,8 @@ export function initCustomScrollbar() {
 		}
 	}
 
-	function isPointInsideThumb(clientY: number) {
-		return clientY >= thumbTop && clientY <= thumbTop + thumbHeight
+	function isPointInsideThumb(clientY: number, slop = 0) {
+		return clientY >= thumbTop - slop && clientY <= thumbTop + thumbHeight + slop
 	}
 
 	function updateThumbPointerOffset(clientY: number) {
@@ -413,25 +414,40 @@ export function initCustomScrollbar() {
 		}
 
 		syncThumbFromScroll()
-		const isThumbPress = isPointInsideThumb(event.clientY)
+		const allowsTrackClick = supportsTrackHover(canHover)
+		const isTouchLike = event.pointerType === 'touch' || !allowsTrackClick
+		const isThumbPress = isPointInsideThumb(event.clientY, isTouchLike ? THUMB_TOUCH_HIT_SLOP : 0)
 		const marker = isThumbPress ? null : findMarkerAt(event.clientY)
-		event.preventDefault()
-		canvas.setPointerCapture(event.pointerId)
-		activePointerId = event.pointerId
-		updateTooltip(null)
 
 		if (marker) {
+			event.preventDefault()
+			canvas.setPointerCapture(event.pointerId)
+			activePointerId = event.pointerId
+			updateTooltip(null)
 			dragging = false
 			scrollToTopSmooth(marker.element.getBoundingClientRect().top + window.scrollY)
 		}
 		else if (isThumbPress) {
+			event.preventDefault()
+			canvas.setPointerCapture(event.pointerId)
+			activePointerId = event.pointerId
+			updateTooltip(null)
 			dragging = true
 			updateThumbPointerOffset(event.clientY)
+			scrollToTopInstant(window.scrollY)
 			document.body.classList.add('custom-scrollbar-dragging')
+		}
+		else if (allowsTrackClick) {
+			event.preventDefault()
+			canvas.setPointerCapture(event.pointerId)
+			activePointerId = event.pointerId
+			updateTooltip(null)
+			dragging = false
+			scrollToClientYSmooth(event.clientY)
 		}
 		else {
 			dragging = false
-			scrollToClientYSmooth(event.clientY)
+			return
 		}
 
 		showTemporarily()
