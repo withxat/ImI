@@ -305,15 +305,17 @@
 		width: var(--cs-hotzone-width, 24px);
 		height: 100dvh;
 		opacity: 0;
-		transform: translateX(12px);
+		transform: translate3d(12px, 0, 0);
 		transition:
 			opacity 160ms cubic-bezier(0.22, 1, 0.36, 1),
 			transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
 	}
 
 	.custom-scrollbar.is-visible {
 		opacity: 1;
-		transform: translateX(0);
+		transform: translate3d(0, 0, 0);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

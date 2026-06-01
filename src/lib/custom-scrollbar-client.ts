@@ -11,6 +11,9 @@ interface SectionMarker {
 
 const HOTZONE_WIDTH = 24
 const MIN_TRACK_WIDTH = 768
+const SHELL_HIDE_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
+const SHELL_HIDE_MS = 160
+const SHELL_OFFSET_PX = 12
 const TRACK_TOP = 14
 const THUMB_TOUCH_HIT_SLOP = 18
 const MIN_THUMB_HEIGHT = 44
@@ -158,6 +161,7 @@ export function initCustomScrollbar() {
 	let trackHeightAnim: AnimationControls | null = null
 	let thumbHeightAnim: AnimationControls | null = null
 	let thumbTravelAnim: AnimationControls | null = null
+	let hideShellAnim: Animation | null = null
 	let visible = false
 
 	function springTo(
@@ -206,20 +210,88 @@ export function initCustomScrollbar() {
 	function clearShellVisibilityInlineStyles() {
 		shell.style.removeProperty('opacity')
 		shell.style.removeProperty('right')
+		shell.style.removeProperty('transform')
+	}
+
+	function cancelHideAnimation() {
+		if (!hideShellAnim) {
+			return
+		}
+
+		hideShellAnim.cancel()
+		hideShellAnim = null
+		clearShellVisibilityInlineStyles()
 	}
 
 	function commitShellVisibility() {
+		cancelHideAnimation()
 		clearShellVisibilityInlineStyles()
 		shell.classList.toggle('is-visible', visible)
 	}
 
-	function setVisible(nextVisible: boolean) {
-		if (visible === nextVisible) {
+	function showShell() {
+		cancelHideAnimation()
+		clearShellVisibilityInlineStyles()
+		visible = true
+		shell.classList.add('is-visible')
+	}
+
+	function hideShell() {
+		if (!visible && !hideShellAnim) {
 			return
 		}
 
-		visible = nextVisible
-		commitShellVisibility()
+		visible = false
+		cancelHideAnimation()
+
+		if (reducedMotion.matches) {
+			shell.classList.remove('is-visible')
+			return
+		}
+
+		shell.classList.add('is-visible')
+
+		const animation = shell.animate(
+			[
+				{ opacity: 1, transform: 'translate3d(0, 0, 0)' },
+				{ opacity: 0, transform: `translate3d(${SHELL_OFFSET_PX}px, 0, 0)` },
+			],
+			{
+				duration: SHELL_HIDE_MS,
+				easing: SHELL_HIDE_EASING,
+				fill: 'forwards',
+			},
+		)
+
+		hideShellAnim = animation
+
+		animation.addEventListener('finish', () => {
+			if (hideShellAnim !== animation) {
+				return
+			}
+
+			hideShellAnim = null
+			animation.cancel()
+			shell.classList.remove('is-visible')
+			clearShellVisibilityInlineStyles()
+		}, { once: true })
+	}
+
+	function setVisible(nextVisible: boolean) {
+		if (nextVisible) {
+			if (visible && shell.classList.contains('is-visible') && !hideShellAnim) {
+				return
+			}
+
+			showShell()
+			return
+		}
+
+		if (!visible && !hideShellAnim) {
+			return
+		}
+
+		hideShell()
 	}
 
 	function setInteracting(interacting: boolean) {
@@ -324,8 +396,7 @@ export function initCustomScrollbar() {
 			window.clearTimeout(hideTimer)
 		}
 
-		visible = true
-		commitShellVisibility()
+		showShell()
 		setInteracting(options.active || hover || dragging)
 
 		hideTimer = window.setTimeout(() => {
@@ -632,6 +703,7 @@ export function initCustomScrollbar() {
 		trackHeightAnim?.stop()
 		thumbHeightAnim?.stop()
 		thumbTravelAnim?.stop()
+		cancelHideAnimation()
 		clearShellVisibilityInlineStyles()
 		if (hideTimer) {
 			window.clearTimeout(hideTimer)
