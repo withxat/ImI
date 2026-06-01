@@ -36,8 +36,8 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 						group inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors
 						hover:text-highlight-text
 					"
-					href="/design"
-					data-design-link
+					href="https://github.com/withxat/imi"
+					target="_blank"
 				>
 					<Image
 						class="
@@ -50,7 +50,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 						src={shinyTf}
 						width={20}
 					/>
-					Design System
+					ImI v{appVersion}
 				</a>
 				<span class="text-xs">|</span>
 				<a
@@ -58,10 +58,11 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 						group inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors
 						hover:text-highlight-text
 					"
-					href="https://github.com/withxat/imi"
-					target="_blank"
+					href="/design"
+					data-design-link
 				>
-					ImI v{appVersion}
+
+					Design System
 				</a>
 			</div>
 			<a
