@@ -1,3 +1,7 @@
+import { animate } from 'motion'
+
+type AnimationControls = ReturnType<typeof animate>
+
 interface SectionMarker {
 	button: HTMLButtonElement
 	element: HTMLElement
@@ -142,6 +146,30 @@ export function initCustomScrollbar() {
 	let thumbTop = TRACK_TOP
 	let thumbPointerOffset = MIN_THUMB_HEIGHT / 2
 	let thumbTravel = 0
+	let firstMeasure = true
+	let trackHeightVisual = 0
+	let thumbHeightVisual = MIN_THUMB_HEIGHT
+	let thumbTravelVisual = 0
+	let trackHeightAnim: AnimationControls | null = null
+	let thumbHeightAnim: AnimationControls | null = null
+	let thumbTravelAnim: AnimationControls | null = null
+
+	function springTo(
+		current: number,
+		target: number,
+		onUpdate: (value: number) => void,
+	): AnimationControls | null {
+		if (firstMeasure || Math.abs(target - current) < 1) {
+			onUpdate(target)
+			return null
+		}
+		return animate(current, target, {
+			bounce: 0.18,
+			duration: 0.45,
+			onUpdate,
+			type: 'spring',
+		})
+	}
 
 	const markers = collectSectionMarkers(markersHost)
 	const resizeObserver = new ResizeObserver(() => {
@@ -189,9 +217,25 @@ export function initCustomScrollbar() {
 		thumbTravel = Math.max(0, trackHeight - thumbHeight)
 
 		root.style.setProperty('--cs-track-top', `${TRACK_TOP}px`)
-		root.style.setProperty('--cs-track-height', `${trackHeight}px`)
-		root.style.setProperty('--cs-thumb-height', `${thumbHeight}px`)
-		root.style.setProperty('--cs-thumb-travel', `${thumbTravel}px`)
+
+		trackHeightAnim?.stop()
+		thumbHeightAnim?.stop()
+		thumbTravelAnim?.stop()
+
+		trackHeightAnim = springTo(trackHeightVisual, trackHeight, (value) => {
+			trackHeightVisual = value
+			root.style.setProperty('--cs-track-height', `${value}px`)
+		})
+		thumbHeightAnim = springTo(thumbHeightVisual, thumbHeight, (value) => {
+			thumbHeightVisual = value
+			root.style.setProperty('--cs-thumb-height', `${value}px`)
+		})
+		thumbTravelAnim = springTo(thumbTravelVisual, thumbTravel, (value) => {
+			thumbTravelVisual = value
+			root.style.setProperty('--cs-thumb-travel', `${value}px`)
+		})
+
+		firstMeasure = false
 
 		shell.classList.toggle('has-scroll', hasScroll)
 
@@ -513,6 +557,9 @@ export function initCustomScrollbar() {
 		touchDragCleanup?.()
 		abortController.abort()
 		resizeObserver.disconnect()
+		trackHeightAnim?.stop()
+		thumbHeightAnim?.stop()
+		thumbTravelAnim?.stop()
 		if (hideTimer) {
 			window.clearTimeout(hideTimer)
 		}
