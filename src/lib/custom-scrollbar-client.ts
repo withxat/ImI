@@ -162,6 +162,7 @@ export function initCustomScrollbar() {
 	let thumbHeight = MIN_THUMB_HEIGHT
 	let thumbTop = 0
 	let thumbWidth = THUMB_WIDTH
+	let thumbPointerOffset = MIN_THUMB_HEIGHT / 2
 	let trackAlpha = 0
 
 	const markers = collectSectionMarkers()
@@ -245,18 +246,18 @@ export function initCustomScrollbar() {
 		return markers.find(marker => Math.abs(marker.currentY - clientY) <= 9) ?? null
 	}
 
-	function scrollTopForClientY(clientY: number) {
+	function scrollTopForClientY(clientY: number, thumbOffset = thumbHeight / 2) {
 		const { maxScroll } = getScrollMetrics()
 		if (maxScroll <= 0) {
 			return null
 		}
 
-		const ratio = clamp((clientY - trackTop - thumbHeight / 2) / Math.max(1, trackHeight - thumbHeight), 0, 1)
+		const ratio = clamp((clientY - trackTop - thumbOffset) / Math.max(1, trackHeight - thumbHeight), 0, 1)
 		return ratio * maxScroll
 	}
 
 	function scrollToClientY(clientY: number) {
-		const top = scrollTopForClientY(clientY)
+		const top = scrollTopForClientY(clientY, thumbPointerOffset)
 		if (top !== null) {
 			scrollToTopInstant(top)
 		}
@@ -271,6 +272,10 @@ export function initCustomScrollbar() {
 
 	function isPointInsideThumb(clientY: number) {
 		return clientY >= thumbTop && clientY <= thumbTop + thumbHeight
+	}
+
+	function updateThumbPointerOffset(clientY: number) {
+		thumbPointerOffset = clamp(clientY - thumbTop, 0, thumbHeight)
 	}
 
 	function drawRoundedRect(x: number, y: number, width: number, height: number, radius: number) {
@@ -396,20 +401,23 @@ export function initCustomScrollbar() {
 		}
 
 		const marker = findMarkerAt(event.clientY)
+		const isThumbPress = isPointInsideThumb(event.clientY)
 		event.preventDefault()
 		canvas.setPointerCapture(event.pointerId)
 		activePointerId = event.pointerId
-		dragging = true
 		updateTooltip(null)
-		document.body.classList.add('custom-scrollbar-dragging')
 
 		if (marker) {
+			dragging = false
 			scrollToTopSmooth(marker.element.getBoundingClientRect().top + window.scrollY)
 		}
-		else if (isPointInsideThumb(event.clientY)) {
-			scrollToClientY(event.clientY)
+		else if (isThumbPress) {
+			dragging = true
+			updateThumbPointerOffset(event.clientY)
+			document.body.classList.add('custom-scrollbar-dragging')
 		}
 		else {
+			dragging = false
 			scrollToClientYSmooth(event.clientY)
 		}
 
