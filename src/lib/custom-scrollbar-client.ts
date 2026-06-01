@@ -272,7 +272,7 @@ export function initCustomScrollbar() {
 		}
 	}
 
-	function showTemporarily() {
+	function showTemporarily(options: { active?: boolean } = {}) {
 		const { maxScroll } = getScrollMetrics()
 		if (maxScroll <= 1) {
 			return
@@ -283,7 +283,7 @@ export function initCustomScrollbar() {
 		}
 
 		setVisible(true)
-		setInteracting(hover || dragging)
+		setInteracting(options.active || hover || dragging)
 
 		hideTimer = window.setTimeout(() => {
 			if (!dragging && !hover) {
@@ -363,7 +363,7 @@ export function initCustomScrollbar() {
 	}
 
 	function handleScroll() {
-		showTemporarily()
+		showTemporarily({ active: !supportsTrackHover(canHover) })
 		if (!scrollDriven) {
 			syncThumbFromScroll()
 		}
