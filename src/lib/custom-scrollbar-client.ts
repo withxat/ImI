@@ -176,7 +176,9 @@ export function initCustomScrollbar() {
 	const markers = collectSectionMarkers(markersHost)
 	const resizeObserver = new ResizeObserver(() => {
 		measure()
-		showTemporarily()
+		if (visible || hover || dragging) {
+			showTemporarily()
+		}
 	})
 
 	function setNativeFallback() {
@@ -207,7 +209,7 @@ export function initCustomScrollbar() {
 		shell.classList.toggle('is-visible', nextVisible)
 		visibilityAnim = animate(shell, {
 			opacity: nextVisible ? 1 : 0,
-			x: nextVisible ? 0 : 12,
+			right: nextVisible ? 0 : -12,
 		}, {
 			duration: 0.16,
 			ease: [0.22, 1, 0.36, 1],
@@ -558,12 +560,13 @@ export function initCustomScrollbar() {
 		}
 
 		measure()
-		showTemporarily()
+		if (visible || hover || dragging) {
+			showTemporarily()
+		}
 	}
 
 	function handleAfterSwap() {
 		measure()
-		showTemporarily()
 	}
 
 	for (const marker of markers) {
@@ -578,7 +581,6 @@ export function initCustomScrollbar() {
 	resizeObserver.observe(document.body)
 	resizeObserver.observe(document.documentElement)
 	setCustomReady()
-	showTemporarily()
 
 	window.addEventListener('scroll', handleScroll, { passive: true, signal })
 	window.addEventListener('resize', handleResize, { passive: true, signal })

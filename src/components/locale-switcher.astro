@@ -1,6 +1,8 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
+import Dot from '~icons/lucide/dot'
+
 import { LOCALES } from '@/lib/i18n/constants'
 import { buildLocaleSwitchHref } from '@/lib/i18n/locale-switch'
 
@@ -21,10 +23,12 @@ const { pathname, search } = Astro.url
 ---
 
 <div aria-label={ariaLabel} class={className} role="navigation">
-	<p class="flex flex-wrap items-center gap-x-0 font-ui text-sm text-muted-foreground">
+	<p class="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-muted-foreground">
 		{LOCALES.map((locale, index) => (
 			<span class="inline-flex items-center whitespace-nowrap">
-				{index > 0 && <span class="mx-1.5 text-border">·</span>}
+				{index > 0 && (
+					<Dot aria-hidden="true" class="size-3 shrink-0 text-muted-foreground opacity-70" />
+				)}
 				{locale === currentLocale
 					? (
 							<span class="font-medium text-highlight-strong" lang={locale}>

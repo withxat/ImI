@@ -13,6 +13,7 @@ export function initIntroBadges() {
 		if (!trigger || !popup)
 			continue
 
+		const canHover = matchMedia('(hover: hover) and (pointer: fine)')
 		let focusReturnTarget: HTMLElement | null = null
 
 		const setTriggerOpenState = (open: boolean) => {
@@ -49,6 +50,18 @@ export function initIntroBadges() {
 						document.activeElement.blur()
 				})
 			})
+		}, { signal })
+
+		trigger.addEventListener('click', (event) => {
+			if (canHover.matches)
+				return
+
+			event.preventDefault()
+			event.stopPropagation()
+			root.dispatchEvent(new CustomEvent('hover-card:set', {
+				bubbles: true,
+				detail: { open: !root.hasAttribute('data-open') },
+			}))
 		}, { signal })
 
 		root.addEventListener('pointerenter', () => {

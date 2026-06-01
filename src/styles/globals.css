@@ -299,12 +299,11 @@
 
 	.custom-scrollbar {
 		position: fixed;
-		inset: 0 0 auto auto;
+		inset: 0 -12px auto auto;
 		z-index: 60;
 		width: var(--cs-hotzone-width, 24px);
 		height: 100dvh;
 		opacity: 0;
-		transform: translate3d(12px, 0, 0);
 	}
 
 	.custom-scrollbar:not(.is-visible):not(.is-active):not(.is-dragging) {
@@ -476,6 +475,11 @@
 		padding: 0.45rem 0.6rem;
 		pointer-events: none;
 		text-wrap: balance;
+	}
+
+	.custom-scrollbar,
+	.custom-scrollbar-tooltip {
+		view-transition-name: none;
 	}
 
 	body.custom-scrollbar-dragging,
