@@ -11,6 +11,8 @@ interface SectionMarker {
 
 const HOTZONE_WIDTH = 24
 const MIN_TRACK_WIDTH = 768
+const SHELL_HIDDEN_RIGHT = -12
+const SHELL_VISIBLE_RIGHT = 0
 const TRACK_TOP = 14
 const THUMB_TOUCH_HIT_SLOP = 18
 const MIN_THUMB_HEIGHT = 44
@@ -199,6 +201,15 @@ export function initCustomScrollbar() {
 		}
 	}
 
+	function snapShellVisibility() {
+		visibilityAnim?.stop()
+		visibilityAnim = null
+		shell.style.opacity = visible ? '1' : '0'
+		shell.style.right = visible
+			? `${SHELL_VISIBLE_RIGHT}px`
+			: `${SHELL_HIDDEN_RIGHT}px`
+	}
+
 	function setVisible(nextVisible: boolean) {
 		if (visible === nextVisible) {
 			return
@@ -209,7 +220,7 @@ export function initCustomScrollbar() {
 		shell.classList.toggle('is-visible', nextVisible)
 		visibilityAnim = animate(shell, {
 			opacity: nextVisible ? 1 : 0,
-			right: nextVisible ? 0 : -12,
+			right: nextVisible ? SHELL_VISIBLE_RIGHT : SHELL_HIDDEN_RIGHT,
 		}, {
 			duration: 0.16,
 			ease: [0.22, 1, 0.36, 1],
@@ -238,7 +249,6 @@ export function initCustomScrollbar() {
 		trackHeightAnim?.stop()
 		thumbHeightAnim?.stop()
 		thumbTravelAnim?.stop()
-		visibilityAnim?.stop()
 
 		trackHeightAnim = springTo(trackHeightVisual, trackHeight, (value) => {
 			trackHeightVisual = value
@@ -271,6 +281,19 @@ export function initCustomScrollbar() {
 		updateMarkerStates()
 	}
 
+	function resyncScrollTimeline() {
+		if (!scrollDriven) {
+			syncThumbFromScroll()
+			return
+		}
+
+		thumb.style.removeProperty('transform')
+		root.classList.remove('custom-scrollbar-scroll-driven')
+		void document.documentElement.offsetHeight
+		root.classList.add('custom-scrollbar-scroll-driven')
+		syncThumbFromScroll()
+	}
+
 	function syncThumbFromScroll() {
 		const { maxScroll, scrollTop } = getScrollMetrics()
 		if (maxScroll <= 1) {
@@ -287,6 +310,13 @@ export function initCustomScrollbar() {
 			const y = (scrollTop / maxScroll) * thumbTravel
 			thumb.style.transform = `translate3d(0, ${y}px, 0)`
 		}
+	}
+
+	function syncAfterScrollRestore() {
+		measure()
+		snapShellVisibility()
+		resyncScrollTimeline()
+		updateMarkerStates()
 	}
 
 	function showTemporarily(options: { active?: boolean } = {}) {
@@ -582,6 +612,14 @@ export function initCustomScrollbar() {
 	resizeObserver.observe(document.documentElement)
 	setCustomReady()
 
+	// Browser scroll restoration can land after first measure/visibility animation.
+	requestAnimationFrame(() => {
+		requestAnimationFrame(() => {
+			syncAfterScrollRestore()
+		})
+	})
+	window.addEventListener('pageshow', syncAfterScrollRestore, { signal })
+
 	window.addEventListener('scroll', handleScroll, { passive: true, signal })
 	window.addEventListener('resize', handleResize, { passive: true, signal })
 	canHover.addEventListener('change', handleResize, { signal })
@@ -601,6 +639,9 @@ export function initCustomScrollbar() {
 		trackHeightAnim?.stop()
 		thumbHeightAnim?.stop()
 		thumbTravelAnim?.stop()
+		visibilityAnim?.stop()
+		shell.style.removeProperty('opacity')
+		shell.style.removeProperty('right')
 		if (hideTimer) {
 			window.clearTimeout(hideTimer)
 		}
