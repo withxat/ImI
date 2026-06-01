@@ -1,6 +1,7 @@
 interface ScrollbarPalette {
 	dot: string
 	dotActive: string
+	dotHalo: string
 	shadow: string
 	thumb: string
 	thumbActive: string
@@ -14,9 +15,9 @@ interface SectionMarker {
 	title: string
 }
 
-const MIN_DESKTOP_WIDTH = 768
 const HOTZONE_WIDTH = 28
 const TRACK_WIDTH = 10
+const TRACK_CENTER_X = HOTZONE_WIDTH - 8
 const THUMB_WIDTH = 5
 const THUMB_ACTIVE_WIDTH = 8
 const DOT_RADIUS = 3
@@ -61,6 +62,7 @@ function getPalette(): ScrollbarPalette {
 	return {
 		dot: `color-mix(in oklab, ${muted} 54%, transparent)`,
 		dotActive: highlightText,
+		dotHalo: `color-mix(in oklab, ${background} 88%, transparent)`,
 		shadow: `color-mix(in oklab, ${background} 72%, transparent)`,
 		thumb: `color-mix(in oklab, ${highlightText} 72%, ${foreground})`,
 		thumbActive: highlightText,
@@ -96,9 +98,8 @@ function createTooltip() {
 }
 
 function supportsCustomScrollbar() {
-	const media = matchMedia(`(min-width: ${MIN_DESKTOP_WIDTH}px) and (hover: hover) and (pointer: fine)`)
 	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
-	return media.matches && !reducedMotion.matches
+	return !reducedMotion.matches
 }
 
 export function destroyCustomScrollbar() {
@@ -131,7 +132,6 @@ export function initCustomScrollbar() {
 	const tooltip = createTooltip()
 	const abortController = new AbortController()
 	const { signal } = abortController
-	const media = matchMedia(`(min-width: ${MIN_DESKTOP_WIDTH}px) and (hover: hover) and (pointer: fine)`)
 	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 
 	let activePointerId: null | number = null
@@ -254,7 +254,7 @@ export function initCustomScrollbar() {
 	function draw() {
 		animationFrame = 0
 
-		if (!media.matches || reducedMotion.matches) {
+		if (reducedMotion.matches) {
 			destroyCustomScrollbar()
 			setNativeFallback()
 			return
@@ -280,29 +280,34 @@ export function initCustomScrollbar() {
 		context.clearRect(0, 0, HOTZONE_WIDTH, window.innerHeight)
 
 		if (alpha > 0.01 && hasScroll) {
-			const trackX = HOTZONE_WIDTH - 13 + offsetX
-			const thumbX = HOTZONE_WIDTH - 11 - thumbWidth / 2 + offsetX
+			const trackX = TRACK_CENTER_X - TRACK_WIDTH / 2 + offsetX
+			const thumbX = TRACK_CENTER_X - thumbWidth / 2 + offsetX
 
 			context.save()
 			context.globalAlpha = alpha
 
 			context.fillStyle = palette.shadow
-			drawRoundedRect(HOTZONE_WIDTH - 10 + offsetX, 0, 10, window.innerHeight, 0)
+			drawRoundedRect(TRACK_CENTER_X + TRACK_WIDTH / 2 - 1 + offsetX, 0, HOTZONE_WIDTH - TRACK_CENTER_X, window.innerHeight, 0)
 
 			context.fillStyle = palette.track
 			drawRoundedRect(trackX, trackTop, TRACK_WIDTH, trackHeight, TRACK_WIDTH / 2)
 
+			context.fillStyle = dragging || hover ? palette.thumbActive : palette.thumb
+			drawRoundedRect(thumbX, thumbTop, thumbWidth, thumbHeight, thumbWidth / 2)
+
 			for (const marker of markers) {
 				marker.currentY = lerp(marker.currentY || marker.targetY, marker.targetY, 0.2)
 				const isInsideThumb = marker.currentY >= thumbTop - 4 && marker.currentY <= thumbTop + thumbHeight + 4
+				context.fillStyle = palette.dotHalo
+				context.beginPath()
+				context.arc(TRACK_CENTER_X + offsetX, marker.currentY, DOT_RADIUS + 2, 0, Math.PI * 2)
+				context.fill()
 				context.fillStyle = isInsideThumb || marker === hoveredMarker ? palette.dotActive : palette.dot
 				context.beginPath()
-				context.arc(trackX + TRACK_WIDTH / 2, marker.currentY, marker === hoveredMarker ? DOT_RADIUS + 1 : DOT_RADIUS, 0, Math.PI * 2)
+				context.arc(TRACK_CENTER_X + offsetX, marker.currentY, marker === hoveredMarker ? DOT_RADIUS + 1 : DOT_RADIUS, 0, Math.PI * 2)
 				context.fill()
 			}
 
-			context.fillStyle = dragging || hover ? palette.thumbActive : palette.thumb
-			drawRoundedRect(thumbX, thumbTop, thumbWidth, thumbHeight, thumbWidth / 2)
 			context.restore()
 		}
 
@@ -416,7 +421,6 @@ export function initCustomScrollbar() {
 		startAnimation()
 	}, { passive: true, signal })
 	window.addEventListener('resize', handleResize, { passive: true, signal })
-	media.addEventListener('change', handleResize, { signal })
 	reducedMotion.addEventListener('change', handleResize, { signal })
 	canvas.addEventListener('pointermove', handlePointerMove, { signal })
 	canvas.addEventListener('pointerleave', handlePointerLeave, { signal })
