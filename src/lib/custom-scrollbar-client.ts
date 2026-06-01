@@ -133,6 +133,7 @@ export function initCustomScrollbar() {
 	const scrollDriven = supportsScrollTimeline()
 
 	let activePointerId: null | number = null
+	let touchDragCleanup: (() => void) | null = null
 	let dragging = false
 	let hideTimer = 0
 	let hover = false
@@ -359,6 +360,42 @@ export function initCustomScrollbar() {
 		showTemporarily()
 	}
 
+	function setupTouchDrag() {
+		const onTouchMove = (event: TouchEvent) => {
+			if (event.touches.length !== 1) {
+				return
+			}
+			event.preventDefault()
+			scrollToClientY(event.touches[0].clientY)
+			showTemporarily()
+		}
+
+		const onTouchEnd = () => {
+			endDrag()
+		}
+
+		document.addEventListener('touchmove', onTouchMove, { passive: false, signal })
+		document.addEventListener('touchend', onTouchEnd, { once: true, signal })
+		document.addEventListener('touchcancel', onTouchEnd, { once: true, signal })
+
+		touchDragCleanup = () => {
+			document.removeEventListener('touchmove', onTouchMove)
+			document.removeEventListener('touchend', onTouchEnd)
+			document.removeEventListener('touchcancel', onTouchEnd)
+		}
+	}
+
+	function endDrag() {
+		touchDragCleanup?.()
+		touchDragCleanup = null
+		activePointerId = null
+		dragging = false
+		document.body.classList.remove('custom-scrollbar-dragging')
+		setInteracting(hover)
+		updateMarkerStates()
+		showTemporarily()
+	}
+
 	function handlePointerDown(event: PointerEvent) {
 		if (event.button !== 0) {
 			return
@@ -369,10 +406,13 @@ export function initCustomScrollbar() {
 		const isTouchLike = event.pointerType === 'touch' || !allowsTrackClick
 		const isThumbPress = isPointInsideThumb(event.clientY, isTouchLike ? THUMB_TOUCH_HIT_SLOP : 0)
 		const marker = isThumbPress ? null : findMarkerAt(event.clientY)
+		const isTouch = event.pointerType === 'touch'
 
 		if (marker) {
 			event.preventDefault()
-			shell.setPointerCapture(event.pointerId)
+			if (!isTouch) {
+				shell.setPointerCapture(event.pointerId)
+			}
 			activePointerId = event.pointerId
 			updateTooltip(null)
 			dragging = false
@@ -380,18 +420,24 @@ export function initCustomScrollbar() {
 		}
 		else if (isThumbPress) {
 			event.preventDefault()
-			shell.setPointerCapture(event.pointerId)
+			if (!isTouch) {
+				shell.setPointerCapture(event.pointerId)
+			}
 			activePointerId = event.pointerId
 			updateTooltip(null)
 			dragging = true
 			setInteracting(true)
 			updateThumbPointerOffset(event.clientY)
-			scrollToTopInstant(window.scrollY)
 			document.body.classList.add('custom-scrollbar-dragging')
+			if (isTouch) {
+				setupTouchDrag()
+			}
 		}
 		else if (allowsTrackClick) {
 			event.preventDefault()
-			shell.setPointerCapture(event.pointerId)
+			if (!isTouch) {
+				shell.setPointerCapture(event.pointerId)
+			}
 			activePointerId = event.pointerId
 			updateTooltip(null)
 			dragging = false
@@ -415,15 +461,10 @@ export function initCustomScrollbar() {
 			return
 		}
 
-		activePointerId = null
-		dragging = false
-		document.body.classList.remove('custom-scrollbar-dragging')
 		if (shell.hasPointerCapture(event.pointerId)) {
 			shell.releasePointerCapture(event.pointerId)
 		}
-		setInteracting(hover)
-		updateMarkerStates()
-		showTemporarily()
+		endDrag()
 	}
 
 	function handleResize() {
@@ -469,6 +510,7 @@ export function initCustomScrollbar() {
 	document.addEventListener('astro:after-swap', handleAfterSwap, { signal })
 
 	cleanup = () => {
+		touchDragCleanup?.()
 		abortController.abort()
 		resizeObserver.disconnect()
 		if (hideTimer) {
