@@ -15,12 +15,12 @@ interface SectionMarker {
 	title: string
 }
 
-const HOTZONE_WIDTH = 28
-const TRACK_WIDTH = 10
-const TRACK_CENTER_X = HOTZONE_WIDTH - 8
-const THUMB_WIDTH = 5
-const THUMB_ACTIVE_WIDTH = 8
-const DOT_RADIUS = 3
+const HOTZONE_WIDTH = 24
+const TRACK_WIDTH = 7
+const TRACK_CENTER_X = HOTZONE_WIDTH - 7
+const THUMB_WIDTH = 4
+const THUMB_ACTIVE_WIDTH = 6
+const DOT_RADIUS = 2.5
 const MIN_THUMB_HEIGHT = 44
 const HIDE_DELAY = 1600
 
