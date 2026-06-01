@@ -26,4 +26,20 @@ config.append({
 	},
 })
 
+// Treat src/components/ui/ as vendored bejamas prime components.
+// They use PascalCase filenames and intentionally-stacked Tailwind classes
+// that conflict with our stricter project conventions. Keep them re-pullable.
+config.append({
+	files: ['src/components/ui/**/*.{ts,astro}'],
+	rules: {
+		'better-tailwindcss/no-conflicting-classes': 'off',
+		'better-tailwindcss/no-unknown-classes': 'off',
+		'perfectionist/sort-exports': 'off',
+		'style/indent': 'off',
+		'style/quotes': 'off',
+		'style/semi': 'off',
+		'unicorn/filename-case': 'off',
+	},
+})
+
 export default config

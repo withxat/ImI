@@ -1,0 +1,32 @@
+---
+import type { Props as ButtonProps } from '@/components/ui/button/Button.astro'
+
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
+type Props = ButtonProps & {
+	/** Radix-like: render wrapper so the child can be the interactive element */
+	asChild?: boolean
+	class?: string
+}
+
+const { asChild = false, class: className = '', ...rest } = Astro.props as Props;
+---
+
+{
+	asChild
+		? (
+				<div class={cn('', 'inline-flex items-center', className)} data-slot="popover-trigger" data-as-child>
+					<slot />
+				</div>
+			)
+		: (
+				<Button
+					class={cn('', 'inline-flex items-center', className)}
+					data-slot="popover-trigger"
+					{...rest as any}
+				>
+					<slot />
+				</Button>
+			)
+}

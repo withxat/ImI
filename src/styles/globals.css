@@ -225,6 +225,11 @@
 	}
 
 	html.custom-scrollbar-ready {
+		--cs-track-top: 14px;
+		--cs-track-height: calc(100dvh - 28px);
+		--cs-thumb-height: 44px;
+		--cs-thumb-travel: 0px;
+		--cs-center-right: 7px;
 		scrollbar-width: none;
 	}
 
@@ -292,15 +297,164 @@
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	.custom-scrollbar-canvas {
+	.custom-scrollbar {
 		position: fixed;
 		inset: 0 0 auto auto;
 		z-index: 60;
-		display: block;
+		width: var(--cs-hotzone-width, 24px);
+		height: 100dvh;
+		opacity: 0;
+		transform: translate3d(12px, 0, 0);
+		transition:
+			opacity 160ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.custom-scrollbar.is-visible {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+
+	.custom-scrollbar:not(.has-scroll) {
+		visibility: hidden;
+		pointer-events: none;
+	}
+
+	.custom-scrollbar-track-shadow {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: calc(var(--cs-hotzone-width, 24px) - 10px);
+		height: 100%;
+		border-radius: 0;
+		background: color-mix(in oklab, var(--background) 72%, transparent);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.custom-scrollbar-track {
+		position: absolute;
+		top: var(--cs-track-top);
+		right: calc(var(--cs-center-right) - 3.5px);
+		width: 7px;
+		height: var(--cs-track-height);
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--highlight-soft) 42%, transparent);
+		opacity: 0;
+		pointer-events: auto;
 		cursor: pointer;
+		transition: opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.custom-scrollbar.is-active .custom-scrollbar-track,
+	.custom-scrollbar.is-active .custom-scrollbar-track-shadow {
+		opacity: 1;
+	}
+
+	.custom-scrollbar-thumb {
+		position: absolute;
+		top: var(--cs-track-top);
+		right: calc(var(--cs-center-right) - 2px);
+		width: 4px;
+		height: var(--cs-thumb-height);
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--highlight-text) 72%, var(--foreground));
+		pointer-events: auto;
+		cursor: grab;
 		touch-action: none;
-		user-select: none;
+		transition:
+			width 180ms cubic-bezier(0.22, 1, 0.36, 1),
+			background-color 150ms ease,
+			right 180ms cubic-bezier(0.22, 1, 0.36, 1);
+		will-change: transform;
+	}
+
+	.custom-scrollbar.is-active .custom-scrollbar-thumb {
+		width: 6px;
+		right: calc(var(--cs-center-right) - 3px);
+		background: var(--highlight-text);
+	}
+
+	.custom-scrollbar.is-dragging .custom-scrollbar-thumb {
+		cursor: grabbing;
+	}
+
+	html.custom-scrollbar-scroll-driven .custom-scrollbar-thumb {
+		animation: cs-thumb-track linear both;
+		animation-timeline: scroll(root block);
+	}
+
+	@keyframes cs-thumb-track {
+		to {
+			transform: translate3d(0, var(--cs-thumb-travel), 0);
+		}
+	}
+
+	.custom-scrollbar-markers {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.custom-scrollbar-marker {
+		position: absolute;
+		right: var(--cs-center-right);
+		width: 18px;
+		height: 18px;
+		border: 0;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		pointer-events: auto;
+		cursor: pointer;
+		transform: translate(50%, -50%);
+		transition: top 200ms cubic-bezier(0.22, 1, 0.36, 1);
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	.custom-scrollbar-marker::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 9px;
+		height: 9px;
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--background) 88%, transparent);
+		box-shadow: 0 0 0 0 color-mix(in oklab, var(--background) 88%, transparent);
+		transform: translate(-50%, -50%);
+		transition:
+			background-color 150ms ease,
+			box-shadow 150ms ease;
+	}
+
+	.custom-scrollbar-marker::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 5px;
+		height: 5px;
+		border-radius: 999px;
+		background: color-mix(in oklab, var(--muted-foreground) 54%, transparent);
+		transform: translate(-50%, -50%);
+		transition:
+			width 150ms cubic-bezier(0.22, 1, 0.36, 1),
+			height 150ms cubic-bezier(0.22, 1, 0.36, 1),
+			background-color 150ms ease;
+	}
+
+	.custom-scrollbar-marker.is-hovered::after,
+	.custom-scrollbar-marker.is-inside-thumb::after {
+		width: 7px;
+		height: 7px;
+		background: var(--highlight-text);
+	}
+
+	.custom-scrollbar-marker.is-hovered::before,
+	.custom-scrollbar-marker.is-inside-thumb::before {
+		box-shadow: 0 0 0 2px color-mix(in oklab, var(--background) 88%, transparent);
 	}
 
 	.custom-scrollbar-tooltip {

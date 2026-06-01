@@ -196,20 +196,17 @@ interface Props extends HTMLAttributes<'div'> {
 	class?: string
 }
 
-const { class: className = '', ...rest } = Astro.props as Props
+const { class: className = '', ...rest } = Astro.props as Props;
 ---
 
-<div {...rest} class={cn('inline-block', className)} data-slot="popover">
+<div {...rest} class={cn('', 'inline-block', className)} data-slot="popover">
 	<slot />
 </div>
 
 <script>
-import { create } from '@data-slot/popover'
+import { createPopover } from '@data-slot/popover'
 
-function initPopovers() {
-	create(document)
-}
-
-initPopovers()
-document.addEventListener('astro:page-load', initPopovers)
+document
+	.querySelectorAll('[data-slot="popover"]')
+	.forEach(el => createPopover(el))
 </script>

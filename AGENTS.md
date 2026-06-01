@@ -366,6 +366,30 @@ Micro interactions: encouraged.
 
 ---
 
+## Component Organization
+
+Strict separation between vendor "prime" components and project-specific components:
+
+### `src/components/ui/` — bejamas prime only
+
+- Treat this directory as a **mirror of the bejamas registry**.
+- Add components via `pnpm ui:add <name>` (which runs `bejamas add`).
+- Each component lives in its own folder: `ui/<name>/<Name>.astro` + `index.ts`, PascalCase filenames.
+- **Do NOT make significant modifications** to prime files. Tiny tweaks (e.g. data attributes, minor class additions) are tolerated, but anything beyond that should be lifted into a wrapper in `src/components/` instead.
+- Keep imports inside prime files using the bejamas defaults (`@/lib/utils`, etc.) so they stay re-pullable / overwritable.
+
+### `src/components/` — custom + composed
+
+- **Composed prime**: components that wrap, combine, or extend prime parts (e.g. a card that uses `Button` + custom layout) live here.
+- **Pure custom**: project-specific components with no prime equivalent (layout helpers, brand icons, page chrome, etc.) also live here.
+- `src/components/mdx/` holds MDX element overrides.
+
+### Rule of thumb
+
+> Always prefer reaching for a bejamas prime component first. Only when prime cannot satisfy the design (or would require heavy modification) do we compose / derive a new component under `src/components/`. Never bend a prime component to fit; wrap it instead.
+
+---
+
 ## Decision Bias
 
 If a tradeoff appears:
