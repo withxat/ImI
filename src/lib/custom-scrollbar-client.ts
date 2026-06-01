@@ -78,6 +78,10 @@ function scrollToTopInstant(top: number) {
 	root.style.scrollBehavior = previousScrollBehavior
 }
 
+function scrollToTopSmooth(top: number) {
+	window.scrollTo({ behavior: 'smooth', top })
+}
+
 function collectSectionMarkers(): SectionMarker[] {
 	return Array.from(document.querySelectorAll<HTMLElement>('.article-body h2[id]'))
 		.map(element => ({
@@ -367,7 +371,7 @@ export function initCustomScrollbar() {
 		document.body.classList.add('custom-scrollbar-dragging')
 
 		if (marker) {
-			scrollToTopInstant(marker.element.getBoundingClientRect().top + window.scrollY)
+			scrollToTopSmooth(marker.element.getBoundingClientRect().top + window.scrollY)
 		}
 		else {
 			scrollToClientY(event.clientY)
