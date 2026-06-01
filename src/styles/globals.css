@@ -224,6 +224,15 @@
 		}
 	}
 
+	html.custom-scrollbar-ready {
+		scrollbar-width: none;
+	}
+
+	html.custom-scrollbar-ready::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
+
 	/* Japanese body copy: JLREQ-style strict breaks — scoped to flow text only so
 	 * display headings (article titles, page h1) still inherit loose from `html`. */
 	html:lang(ja) p,
@@ -281,6 +290,41 @@
 	a,
 	button {
 		-webkit-tap-highlight-color: transparent;
+	}
+
+	.custom-scrollbar-canvas {
+		position: fixed;
+		inset: 0 0 auto auto;
+		z-index: 60;
+		display: block;
+		cursor: pointer;
+		touch-action: none;
+		user-select: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.custom-scrollbar-tooltip {
+		position: fixed;
+		z-index: 61;
+		max-width: min(18rem, calc(100vw - 4rem));
+		border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+		border-radius: var(--radius-md);
+		background: color-mix(in oklab, var(--popover) 96%, transparent);
+		box-shadow: 0 14px 36px -24px color-mix(in oklab, var(--foreground) 42%, transparent);
+		color: var(--popover-foreground);
+		font-family: var(--font-ui);
+		font-size: 0.8125rem;
+		font-weight: 500;
+		line-height: 1.35;
+		padding: 0.45rem 0.6rem;
+		pointer-events: none;
+		text-wrap: balance;
+	}
+
+	body.custom-scrollbar-dragging,
+	body.custom-scrollbar-dragging * {
+		cursor: grabbing !important;
+		user-select: none !important;
 	}
 }
 

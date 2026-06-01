@@ -1,5 +1,6 @@
 import { initArticleBodies } from '@/lib/article-reveal'
 import { disposeAll, registerModule, runAll } from '@/lib/client-registry'
+import { destroyCustomScrollbar, initCustomScrollbar } from '@/lib/custom-scrollbar-client'
 import { initIntroBadges } from '@/lib/intro-badge-client'
 import { initLinkedPageFontPrefetch } from '@/lib/linked-page-font-prefetch-client'
 import { initMdxCopyButtons } from '@/lib/mdx-copy-client'
@@ -44,6 +45,11 @@ registerModule('mdx-copy', {
 
 registerModule('font-prefetch', {
 	init: () => initLinkedPageFontPrefetch(),
+})
+
+registerModule('custom-scrollbar', {
+	dispose: () => destroyCustomScrollbar(),
+	init: () => initCustomScrollbar(),
 })
 
 // Dispose all modules before view transition swap
