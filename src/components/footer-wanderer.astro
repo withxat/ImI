@@ -16,6 +16,7 @@ const countryCode = geo.countryCode
 const countryLabel = countryCode ? regionDisplayName(countryCode, locale) : null
 
 const wandererClass = 'wanderer-gradient-text font-bold'
+const localFlagClass = `inline-flex h-[1em] shrink-0 translate-y-[0.12em] items-end leading-none${locale === 'zh' ? ' ms-0.5' : ''}`
 
 const useEnglishPattern = countryCode ? copy.withCountry.pattern === 'en' : false
 ---
@@ -43,7 +44,7 @@ const useEnglishPattern = countryCode ? copy.withCountry.pattern === 'en' : fals
 						<p class="text-foreground">
 							{copy.withCountry.lead}
 							<span class="inline-flex items-baseline gap-x-1">
-								<span class="inline-flex h-[1em] shrink-0 translate-y-[0.12em] items-end leading-none">
+								<span class={localFlagClass}>
 									<CountryFlag code={countryCode} />
 								</span>
 								<span>{countryLabel}</span>
