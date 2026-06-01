@@ -1,7 +1,3 @@
-import AccordionItem from '@/components/mdx/accordion-item.astro'
-import AccordionPanel from '@/components/mdx/accordion-panel.astro'
-import AccordionTrigger from '@/components/mdx/accordion-trigger.astro'
-import Accordion from '@/components/mdx/accordion.astro'
 import MdxA from '@/components/mdx/mdx-a.astro'
 import MdxBlockquote from '@/components/mdx/mdx-blockquote.astro'
 import MdxCode from '@/components/mdx/mdx-code.astro'
@@ -17,18 +13,28 @@ import MdxLi from '@/components/mdx/mdx-li.astro'
 import MdxOl from '@/components/mdx/mdx-ol.astro'
 import MdxP from '@/components/mdx/mdx-p.astro'
 import MdxStrong from '@/components/mdx/mdx-strong.astro'
-import MdxTable from '@/components/mdx/mdx-table.astro'
-import MdxTd from '@/components/mdx/mdx-td.astro'
-import MdxTh from '@/components/mdx/mdx-th.astro'
-import MdxTr from '@/components/mdx/mdx-tr.astro'
 import MdxUl from '@/components/mdx/mdx-ul.astro'
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from '@/components/ui/accordion'
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table'
 
 /** Standard MDX component map for rendering blog posts and portfolio content. */
 export const mdxComponents = {
 	a: MdxA,
 	Accordion,
+	AccordionContent,
 	AccordionItem,
-	AccordionPanel,
 	AccordionTrigger,
 	blockquote: MdxBlockquote,
 	code: MdxCode,
@@ -44,9 +50,11 @@ export const mdxComponents = {
 	ol: MdxOl,
 	p: MdxP,
 	strong: MdxStrong,
-	table: MdxTable,
-	td: MdxTd,
-	th: MdxTh,
-	tr: MdxTr,
+	table: Table,
+	tbody: TableBody,
+	td: TableCell,
+	th: TableHead,
+	thead: TableHeader,
+	tr: TableRow,
 	ul: MdxUl,
 }

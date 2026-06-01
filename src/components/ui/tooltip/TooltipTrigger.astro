@@ -1,0 +1,37 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"button"> {
+  /** Radix-like: render wrapper so the child can be the interactive element */
+  asChild?: boolean
+  class?: string
+}
+
+const {
+  asChild = false,
+  class: className = "",
+  type = "button",
+  ...rest
+} = Astro.props as Props;
+---
+
+{
+  asChild
+? (
+    <div class={cn("", className)} data-slot="tooltip-trigger" data-as-child>
+      <slot />
+    </div>
+  )
+: (
+    <button
+	{...rest}
+	class={cn("", className)}
+	data-slot="tooltip-trigger"
+	type={type}
+    >
+      <slot />
+    </button>
+  )
+}

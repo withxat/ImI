@@ -36,6 +36,7 @@ config.append({
 		'better-tailwindcss/no-unknown-classes': 'off',
 		'perfectionist/sort-exports': 'off',
 		'style/indent': 'off',
+		'style/no-mixed-spaces-and-tabs': 'off',
 		'style/quotes': 'off',
 		'style/semi': 'off',
 		'unicorn/filename-case': 'off',

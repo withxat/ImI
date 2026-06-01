@@ -1,0 +1,24 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"div"> {
+  class?: string
+  inset?: boolean
+}
+
+const { class: className = "", inset = false, ...rest } = Astro.props as Props;
+---
+
+<div
+	{...rest}
+	class={cn(`
+		px-2 py-1.5 text-sm text-xs font-medium text-muted-foreground
+		data-inset:pl-8
+	`, className)}
+	data-inset={inset ? "" : undefined}
+	data-slot="dropdown-menu-label"
+>
+  <slot />
+</div>

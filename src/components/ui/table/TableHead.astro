@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"th"> {
+  class?: string
+}
+
+const {
+  class: className = "",
+  ...rest
+} = Astro.props as Props;
+---
+
+<th
+	class={cn(`
+		h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground
+		has-[[role=checkbox]]:pr-0
+	`, className)}
+	data-slot="table-head"
+	{...rest}
+>
+  <slot />
+</th>

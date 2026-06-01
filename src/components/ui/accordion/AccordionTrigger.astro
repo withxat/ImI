@@ -1,0 +1,89 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"button"> {
+  /** Radix-like: render wrapper so the child can be the interactive element */
+  asChild?: boolean
+  class?: string
+}
+
+const { asChild = false, class: className = "", type = "button", ...rest } = Astro.props as Props;
+
+const triggerVariants = cva(
+  `
+			group/accordion-trigger relative flex flex-1 items-start justify-between rounded-md border border-transparent py-4
+			text-left text-sm font-medium transition-all outline-none
+			hover:underline
+			focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50
+			focus-visible:after:border-ring
+			aria-disabled:pointer-events-none aria-disabled:opacity-50
+			**:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground
+		`,
+);
+---
+
+{
+  asChild
+? (
+    <div class="flex">
+      <div
+	class={cn(triggerVariants(), className)}
+	data-slot="accordion-trigger"
+	data-as-child
+      >
+        <slot />
+      </div>
+    </div>
+  )
+: (
+    <div class="flex">
+      <button
+	{...rest}
+	class={cn(triggerVariants(), className)}
+	data-slot="accordion-trigger"
+	type={type}
+      >
+        <slot />
+        {
+          Astro.slots.has("icon")
+? (
+            <span
+	class="pointer-events-none shrink-0"
+	data-slot="accordion-trigger-icon"
+            >
+              <slot name="icon" />
+            </span>
+          )
+: (
+            <>
+              <svg
+	class="
+		pointer-events-none shrink-0
+		group-aria-expanded/accordion-trigger:hidden
+	"
+	aria-hidden="true"
+	data-slot="accordion-trigger-icon"
+	viewBox="0 0 24 24"
+	xmlns="http://www.w3.org/2000/svg"
+              ><path d="m6 9l6 6l6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" /></svg>
+              <svg
+	class="
+		pointer-events-none hidden shrink-0
+		group-aria-expanded/accordion-trigger:inline
+	"
+	aria-hidden="true"
+	data-slot="accordion-trigger-icon"
+	viewBox="0 0 24 24"
+	xmlns="http://www.w3.org/2000/svg"
+              ><path d="m18 15l-6-6l-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" /></svg>
+            </>
+          )
+        }
+      </button>
+    </div>
+  )
+}

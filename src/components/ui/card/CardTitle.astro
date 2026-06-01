@@ -1,0 +1,27 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"div"> {
+  class?: string
+}
+
+const { class: className = "", ...rest } = Astro.props as Props;
+
+const titleVariants = cva("font-heading text-balance");
+---
+
+<div
+	{...rest}
+	class={cn(`
+		text-lg/normal font-medium
+		group-data-[size=sm]/card:text-sm
+		md:text-xl
+	`, titleVariants(), className)}
+	data-slot="card-title"
+>
+  <slot />
+</div>

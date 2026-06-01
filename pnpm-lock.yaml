@@ -11,7 +11,22 @@ importers:
 
   .:
     dependencies:
+      '@data-slot/accordion':
+        specifier: ^0.2.166
+        version: 0.2.166
+      '@data-slot/dialog':
+        specifier: ^0.2.166
+        version: 0.2.166
+      '@data-slot/dropdown-menu':
+        specifier: ^0.2.166
+        version: 0.2.166
+      '@data-slot/hover-card':
+        specifier: ^0.2.166
+        version: 0.2.166
       '@data-slot/popover':
+        specifier: ^0.2.166
+        version: 0.2.166
+      '@data-slot/tooltip':
         specifier: ^0.2.166
         version: 0.2.166
       '@expressive-code/plugin-frames':
@@ -388,11 +403,26 @@ packages:
     resolution: {integrity: sha512-kzyuwOAQnXJNLS9PSyrk0CWk35nWJW/zl/6KvnTBMFK65gm7U1/Z5BqjxeapjZCIhQcM/DsrEmcbRwDyXyXK4A==}
     engines: {node: '>=14'}
 
+  '@data-slot/accordion@0.2.166':
+    resolution: {integrity: sha512-MViSr1Nikj5PqL8aFTQMonG/9SHXYskWK0DTc8OyUvLBg5x2mwTQVTwlPxy114ZH4BMOAYlTXpZ+XuvOrDgH9Q==}
+
   '@data-slot/core@0.2.166':
     resolution: {integrity: sha512-/DuzMFIqiefdjheX5fMhaqs4YPp0/t+/pN9EgnB2jLSDk8384WkBCPGq76T/Ypb0MjVlHFiexKDnx9+k+bdcjw==}
 
+  '@data-slot/dialog@0.2.166':
+    resolution: {integrity: sha512-ioMkbfCMVt4x8VrNEa0V32ncs57Q3GEVqEn+uDUBoOU6Qyv2q1ebI0IMkK/54kSeUHut7FilECGUJzuvc7TJAQ==}
+
+  '@data-slot/dropdown-menu@0.2.166':
+    resolution: {integrity: sha512-8U9jUWlufUmHf75+w/10GHVNDc9XjfJCjVKuBWhkFbTFq68ROCzb+g/DugI/uXxz08qZWmky4nQK9kStjlet5A==}
+
+  '@data-slot/hover-card@0.2.166':
+    resolution: {integrity: sha512-ravzEp74MzWDNY83y4nPoBpScEmzRsV1QnXS6+SB4fypUIfB7OiVwlEUQ0NfCM5CgqDFrx3nZsmUzqcJRxQKxA==}
+
   '@data-slot/popover@0.2.166':
     resolution: {integrity: sha512-NW35Efz0oEquMec1X4y/nVxTGOYPWEkcoErN3/wtj7QqRZtpyJnQMP2rxm59+il9kvUIdUCAgtWl9CyIg55CXw==}
+
+  '@data-slot/tooltip@0.2.166':
+    resolution: {integrity: sha512-tpt0oqhiMhp0AeTG23S0iW27SGrRcaUZt0h3IK7H6z/a1LwCItl+8PUqqaSaHKUKlOc4oyccES4ZxlsOxW1jvA==}
 
   '@dotenvx/dotenvx@1.69.1':
     resolution: {integrity: sha512-kwQB5KcAegxw/+NGUgXAo5ovyOSjlMhoXSSnSEpDhoHJwzMcMO0HE1U0VCYZ7jbAeCMGamed9XdWzOA5ixtTNg==}
@@ -5787,9 +5817,29 @@ snapshots:
 
   '@ctrl/tinycolor@4.2.0': {}
 
+  '@data-slot/accordion@0.2.166':
+    dependencies:
+      '@data-slot/core': 0.2.166
+
   '@data-slot/core@0.2.166': {}
 
+  '@data-slot/dialog@0.2.166':
+    dependencies:
+      '@data-slot/core': 0.2.166
+
+  '@data-slot/dropdown-menu@0.2.166':
+    dependencies:
+      '@data-slot/core': 0.2.166
+
+  '@data-slot/hover-card@0.2.166':
+    dependencies:
+      '@data-slot/core': 0.2.166
+
   '@data-slot/popover@0.2.166':
+    dependencies:
+      '@data-slot/core': 0.2.166
+
+  '@data-slot/tooltip@0.2.166':
     dependencies:
       '@data-slot/core': 0.2.166
 

@@ -21,11 +21,18 @@ function syncCurrentIcon(theme: Theme) {
 	document.querySelectorAll<HTMLElement>('[data-theme-current] [data-icon]').forEach((el) => {
 		el.hidden = el.dataset.icon !== theme
 	})
-	document.querySelectorAll<HTMLButtonElement>('[data-set-theme]').forEach((btn) => {
-		const active = btn.dataset.setTheme === theme
-		btn.classList.toggle('text-foreground', active)
-		btn.classList.toggle('text-muted-foreground', !active)
+	document.querySelectorAll<HTMLElement>('[data-set-theme]').forEach((el) => {
+		const active = el.dataset.setTheme === theme
+		el.classList.toggle('text-foreground', active)
+		el.classList.toggle('text-muted-foreground', !active)
 	})
+}
+
+function setDropdownValue(menu: HTMLElement, theme: Theme) {
+	menu.dispatchEvent(new CustomEvent('dropdown-menu:set', {
+		bubbles: true,
+		detail: { value: theme },
+	}))
 }
 
 export function initThemeSwitcher() {
@@ -34,50 +41,25 @@ export function initThemeSwitcher() {
 	const ac = new AbortController()
 	const { signal } = ac
 
-	document.querySelectorAll<HTMLElement>('[data-theme-switcher]').forEach((container) => {
-		const toggleBtn = container.querySelector<HTMLButtonElement>('[data-theme-toggle]')
-		const menu = container.querySelector<HTMLElement>('[data-theme-menu]')
-		if (!toggleBtn || !menu)
-			return
-
+	document.querySelectorAll<HTMLElement>('[data-theme-switcher]').forEach((menu) => {
 		let theme: Theme = readStoredTheme()
 		applyTheme(theme)
 		syncCurrentIcon(theme)
+		setDropdownValue(menu, theme)
 
-		const close = () => menu.classList.add('hidden')
-		const open = () => menu.classList.remove('hidden')
-		const isOpen = () => !menu.classList.contains('hidden')
-
-		toggleBtn.addEventListener('click', () => {
-			if (isOpen())
-				close()
-			else open()
-		}, { signal })
-
-		container.querySelectorAll<HTMLButtonElement>('[data-set-theme]').forEach((btn) => {
-			btn.addEventListener('click', () => {
-				const next = btn.dataset.setTheme as Theme
-				try {
-					localStorage.setItem(THEME_STORAGE_KEY, next)
-				}
-				catch {}
-				theme = next
-				applyTheme(theme)
-				syncCurrentIcon(theme)
-				close()
-			}, { signal })
-		})
-
-		document.addEventListener('pointerdown', (e) => {
-			if (!isOpen())
+		menu.addEventListener('dropdown-menu:value-change', (event) => {
+			const { value } = (event as CustomEvent<{ value: string }>).detail
+			if (value !== 'system' && value !== 'light' && value !== 'dark')
 				return
-			if (!container.contains(e.target as Node))
-				close()
-		}, { signal })
 
-		document.addEventListener('keydown', (e) => {
-			if (e.key === 'Escape' && isOpen())
-				close()
+			const next = value as Theme
+			try {
+				localStorage.setItem(THEME_STORAGE_KEY, next)
+			}
+			catch {}
+			theme = next
+			applyTheme(theme)
+			syncCurrentIcon(theme)
 		}, { signal })
 
 		const mq = matchMedia('(prefers-color-scheme:dark)')

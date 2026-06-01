@@ -1,0 +1,32 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"div"> {
+  class?: string
+}
+
+const {
+  class: className = "",
+  ...rest
+} = Astro.props as Props;
+---
+
+<div
+	{...rest}
+	class={cn(
+    `
+					col-start-2 grid justify-items-start gap-1 text-sm text-balance text-muted-foreground
+					md:text-pretty
+					[&_a]:underline [&_a]:underline-offset-3
+					[&_a]:hover:text-foreground
+					[&_p]:leading-relaxed
+					[&_p:not(:last-child)]:mb-4
+				`,
+    className,
+  )}
+	data-slot="alert-description"
+>
+  <slot />
+</div>

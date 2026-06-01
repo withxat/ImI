@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"div"> {
+  class?: string
+}
+
+const { class: className = "", ...rest } = Astro.props as Props;
+---
+
+<div
+	{...rest}
+	class={cn("", "", className)}
+	data-slot="dropdown-menu-group"
+	role="group"
+>
+  <slot />
+</div>

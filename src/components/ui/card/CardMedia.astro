@@ -1,0 +1,31 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"div"> {
+  class?: string
+}
+
+const {
+  class: className = "",
+  ...rest
+} = Astro.props as Props;
+
+const mediaVariants = cva(
+  `
+			z-0 overflow-hidden rounded-lg
+			[&_img]:size-full [&_img]:object-cover
+		`,
+);
+---
+
+<div
+	{...rest}
+	class={cn("", mediaVariants(), className)}
+	data-slot="card-media"
+>
+  <slot />
+</div>

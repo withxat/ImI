@@ -13,6 +13,7 @@ import Reveal from '@/components/reveal.astro'
 import Seo from '@/components/seo.astro'
 import SiteHeader from '@/components/site-header.astro'
 import StaggerReveal from '@/components/stagger-reveal.astro'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import RootLayout from '@/layouts/root-layout.astro'
 import { getAllPosts } from '@/lib/blog'
 import { htmlLangFor } from '@/lib/i18n/constants'
@@ -72,18 +73,24 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 				<div class="flex flex-col gap-4">
 					<SiteHeader locale={locale} messages={m} />
 					<div class="flex min-w-0 flex-col gap-4">
-						<Image
-							class="
-								size-14 rounded-xl border border-border object-cover
-								sm:size-16
-							"
-							alt="Xat"
-							fetchpriority="high"
-							loading="eager"
-							referrerpolicy="no-referrer"
-							src={PROFILE_AVATAR_SRC}
-							inferSize
-						/>
+						<Avatar class="
+							size-14 rounded-xl border border-border
+							sm:size-16
+						"
+						>
+							<AvatarImage>
+								<Image
+									alt="Xat"
+									class="size-full object-cover"
+									fetchpriority="high"
+									loading="eager"
+									referrerpolicy="no-referrer"
+									src={PROFILE_AVATAR_SRC}
+									inferSize
+								/>
+							</AvatarImage>
+							<AvatarFallback class="rounded-xl">X</AvatarFallback>
+						</Avatar>
 						<div class="space-y-0">
 							<h1 class="
 								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground

@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"button"> {
+  /** Radix-like: render wrapper so the child can be the interactive element */
+  asChild?: boolean
+  class?: string
+}
+
+const {
+  asChild = false,
+  class: className = "",
+  type = "button",
+  ...rest
+} = Astro.props as Props;
+
+const defaultClasses
+  = "cursor-pointer select-none outline-none group-focus-within:pointer-events-none inline-flex items-center gap-1";
+---
+
+{
+  asChild
+? (
+    <div class={cn("", defaultClasses, className)} data-slot="dialog-trigger" data-as-child>
+      <slot />
+    </div>
+  )
+: (
+    <button
+	{...rest}
+	class={cn("", defaultClasses, className)}
+	data-slot="dialog-trigger"
+	type={type}
+    >
+      <slot />
+    </button>
+  )
+}

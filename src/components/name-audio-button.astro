@@ -2,6 +2,8 @@
 // Audio playback button with animated volume waves. Click reveals the IPA pronunciation
 // and plays /xat.mp3. Client behavior lives in src/lib/name-audio-client.ts.
 
+import { Button } from '@/components/ui/button'
+
 const SPEAKER_PATH
 	= 'M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z'
 const WAVE_MID = 'M16 9a5 5 0 0 1 0 6'
@@ -18,16 +20,16 @@ const WAVE_OUTER = 'M19.364 18.364a9 9 0 0 0 0-12.728'
 	>
 		/ˈeɪtoʊ/
 	</span>
-	<button
+	<Button
 		class="
-			relative inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-foreground transition-colors
-			outline-none
-			hover:bg-accent
-			focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background
+			size-7 shrink-0 rounded-md text-foreground
+			focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background
 			sm:size-6
 		"
 		aria-label="Play name pronunciation"
+		size="icon-sm"
 		type="button"
+		variant="ghost"
 		data-name-play
 	>
 		<svg
@@ -48,6 +50,6 @@ const WAVE_OUTER = 'M19.364 18.364a9 9 0 0 0 0-12.728'
 			<path d={WAVE_MID} data-wave="mid" />
 			<path d={WAVE_OUTER} data-wave="outer" />
 		</svg>
-	</button>
+	</Button>
 	<audio preload="none" src="/xat.mp3" data-name-audio hidden></audio>
 </span>

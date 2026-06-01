@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cva } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"div"> {
+  class?: string
+}
+
+const {
+  class: className = "",
+  ...rest
+} = Astro.props as Props;
+
+const contentVariants = cva("");
+---
+
+<div
+	{...rest}
+	class={cn(`
+		px-6
+		group-data-[size=sm]/card:px-4
+	`, contentVariants(), className)}
+	data-slot="card-content"
+>
+  <slot />
+</div>

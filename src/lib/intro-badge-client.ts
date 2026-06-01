@@ -1,27 +1,18 @@
-import { createPopover } from '@data-slot/popover'
-
-const OPEN_DELAY = 120
-const CLOSE_DELAY = 80
-
 let dispose: (() => void) | null = null
 
 export function initIntroBadges() {
 	dispose?.()
 	const ac = new AbortController()
 	const { signal } = ac
-	const controllers: Array<ReturnType<typeof createPopover>> = []
+	const roots: HTMLElement[] = []
 
 	for (const root of document.querySelectorAll<HTMLElement>('[data-intro-badge-root]')) {
+		roots.push(root)
 		const trigger = root.querySelector<HTMLElement>('[data-intro-badge-trigger]')
 		const popup = root.querySelector<HTMLElement>('[data-intro-badge-popup]')
 		if (!trigger || !popup)
 			continue
 
-		const controller = createPopover(root)
-		controllers.push(controller)
-
-		let openTimer = 0
-		let closeTimer = 0
 		let focusReturnTarget: HTMLElement | null = null
 
 		const setTriggerOpenState = (open: boolean) => {
@@ -30,35 +21,7 @@ export function initIntroBadges() {
 			else delete trigger.dataset.open
 		}
 
-		setTriggerOpenState(controller.isOpen)
-
-		const setOpen = (open: boolean) => {
-			root.dispatchEvent(new CustomEvent('popover:set', { detail: { open } }))
-		}
-
-		const open = () => {
-			window.clearTimeout(closeTimer)
-			focusReturnTarget = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
-				? document.activeElement
-				: null
-			setOpen(true)
-		}
-
-		const close = () => {
-			window.clearTimeout(openTimer)
-			setOpen(false)
-		}
-
-		const scheduleOpen = () => {
-			window.clearTimeout(closeTimer)
-			openTimer = window.setTimeout(open, OPEN_DELAY)
-		}
-		const scheduleClose = () => {
-			window.clearTimeout(openTimer)
-			closeTimer = window.setTimeout(close, CLOSE_DELAY)
-		}
-
-		root.addEventListener('popover:change', (event) => {
+		root.addEventListener('hover-card:change', (event) => {
 			const { open } = (event as CustomEvent<{ open: boolean }>).detail
 
 			setTriggerOpenState(open)
@@ -66,9 +29,13 @@ export function initIntroBadges() {
 			if (!open)
 				return
 
-			for (const otherController of controllers) {
-				if (otherController !== controller)
-					otherController.close()
+			for (const other of roots) {
+				if (other !== root) {
+					other.dispatchEvent(new CustomEvent('hover-card:set', {
+						bubbles: true,
+						detail: { open: false },
+					}))
+				}
 			}
 
 			requestAnimationFrame(() => {
@@ -84,17 +51,12 @@ export function initIntroBadges() {
 			})
 		}, { signal })
 
-		if (window.matchMedia('(hover: hover)').matches) {
-			trigger.addEventListener('pointerenter', scheduleOpen, { signal })
-			trigger.addEventListener('pointerleave', scheduleClose, { signal })
-			popup.addEventListener('pointerenter', () => window.clearTimeout(closeTimer), { signal })
-			popup.addEventListener('pointerleave', scheduleClose, { signal })
-		}
+		root.addEventListener('pointerenter', () => {
+			focusReturnTarget = document.activeElement instanceof HTMLElement && document.activeElement !== document.body
+				? document.activeElement
+				: null
+		}, { signal })
 	}
 
-	dispose = () => {
-		ac.abort()
-		for (const controller of controllers)
-			controller.destroy()
-	}
+	dispose = () => ac.abort()
 }

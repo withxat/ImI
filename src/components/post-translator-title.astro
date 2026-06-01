@@ -5,6 +5,7 @@ import claudeLogo from '@/assets/claude.svg?raw'
 import geminiLogo from '@/assets/gemini.svg?raw'
 import openAiLogo from '@/assets/openai.svg?raw'
 import qwenLogo from '@/assets/qwen.svg?raw'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 interface Props {
 	translator: Translator
@@ -24,15 +25,17 @@ const meta = TRANSLATOR_META[brand]
 ---
 
 <div class="mb-1.5 flex items-center gap-2 font-ui text-sm font-medium text-foreground">
-	<span class="flex size-5 items-center justify-center rounded-full bg-background text-foreground shadow-xs ring-1 ring-border/80">
-		<span
-			class="
-				inline-flex size-3.5 text-foreground
-				[&_svg]:size-full [&_svg]:fill-current
-			"
-			aria-hidden="true"
-			set:html={meta.logo}
-		/>
-	</span>
+	<Avatar class="size-5">
+		<AvatarFallback class="bg-background text-foreground shadow-xs ring-1 ring-border/80">
+			<span
+				class="
+					inline-flex size-3.5 text-foreground
+					[&_svg]:size-full [&_svg]:fill-current
+				"
+				aria-hidden="true"
+				set:html={meta.logo}
+			/>
+		</AvatarFallback>
+	</Avatar>
 	<span>{model}</span>
 </div>

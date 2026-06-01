@@ -1,0 +1,21 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"div"> {
+  class?: string
+  value: string
+}
+
+const { class: className = "", value, ...rest } = Astro.props as Props;
+---
+
+<div
+	{...rest}
+	class={cn("not-last:border-b", className)}
+	data-slot="accordion-item"
+	data-value={value}
+>
+  <slot />
+</div>
