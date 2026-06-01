@@ -146,6 +146,7 @@ export function initCustomScrollbar() {
 	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 
 	let activePointerId: null | number = null
+	let touchDragCleanup: (() => void) | null = null
 	let animationFrame = 0
 	let dragging = false
 	let hideTimer = 0
@@ -384,6 +385,16 @@ export function initCustomScrollbar() {
 		}
 	}
 
+	function endDrag() {
+		touchDragCleanup?.()
+		touchDragCleanup = null
+		activePointerId = null
+		dragging = false
+		document.body.classList.remove('custom-scrollbar-dragging')
+		showTemporarily()
+		startAnimation()
+	}
+
 	function handlePointerMove(event: PointerEvent) {
 		showTemporarily()
 		hover = true
@@ -408,6 +419,32 @@ export function initCustomScrollbar() {
 		showTemporarily()
 	}
 
+	function setupTouchDrag() {
+		const onTouchMove = (e: TouchEvent) => {
+			if (e.touches.length !== 1) {
+				return
+			}
+			e.preventDefault()
+			scrollToClientY(e.touches[0].clientY)
+			showTemporarily()
+			startAnimation()
+		}
+
+		const onTouchEnd = () => {
+			endDrag()
+		}
+
+		document.addEventListener('touchmove', onTouchMove, { passive: false, signal })
+		document.addEventListener('touchend', onTouchEnd, { once: true, signal })
+		document.addEventListener('touchcancel', onTouchEnd, { once: true, signal })
+
+		touchDragCleanup = () => {
+			document.removeEventListener('touchmove', onTouchMove)
+			document.removeEventListener('touchend', onTouchEnd)
+			document.removeEventListener('touchcancel', onTouchEnd)
+		}
+	}
+
 	function handlePointerDown(event: PointerEvent) {
 		if (event.button !== 0) {
 			return
@@ -418,10 +455,13 @@ export function initCustomScrollbar() {
 		const isTouchLike = event.pointerType === 'touch' || !allowsTrackClick
 		const isThumbPress = isPointInsideThumb(event.clientY, isTouchLike ? THUMB_TOUCH_HIT_SLOP : 0)
 		const marker = isThumbPress ? null : findMarkerAt(event.clientY)
+		const isTouch = event.pointerType === 'touch'
 
 		if (marker) {
 			event.preventDefault()
-			canvas.setPointerCapture(event.pointerId)
+			if (!isTouch) {
+				canvas.setPointerCapture(event.pointerId)
+			}
 			activePointerId = event.pointerId
 			updateTooltip(null)
 			dragging = false
@@ -429,17 +469,23 @@ export function initCustomScrollbar() {
 		}
 		else if (isThumbPress) {
 			event.preventDefault()
-			canvas.setPointerCapture(event.pointerId)
+			if (!isTouch) {
+				canvas.setPointerCapture(event.pointerId)
+			}
 			activePointerId = event.pointerId
 			updateTooltip(null)
 			dragging = true
 			updateThumbPointerOffset(event.clientY)
-			scrollToTopInstant(window.scrollY)
 			document.body.classList.add('custom-scrollbar-dragging')
+			if (isTouch) {
+				setupTouchDrag()
+			}
 		}
 		else if (allowsTrackClick) {
 			event.preventDefault()
-			canvas.setPointerCapture(event.pointerId)
+			if (!isTouch) {
+				canvas.setPointerCapture(event.pointerId)
+			}
 			activePointerId = event.pointerId
 			updateTooltip(null)
 			dragging = false
@@ -465,14 +511,10 @@ export function initCustomScrollbar() {
 			return
 		}
 
-		activePointerId = null
-		dragging = false
-		document.body.classList.remove('custom-scrollbar-dragging')
 		if (canvas.hasPointerCapture(event.pointerId)) {
 			canvas.releasePointerCapture(event.pointerId)
 		}
-		showTemporarily()
-		startAnimation()
+		endDrag()
 	}
 
 	function handleThemeChange() {
@@ -515,6 +557,7 @@ export function initCustomScrollbar() {
 	document.addEventListener('astro:after-swap', handleThemeChange, { signal })
 
 	cleanup = () => {
+		touchDragCleanup?.()
 		abortController.abort()
 		resizeObserver.disconnect()
 		if (animationFrame) {
