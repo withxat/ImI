@@ -299,11 +299,27 @@
 
 	.custom-scrollbar {
 		position: fixed;
-		inset: 0 -12px auto auto;
+		top: 0;
+		right: 0;
 		z-index: 60;
 		width: var(--cs-hotzone-width, 24px);
 		height: 100dvh;
 		opacity: 0;
+		transform: translateX(12px);
+		transition:
+			opacity 160ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.custom-scrollbar.is-visible {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.custom-scrollbar {
+			transition: none;
+		}
 	}
 
 	.custom-scrollbar:not(.is-visible):not(.is-active):not(.is-dragging) {

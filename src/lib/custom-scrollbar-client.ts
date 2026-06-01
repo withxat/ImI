@@ -11,8 +11,6 @@ interface SectionMarker {
 
 const HOTZONE_WIDTH = 24
 const MIN_TRACK_WIDTH = 768
-const SHELL_HIDDEN_RIGHT = -12
-const SHELL_VISIBLE_RIGHT = 0
 const TRACK_TOP = 14
 const THUMB_TOUCH_HIT_SLOP = 18
 const MIN_THUMB_HEIGHT = 44
@@ -20,6 +18,11 @@ const HIDE_DELAY = 1600
 const MARKER_HIT_RADIUS = 9
 
 let cleanup: (() => void) | null = null
+let refreshLayout: (() => void) | null = null
+
+export function refreshCustomScrollbarLayout() {
+	refreshLayout?.()
+}
 
 function clamp(value: number, min: number, max: number) {
 	return Math.min(Math.max(value, min), max)
@@ -155,7 +158,6 @@ export function initCustomScrollbar() {
 	let trackHeightAnim: AnimationControls | null = null
 	let thumbHeightAnim: AnimationControls | null = null
 	let thumbTravelAnim: AnimationControls | null = null
-	let visibilityAnim: AnimationControls | null = null
 	let visible = false
 
 	function springTo(
@@ -201,13 +203,14 @@ export function initCustomScrollbar() {
 		}
 	}
 
-	function snapShellVisibility() {
-		visibilityAnim?.stop()
-		visibilityAnim = null
-		shell.style.opacity = visible ? '1' : '0'
-		shell.style.right = visible
-			? `${SHELL_VISIBLE_RIGHT}px`
-			: `${SHELL_HIDDEN_RIGHT}px`
+	function clearShellVisibilityInlineStyles() {
+		shell.style.removeProperty('opacity')
+		shell.style.removeProperty('right')
+	}
+
+	function commitShellVisibility() {
+		clearShellVisibilityInlineStyles()
+		shell.classList.toggle('is-visible', visible)
 	}
 
 	function setVisible(nextVisible: boolean) {
@@ -216,15 +219,7 @@ export function initCustomScrollbar() {
 		}
 
 		visible = nextVisible
-		visibilityAnim?.stop()
-		shell.classList.toggle('is-visible', nextVisible)
-		visibilityAnim = animate(shell, {
-			opacity: nextVisible ? 1 : 0,
-			right: nextVisible ? SHELL_VISIBLE_RIGHT : SHELL_HIDDEN_RIGHT,
-		}, {
-			duration: 0.16,
-			ease: [0.22, 1, 0.36, 1],
-		})
+		commitShellVisibility()
 	}
 
 	function setInteracting(interacting: boolean) {
@@ -312,9 +307,9 @@ export function initCustomScrollbar() {
 		}
 	}
 
-	function syncAfterScrollRestore() {
+	function syncLayout() {
 		measure()
-		snapShellVisibility()
+		commitShellVisibility()
 		resyncScrollTimeline()
 		updateMarkerStates()
 	}
@@ -329,7 +324,8 @@ export function initCustomScrollbar() {
 			window.clearTimeout(hideTimer)
 		}
 
-		setVisible(true)
+		visible = true
+		commitShellVisibility()
 		setInteracting(options.active || hover || dragging)
 
 		hideTimer = window.setTimeout(() => {
@@ -595,10 +591,6 @@ export function initCustomScrollbar() {
 		}
 	}
 
-	function handleAfterSwap() {
-		measure()
-	}
-
 	for (const marker of markers) {
 		marker.button.addEventListener('click', (event) => {
 			event.preventDefault()
@@ -607,18 +599,19 @@ export function initCustomScrollbar() {
 		}, { signal })
 	}
 
-	measure()
+	refreshLayout = syncLayout
 	resizeObserver.observe(document.body)
 	resizeObserver.observe(document.documentElement)
 	setCustomReady()
+	syncLayout()
 
-	// Browser scroll restoration can land after first measure/visibility animation.
+	// Scroll restoration / late layout can land after first measure.
 	requestAnimationFrame(() => {
 		requestAnimationFrame(() => {
-			syncAfterScrollRestore()
+			syncLayout()
 		})
 	})
-	window.addEventListener('pageshow', syncAfterScrollRestore, { signal })
+	window.addEventListener('pageshow', syncLayout, { signal })
 
 	window.addEventListener('scroll', handleScroll, { passive: true, signal })
 	window.addEventListener('resize', handleResize, { passive: true, signal })
@@ -630,18 +623,16 @@ export function initCustomScrollbar() {
 	shell.addEventListener('pointerup', handlePointerUp, { signal })
 	shell.addEventListener('pointercancel', handlePointerUp, { signal })
 	shell.addEventListener('touchmove', preventTouchScroll, { passive: false, signal })
-	document.addEventListener('astro:after-swap', handleAfterSwap, { signal })
 
 	cleanup = () => {
+		refreshLayout = null
 		touchDragCleanup?.()
 		abortController.abort()
 		resizeObserver.disconnect()
 		trackHeightAnim?.stop()
 		thumbHeightAnim?.stop()
 		thumbTravelAnim?.stop()
-		visibilityAnim?.stop()
-		shell.style.removeProperty('opacity')
-		shell.style.removeProperty('right')
+		clearShellVisibilityInlineStyles()
 		if (hideTimer) {
 			window.clearTimeout(hideTimer)
 		}

@@ -1,6 +1,6 @@
 import { initArticleBodies } from '@/lib/article-reveal'
 import { disposeAll, registerModule, runAll } from '@/lib/client-registry'
-import { destroyCustomScrollbar, initCustomScrollbar } from '@/lib/custom-scrollbar-client'
+import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/lib/custom-scrollbar-client'
 import { initIntroBadges } from '@/lib/intro-badge-client'
 import { initLinkedPageFontPrefetch } from '@/lib/linked-page-font-prefetch-client'
 import { initMdxCopyButtons } from '@/lib/mdx-copy-client'
@@ -72,4 +72,5 @@ document.addEventListener('astro:before-swap', () => {
 document.addEventListener('astro:page-load', () => {
 	const animate = shouldAnimatePageEntrance()
 	runAll(animate)
+	refreshCustomScrollbarLayout()
 })
