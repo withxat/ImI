@@ -7,6 +7,7 @@ import { initMdxCopyButtons } from '@/lib/mdx-copy-client'
 import { initNameAudioButtons } from '@/lib/name-audio-client'
 import { initPageReveals } from '@/lib/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/lib/photoswipe-gallery'
+import { disposePrimeBindings, initPrimeBindings } from '@/lib/prime-bindings-client'
 import { initThemeSwitcher } from '@/lib/theme-switcher-client'
 
 function shouldAnimatePageEntrance() {
@@ -25,6 +26,16 @@ registerModule('article-reveal', {
 registerModule('photoswipe', {
 	dispose: () => destroyPhotoSwipe(),
 	init: () => initPhotoSwipe(),
+})
+
+// Re-bind Prime UI widgets (dropdown-menu, hover-card, etc.) on each navigation.
+// Must run before any module whose init dispatches Prime custom events (e.g.
+// theme-switcher's `dropdown-menu:set` or intro-badges' `hover-card:set`).
+// dispose tears down the document-level listeners each Prime factory installs,
+// otherwise navigations would accumulate them and pin detached DOM in memory.
+registerModule('prime-bindings', {
+	dispose: () => disposePrimeBindings(),
+	init: () => initPrimeBindings(),
 })
 
 registerModule('theme-switcher', {

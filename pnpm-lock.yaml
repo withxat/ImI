@@ -14,6 +14,9 @@ importers:
       '@data-slot/accordion':
         specifier: ^0.2.166
         version: 0.2.166
+      '@data-slot/core':
+        specifier: ^0.2.166
+        version: 0.2.166
       '@data-slot/dialog':
         specifier: ^0.2.166
         version: 0.2.166

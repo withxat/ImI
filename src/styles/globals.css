@@ -901,6 +901,19 @@
 	}
 }
 
+@layer utilities {
+	/*
+	 * Prime components sometimes add descendant `underline` utilities for slotted links.
+	 * Keep our pill underline as the single link affordance when those links use text-link
+	 * or live in article content.
+	 */
+	a.text-link,
+	a.text-link-muted,
+	.article-body a {
+		text-decoration-line: none;
+	}
+}
+
 /* Astro ClientRouter — keep bordered surfaces out of nested VT groups (avoids double borders). */
 @supports (view-transition-name: none) {
 	[data-reveal],
