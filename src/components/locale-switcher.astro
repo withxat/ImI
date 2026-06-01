@@ -27,7 +27,7 @@ const { pathname, search } = Astro.url
 		{LOCALES.map((locale, index) => (
 			<span class="inline-flex items-center whitespace-nowrap">
 				{index > 0 && (
-					<Dot aria-hidden="true" class="size-3 shrink-0 text-muted-foreground opacity-70" />
+					<Dot aria-hidden="true" class="mr-2 size-3 shrink-0 text-muted-foreground opacity-70" />
 				)}
 				{locale === currentLocale
 					? (
