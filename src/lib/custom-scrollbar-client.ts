@@ -153,6 +153,8 @@ export function initCustomScrollbar() {
 	let trackHeightAnim: AnimationControls | null = null
 	let thumbHeightAnim: AnimationControls | null = null
 	let thumbTravelAnim: AnimationControls | null = null
+	let visibilityAnim: AnimationControls | null = null
+	let visible = false
 
 	function springTo(
 		current: number,
@@ -195,8 +197,21 @@ export function initCustomScrollbar() {
 		}
 	}
 
-	function setVisible(visible: boolean) {
-		shell.classList.toggle('is-visible', visible)
+	function setVisible(nextVisible: boolean) {
+		if (visible === nextVisible) {
+			return
+		}
+
+		visible = nextVisible
+		visibilityAnim?.stop()
+		shell.classList.toggle('is-visible', nextVisible)
+		visibilityAnim = animate(shell, {
+			opacity: nextVisible ? 1 : 0,
+			x: nextVisible ? 0 : 12,
+		}, {
+			duration: 0.16,
+			ease: [0.22, 1, 0.36, 1],
+		})
 	}
 
 	function setInteracting(interacting: boolean) {
@@ -221,6 +236,7 @@ export function initCustomScrollbar() {
 		trackHeightAnim?.stop()
 		thumbHeightAnim?.stop()
 		thumbTravelAnim?.stop()
+		visibilityAnim?.stop()
 
 		trackHeightAnim = springTo(trackHeightVisual, trackHeight, (value) => {
 			trackHeightVisual = value

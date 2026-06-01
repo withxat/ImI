@@ -305,14 +305,10 @@
 		height: 100dvh;
 		opacity: 0;
 		transform: translate3d(12px, 0, 0);
-		transition:
-			opacity 160ms cubic-bezier(0.22, 1, 0.36, 1),
-			transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	.custom-scrollbar.is-visible {
-		opacity: 1;
-		transform: translate3d(0, 0, 0);
+	.custom-scrollbar:not(.is-visible):not(.is-active):not(.is-dragging) {
+		pointer-events: none;
 	}
 
 	.custom-scrollbar:not(.has-scroll) {
