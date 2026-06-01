@@ -11,9 +11,8 @@ interface SectionMarker {
 
 const HOTZONE_WIDTH = 24
 const MIN_TRACK_WIDTH = 768
-const SHELL_HIDE_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
 const SHELL_HIDE_MS = 160
-const SHELL_OFFSET_PX = 12
+const SHELL_LEAVE_ANIMATION = 'cs-shell-exit'
 const TRACK_TOP = 14
 const THUMB_TOUCH_HIT_SLOP = 18
 const MIN_THUMB_HEIGHT = 44
@@ -161,7 +160,8 @@ export function initCustomScrollbar() {
 	let trackHeightAnim: AnimationControls | null = null
 	let thumbHeightAnim: AnimationControls | null = null
 	let thumbTravelAnim: AnimationControls | null = null
-	let hideShellAnim: Animation | null = null
+	let leaveFallbackTimer = 0
+	let suppressShowUntil = 0
 	let visible = false
 
 	function springTo(
@@ -213,73 +213,95 @@ export function initCustomScrollbar() {
 		shell.style.removeProperty('transform')
 	}
 
-	function cancelHideAnimation() {
-		if (!hideShellAnim) {
-			return
-		}
-
-		hideShellAnim.cancel()
-		hideShellAnim = null
-		clearShellVisibilityInlineStyles()
+	function clearLeaveState() {
+		shell.classList.remove('is-leaving')
 	}
 
 	function commitShellVisibility() {
-		cancelHideAnimation()
 		clearShellVisibilityInlineStyles()
-		shell.classList.toggle('is-visible', visible)
+		if (visible) {
+			clearLeaveState()
+			shell.classList.add('is-visible')
+			return
+		}
+
+		if (shell.classList.contains('is-leaving')) {
+			return
+		}
+
+		shell.classList.remove('is-visible')
+		clearLeaveState()
 	}
 
 	function showShell() {
-		cancelHideAnimation()
+		suppressShowUntil = 0
+		clearLeaveFallback()
+		clearLeaveState()
 		clearShellVisibilityInlineStyles()
 		visible = true
 		shell.classList.add('is-visible')
 	}
 
+	function clearLeaveFallback() {
+		if (leaveFallbackTimer) {
+			window.clearTimeout(leaveFallbackTimer)
+			leaveFallbackTimer = 0
+		}
+	}
+
+	function finishLeave() {
+		clearLeaveFallback()
+		clearLeaveState()
+		clearShellVisibilityInlineStyles()
+		suppressShowUntil = performance.now() + SHELL_HIDE_MS + 80
+	}
+
 	function hideShell() {
-		if (!visible && !hideShellAnim) {
+		if (shell.classList.contains('is-leaving')) {
+			return
+		}
+
+		if (!visible && !shell.classList.contains('is-visible')) {
 			return
 		}
 
 		visible = false
-		cancelHideAnimation()
+		clearLeaveFallback()
+		clearShellVisibilityInlineStyles()
 
 		if (reducedMotion.matches) {
 			shell.classList.remove('is-visible')
+			clearLeaveState()
 			return
 		}
 
-		shell.classList.add('is-visible')
+		shell.classList.add('is-leaving')
+		shell.classList.remove('is-visible')
+		void shell.offsetWidth
 
-		const animation = shell.animate(
-			[
-				{ opacity: 1, transform: 'translate3d(0, 0, 0)' },
-				{ opacity: 0, transform: `translate3d(${SHELL_OFFSET_PX}px, 0, 0)` },
-			],
-			{
-				duration: SHELL_HIDE_MS,
-				easing: SHELL_HIDE_EASING,
-				fill: 'forwards',
-			},
-		)
-
-		hideShellAnim = animation
-
-		animation.addEventListener('finish', () => {
-			if (hideShellAnim !== animation) {
-				return
+		leaveFallbackTimer = window.setTimeout(() => {
+			leaveFallbackTimer = 0
+			if (shell.classList.contains('is-leaving')) {
+				finishLeave()
 			}
+		}, SHELL_HIDE_MS + 80)
+	}
 
-			hideShellAnim = null
-			animation.cancel()
-			shell.classList.remove('is-visible')
-			clearShellVisibilityInlineStyles()
-		}, { once: true })
+	function handleShellAnimationEnd(event: AnimationEvent) {
+		if (event.target !== shell || event.animationName !== SHELL_LEAVE_ANIMATION) {
+			return
+		}
+
+		if (!shell.classList.contains('is-leaving')) {
+			return
+		}
+
+		finishLeave()
 	}
 
 	function setVisible(nextVisible: boolean) {
 		if (nextVisible) {
-			if (visible && shell.classList.contains('is-visible') && !hideShellAnim) {
+			if (visible && shell.classList.contains('is-visible') && !shell.classList.contains('is-leaving')) {
 				return
 			}
 
@@ -287,7 +309,7 @@ export function initCustomScrollbar() {
 			return
 		}
 
-		if (!visible && !hideShellAnim) {
+		if (!visible && !shell.classList.contains('is-visible') && !shell.classList.contains('is-leaving')) {
 			return
 		}
 
@@ -386,9 +408,13 @@ export function initCustomScrollbar() {
 		updateMarkerStates()
 	}
 
-	function showTemporarily(options: { active?: boolean } = {}) {
+	function showTemporarily(options: { active?: boolean, fromScroll?: boolean } = {}) {
 		const { maxScroll } = getScrollMetrics()
 		if (maxScroll <= 1) {
+			return
+		}
+
+		if (options.fromScroll && performance.now() < suppressShowUntil) {
 			return
 		}
 
@@ -490,7 +516,7 @@ export function initCustomScrollbar() {
 	}
 
 	function handleScroll() {
-		showTemporarily()
+		showTemporarily({ fromScroll: true })
 		if (!scrollDriven) {
 			syncThumbFromScroll()
 		}
@@ -683,6 +709,7 @@ export function initCustomScrollbar() {
 		})
 	})
 	window.addEventListener('pageshow', syncLayout, { signal })
+	shell.addEventListener('animationend', handleShellAnimationEnd, { signal })
 
 	window.addEventListener('scroll', handleScroll, { passive: true, signal })
 	window.addEventListener('resize', handleResize, { passive: true, signal })
@@ -703,7 +730,8 @@ export function initCustomScrollbar() {
 		trackHeightAnim?.stop()
 		thumbHeightAnim?.stop()
 		thumbTravelAnim?.stop()
-		cancelHideAnimation()
+		clearLeaveFallback()
+		clearLeaveState()
 		clearShellVisibilityInlineStyles()
 		if (hideTimer) {
 			window.clearTimeout(hideTimer)
