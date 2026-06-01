@@ -6,7 +6,6 @@ import { Image } from 'astro:assets'
 
 import shinyTf from '@/assets/shiny-tf.png'
 import Container from '@/components/container.astro'
-import Eyebrow from '@/components/eyebrow.astro'
 import Seo from '@/components/seo.astro'
 import SiteHeader from '@/components/site-header.astro'
 import { Separator } from '@/components/ui/separator'
@@ -83,26 +82,16 @@ const colorGroups: { key: ColorGroupKey, tokens: ColorToken[] }[] = [
 				<SiteHeader locale={locale} messages={m} showBack />
 				<div class="flex flex-col space-y-24">
 					<div class="space-y-4">
+						<Image
+							alt="shiny-tf"
+							class="size-8"
+							loading="eager"
+							src={shinyTf}
+						/>
 						<h1 class="inline-flex items-end text-3xl font-medium text-foreground">
-							<span class="font-fugaz-one text-highlight-text">Xat</span>
-							<span
-								class="
-									font-mono text-lg text-highlight-soft
-									dark:text-highlight-soft/70
-								"
-							>
-								.sh
-							</span>
-						</h1>
-						<Eyebrow class="flex items-center gap-3">
 							{m.design.eyebrow}
-							<Image
-								alt="shiny-tf"
-								class="size-5"
-								loading="eager"
-								src={shinyTf}
-							/>
-						</Eyebrow>
+						</h1>
+
 					</div>
 
 					<!-- Typography -->
