@@ -1,10 +1,10 @@
 import { initArticleBodies } from '@/lib/article-reveal'
+import { destroyCjkFontWeights, initCjkFontWeights } from '@/lib/cjk-font-weight-client'
 import { disposeAll, registerModule, runAll } from '@/lib/client-registry'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/lib/custom-scrollbar-client'
 import { initIntroBadges } from '@/lib/intro-badge-client'
 import { initLinkedPageFontPrefetch } from '@/lib/linked-page-font-prefetch-client'
 import { initMdxCopyButtons } from '@/lib/mdx-copy-client'
-import { destroyMisansWeightDebug, initMisansWeightDebug } from '@/lib/misans-weight-debug-client'
 import { initNameAudioButtons } from '@/lib/name-audio-client'
 import { initPageReveals } from '@/lib/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/lib/photoswipe-gallery'
@@ -59,9 +59,9 @@ registerModule('font-prefetch', {
 	init: () => initLinkedPageFontPrefetch(),
 })
 
-registerModule('misans-weight-debug', {
-	dispose: () => destroyMisansWeightDebug(),
-	init: () => initMisansWeightDebug(),
+registerModule('cjk-font-weights', {
+	dispose: () => destroyCjkFontWeights(),
+	init: () => initCjkFontWeights(),
 })
 
 registerModule('custom-scrollbar', {
