@@ -19,6 +19,12 @@ const MIN_THUMB_HEIGHT = 44
 const HIDE_DELAY = 1600
 const MARKER_HIT_RADIUS = 9
 
+const SCROLLBAR_NAV_LABEL: Record<string, string> = {
+	en: 'Page sections',
+	ja: 'ページのセクション',
+	zh: '页面章节',
+}
+
 let cleanup: (() => void) | null = null
 let refreshLayout: (() => void) | null = null
 
@@ -96,20 +102,29 @@ function createTooltip() {
 	return tooltip
 }
 
+function getScrollbarNavLabel() {
+	const locale = document.querySelector<HTMLElement>('[data-site-locale]')?.dataset.siteLocale ?? 'en'
+	return SCROLLBAR_NAV_LABEL[locale] ?? SCROLLBAR_NAV_LABEL.en
+}
+
 function createScrollbarShell() {
 	const shell = document.createElement('div')
 	shell.className = 'custom-scrollbar'
-	shell.setAttribute('aria-hidden', 'true')
+	shell.setAttribute('role', 'navigation')
+	shell.setAttribute('aria-label', getScrollbarNavLabel())
 	shell.style.setProperty('--cs-hotzone-width', `${HOTZONE_WIDTH}px`)
 
 	const trackShadow = document.createElement('div')
 	trackShadow.className = 'custom-scrollbar-track-shadow'
+	trackShadow.setAttribute('aria-hidden', 'true')
 
 	const track = document.createElement('div')
 	track.className = 'custom-scrollbar-track'
+	track.setAttribute('aria-hidden', 'true')
 
 	const thumb = document.createElement('div')
 	thumb.className = 'custom-scrollbar-thumb'
+	thumb.setAttribute('aria-hidden', 'true')
 
 	const markersHost = document.createElement('div')
 	markersHost.className = 'custom-scrollbar-markers'
@@ -287,6 +302,7 @@ export function initCustomScrollbar() {
 		shell.classList.remove('is-visible')
 		shellVisibilityProgress = 0
 		clearLeaveState()
+		syncShellAccessibility()
 	}
 
 	function showShell() {
@@ -305,6 +321,7 @@ export function initCustomScrollbar() {
 		}
 		visible = true
 		shell.classList.add('is-visible')
+		syncShellAccessibility()
 		animateShellVisibility(true)
 	}
 
@@ -332,6 +349,7 @@ export function initCustomScrollbar() {
 			clearShellVisibilityInlineStyles()
 			shell.classList.remove('is-visible')
 			clearLeaveState()
+			syncShellAccessibility()
 			return
 		}
 
@@ -359,6 +377,7 @@ export function initCustomScrollbar() {
 		shell.classList.remove('is-visible')
 		clearShellVisibilityInlineStyles()
 		suppressShowUntil = performance.now() + SHELL_VISIBILITY_DURATION * 1000 + 80
+		syncShellAccessibility()
 	}
 
 	function setVisible(nextVisible: boolean) {
@@ -381,6 +400,24 @@ export function initCustomScrollbar() {
 	function setInteracting(interacting: boolean) {
 		shell.classList.toggle('is-active', interacting)
 		shell.classList.toggle('is-dragging', dragging)
+		syncShellAccessibility()
+	}
+
+	function syncShellAccessibility() {
+		const { maxScroll } = getScrollMetrics()
+		const canUseScrollbar = maxScroll > 1 && shell.classList.contains('has-scroll')
+		const isInteractive = canUseScrollbar && (
+			shell.classList.contains('is-visible')
+			|| shell.classList.contains('is-active')
+			|| shell.classList.contains('is-dragging')
+			|| dragging
+			|| hover
+		)
+
+		if (isInteractive)
+			shell.removeAttribute('inert')
+		else
+			shell.setAttribute('inert', '')
 	}
 
 	function measure() {
@@ -430,6 +467,7 @@ export function initCustomScrollbar() {
 
 		syncThumbFromScroll()
 		updateMarkerStates()
+		syncShellAccessibility()
 	}
 
 	function resyncScrollTimeline() {
@@ -767,6 +805,7 @@ export function initCustomScrollbar() {
 	resizeObserver.observe(document.documentElement)
 	setCustomReady()
 	syncLayout()
+	syncShellAccessibility()
 
 	// Scroll restoration / late layout can land after first measure.
 	requestAnimationFrame(() => {
