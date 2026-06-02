@@ -363,6 +363,7 @@ Micro interactions: encouraged.
 - `transition:animate` and `transition:persist` for Astro view transitions.
 - Content collections are typed via `src/content.config.ts` using Zod schemas.
 - i18n: use `getMessages(locale)` to get typed copy; add new strings to all three locale files + the types file.
+- Do not set the `font-variation-settings` CSS property on elements. `MiSans Polish` maps Latin-facing `font-weight` values to tuned CJK `wght` axis values via `@font-face` descriptors; element-level `font-variation-settings` would override that mapping.
 
 ---
 

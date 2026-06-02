@@ -22,8 +22,8 @@ const jiti = createJiti(import.meta.url, {
 const { getExpressiveCodeBlockLocale } = await jiti.import<typeof import('./src/lib/expressive-code.ts')>(
 	'./src/lib/expressive-code.ts',
 )
-const { default: remarkCjkFontWeight } = await jiti.import<typeof import('./src/lib/remark-cjk-font-weight.ts')>(
-	'./src/lib/remark-cjk-font-weight.ts',
+const { default: cjkFontPolish } = await jiti.import<typeof import('./src/lib/cjk-font-polish.ts')>(
+	'./src/lib/cjk-font-polish.ts',
 )
 
 export default defineConfig({
@@ -71,7 +71,6 @@ export default defineConfig({
 				remarkGfm,
 				remarkCjkFriendly,
 				remarkCjkFriendlyGfmStrikethrough,
-				remarkCjkFontWeight,
 			],
 		}),
 	],
@@ -94,6 +93,7 @@ export default defineConfig({
 				},
 				whiteList: '，。！？、；：「」『』（）《》—…·￥',
 			}),
+			cjkFontPolish(),
 		],
 	},
 })
