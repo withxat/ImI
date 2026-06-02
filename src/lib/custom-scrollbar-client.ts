@@ -164,6 +164,7 @@ export function initCustomScrollbar() {
 	let thumbHeightAnim: AnimationControls | null = null
 	let thumbTravelAnim: AnimationControls | null = null
 	let shellVisibilityAnim: AnimationControls | null = null
+	let shellVisibilityProgress = 0
 	let leaveFallbackTimer = 0
 	let suppressShowUntil = 0
 	let visible = false
@@ -224,11 +225,14 @@ export function initCustomScrollbar() {
 		shell.classList.remove('is-leaving')
 	}
 
+	function applyShellVisibilityProgress(progress: number) {
+		shellVisibilityProgress = clamp(progress, 0, 1)
+		surface.style.opacity = String(shellVisibilityProgress)
+		surface.style.transform = `translate3d(${(1 - shellVisibilityProgress) * SHELL_OFFSET_PX}px, 0, 0)`
+	}
+
 	function setShellSurfaceVisibilityStyle(nextVisible: boolean) {
-		surface.style.opacity = nextVisible ? '1' : '0'
-		surface.style.transform = nextVisible
-			? 'translate3d(0, 0, 0)'
-			: `translate3d(${SHELL_OFFSET_PX}px, 0, 0)`
+		applyShellVisibilityProgress(nextVisible ? 1 : 0)
 	}
 
 	function stopShellVisibilityAnimation() {
@@ -242,12 +246,15 @@ export function initCustomScrollbar() {
 
 	function animateShellVisibility(nextVisible: boolean, onComplete?: () => void) {
 		stopShellVisibilityAnimation()
-		const animation = animate(surface, {
-			opacity: nextVisible ? 1 : 0,
-			transform: nextVisible
-				? 'translate3d(0, 0, 0)'
-				: `translate3d(${SHELL_OFFSET_PX}px, 0, 0)`,
-		}, {
+		const targetProgress = nextVisible ? 1 : 0
+
+		if (Math.abs(shellVisibilityProgress - targetProgress) < 0.01) {
+			applyShellVisibilityProgress(targetProgress)
+			onComplete?.()
+			return
+		}
+
+		const animation = animate(shellVisibilityProgress, targetProgress, {
 			duration: SHELL_VISIBILITY_DURATION,
 			ease: [0.22, 1, 0.36, 1],
 			onComplete: () => {
@@ -258,6 +265,7 @@ export function initCustomScrollbar() {
 				shellVisibilityAnim = null
 				onComplete?.()
 			},
+			onUpdate: applyShellVisibilityProgress,
 		})
 		shellVisibilityAnim = animation
 	}
@@ -266,6 +274,7 @@ export function initCustomScrollbar() {
 		stopShellVisibilityAnimation()
 		clearShellVisibilityInlineStyles()
 		if (visible) {
+			shellVisibilityProgress = 1
 			clearLeaveState()
 			shell.classList.add('is-visible')
 			return
@@ -276,6 +285,7 @@ export function initCustomScrollbar() {
 		}
 
 		shell.classList.remove('is-visible')
+		shellVisibilityProgress = 0
 		clearLeaveState()
 	}
 
@@ -344,6 +354,7 @@ export function initCustomScrollbar() {
 	function finishLeave() {
 		clearLeaveFallback()
 		stopShellVisibilityAnimation()
+		applyShellVisibilityProgress(0)
 		clearLeaveState()
 		shell.classList.remove('is-visible')
 		clearShellVisibilityInlineStyles()
