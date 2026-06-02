@@ -11,9 +11,8 @@ interface SectionMarker {
 
 const HOTZONE_WIDTH = 24
 const MIN_TRACK_WIDTH = 768
-const SHELL_HIDE_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
-const SHELL_HIDE_MS = 160
 const SHELL_OFFSET_PX = 12
+const SHELL_VISIBILITY_DURATION = 0.16
 const TRACK_TOP = 14
 const THUMB_TOUCH_HIT_SLOP = 18
 const MIN_THUMB_HEIGHT = 44
@@ -164,7 +163,7 @@ export function initCustomScrollbar() {
 	let trackHeightAnim: AnimationControls | null = null
 	let thumbHeightAnim: AnimationControls | null = null
 	let thumbTravelAnim: AnimationControls | null = null
-	let hideShellAnim: Animation | null = null
+	let shellVisibilityAnim: AnimationControls | null = null
 	let leaveFallbackTimer = 0
 	let suppressShowUntil = 0
 	let visible = false
@@ -215,6 +214,7 @@ export function initCustomScrollbar() {
 	function clearShellVisibilityInlineStyles() {
 		surface.style.removeProperty('opacity')
 		surface.style.removeProperty('transform')
+		surface.style.removeProperty('transform-origin')
 		shell.style.removeProperty('opacity')
 		shell.style.removeProperty('right')
 		shell.style.removeProperty('transform')
@@ -224,18 +224,37 @@ export function initCustomScrollbar() {
 		shell.classList.remove('is-leaving')
 	}
 
-	function cancelHideAnimation() {
-		if (!hideShellAnim) {
+	function stopShellVisibilityAnimation() {
+		if (!shellVisibilityAnim) {
 			return
 		}
 
-		hideShellAnim.cancel()
-		hideShellAnim = null
-		clearShellVisibilityInlineStyles()
+		shellVisibilityAnim.stop()
+		shellVisibilityAnim = null
+	}
+
+	function animateShellVisibility(nextVisible: boolean, onComplete?: () => void) {
+		stopShellVisibilityAnimation()
+		const animation = animate(surface, {
+			opacity: nextVisible ? 1 : 0,
+			x: nextVisible ? 0 : SHELL_OFFSET_PX,
+		}, {
+			duration: SHELL_VISIBILITY_DURATION,
+			ease: [0.22, 1, 0.36, 1],
+			onComplete: () => {
+				if (shellVisibilityAnim !== animation) {
+					return
+				}
+
+				shellVisibilityAnim = null
+				onComplete?.()
+			},
+		})
+		shellVisibilityAnim = animation
 	}
 
 	function commitShellVisibility() {
-		cancelHideAnimation()
+		stopShellVisibilityAnimation()
 		clearShellVisibilityInlineStyles()
 		if (visible) {
 			clearLeaveState()
@@ -254,11 +273,21 @@ export function initCustomScrollbar() {
 	function showShell() {
 		suppressShowUntil = 0
 		clearLeaveFallback()
-		cancelHideAnimation()
+
+		if (visible && shell.classList.contains('is-visible') && !shell.classList.contains('is-leaving')) {
+			return
+		}
+
+		const wasLeaving = shell.classList.contains('is-leaving')
+		stopShellVisibilityAnimation()
 		clearLeaveState()
-		clearShellVisibilityInlineStyles()
+		if (!wasLeaving) {
+			surface.style.opacity = '0'
+			surface.style.transform = `translate3d(${SHELL_OFFSET_PX}px, 0, 0)`
+		}
 		visible = true
 		shell.classList.add('is-visible')
+		animateShellVisibility(true)
 	}
 
 	function clearLeaveFallback() {
@@ -281,6 +310,7 @@ export function initCustomScrollbar() {
 		clearLeaveFallback()
 
 		if (reducedMotion.matches) {
+			stopShellVisibilityAnimation()
 			clearShellVisibilityInlineStyles()
 			shell.classList.remove('is-visible')
 			clearLeaveState()
@@ -291,51 +321,24 @@ export function initCustomScrollbar() {
 			return
 		}
 
-		// Keep is-visible during the exit keyframe so iOS does not snap to opacity: 0.
 		shell.classList.add('is-leaving')
-		void surface.offsetWidth
-
-		const animation = surface.animate(
-			[
-				{ opacity: 1, transform: 'translate3d(0, 0, 0)' },
-				{ opacity: 0, transform: `translate3d(${SHELL_OFFSET_PX}px, 0, 0)` },
-			],
-			{
-				duration: SHELL_HIDE_MS,
-				easing: SHELL_HIDE_EASING,
-				fill: 'both',
-			},
-		)
-		hideShellAnim = animation
-
-		animation.addEventListener('finish', () => {
-			if (hideShellAnim !== animation) {
-				return
-			}
-
-			finishLeave()
-		}, { once: true })
+		animateShellVisibility(false, finishLeave)
 
 		leaveFallbackTimer = window.setTimeout(() => {
 			leaveFallbackTimer = 0
 			if (shell.classList.contains('is-leaving')) {
 				finishLeave()
 			}
-		}, SHELL_HIDE_MS + 80)
+		}, SHELL_VISIBILITY_DURATION * 1000 + 80)
 	}
 
 	function finishLeave() {
-		const animation = hideShellAnim
-		hideShellAnim = null
-
 		clearLeaveFallback()
-		surface.style.opacity = '0'
-		surface.style.transform = `translate3d(${SHELL_OFFSET_PX}px, 0, 0)`
-		animation?.cancel()
+		stopShellVisibilityAnimation()
 		clearLeaveState()
 		shell.classList.remove('is-visible')
 		clearShellVisibilityInlineStyles()
-		suppressShowUntil = performance.now() + SHELL_HIDE_MS + 80
+		suppressShowUntil = performance.now() + SHELL_VISIBILITY_DURATION * 1000 + 80
 	}
 
 	function setVisible(nextVisible: boolean) {
@@ -768,7 +771,7 @@ export function initCustomScrollbar() {
 		trackHeightAnim?.stop()
 		thumbHeightAnim?.stop()
 		thumbTravelAnim?.stop()
-		cancelHideAnimation()
+		stopShellVisibilityAnimation()
 		clearLeaveFallback()
 		clearLeaveState()
 		clearShellVisibilityInlineStyles()
