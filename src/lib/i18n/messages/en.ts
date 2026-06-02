@@ -127,6 +127,7 @@ const en: Messages = {
 			title: 'Colors',
 		},
 		eyebrow: 'Design System',
+		flipMascot: 'Flip mascot',
 		pageDescription: 'The design system that powers xat.sh — typography, color tokens, and the rules that keep the surface coherent.',
 		pageTitle: 'Design System - Xat',
 		typography: {

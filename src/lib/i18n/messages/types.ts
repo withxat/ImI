@@ -81,6 +81,7 @@ export interface DesignSystemCopy {
 		title: string
 	}
 	eyebrow: string
+	flipMascot: string
 	pageDescription: string
 	pageTitle: string
 	typography: {

@@ -127,6 +127,7 @@ const ja: Messages = {
 			title: 'カラー',
 		},
 		eyebrow: 'デザインシステム',
+		flipMascot: 'マスコットを反転',
 		pageDescription: 'xat.sh を支えるデザインシステム — タイポグラフィ、カラートークン、そして表面の一貫性を保つルール。',
 		pageTitle: 'Design System - Xat',
 		typography: {

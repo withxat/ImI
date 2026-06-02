@@ -122,6 +122,7 @@ const zh: Messages = {
 			title: '色彩',
 		},
 		eyebrow: '设计系统',
+		flipMascot: '翻转吉祥物',
 		pageDescription: '驱动 xat.sh 的设计系统 —— 字体、色彩 token，以及保持界面一致的规则。',
 		pageTitle: '设计系统 - Xat',
 		typography: {

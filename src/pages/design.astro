@@ -4,6 +4,7 @@ import type { ColorGroupKey, ColorRoleKey } from '@/lib/i18n/messages/types'
 
 import { Image } from 'astro:assets'
 
+import shinyImi from '@/assets/shiny-imi.png'
 import shinyTf from '@/assets/shiny-tf.png'
 import Container from '@/components/container.astro'
 import Seo from '@/components/seo.astro'
@@ -81,17 +82,40 @@ const colorGroups: { key: ColorGroupKey, tokens: ColorToken[] }[] = [
 			<div class="space-y-8">
 				<SiteHeader locale={locale} messages={m} showBack />
 				<div class="flex flex-col space-y-24">
-					<div class="space-y-4">
-						<Image
-							alt="shiny-tf"
-							class="size-8"
-							loading="eager"
-							src={shinyTf}
-						/>
+					<div class="flex flex-col gap-1">
+						<button
+							class="
+								relative inline-block size-8 cursor-pointer rounded-md border-0 bg-transparent p-0 transition-transform duration-150
+								ease-out outline-none perspective-near
+								focus-visible:ring-2 focus-visible:ring-ring/50
+								active:scale-97
+							"
+							aria-label={m.design.flipMascot}
+							aria-pressed="false"
+							type="button"
+							data-shiny-coin
+						>
+							<span
+								class="relative block size-full transform-3d"
+								data-shiny-coin-inner
+							>
+								<Image
+									alt="shiny-imi"
+									class="absolute inset-0 size-full backface-hidden"
+									loading="eager"
+									src={shinyImi}
+								/>
+								<Image
+									alt="shiny-tf"
+									class="absolute inset-0 size-full rotate-y-180 backface-hidden"
+									loading="eager"
+									src={shinyTf}
+								/>
+							</span>
+						</button>
 						<h1 class="inline-flex items-end text-3xl font-medium text-foreground">
 							{m.design.eyebrow}
 						</h1>
-
 					</div>
 
 					<!-- Typography -->
@@ -211,7 +235,14 @@ const colorGroups: { key: ColorGroupKey, tokens: ColorToken[] }[] = [
 </RootLayout>
 
 <script>
+import { animate } from 'motion'
+
 import { onAstroPageLoad } from '@/lib/astro-page-lifecycle'
+
+const FLIP_DURATION_S = 0.7
+// Strong ease-in-out — keeps rotation paced like a real coin spinning, while
+// scale + lift use the same curve for a cohesive single-toss arc.
+const FLIP_EASE: [number, number, number, number] = [0.77, 0, 0.175, 1]
 
 onAstroPageLoad(() => {
 	const rows = document.querySelectorAll<HTMLElement>('[data-color-row]')
@@ -224,5 +255,50 @@ onAstroPageLoad(() => {
 		if (target && value)
 			target.textContent = value
 	})
+
+	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+	const coins = document.querySelectorAll<HTMLButtonElement>('[data-shiny-coin]')
+	for (const button of coins) {
+		const inner = button.querySelector<HTMLElement>('[data-shiny-coin-inner]')
+		if (!inner)
+			continue
+
+		// Track logical rotation so each click reads "the next 180" without
+		// snapping back to 0; backface-visibility on each face does the
+		// front/back swap automatically as we cross 90deg.
+		let rotation = 0
+		let isFlipping = false
+
+		button.addEventListener('click', () => {
+			if (isFlipping)
+				return
+
+			const from = rotation
+			const to = rotation + 180
+			rotation = to
+			button.setAttribute('aria-pressed', String((to / 180) % 2 === 1))
+
+			if (reducedMotion.matches) {
+				inner.style.transform = `rotateY(${to}deg)`
+				return
+			}
+
+			isFlipping = true
+			animate(
+				inner,
+				{
+					rotateY: [from, to],
+					scale: [1, 1.4, 1],
+					y: [0, -6, 0],
+				},
+				{
+					duration: FLIP_DURATION_S,
+					ease: FLIP_EASE,
+				},
+			).finished.finally(() => {
+				isFlipping = false
+			})
+		})
+	}
 })
 </script>
