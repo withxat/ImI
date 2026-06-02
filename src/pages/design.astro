@@ -11,8 +11,6 @@ import HomeCardLink from '@/components/home-card-link.astro'
 import Seo from '@/components/seo.astro'
 import SiteHeader from '@/components/site-header.astro'
 import TextLink from '@/components/text-link.astro'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import RootLayout from '@/layouts/root-layout.astro'
 import { getMessages } from '@/lib/i18n/messages'
 
@@ -81,27 +79,55 @@ const typographyScaleOrder: TypographyScaleRoleKey[] = [
 	'wordmark',
 ]
 
-const typographyScaleClass: Record<TypographyScaleRoleKey, string> = {
-	bioLead: 'font-serif text-base/7 font-semibold text-foreground',
-	body: 'text-base/7 text-foreground',
-	display: 'text-3xl font-medium text-foreground',
-	headline: 'text-2xl font-medium text-foreground',
-	label: 'text-sm font-medium text-foreground',
-	mono: 'font-mono text-xs text-foreground',
-	title: 'text-lg font-semibold text-foreground',
-	wordmark: 'font-fugaz-one text-3xl text-highlight-strong',
+type FontSpecimenDescriptor = 'accent' | 'cjk' | 'display' | 'mono' | 'serif'
+
+interface FontSpecimen {
+	descriptor: FontSpecimenDescriptor
+	font: string
+	sampleClass: string
+	samples: { italic?: boolean, text: string }[]
 }
 
-const typographyScaleSample: Record<TypographyScaleRoleKey, string> = {
-	bioLead: m.home.bioLead,
-	body: m.home.bioP1,
-	display: 'The quick brown fox',
-	headline: m.design.typography.title,
-	label: m.home.writingEyebrow,
-	mono: 'const theme = "dark"',
-	title: m.home.capabilitiesEyebrow,
-	wordmark: 'Xat',
-}
+const colorTabsBootstrap = `(function(){var c=document.querySelectorAll('[data-color-card]');if(!c.length)return;var m=document.documentElement.classList.contains('dark')?'dark':'light';for(var i=0;i<c.length;i++)c[i].setAttribute('data-mode',m);})();`
+
+const fontSpecimens: FontSpecimen[] = [
+	{
+		descriptor: 'display',
+		font: 'Hanken Grotesk',
+		sampleClass: 'font-medium',
+		samples: [
+			{ text: 'The quick brown fox jumps over the lazy dog' },
+			{ italic: true, text: 'The quick brown fox jumps over the lazy dog' },
+		],
+	},
+	{
+		descriptor: 'cjk',
+		font: 'MiSans',
+		sampleClass: 'font-medium',
+		samples: [
+			{ text: '打造生产级界面与 AI 原生产品' },
+			{ text: '本番品質の UI と AI ネイティブなプロダクトをつくる' },
+		],
+	},
+	{
+		descriptor: 'accent',
+		font: 'Fugaz One',
+		sampleClass: 'font-fugaz-one text-highlight-strong',
+		samples: [{ text: 'Xat' }],
+	},
+	{
+		descriptor: 'mono',
+		font: 'Calling Code',
+		sampleClass: 'font-mono',
+		samples: [{ text: 'const greeting = "Hello"' }],
+	},
+	{
+		descriptor: 'serif',
+		font: 'Source Han Serif',
+		sampleClass: 'font-serif font-semibold',
+		samples: [{ text: 'Building production-quality interfaces' }],
+	},
+]
 ---
 
 <RootLayout>
@@ -180,18 +206,44 @@ const typographyScaleSample: Record<TypographyScaleRoleKey, string> = {
 									const row = m.design.typography.scale[role]
 									return (
 										<li class="
-											flex flex-col gap-2 px-5 py-4
-											sm:flex-row sm:items-baseline sm:justify-between
+											flex flex-col gap-1 px-5 py-3.5
+											sm:flex-row sm:items-baseline sm:justify-between sm:gap-6
 										"
 										>
-											<div class="min-w-0 space-y-0.5">
-												<p class="font-mono text-xs text-muted-foreground">{row.spec}</p>
-												<p class="text-sm font-medium text-muted-foreground">{row.role}</p>
-											</div>
-											<p class={typographyScaleClass[role]}>{typographyScaleSample[role]}</p>
+											<p class="text-sm font-medium text-foreground">{row.role}</p>
+											<p class="
+												font-mono text-xs text-muted-foreground
+												sm:text-right
+											"
+											>{row.spec}</p>
 										</li>
 									)
 								})}
+							</ul>
+						</div>
+
+						<div class="space-y-4">
+							<h3 class="text-lg font-medium text-foreground">{m.design.typography.specimensTitle}</h3>
+							<ul class="space-y-3">
+								{fontSpecimens.map(spec => (
+									<li class="rounded-xl border border-border px-5 py-4">
+										<p class="font-mono text-xs text-muted-foreground">
+											{spec.font} — {m.design.typography.sampleDescriptors[spec.descriptor]}
+										</p>
+										<div class="mt-2 overflow-x-auto pb-1">
+											{spec.samples.map(sample => (
+												<p class={`
+													text-2xl whitespace-nowrap
+													${spec.sampleClass}
+													${sample.italic ? 'italic' : ''}
+												`}
+												>
+													{sample.text}
+												</p>
+											))}
+										</div>
+									</li>
+								))}
 							</ul>
 						</div>
 					</section>
@@ -215,21 +267,63 @@ const typographyScaleSample: Record<TypographyScaleRoleKey, string> = {
 											<p class="max-w-prose text-sm text-muted-foreground">{groupCopy.description}</p>
 										</div>
 
-										<div class="
-											grid grid-cols-1 gap-6
-											lg:grid-cols-2
-										"
+										<div
+											class="
+												group/colorcard grid gap-6
+												lg:grid-cols-2
+											"
+											data-mode="light"
+											data-color-card
 										>
-											{(['light', 'dark'] as const).map((mode) => {
-												const scopeClass = mode === 'light' ? 'theme-light' : 'theme-dark'
+											{(['light', 'dark'] as const).map((paneMode) => {
+												const scopeClass = paneMode === 'light' ? 'theme-light' : 'theme-dark'
+												const hiddenClass = paneMode === 'light'
+													? 'max-lg:group-data-[mode=dark]/colorcard:hidden'
+													: 'max-lg:group-data-[mode=light]/colorcard:hidden'
 												return (
-													<div class={`
-														${scopeClass}
-														overflow-hidden rounded-xl border border-border bg-background
-													`}
+													<div
+														class={`
+															${scopeClass}
+															${hiddenClass}
+															overflow-hidden rounded-xl border border-border bg-background
+														`}
+														data-color-pane={paneMode}
 													>
-														<div class="flex items-center justify-between border-b border-border px-5 py-3">
-															<p class="font-mono text-xs font-medium text-muted-foreground">.{mode}</p>
+														<div
+															class="
+																flex items-center gap-2 border-b border-border px-5 py-2.5
+																lg:hidden
+															"
+															aria-label={m.design.colors.tablistLabel}
+															role="group"
+														>
+															{(['light', 'dark'] as const).map((tabMode, idx) => (
+																<>
+																	{idx > 0 && (
+																		<span aria-hidden="true" class="font-mono text-xs text-muted-foreground/40">·</span>
+																	)}
+																	<button
+																		class="
+																			cursor-pointer font-mono text-xs font-medium text-muted-foreground/70 transition-colors duration-150
+																			hover:text-foreground
+																			aria-pressed:text-foreground
+																		"
+																		aria-label={m.design.colors.modeLabel[tabMode]}
+																		aria-pressed={tabMode === paneMode ? 'true' : 'false'}
+																		data-color-tab={tabMode}
+																		type="button"
+																	>
+																		.{tabMode}
+																	</button>
+																</>
+															))}
+														</div>
+														<div class="
+															hidden border-b border-border px-5 py-2.5
+															lg:block
+														"
+														>
+															<p class="font-mono text-xs font-medium text-muted-foreground">.{paneMode}</p>
 														</div>
 														<ul class="divide-y divide-border">
 															{group.tokens.map(token => (
@@ -263,6 +357,7 @@ const typographyScaleSample: Record<TypographyScaleRoleKey, string> = {
 								)
 							})}
 						</div>
+						<script set:html={colorTabsBootstrap} is:inline />
 					</section>
 
 					<!-- 4. Elevation -->
@@ -272,65 +367,55 @@ const typographyScaleSample: Record<TypographyScaleRoleKey, string> = {
 							<p class="max-w-prose text-base/7 text-muted-foreground">{m.design.elevation.intro}</p>
 							<p class="max-w-prose text-sm text-muted-foreground">{m.design.elevation.flatNote}</p>
 						</div>
-						<div class="
-							grid gap-4
-							sm:grid-cols-2
-						"
-						>
-							<div class="rounded-xl border border-border bg-background px-5 py-6 shadow-xs shadow-highlight-soft/30">
-								<p class="font-mono text-xs text-muted-foreground">{m.design.elevation.shadowXs}</p>
-								<p class="mt-3 text-sm text-foreground">highlight-surface</p>
-							</div>
-							<div class="rounded-xl border border-highlight-soft/75 bg-background px-5 py-6 shadow-soft">
-								<p class="font-mono text-xs text-muted-foreground">{m.design.elevation.shadowSoft}</p>
-								<p class="mt-3 text-sm text-foreground">shadow-soft</p>
-							</div>
+						<div class="rounded-xl border border-highlight-soft/75 bg-background px-5 py-6 shadow-halo">
+							<p class="font-mono text-xs text-muted-foreground">shadow-halo</p>
+							<p class="mt-3 text-sm text-foreground">highlight-surface · surface-callout</p>
 						</div>
 					</section>
 
 					<!-- 5. Components -->
 					<section class="space-y-8">
-						<h2 class="text-2xl font-medium text-foreground">{m.design.components.title}</h2>
-
-						<div class="space-y-4">
-							<h3 class="text-lg font-medium text-foreground">{m.design.components.buttonsLabel}</h3>
-							<div class="flex flex-wrap items-center gap-3">
-								<Button>Default</Button>
-								<Button variant="secondary">Secondary</Button>
-								<Button variant="outline">Outline</Button>
-								<Button variant="ghost">Ghost</Button>
-								<Button variant="destructive">Destructive</Button>
-							</div>
-						</div>
-
-						<div class="space-y-4">
-							<h3 class="text-lg font-medium text-foreground">{m.design.components.badgesLabel}</h3>
-							<div class="flex flex-wrap items-center gap-2">
-								<Badge>Default</Badge>
-								<Badge variant="secondary">Secondary</Badge>
-								<Badge variant="outline">Outline</Badge>
-								<Badge variant="destructive">Destructive</Badge>
-							</div>
-						</div>
-
-						<div class="space-y-4">
-							<h3 class="text-lg font-medium text-foreground">{m.design.components.linksLabel}</h3>
-							<p class="text-base/7 text-muted-foreground">
-								<TextLink href="/post">{m.home.viewAllPosts}</TextLink>
-								{' '}
-								<span class="text-muted-foreground">·</span>
-								{' '}
-								<a class="text-link-muted text-sm" href="/">{m.header.goHome}</a>
+						<div class="space-y-3">
+							<h2 class="text-2xl font-medium text-foreground">{m.design.components.title}</h2>
+							<p class="max-w-prose text-base/7 text-muted-foreground">
+								{m.design.components.intro}
 							</p>
 						</div>
 
 						<div class="space-y-4">
-							<h3 class="text-lg font-medium text-foreground">{m.design.components.surfacesLabel}</h3>
+							<div class="space-y-1.5">
+								<h3 class="text-lg font-medium text-foreground">{m.design.components.primeTitle}</h3>
+								<p class="max-w-prose text-sm text-muted-foreground">{m.design.components.primeIntro}</p>
+							</div>
 							<HomeCardLink
 								description={m.design.components.cardDescription}
-								href="/"
+								href="https://ui.bejamas.com"
 								title={m.design.components.cardTitle}
+								external
 							/>
+						</div>
+
+						<div class="space-y-4">
+							<div class="space-y-1.5">
+								<h3 class="text-lg font-medium text-foreground">{m.design.components.particlesTitle}</h3>
+								<p class="max-w-prose text-sm text-muted-foreground">{m.design.components.particlesIntro}</p>
+							</div>
+							<ul class="space-y-3">
+								<li class="rounded-xl border border-border px-5 py-4">
+									<p class="font-mono text-xs text-muted-foreground">
+										TextLink — {m.design.components.textLinkDescriptor}
+									</p>
+									<p class="mt-2 text-base/7 text-muted-foreground">
+										<TextLink href="/post">{m.home.viewAllPosts}</TextLink>
+									</p>
+								</li>
+								<li class="rounded-xl border border-border px-5 py-4">
+									<p class="font-mono text-xs text-muted-foreground">
+										Wanderer gradient — {m.design.components.wandererDescriptor}
+									</p>
+									<p class="wanderer-gradient-text mt-2 text-2xl font-bold">{m.wanderer.wanderer}</p>
+								</li>
+							</ul>
 						</div>
 					</section>
 
@@ -370,6 +455,26 @@ onAstroPageLoad(() => {
 		const target = row.querySelector<HTMLElement>('[data-color-value]')
 		if (target && value)
 			target.textContent = value
+	})
+
+	const initialMode = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+	const cards = document.querySelectorAll<HTMLElement>('[data-color-card]')
+	cards.forEach((card) => {
+		card.setAttribute('data-mode', initialMode)
+
+		const tabs = card.querySelectorAll<HTMLButtonElement>('[data-color-tab]')
+		tabs.forEach((tab) => {
+			tab.addEventListener('click', () => {
+				const mode = tab.dataset.colorTab
+				if (!mode)
+					return
+				card.setAttribute('data-mode', mode)
+				const targetPane = card.querySelector<HTMLElement>(`[data-color-pane="${mode}"]`)
+				const focusTarget = targetPane?.querySelector<HTMLButtonElement>(`[data-color-tab="${mode}"]`)
+				if (focusTarget && focusTarget !== tab)
+					focusTarget.focus()
+			})
+		})
 	})
 
 	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')

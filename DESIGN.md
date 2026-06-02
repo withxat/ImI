@@ -202,7 +202,7 @@ The system explicitly rejects: corporate SaaS chrome, brutalist heaviness, templ
 **Key Characteristics:**
 - **Mono-ink + one accent.** Restrained color strategy. The accent appears on ≤10% of any screen and means *something*: identity, link, emphasis, or interaction state.
 - **Hairlines over fills.** Structure is carried by 1px borders at 8–15% opacity, not by background colors or shadows.
-- **Whisper shadows, never elevation.** Shadows exist (`shadow-xs`, `shadow-soft`) but are tinted with the brand color at <40% opacity. They suggest a halo, not lift.
+- **Whisper shadows, never elevation.** The system ships one shadow token (`shadow-halo`) tinted with the brand color at 30% opacity. Hover deepens to 45% via color override, never new geometry. The shadow suggests a halo, not lift.
 - **Trilingual-first typography.** Every paragraph, heading, and label has explicit `lang`-aware breaking rules. Latin balances, CJK wraps, Japanese line-breaks strict.
 - **Reveal on entry.** Page-load and scroll-driven blur-in (10px → 0, opacity 0 → 1, 420ms `cubic-bezier(0.22, 1, 0.36, 1)`). Staggered children are how content arrives; static is how content rests.
 - **Single-column narrow.** Max width 42rem (`max-w-2xl`). Pages are scrolled essays, not dashboards.
@@ -284,12 +284,11 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 **The system is flat by default.** Cards, popovers, and surfaces sit on the page; they do not float above it. Depth is conveyed by hairline border (1px at 8–15% opacity) and by a single 0.045-luminance step in dark mode (`surface` = `oklch(0.19)` vs. `background` = `oklch(0.145)`).
 
-Shadows exist, but they are **whispers** — pink/rose-tinted at low opacity, suggesting a halo around interactive elements rather than physical lift. The system has two shadow primitives:
+Shadows exist, but they are **whispers** — pink/rose-tinted at low opacity, suggesting a halo around interactive elements rather than physical lift. The system ships one shadow primitive:
 
 ### Shadow Vocabulary
 
-- **shadow-xs** (`0 1px 2px 0 rgb(0 0 0 / 0.05)`): Tailwind default; used on the `highlight-surface` utility to give interactive cards a near-imperceptible base lift.
-- **shadow-soft** (`0 20px 60px -30px color-mix(in srgb, var(--color-highlight-soft) 38%, transparent)`): The system's only signature shadow. Large, diffuse, rose-tinted, used as a soft halo under hero-tier hovered elements. Currently not heavily used; reserved for showcase pages.
+- **shadow-halo** (`0 1px 2px 0 var(--tw-shadow-color, color-mix(in srgb, var(--color-highlight-soft) 30%, transparent))`): The single signature shadow. 1–2px geometry, rose-tinted by default, used by `highlight-surface` (cards, intro badges, popovers) and `.surface-callout` (asides). Color is intentionally indirected through `--tw-shadow-color` so utility overrides (`dark:shadow-black/35`, `hover:shadow-highlight-soft/45`) recolor the same geometry without redefining it.
 
 Hover state shadows are recolored, not enlarged. `highlight-surface-hover` shifts the `box-shadow` color from `highlight-soft/30` to `highlight-soft/45` without changing the geometry — the surface "warms up" rather than "lifts up".
 
@@ -337,7 +336,7 @@ Every component starts as a bejamas prime (`src/components/ui/<name>/`); custom 
 
 A custom utility set, `.highlight-surface` / `.highlight-surface-hover` / `.highlight-surface-active`, is the visual signature of the entire portfolio:
 
-- **Base:** `border border-highlight-soft/75 shadow-xs shadow-highlight-soft/30` in light mode; `border-border shadow-black/35` in dark.
+- **Base:** `border border-highlight-soft/75 shadow-halo` in light mode; `border-border shadow-black/35` in dark.
 - **Hover:** `border-highlight-soft shadow-highlight-soft/45` in light; `border-foreground/22` in dark.
 - **Active/open:** `border-highlight-soft bg-accent/50 shadow-highlight-soft/45`.
 

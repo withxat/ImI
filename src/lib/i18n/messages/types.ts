@@ -82,23 +82,29 @@ export interface DesignSystemCopy {
 	colors: {
 		groups: Record<ColorGroupKey, ColorGroupCopy>
 		intro: string
+		modeLabel: {
+			dark: string
+			light: string
+		}
 		roles: Record<ColorRoleKey, string>
+		tablistLabel: string
 		title: string
 	}
 	components: {
-		badgesLabel: string
-		buttonsLabel: string
 		cardDescription: string
 		cardTitle: string
-		linksLabel: string
-		surfacesLabel: string
+		intro: string
+		particlesIntro: string
+		particlesTitle: string
+		primeIntro: string
+		primeTitle: string
+		textLinkDescriptor: string
 		title: string
+		wandererDescriptor: string
 	}
 	elevation: {
 		flatNote: string
 		intro: string
-		shadowSoft: string
-		shadowXs: string
 		title: string
 	}
 	eyebrow: string
@@ -124,6 +130,7 @@ export interface DesignSystemCopy {
 		}
 		scale: Record<TypographyScaleRoleKey, { role: string, spec: string }>
 		scaleTitle: string
+		specimensTitle: string
 		title: string
 	}
 }

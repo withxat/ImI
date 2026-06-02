@@ -116,7 +116,10 @@
 		'Noto Serif CJK TC', 'Source Han Serif SC', 'Source Han Serif TC', SimSun, NSimSun, FangSong, 'KaiTi', 'STKaiti',
 		'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', 'MS PMincho', 'MS Mincho', ui-serif, serif;
 
-	--shadow-soft: 0 20px 60px -30px color-mix(in srgb, var(--color-highlight-soft) 38%, transparent);
+	/* The system's one signature shadow: a 1–2px rose-tinted halo, not lift.
+	 * Uses --tw-shadow-color so color overrides (dark:shadow-black/35, hover at /45)
+	 * cascade through without redefining the geometry. */
+	--shadow-halo: 0 1px 2px 0 var(--tw-shadow-color, color-mix(in srgb, var(--color-highlight-soft) 30%, transparent));
 }
 
 @theme inline {
@@ -187,7 +190,7 @@
 }
 
 @utility highlight-surface {
-	@apply border border-highlight-soft/75 shadow-xs shadow-highlight-soft/30 dark:border-border dark:shadow-black/35;
+	@apply border border-highlight-soft/75 shadow-halo dark:border-border dark:shadow-black/35;
 }
 
 @utility highlight-surface-hover {
@@ -236,6 +239,33 @@
 	html.custom-scrollbar-ready::-webkit-scrollbar {
 		width: 0;
 		height: 0;
+	}
+
+	/* Native scrollbars on inner overflow surfaces — tinted to mirror the page-level
+	 * custom scrollbar so any overflow region (typography specimens, code blocks, tables
+	 * before the bespoke scrollbar boots, etc.) shares the same warm pill aesthetic. */
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: color-mix(in oklab, var(--highlight-soft) 55%, transparent) transparent;
+	}
+
+	*::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	*::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	*::-webkit-scrollbar-thumb {
+		background-color: color-mix(in oklab, var(--highlight-soft) 55%, transparent);
+		border-radius: 999px;
+		transition: background-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	*::-webkit-scrollbar-thumb:hover {
+		background-color: color-mix(in oklab, var(--highlight-text) 72%, var(--foreground));
 	}
 
 	/* Japanese body copy: JLREQ-style strict breaks — scoped to flow text only so
@@ -583,9 +613,9 @@
 		@apply block transition-colors duration-150 hover:text-highlight-strong;
 	}
 
-	/* Translation notice etc. — same shadow stack as `highlight-surface`, semantic `border-border`. */
+	/* Translation notice etc. — same halo as `highlight-surface`, semantic `border-border`. */
 	.surface-callout {
-		@apply rounded-xl border border-border bg-muted/30 shadow-xs shadow-highlight-soft/30 dark:shadow-black/35;
+		@apply rounded-xl border border-border bg-muted/30 shadow-halo dark:shadow-black/35;
 	}
 
 	.font-fugaz-one {

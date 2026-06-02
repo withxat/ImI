@@ -146,14 +146,9 @@
 		},
 		"shadows": [
 			{
-				"name": "shadow-xs",
-				"value": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-				"purpose": "Near-imperceptible base on highlight-surface interactive cards."
-			},
-			{
-				"name": "shadow-soft",
-				"value": "0 20px 60px -30px color-mix(in srgb, var(--color-highlight-soft) 38%, transparent)",
-				"purpose": "Large diffuse rose-tinted halo. Reserved for showcase-tier hover."
+				"name": "shadow-halo",
+				"value": "0 1px 2px 0 var(--tw-shadow-color, color-mix(in srgb, var(--color-highlight-soft) 30%, transparent))",
+				"purpose": "The single signature shadow. Rose-tinted halo on highlight-surface (cards, intro badges, popovers) and surface-callout (asides). Color cascades through --tw-shadow-color so utility overrides recolor without redefining geometry."
 			},
 			{
 				"name": "popover",
