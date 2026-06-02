@@ -68,22 +68,52 @@ export interface ColorGroupCopy {
 	title: string
 }
 
+export type TypographyScaleRoleKey
+	= | 'bioLead'
+		| 'body'
+		| 'display'
+		| 'headline'
+		| 'label'
+		| 'mono'
+		| 'title'
+		| 'wordmark'
+
 export interface DesignSystemCopy {
 	colors: {
 		groups: Record<ColorGroupKey, ColorGroupCopy>
-		intro: {
-			after: string
-			before: string
-			middle1: string
-			middle2: string
-		}
+		intro: string
 		roles: Record<ColorRoleKey, string>
+		title: string
+	}
+	components: {
+		badgesLabel: string
+		buttonsLabel: string
+		cardDescription: string
+		cardTitle: string
+		linksLabel: string
+		surfacesLabel: string
+		title: string
+	}
+	elevation: {
+		flatNote: string
+		intro: string
+		shadowSoft: string
+		shadowXs: string
 		title: string
 	}
 	eyebrow: string
 	flipMascot: string
+	northStar: {
+		characteristics: string[]
+		tagline: string
+		title: string
+	}
 	pageDescription: string
 	pageTitle: string
+	principles: {
+		rules: Array<{ body: string, name: string }>
+		title: string
+	}
 	typography: {
 		sampleDescriptors: {
 			accent: string
@@ -92,6 +122,8 @@ export interface DesignSystemCopy {
 			mono: string
 			serif: string
 		}
+		scale: Record<TypographyScaleRoleKey, { role: string, spec: string }>
+		scaleTitle: string
 		title: string
 	}
 }

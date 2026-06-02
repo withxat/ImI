@@ -1,5 +1,16 @@
 # AGENTS.md
 
+## Design Context
+
+This project has two root-level design context files that all UI / design work should respect:
+
+- **`PRODUCT.md`** — strategic context: register (`brand`), users, product purpose, brand personality, anti-references, design principles, accessibility.
+- **`DESIGN.md`** — visual context: color tokens (OKLCH), typography, elevation, components, do's and don'ts. Follows the [Stitch DESIGN.md format](https://stitch.withgoogle.com/docs/design-md/format/).
+
+Companion: `.impeccable/design.json` (tonal ramps, shadow/motion tokens, component snippets, narrative) — machine-readable extensions consumed by the impeccable live panel.
+
+Read PRODUCT.md before changing copy, IA, or strategic direction. Read DESIGN.md before changing visual tokens, components, or layout. The two files are the single source of truth; this AGENTS.md may lag behind them.
+
 ## Project Overview
 
 Personal portfolio + blog for a design engineer / frontend engineer.

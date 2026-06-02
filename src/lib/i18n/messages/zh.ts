@@ -94,12 +94,7 @@ const zh: Messages = {
 					title: '底色与边线',
 				},
 			},
-			intro: {
-				after: ' 渲染，永远以源文件为准 —— 即使在相反主题下预览，也能看到真实的亮 / 暗色值。',
-				before: '色彩 token 定义在 ',
-				middle1: ' 中。下方两个色板通过作用域类 ',
-				middle2: ' / ',
-			},
+			intro: '亮 / 暗两套色板并排渲染，无论当前在哪种主题下预览，色值都直接来自源文件。',
 			roles: {
 				accent: '交互态底色（hover、pressed）',
 				background: '页面画布',
@@ -121,10 +116,62 @@ const zh: Messages = {
 			},
 			title: '色彩',
 		},
+		components: {
+			badgesLabel: '徽章',
+			buttonsLabel: '按钮',
+			cardDescription: '悬停时出现玫瑰色光晕。标志性的可交互表面。',
+			cardTitle: '打造生产级界面与 AI 原生产品',
+			linksLabel: '链接',
+			surfacesLabel: '高亮表面',
+			title: '组件',
+		},
+		elevation: {
+			flatNote: '表面默认平贴页面。层次靠细线，不靠抬起。',
+			intro: '用 highlight-soft 着色的轻阴影。无玻璃态，无厚重投影。',
+			shadowSoft: '弥散玫瑰光晕（shadow-soft）',
+			shadowXs: '几乎不可见的基底（shadow-xs）',
+			title: '层次',
+		},
 		eyebrow: '设计系统',
 		flipMascot: '翻转吉祥物',
-		pageDescription: '驱动 xat.sh 的设计系统 —— 字体、色彩 token，以及保持界面一致的规则。',
+		northStar: {
+			characteristics: [
+				'墨色主调 + 单一强调色（静谧玫瑰 / 暖杏）',
+				'细线优于填色',
+				'三语排版（中 / 英 / 日）',
+				'入场渐显，420ms ease-out-quart',
+				'单栏窄版（最大 42rem）',
+			],
+			tagline: '工程精度裹着一层柔光。强调色是声音；稀少才是重点。',
+			title: '可爱又闪亮地优雅',
+		},
+		pageDescription: '驱动 xat.sh 的设计系统 —— 字体、色彩 token、层次、组件，以及保持界面一致的规则。',
 		pageTitle: '设计系统 - Xat',
+		principles: {
+			rules: [
+				{
+					body: 'highlight-text 与 highlight-soft 合计不超过屏幕约 10%。',
+					name: '单一声音规则',
+				},
+				{
+					body: '亮色模式下 surface、card、popover 与 background 合一，用边框而非填色区分。',
+					name: '细线而非墙规则',
+				},
+				{
+					body: 'font-fugaz-one 仅可用于字面文本「Xat」。',
+					name: '单一字标规则',
+				},
+				{
+					body: 'background-clip: text 渐变仅出现在页脚 wanderer 一行。',
+					name: '单一渐变规则',
+				},
+				{
+					body: '代码块在亮 / 暗站点模式下均保持 Vesper 深色。',
+					name: '代码恒暗规则',
+				},
+			],
+			title: '命名规则',
+		},
 		typography: {
 			sampleDescriptors: {
 				accent: '点缀',
@@ -133,6 +180,17 @@ const zh: Messages = {
 				mono: '等宽',
 				serif: '衬线',
 			},
+			scale: {
+				bioLead: { role: '导语', spec: '思源宋体 SC · 16px / 28px · 600' },
+				body: { role: '正文', spec: 'Hanken Grotesk + 小米 Sans · 16px / 28px · 400' },
+				display: { role: '展示', spec: 'Hanken Grotesk · 30px · 500' },
+				headline: { role: '标题', spec: 'Hanken Grotesk · 24px · 500' },
+				label: { role: '标签', spec: 'Hanken Grotesk · 14px · 500' },
+				mono: { role: '等宽', spec: 'Calling Code · 12px · 400' },
+				title: { role: '小标题', spec: 'Hanken Grotesk · 18px · 600' },
+				wordmark: { role: '字标', spec: 'Fugaz One · 24–30px · 400 · 仅「Xat」' },
+			},
+			scaleTitle: '层级',
 			title: '字体',
 		},
 	},

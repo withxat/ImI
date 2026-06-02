@@ -99,12 +99,7 @@ const ja: Messages = {
 					title: 'ウォッシュとエッジ',
 				},
 			},
-			intro: {
-				after: ' クラスで描画されるため、別モードでプレビューしてもソースに忠実な値を保ちます。',
-				before: 'トークンは ',
-				middle1: ' に定義されています。両パレットはスコープ付きの ',
-				middle2: ' / ',
-			},
+			intro: 'ライト / ダーク両方のパレットを並べて表示しているため、どちらのモードでプレビューしていても色値は常にソースを反映する。',
 			roles: {
 				accent: 'インタラクティブウォッシュ（hover、pressed）',
 				background: 'ページキャンバス',
@@ -126,10 +121,62 @@ const ja: Messages = {
 			},
 			title: 'カラー',
 		},
+		components: {
+			badgesLabel: 'バッジ',
+			buttonsLabel: 'ボタン',
+			cardDescription: 'ホバーでローズ色のハロー。シグネチャーのインタラクティブ面。',
+			cardTitle: '本番品質の UI と AI ネイティブなプロダクトをつくる',
+			linksLabel: 'リンク',
+			surfacesLabel: 'ハイライト面',
+			title: 'コンポーネント',
+		},
+		elevation: {
+			flatNote: '面は静止時フラット。深さはヘアラインで、持ち上げではない。',
+			intro: 'highlight-soft で染めたささやかな影。グラスなし、重いドロップシャドウなし。',
+			shadowSoft: '拡散ローズハロー（shadow-soft）',
+			shadowXs: 'ほぼ見えないベース（shadow-xs）',
+			title: 'エレベーション',
+		},
 		eyebrow: 'デザインシステム',
 		flipMascot: 'マスコットを反転',
-		pageDescription: 'xat.sh を支えるデザインシステム — タイポグラフィ、カラートークン、そして表面の一貫性を保つルール。',
+		northStar: {
+			characteristics: [
+				'モノインク + 単一アクセント（Quiet Rose / Warm Apricot）',
+				'塗りよりヘアライン',
+				'三言語タイポ（en / zh / ja）',
+				'入場リビール、420ms ease-out-quart',
+				'単一カラム狭幅（最大 42rem）',
+			],
+			tagline: 'エンジニアリングの精度に、柔らかな光を纏わせる。アクセントは声 — 希少さが効く。',
+			title: 'Cute with Shiny Elegance',
+		},
+		pageDescription: 'xat.sh を支えるデザインシステム — タイポグラフィ、カラートークン、エレベーション、コンポーネント、表面の一貫性を保つルール。',
 		pageTitle: 'Design System - Xat',
+		principles: {
+			rules: [
+				{
+					body: 'highlight-text と highlight-soft の合計は画面の約 10% 以下。',
+					name: 'The One Voice Rule',
+				},
+				{
+					body: 'ライトモードでは surface / card / popover は background に揃う。塗りではなくボーダーで分ける。',
+					name: 'The Hairlines-Not-Walls Rule',
+				},
+				{
+					body: 'font-fugaz-one は文字列「Xat」以外では禁止。',
+					name: 'The One Wordmark Rule',
+				},
+				{
+					body: 'background-clip: text のグラデーションはフッターの wanderer 行のみ。',
+					name: 'The One Gradient Rule',
+				},
+				{
+					body: 'コードブロックはライト / ダークどちらのサイトモードでも Vesper ダークのまま。',
+					name: 'The Code Stays Dark Rule',
+				},
+			],
+			title: '命名ルール',
+		},
 		typography: {
 			sampleDescriptors: {
 				accent: 'アクセント',
@@ -138,6 +185,17 @@ const ja: Messages = {
 				mono: '等幅',
 				serif: 'セリフ',
 			},
+			scale: {
+				bioLead: { role: 'Bio lead', spec: 'Source Han Serif SC · 16px / 28px · 600' },
+				body: { role: 'Body', spec: 'Hanken Grotesk + MiSans · 16px / 28px · 400' },
+				display: { role: 'Display', spec: 'Hanken Grotesk · 30px · 500' },
+				headline: { role: 'Headline', spec: 'Hanken Grotesk · 24px · 500' },
+				label: { role: 'Label', spec: 'Hanken Grotesk · 14px · 500' },
+				mono: { role: 'Mono', spec: 'Calling Code · 12px · 400' },
+				title: { role: 'Title', spec: 'Hanken Grotesk · 18px · 600' },
+				wordmark: { role: 'Wordmark', spec: 'Fugaz One · 24–30px · 400 · 「Xat」のみ' },
+			},
+			scaleTitle: '階層',
 			title: 'タイポグラフィ',
 		},
 	},

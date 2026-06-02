@@ -1,0 +1,361 @@
+{
+	"schemaVersion": 2,
+	"generatedAt": "2026-06-02T00:00:00.000Z",
+	"title": "Design System: Xat — Design Engineer Portfolio",
+	"extensions": {
+		"colorMeta": {
+			"highlight-text": {
+				"role": "primary",
+				"displayName": "Quiet Rose",
+				"canonical": "oklch(0.673 0.117 3)",
+				"tonalRamp": [
+					"oklch(0.15 0.04 3)",
+					"oklch(0.25 0.07 3)",
+					"oklch(0.35 0.09 3)",
+					"oklch(0.45 0.10 3)",
+					"oklch(0.55 0.11 3)",
+					"oklch(0.673 0.117 3)",
+					"oklch(0.75 0.10 3)",
+					"oklch(0.857 0.061 11)"
+				]
+			},
+			"highlight-text-dark": {
+				"role": "primary",
+				"displayName": "Warm Apricot",
+				"canonical": "oklch(0.84 0.08 58)",
+				"tonalRamp": [
+					"oklch(0.15 0.03 58)",
+					"oklch(0.25 0.05 58)",
+					"oklch(0.35 0.06 58)",
+					"oklch(0.50 0.07 58)",
+					"oklch(0.65 0.08 58)",
+					"oklch(0.72 0.018 20)",
+					"oklch(0.84 0.08 58)",
+					"oklch(0.93 0.04 58)"
+				]
+			},
+			"highlight-soft": {
+				"role": "secondary",
+				"displayName": "Petal Wash",
+				"canonical": "oklch(0.857 0.061 11)",
+				"tonalRamp": [
+					"oklch(0.15 0.02 11)",
+					"oklch(0.25 0.03 11)",
+					"oklch(0.40 0.04 11)",
+					"oklch(0.55 0.05 11)",
+					"oklch(0.70 0.06 11)",
+					"oklch(0.80 0.06 11)",
+					"oklch(0.857 0.061 11)",
+					"oklch(0.93 0.03 11)"
+				]
+			},
+			"foreground": {
+				"role": "neutral",
+				"displayName": "Soft Ink",
+				"canonical": "oklch(0.17 0.003 260)",
+				"tonalRamp": [
+					"oklch(0.10 0.003 260)",
+					"oklch(0.13 0.003 260)",
+					"oklch(0.17 0.003 260)",
+					"oklch(0.30 0.004 260)",
+					"oklch(0.45 0.004 260)",
+					"oklch(0.60 0.004 260)",
+					"oklch(0.75 0.004 260)",
+					"oklch(0.90 0.004 260)"
+				]
+			},
+			"foreground-dark": {
+				"role": "neutral",
+				"displayName": "Soft Snow",
+				"canonical": "oklch(0.965 0.006 260)",
+				"tonalRamp": [
+					"oklch(0.10 0.004 260)",
+					"oklch(0.145 0.004 260)",
+					"oklch(0.19 0.005 260)",
+					"oklch(0.40 0.005 260)",
+					"oklch(0.60 0.006 260)",
+					"oklch(0.75 0.006 260)",
+					"oklch(0.88 0.006 260)",
+					"oklch(0.965 0.006 260)"
+				]
+			},
+			"background": {
+				"role": "neutral",
+				"displayName": "Paper",
+				"canonical": "oklch(1 0 0)",
+				"tonalRamp": [
+					"oklch(0.10 0.004 260)",
+					"oklch(0.145 0.004 260)",
+					"oklch(0.19 0.005 260)",
+					"oklch(0.40 0.004 260)",
+					"oklch(0.60 0.003 260)",
+					"oklch(0.80 0.002 260)",
+					"oklch(0.93 0.001 260)",
+					"oklch(1 0 0)"
+				]
+			},
+			"code": {
+				"role": "tertiary",
+				"displayName": "Code Vesper",
+				"canonical": "oklch(0.206 0.012 278)",
+				"tonalRamp": [
+					"oklch(0.10 0.01 278)",
+					"oklch(0.15 0.01 278)",
+					"oklch(0.206 0.012 278)",
+					"oklch(0.28 0.012 278)",
+					"oklch(0.38 0.01 278)",
+					"oklch(0.50 0.008 278)",
+					"oklch(0.65 0.005 278)",
+					"oklch(0.80 0.003 278)"
+				]
+			}
+		},
+		"typographyMeta": {
+			"display": {
+				"displayName": "Display",
+				"purpose": "Page H1s — home name, design page title, post titles."
+			},
+			"headline": {
+				"displayName": "Headline",
+				"purpose": "Section H2s — Writing, Capabilities, Colors, Typography."
+			},
+			"title": {
+				"displayName": "Title",
+				"purpose": "Subsection H3s — capability items, color group titles."
+			},
+			"body": {
+				"displayName": "Body",
+				"purpose": "Paragraphs, bio copy, descriptions. Max ~65ch via max-w-prose."
+			},
+			"label": {
+				"displayName": "Label",
+				"purpose": "Eyebrow labels, button text, badge text."
+			},
+			"mono": {
+				"displayName": "Mono",
+				"purpose": "Capability numbers, code references, color value readouts."
+			},
+			"bio-lead": {
+				"displayName": "Bio Lead",
+				"purpose": "Home page lead line only. Source Han Serif SC Subset."
+			},
+			"wordmark": {
+				"displayName": "Wordmark",
+				"purpose": "The string 'Xat' only. Fugaz One."
+			}
+		},
+		"shadows": [
+			{
+				"name": "shadow-xs",
+				"value": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+				"purpose": "Near-imperceptible base on highlight-surface interactive cards."
+			},
+			{
+				"name": "shadow-soft",
+				"value": "0 20px 60px -30px color-mix(in srgb, var(--color-highlight-soft) 38%, transparent)",
+				"purpose": "Large diffuse rose-tinted halo. Reserved for showcase-tier hover."
+			},
+			{
+				"name": "popover",
+				"value": "0 14px 36px -24px color-mix(in oklab, var(--foreground) 42%, transparent)",
+				"purpose": "Floating layer shadow for popovers and hover cards."
+			}
+		],
+		"motion": [
+			{
+				"name": "ease-standard",
+				"value": "cubic-bezier(0.22, 1, 0.36, 1)",
+				"purpose": "Default easing for reveals, transitions, and state changes. Ease-out-quart."
+			},
+			{
+				"name": "ease-coin-flip",
+				"value": "cubic-bezier(0.77, 0, 0.175, 1)",
+				"purpose": "Strong ease-in-out for the design-page mascot coin flip."
+			},
+			{
+				"name": "ease-wanderer",
+				"value": "cubic-bezier(0.45, 0, 0.2, 1)",
+				"purpose": "Alternating gradient flow for footer wanderer text."
+			},
+			{
+				"name": "duration-reveal",
+				"value": "420ms",
+				"purpose": "Page reveal and stagger entrance duration."
+			},
+			{
+				"name": "duration-hover",
+				"value": "150ms",
+				"purpose": "Color and border transitions on interactive elements."
+			},
+			{
+				"name": "duration-article-reveal",
+				"value": "450ms",
+				"purpose": "Article body paragraph stagger reveal."
+			}
+		],
+		"breakpoints": [
+			{ "name": "sm", "value": "640px" },
+			{ "name": "md", "value": "768px" },
+			{ "name": "lg", "value": "1024px" }
+		]
+	},
+	"components": [
+		{
+			"name": "Primary Button",
+			"kind": "button",
+			"refersTo": "button-primary",
+			"description": "Solid ink fill. The mono-ink identity carrier.",
+			"html": "<button class=\"ds-btn-primary\">View all</button>",
+			"css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; padding: 0.5rem 0.75rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; line-height: 1.25; color: oklch(1 0 0); background: oklch(0.17 0.003 260); border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: background 150ms ease-out, transform 150ms ease-out; } .ds-btn-primary:hover { background: oklch(0.17 0.003 260 / 0.9); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.708 0 0 / 0.5); }"
+		},
+		{
+			"name": "Outline Button",
+			"kind": "button",
+			"refersTo": "button-outline",
+			"description": "Hairline border, background fill. The workhorse variant.",
+			"html": "<button class=\"ds-btn-outline\">Outline</button>",
+			"css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; padding: 0.5rem 0.75rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; color: oklch(0.17 0.003 260); background: oklch(1 0 0); border: 1px solid oklch(0 0 0 / 0.08); border-radius: 8px; cursor: pointer; transition: background 150ms ease-out, color 150ms ease-out; } .ds-btn-outline:hover { background: oklch(0 0 0 / 0.04); } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.708 0 0 / 0.5); }"
+		},
+		{
+			"name": "Ghost Button",
+			"kind": "button",
+			"refersTo": "button-ghost",
+			"description": "Transparent until hover. Low-emphasis actions.",
+			"html": "<button class=\"ds-btn-ghost\">Ghost</button>",
+			"css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; padding: 0.5rem 0.75rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; color: oklch(0.17 0.003 260); background: transparent; border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: background 150ms ease-out; } .ds-btn-ghost:hover { background: oklch(0 0 0 / 0.04); }"
+		},
+		{
+			"name": "Default Badge",
+			"kind": "chip",
+			"refersTo": "badge-default",
+			"description": "Solid ink pill for status and category labels.",
+			"html": "<span class=\"ds-badge\">Design</span>",
+			"css": ".ds-badge { display: inline-flex; align-items: center; justify-content: center; height: 1.25rem; padding: 0.125rem 0.5rem; font-family: 'Calling Code', ui-monospace, monospace; font-size: 0.75rem; font-weight: 500; color: oklch(1 0 0); background: oklch(0.17 0.003 260); border: 1px solid transparent; border-radius: 9999px; }"
+		},
+		{
+			"name": "Outline Badge",
+			"kind": "chip",
+			"refersTo": "badge-outline",
+			"description": "Hairline border pill. Quiet category marker.",
+			"html": "<span class=\"ds-badge-outline\">Tech</span>",
+			"css": ".ds-badge-outline { display: inline-flex; align-items: center; justify-content: center; height: 1.25rem; padding: 0.125rem 0.5rem; font-family: 'Calling Code', ui-monospace, monospace; font-size: 0.75rem; font-weight: 500; color: oklch(0.17 0.003 260); background: transparent; border: 1px solid oklch(0 0 0 / 0.08); border-radius: 9999px; }"
+		},
+		{
+			"name": "Highlight Surface Card",
+			"kind": "card",
+			"refersTo": "card",
+			"description": "The signature interactive surface — rose halo on hover.",
+			"html": "<a class=\"ds-card\" href=\"#\"><span class=\"ds-card-title\">Building production-quality interfaces</span><span class=\"ds-card-desc\">Design systems, AI products, and frontend craft.</span></a>",
+			"css": ".ds-card { display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; text-decoration: none; color: oklch(0.17 0.003 260); background: oklch(1 0 0); border: 1px solid oklch(0.857 0.061 11 / 0.75); border-radius: 14px; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 0 0 0 oklch(0.857 0.061 11 / 0.3); transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background 150ms ease-out; } .ds-card:hover { border-color: oklch(0.857 0.061 11); box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 4px 16px -4px oklch(0.857 0.061 11 / 0.45); background: oklch(0 0 0 / 0.04); } .ds-card-title { display: block; font-size: 0.875rem; font-weight: 500; transition: color 150ms ease-out; } .ds-card:hover .ds-card-title { color: oklch(0.673 0.117 3); } .ds-card-desc { display: block; font-size: 0.875rem; color: oklch(0.45 0.004 260); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }"
+		},
+		{
+			"name": "Pill Underline Link",
+			"kind": "custom",
+			"refersTo": "button-ghost",
+			"description": "The signature link affordance — rounded pill underline per line.",
+			"html": "<a class=\"ds-text-link\" href=\"#\">View all posts</a>",
+			"css": ".ds-text-link { color: oklch(0.673 0.117 3); font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; text-decoration: none; padding: 0 0.02em 0.2em; margin: 0 -0.02em; background-image: radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11 / 0.75) 99%, transparent), radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11 / 0.75) 99%, transparent), linear-gradient(oklch(0.857 0.061 11 / 0.75), oklch(0.857 0.061 11 / 0.75)); background-size: 0.1em 0.1em, 0.1em 0.1em, calc(100% - 0.1em) 0.1em; background-position: 0 calc(100% - 0.1em), 100% calc(100% - 0.1em), 0.05em calc(100% - 0.1em); background-repeat: no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: color 150ms ease-out; } .ds-text-link:hover { color: oklch(0.673 0.117 3); background-image: radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11) 99%, transparent), radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11) 99%, transparent), linear-gradient(oklch(0.857 0.061 11), oklch(0.857 0.061 11)); }"
+		},
+		{
+			"name": "Intro Badge",
+			"kind": "custom",
+			"refersTo": "intro-badge",
+			"description": "Inline highlight token within prose — opens a hover card on interaction.",
+			"html": "<button class=\"ds-intro-badge\" type=\"button\"><svg width=\"1em\" height=\"1em\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M22 10v6M2 10l10-5 10 5-10 5z\"/><path d=\"M6 12v5c3 3 9 3 12 0v-5\"/></svg><span>design engineer</span></button>",
+			"css": ".ds-intro-badge { display: inline-flex; align-items: baseline; gap: 0.25em; padding: 0.16em 0.35em; margin: 0 0.125em; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 600; line-height: 1.1; color: oklch(0.673 0.117 3); background: oklch(1 0 0); border: 1px solid oklch(0.857 0.061 11 / 0.75); border-radius: 8px; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 0 0 0 oklch(0.857 0.061 11 / 0.3); cursor: pointer; vertical-align: baseline; transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background 150ms ease-out; } .ds-intro-badge:hover { border-color: oklch(0.857 0.061 11); box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 4px 16px -4px oklch(0.857 0.061 11 / 0.45); background: oklch(0 0 0 / 0.04); } .ds-intro-badge svg { flex-shrink: 0; color: color-mix(in oklab, oklch(0.17 0.003 260) 36%, oklch(0.857 0.061 11)); }"
+		},
+		{
+			"name": "Eyebrow Label",
+			"kind": "custom",
+			"description": "Section label — sentence-case, no tracking, no decoration.",
+			"html": "<p class=\"ds-eyebrow\">Writing</p>",
+			"css": ".ds-eyebrow { font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 1rem; font-weight: 500; line-height: 1.5; color: oklch(0.17 0.003 260); margin: 0; }"
+		},
+		{
+			"name": "Wordmark",
+			"kind": "custom",
+			"description": "The 'Xat' brand mark. Fugaz One only, highlight-text color.",
+			"html": "<span class=\"ds-wordmark\">Xat</span>",
+			"css": ".ds-wordmark { font-family: 'Fugaz One', 'Hanken Grotesk', sans-serif; font-size: 1.875rem; font-weight: 400; line-height: 1; color: oklch(0.673 0.117 3); letter-spacing: 0; }"
+		}
+	],
+	"narrative": {
+		"northStar": "Cute with Shiny Elegance",
+		"overview": "The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — held together by hairlines, not boxes. The accent is Quiet Rose in light mode and Warm Apricot in dark, used on no more than ~10% of any screen. The 'Cute' lives in specific, named places: the Fugaz One wordmark, the coin-flip mascot, the wanderer gradient footer. The 'Shiny' is the soft pink halo under interactive surfaces. The 'Elegance' is the trilingual typography stack tuned with per-locale breaking rules.",
+		"keyCharacteristics": [
+			"Mono-ink + one accent (≤10% of any screen)",
+			"Hairlines over fills",
+			"Whisper shadows, never elevation",
+			"Trilingual-first typography",
+			"Reveal on entry (blur-in, 420ms ease-out-quart)",
+			"Single-column narrow (max 42rem)",
+			"OKLCH everywhere"
+		],
+		"rules": [
+			{
+				"name": "The One Voice Rule",
+				"body": "highlight-text and highlight-soft together occupy ≤10% of any rendered screen. The accent's rarity is the point.",
+				"section": "colors"
+			},
+			{
+				"name": "The Hairlines-Not-Walls Rule",
+				"body": "In light mode, surface, card, and popover all collapse to background. Cards exist as bordered regions, not filled regions.",
+				"section": "colors"
+			},
+			{
+				"name": "The Code Stays Dark Rule",
+				"body": "Code surfaces never switch palette. Vesper is the code identity.",
+				"section": "colors"
+			},
+			{
+				"name": "The Trilingual Wrap Rule",
+				"body": "Every block of body copy has explicit per-locale text breaking rules.",
+				"section": "typography"
+			},
+			{
+				"name": "The One Wordmark Rule",
+				"body": "font-fugaz-one is forbidden anywhere except on the literal text 'Xat'.",
+				"section": "typography"
+			},
+			{
+				"name": "The One Gradient Rule",
+				"body": "background-clip: text gradient appears in exactly one place: the footer wanderer-gradient-text.",
+				"section": "typography"
+			},
+			{
+				"name": "The Whisper-Only Rule",
+				"body": "Every shadow is tinted with highlight-soft at <50% opacity. Pure black shadows are forbidden in light mode.",
+				"section": "elevation"
+			},
+			{
+				"name": "The Border-First Rule",
+				"body": "When you reach for a shadow to separate a surface, try a hairline border first.",
+				"section": "elevation"
+			}
+		],
+		"dos": [
+			"Do keep highlight-text and highlight-soft below ~10% of any rendered screen.",
+			"Do use OKLCH for every color token.",
+			"Do tint shadows with highlight-soft in light mode.",
+			"Do carry structure with hairline borders, not background fills.",
+			"Do use text-wrap: balance on Latin headings and text-wrap: wrap on Japanese headings.",
+			"Do wrap prime-component customization in src/components/, not src/components/ui/.",
+			"Do use transition-colors duration-150 ease-out as the default transition.",
+			"Do start every motion with cubic-bezier(0.22, 1, 0.36, 1)."
+		],
+		"donts": [
+			"Don't use font-fugaz-one anywhere except on the literal string 'Xat'.",
+			"Don't add another background-clip: text gradient.",
+			"Don't add backdrop-filter: blur() as a decorative layer.",
+			"Don't use border-left or border-right greater than 1px as a colored accent stripe.",
+			"Don't use #000 or #fff in implementation.",
+			"Don't use Fraunces, Cormorant, Playfair, Inter, DM Sans, IBM Plex, Space Grotesk, or Outfit.",
+			"Don't build a hero-metric template.",
+			"Don't lay out pages as centered-stack hero with identical icon-title-text cards.",
+			"Don't reach for a modal as the first thought.",
+			"Don't use uppercase letter-spaced labels as section eyebrows.",
+			"Don't animate CSS layout properties.",
+			"Don't style code blocks to follow the site theme."
+		]
+	}
+}

@@ -99,12 +99,7 @@ const en: Messages = {
 					title: 'Wash & Edges',
 				},
 			},
-			intro: {
-				after: ' classes, so the swatches always reflect the source of truth — even when you\'re previewing in the opposite mode.',
-				before: 'Tokens live in ',
-				middle1: '. Both palettes here are rendered through scoped ',
-				middle2: ' / ',
-			},
+			intro: 'Both palettes are rendered side by side, so the swatches always reflect the source of truth — even when you\'re previewing in the opposite mode.',
 			roles: {
 				accent: 'Interactive wash (hover, pressed)',
 				background: 'Page canvas',
@@ -126,10 +121,62 @@ const en: Messages = {
 			},
 			title: 'Colors',
 		},
+		components: {
+			badgesLabel: 'Badges',
+			buttonsLabel: 'Buttons',
+			cardDescription: 'Rose-tinted halo on hover. The signature interactive surface.',
+			cardTitle: 'Building production-quality interfaces',
+			linksLabel: 'Links',
+			surfacesLabel: 'Highlight surfaces',
+			title: 'Components',
+		},
+		elevation: {
+			flatNote: 'Surfaces are flat at rest. Depth is carried by hairlines, not lift.',
+			intro: 'Whisper shadows tinted with highlight-soft. No glass, no heavy drop shadows.',
+			shadowSoft: 'Diffuse rose halo (shadow-soft)',
+			shadowXs: 'Near-imperceptible base (shadow-xs)',
+			title: 'Elevation',
+		},
 		eyebrow: 'Design System',
 		flipMascot: 'Flip mascot',
-		pageDescription: 'The design system that powers xat.sh — typography, color tokens, and the rules that keep the surface coherent.',
+		northStar: {
+			characteristics: [
+				'Mono-ink + one accent (Quiet Rose / Warm Apricot)',
+				'Hairlines over fills',
+				'Trilingual typography (en / zh / ja)',
+				'Reveal on entry, 420ms ease-out-quart',
+				'Single-column narrow (42rem max)',
+			],
+			tagline: 'Engineering precision wearing a soft glow. The accent is the voice; its rarity is the point.',
+			title: 'Cute with Shiny Elegance',
+		},
+		pageDescription: 'The design system that powers xat.sh — typography, color tokens, elevation, components, and the rules that keep the surface coherent.',
 		pageTitle: 'Design System - Xat',
+		principles: {
+			rules: [
+				{
+					body: 'highlight-text and highlight-soft together occupy ≤10% of any screen.',
+					name: 'The One Voice Rule',
+				},
+				{
+					body: 'In light mode, surface, card, and popover collapse to background. Separate with border, not fill.',
+					name: 'The Hairlines-Not-Walls Rule',
+				},
+				{
+					body: 'font-fugaz-one is forbidden anywhere except on the literal text "Xat".',
+					name: 'The One Wordmark Rule',
+				},
+				{
+					body: 'background-clip: text gradient appears only in the footer wanderer line.',
+					name: 'The One Gradient Rule',
+				},
+				{
+					body: 'Code blocks stay Vesper-dark in both light and dark site modes.',
+					name: 'The Code Stays Dark Rule',
+				},
+			],
+			title: 'Named rules',
+		},
 		typography: {
 			sampleDescriptors: {
 				accent: 'Accent',
@@ -138,6 +185,17 @@ const en: Messages = {
 				mono: 'Monospace',
 				serif: 'Serif',
 			},
+			scale: {
+				bioLead: { role: 'Bio lead', spec: 'Source Han Serif SC · 16px / 28px · 600' },
+				body: { role: 'Body', spec: 'Hanken Grotesk + MiSans · 16px / 28px · 400' },
+				display: { role: 'Display', spec: 'Hanken Grotesk · 30px · 500' },
+				headline: { role: 'Headline', spec: 'Hanken Grotesk · 24px · 500' },
+				label: { role: 'Label', spec: 'Hanken Grotesk · 14px · 500' },
+				mono: { role: 'Mono', spec: 'Calling Code · 12px · 400' },
+				title: { role: 'Title', spec: 'Hanken Grotesk · 18px · 600' },
+				wordmark: { role: 'Wordmark', spec: 'Fugaz One · 24–30px · 400 · "Xat" only' },
+			},
+			scaleTitle: 'Hierarchy',
 			title: 'Typography',
 		},
 	},
