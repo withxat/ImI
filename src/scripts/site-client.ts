@@ -1,5 +1,4 @@
 import { initArticleBodies } from '@/lib/article-reveal'
-import { destroyCjkFontWeights, initCjkFontWeights } from '@/lib/cjk-font-weight-client'
 import { disposeAll, registerModule, runAll } from '@/lib/client-registry'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/lib/custom-scrollbar-client'
 import { initIntroBadges } from '@/lib/intro-badge-client'
@@ -57,11 +56,6 @@ registerModule('mdx-copy', {
 
 registerModule('font-prefetch', {
 	init: () => initLinkedPageFontPrefetch(),
-})
-
-registerModule('cjk-font-weights', {
-	dispose: () => destroyCjkFontWeights(),
-	init: () => initCjkFontWeights(),
 })
 
 registerModule('custom-scrollbar', {
