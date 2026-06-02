@@ -201,9 +201,6 @@
 @layer base {
 	:root {
 		color-scheme: light;
-		--cjk-font-weight-regular: 330;
-		--cjk-font-weight-medium: 415;
-		--cjk-font-weight-semibold: 500;
 	}
 
 	* {
@@ -966,18 +963,6 @@
 	a.text-link-muted,
 	.article-body a {
 		text-decoration-line: none;
-	}
-
-	[data-cjk-font-weight] {
-		font-weight: var(--cjk-font-weight-regular);
-	}
-
-	[data-cjk-font-weight='medium'] {
-		font-weight: var(--cjk-font-weight-medium);
-	}
-
-	[data-cjk-font-weight='semibold'] {
-		font-weight: var(--cjk-font-weight-semibold);
 	}
 }
 
