@@ -201,6 +201,9 @@
 @layer base {
 	:root {
 		color-scheme: light;
+		--cjk-font-weight-regular: 360;
+		--cjk-font-weight-medium: 450;
+		--cjk-font-weight-semibold: 540;
 	}
 
 	* {
@@ -254,13 +257,6 @@
 		hyphens: none;
 	}
 
-	html:lang(ja),
-	html:lang(zh) {
-		--cjk-font-weight-regular: 380;
-		--cjk-font-weight-medium: 470;
-		--cjk-font-weight-semibold: 560;
-	}
-
 	/* `text-wrap: balance` optimizes Latin line lengths; for CJK titles it often
 	 * reflows awkwardly — keep balance for en/zh, plain wrap for Japanese headings. */
 	html:lang(ja) h1,
@@ -278,8 +274,7 @@
 		font-size: 16px;
 	}
 
-	html:lang(ja) body,
-	html:lang(zh) body {
+	body {
 		font-weight: var(--cjk-font-weight-regular);
 	}
 
@@ -977,18 +972,15 @@
 		text-decoration-line: none;
 	}
 
-	html:lang(ja) :where(.font-normal):not(.font-mono, .font-serif, .font-fugaz-one),
-	html:lang(zh) :where(.font-normal):not(.font-mono, .font-serif, .font-fugaz-one) {
+	:where(.font-normal):not(.font-mono, .font-serif, .font-fugaz-one) {
 		font-weight: var(--cjk-font-weight-regular);
 	}
 
-	html:lang(ja) :where(.font-medium):not(.font-mono, .font-serif, .font-fugaz-one),
-	html:lang(zh) :where(.font-medium):not(.font-mono, .font-serif, .font-fugaz-one) {
+	:where(.font-medium):not(.font-mono, .font-serif, .font-fugaz-one) {
 		font-weight: var(--cjk-font-weight-medium);
 	}
 
-	html:lang(ja) :where(.font-semibold):not(.font-mono, .font-serif, .font-fugaz-one),
-	html:lang(zh) :where(.font-semibold):not(.font-mono, .font-serif, .font-fugaz-one) {
+	:where(.font-semibold):not(.font-mono, .font-serif, .font-fugaz-one) {
 		font-weight: var(--cjk-font-weight-semibold);
 	}
 }

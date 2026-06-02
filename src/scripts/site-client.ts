@@ -4,6 +4,7 @@ import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayo
 import { initIntroBadges } from '@/lib/intro-badge-client'
 import { initLinkedPageFontPrefetch } from '@/lib/linked-page-font-prefetch-client'
 import { initMdxCopyButtons } from '@/lib/mdx-copy-client'
+import { destroyMisansWeightDebug, initMisansWeightDebug } from '@/lib/misans-weight-debug-client'
 import { initNameAudioButtons } from '@/lib/name-audio-client'
 import { initPageReveals } from '@/lib/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/lib/photoswipe-gallery'
@@ -56,6 +57,11 @@ registerModule('mdx-copy', {
 
 registerModule('font-prefetch', {
 	init: () => initLinkedPageFontPrefetch(),
+})
+
+registerModule('misans-weight-debug', {
+	dispose: () => destroyMisansWeightDebug(),
+	init: () => initMisansWeightDebug(),
 })
 
 registerModule('custom-scrollbar', {
