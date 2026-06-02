@@ -274,10 +274,6 @@
 		font-size: 16px;
 	}
 
-	body {
-		font-weight: var(--cjk-font-weight-regular);
-	}
-
 	h1,
 	h2,
 	h3 {
@@ -970,18 +966,6 @@
 	a.text-link-muted,
 	.article-body a {
 		text-decoration-line: none;
-	}
-
-	:where(.font-normal):not(.font-mono, .font-serif, .font-fugaz-one) {
-		font-weight: var(--cjk-font-weight-regular);
-	}
-
-	:where(.font-medium):not(.font-mono, .font-serif, .font-fugaz-one) {
-		font-weight: var(--cjk-font-weight-medium);
-	}
-
-	:where(.font-semibold):not(.font-mono, .font-serif, .font-fugaz-one) {
-		font-weight: var(--cjk-font-weight-semibold);
 	}
 }
 

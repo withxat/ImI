@@ -1,5 +1,9 @@
 const STORAGE_KEY = 'imi:misans-weight-debug'
 const PANEL_ID = 'misans-weight-debug-panel'
+const TUNED_TEXT_SELECTOR = '[data-misans-weight-debug]'
+const CJK_TEXT_RE = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\u3000-\u303F\uFF00-\uFFEF]/u
+const CJK_TEXT_SPLIT_RE = /([\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\u3000-\u303F\uFF00-\uFFEF]+)/gu
+const SKIP_PARENT_RE = /^(?:CODE|KBD|PRE|SCRIPT|STYLE|SVG|TEXTAREA|INPUT|SELECT|OPTION)$/
 
 const DEFAULT_WEIGHTS = {
 	medium: 450,
@@ -45,6 +49,65 @@ function applySettings(settings: WeightSettings) {
 	root.style.setProperty('--cjk-font-weight-regular', String(settings.regular))
 	root.style.setProperty('--cjk-font-weight-medium', String(settings.medium))
 	root.style.setProperty('--cjk-font-weight-semibold', String(settings.semibold))
+}
+
+function weightKeyForElement(element: Element): WeightKey {
+	const weight = Number.parseInt(getComputedStyle(element).fontWeight, 10)
+	if (weight >= 550)
+		return 'semibold'
+	if (weight >= 450)
+		return 'medium'
+	return 'regular'
+}
+
+function shouldSkipTextNode(node: Text) {
+	const parent = node.parentElement
+	if (!parent)
+		return true
+	if (!node.nodeValue || !CJK_TEXT_RE.test(node.nodeValue))
+		return true
+	if (parent.closest(`#${PANEL_ID}, ${TUNED_TEXT_SELECTOR}`))
+		return true
+	return SKIP_PARENT_RE.test(parent.tagName)
+}
+
+function wrapCjkText() {
+	const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+		acceptNode(node) {
+			return shouldSkipTextNode(node as Text) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+		},
+	})
+	const textNodes: Text[] = []
+	while (walker.nextNode()) textNodes.push(walker.currentNode as Text)
+
+	for (const node of textNodes) {
+		const parent = node.parentElement
+		if (!parent || !node.nodeValue)
+			continue
+
+		const weightKey = weightKeyForElement(parent)
+		const fragment = document.createDocumentFragment()
+		for (const part of node.nodeValue.split(CJK_TEXT_SPLIT_RE)) {
+			if (!part)
+				continue
+			if (!CJK_TEXT_RE.test(part)) {
+				fragment.append(document.createTextNode(part))
+				continue
+			}
+
+			const span = document.createElement('span')
+			span.dataset.misansWeightDebug = weightKey
+			span.textContent = part
+			fragment.append(span)
+		}
+		node.replaceWith(fragment)
+	}
+}
+
+function unwrapCjkText() {
+	for (const node of [...document.querySelectorAll<HTMLElement>(TUNED_TEXT_SELECTOR)]) {
+		node.replaceWith(document.createTextNode(node.textContent ?? ''))
+	}
 }
 
 function createStyle() {
@@ -125,6 +188,18 @@ function createStyle() {
 		#${PANEL_ID} .misans-weight-debug-preview p + p {
 			margin-top: 4px;
 		}
+
+		${TUNED_TEXT_SELECTOR} {
+			font-weight: var(--cjk-font-weight-regular);
+		}
+
+		${TUNED_TEXT_SELECTOR}[data-misans-weight-debug='medium'] {
+			font-weight: var(--cjk-font-weight-medium);
+		}
+
+		${TUNED_TEXT_SELECTOR}[data-misans-weight-debug='semibold'] {
+			font-weight: var(--cjk-font-weight-semibold);
+		}
 	`
 	return style
 }
@@ -178,9 +253,9 @@ function renderPanel(settings: WeightSettings) {
 	const preview = document.createElement('div')
 	preview.className = 'misans-weight-debug-preview'
 	preview.innerHTML = `
-		<p>打造生产级界面与 AI native tools</p>
-		<p class="font-medium">中英文混排 Medium sample</p>
-		<p class="font-semibold">中文 Semibold sample</p>
+		<p><span data-misans-weight-debug="regular">打造生产级界面</span> with AI native tools</p>
+		<p class="font-medium"><span data-misans-weight-debug="medium">中英文混排</span> Medium sample</p>
+		<p class="font-semibold"><span data-misans-weight-debug="semibold">中文</span> Semibold sample</p>
 	`
 	body.append(preview)
 	details.append(body)
@@ -195,11 +270,13 @@ export function initMisansWeightDebug() {
 	panel?.remove()
 	const settings = readSettings()
 	applySettings(settings)
+	wrapCjkText()
 	panel = renderPanel(settings)
 	document.body.append(panel)
 }
 
 export function destroyMisansWeightDebug() {
+	unwrapCjkText()
 	panel?.remove()
 	panel = null
 }
