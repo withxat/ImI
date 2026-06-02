@@ -11,8 +11,9 @@ interface SectionMarker {
 
 const HOTZONE_WIDTH = 24
 const MIN_TRACK_WIDTH = 768
+const SHELL_HIDE_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
 const SHELL_HIDE_MS = 160
-const SHELL_LEAVE_ANIMATION = 'cs-shell-exit'
+const SHELL_OFFSET_PX = 12
 const TRACK_TOP = 14
 const THUMB_TOUCH_HIT_SLOP = 18
 const MIN_THUMB_HEIGHT = 44
@@ -163,6 +164,7 @@ export function initCustomScrollbar() {
 	let trackHeightAnim: AnimationControls | null = null
 	let thumbHeightAnim: AnimationControls | null = null
 	let thumbTravelAnim: AnimationControls | null = null
+	let hideShellAnim: Animation | null = null
 	let leaveFallbackTimer = 0
 	let suppressShowUntil = 0
 	let visible = false
@@ -222,7 +224,18 @@ export function initCustomScrollbar() {
 		shell.classList.remove('is-leaving')
 	}
 
+	function cancelHideAnimation() {
+		if (!hideShellAnim) {
+			return
+		}
+
+		hideShellAnim.cancel()
+		hideShellAnim = null
+		clearShellVisibilityInlineStyles()
+	}
+
 	function commitShellVisibility() {
+		cancelHideAnimation()
 		clearShellVisibilityInlineStyles()
 		if (visible) {
 			clearLeaveState()
@@ -241,6 +254,7 @@ export function initCustomScrollbar() {
 	function showShell() {
 		suppressShowUntil = 0
 		clearLeaveFallback()
+		cancelHideAnimation()
 		clearLeaveState()
 		clearShellVisibilityInlineStyles()
 		visible = true
@@ -281,6 +295,27 @@ export function initCustomScrollbar() {
 		shell.classList.add('is-leaving')
 		void surface.offsetWidth
 
+		const animation = surface.animate(
+			[
+				{ opacity: 1, transform: 'translate3d(0, 0, 0)' },
+				{ opacity: 0, transform: `translate3d(${SHELL_OFFSET_PX}px, 0, 0)` },
+			],
+			{
+				duration: SHELL_HIDE_MS,
+				easing: SHELL_HIDE_EASING,
+				fill: 'both',
+			},
+		)
+		hideShellAnim = animation
+
+		animation.addEventListener('finish', () => {
+			if (hideShellAnim !== animation) {
+				return
+			}
+
+			finishLeave()
+		}, { once: true })
+
 		leaveFallbackTimer = window.setTimeout(() => {
 			leaveFallbackTimer = 0
 			if (shell.classList.contains('is-leaving')) {
@@ -289,20 +324,14 @@ export function initCustomScrollbar() {
 		}, SHELL_HIDE_MS + 80)
 	}
 
-	function handleShellAnimationEnd(event: AnimationEvent) {
-		if (event.target !== surface || !event.animationName.includes(SHELL_LEAVE_ANIMATION)) {
-			return
-		}
-
-		if (!shell.classList.contains('is-leaving')) {
-			return
-		}
-
-		finishLeave()
-	}
-
 	function finishLeave() {
+		const animation = hideShellAnim
+		hideShellAnim = null
+
 		clearLeaveFallback()
+		surface.style.opacity = '0'
+		surface.style.transform = `translate3d(${SHELL_OFFSET_PX}px, 0, 0)`
+		animation?.cancel()
 		clearLeaveState()
 		shell.classList.remove('is-visible')
 		clearShellVisibilityInlineStyles()
@@ -719,7 +748,6 @@ export function initCustomScrollbar() {
 		})
 	})
 	window.addEventListener('pageshow', syncLayout, { signal })
-	surface.addEventListener('animationend', handleShellAnimationEnd, { signal })
 
 	window.addEventListener('scroll', handleScroll, { passive: true, signal })
 	window.addEventListener('resize', handleResize, { passive: true, signal })
@@ -740,6 +768,7 @@ export function initCustomScrollbar() {
 		trackHeightAnim?.stop()
 		thumbHeightAnim?.stop()
 		thumbTravelAnim?.stop()
+		cancelHideAnimation()
 		clearLeaveFallback()
 		clearLeaveState()
 		clearShellVisibilityInlineStyles()
