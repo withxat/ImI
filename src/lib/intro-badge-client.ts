@@ -16,6 +16,15 @@ export function initIntroBadges() {
 		const canHover = matchMedia('(hover: hover) and (pointer: fine)')
 		let focusReturnTarget: HTMLElement | null = null
 
+		const syncPopupInert = (open: boolean) => {
+			if (open)
+				popup.removeAttribute('inert')
+			else
+				popup.setAttribute('inert', '')
+		}
+
+		syncPopupInert(root.hasAttribute('data-open'))
+
 		const setTriggerOpenState = (open: boolean) => {
 			if (open)
 				trigger.dataset.open = 'true'
@@ -26,6 +35,7 @@ export function initIntroBadges() {
 			const { open } = (event as CustomEvent<{ open: boolean }>).detail
 
 			setTriggerOpenState(open)
+			syncPopupInert(open)
 
 			if (!open)
 				return

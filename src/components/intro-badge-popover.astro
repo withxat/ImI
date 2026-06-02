@@ -7,7 +7,7 @@ import Suitcase from '~icons/local/suitcase'
 
 import IntroBadgeDescription from '@/components/intro-badge-description.astro'
 import { Button } from '@/components/ui/button'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
+import { HoverCard, HoverCardContent } from '@/components/ui/hover-card'
 
 interface Props {
 	kind: IntroBadgeKind
@@ -25,36 +25,34 @@ const Icon = kind === 'products' ? Suitcase : GraduationCap
 	delay={120}
 	data-intro-badge-root
 >
-	<HoverCardTrigger class="align-baseline" asChild>
-		<Button
-			class="
-				mx-0.5 h-auto translate-y-[0.08em] gap-[0.25em] rounded-md highlight-surface highlight-surface-hover bg-popover px-[0.35em] py-[0.16em]
-				align-baseline text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong
-				hover:bg-accent/50
-				has-[>svg]:px-[0.35em]
-				dark:bg-input/32
-				dark:hover:bg-input/64
-				data-open:highlight-surface-active
-				[&_svg]:block [&_svg]:size-[1em] [&_svg]:shrink-0 [&_svg]:translate-y-[-0.04em] [&_svg]:text-highlight-icon
-			"
-			type="button"
-			variant="outline"
-			data-intro-badge-trigger
-		>
-			<Icon aria-hidden="true" />
-			<span class="leading-none">{label}</span>
-		</Button>
-	</HoverCardTrigger>
+	<Button
+		class="
+			mx-0.5 inline-flex h-auto translate-y-[0.08em] gap-[0.25em] rounded-md highlight-surface highlight-surface-hover bg-popover px-[0.35em]
+			py-[0.16em] align-baseline text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong
+			hover:bg-accent/50
+			has-[>svg]:px-[0.35em]
+			dark:bg-input/32
+			dark:hover:bg-input/64
+			data-open:highlight-surface-active
+			[&_svg]:block [&_svg]:size-[1em] [&_svg]:shrink-0 [&_svg]:translate-y-[-0.04em] [&_svg]:text-highlight-icon
+		"
+		data-slot="hover-card-trigger"
+		type="button"
+		variant="outline"
+		data-intro-badge-trigger
+	>
+		<Icon aria-hidden="true" />
+		<span class="leading-none">{label}</span>
+	</Button>
 	<HoverCardContent
 		align="start"
 		alignOffset={-4}
 		class="max-w-72 gap-0 text-sm/6 text-muted-foreground"
-		role="dialog"
 		side="bottom"
 		sideOffset={8}
 		data-intro-badge-popup
+		inert
 	>
-		<span class="sr-only" tabindex="-1" autofocus data-intro-badge-focus-sentinel></span>
 		<IntroBadgeDescription kind={kind} locale={locale} />
 	</HoverCardContent>
 </HoverCard>

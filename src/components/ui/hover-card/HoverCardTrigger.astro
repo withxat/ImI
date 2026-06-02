@@ -20,13 +20,7 @@ const {
 {
   asChild
 ? (
-    <div
-	class={cn("", "inline-flex items-center", className)}
-	data-slot="hover-card-trigger"
-	data-as-child
-    >
-      <slot />
-    </div>
+    <slot />
   )
 : (
     <button
