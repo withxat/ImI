@@ -4,7 +4,7 @@ import type { Locale } from '@/lib/i18n/constants'
 import { Image } from 'astro:assets'
 
 import { version as appVersion } from '../../package.json'
-import shinyTf from '@/assets/shiny-tf.png'
+import shinyImi from '@/assets/shiny-imi.png'
 import Container from '@/components/container.astro'
 import FooterNav from '@/components/footer-nav.astro'
 import FooterWanderer from '@/components/footer-wanderer.astro'
@@ -47,7 +47,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 						alt=""
 						densities={[1, 2]}
 						height={20}
-						src={shinyTf}
+						src={shinyImi}
 						width={20}
 					/>
 					ImI v{appVersion}

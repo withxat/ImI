@@ -528,14 +528,23 @@
 		--text-link-u-thickness: 0.1em;
 		--text-link-u-clear: 0.1em;
 		--text-link-u-r: calc(var(--text-link-u-thickness) / 2);
-		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, transparent);
+		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, var(--color-background));
+		--text-link-underline-transparent: rgb(from var(--text-link-underline) r g b / 0);
 		padding: 0 0.02em calc(var(--text-link-u-thickness) + var(--text-link-u-clear));
 		margin: 0 -0.02em;
 		border-radius: 0;
 		background-color: transparent;
 		background-image:
-			radial-gradient(circle closest-side at 50% 50%, var(--text-link-underline) 100%, transparent),
-			radial-gradient(circle closest-side at 50% 50%, var(--text-link-underline) 100%, transparent),
+			radial-gradient(
+				circle closest-side at 50% 50%,
+				var(--text-link-underline) 99%,
+				var(--text-link-underline-transparent)
+			),
+			radial-gradient(
+				circle closest-side at 50% 50%,
+				var(--text-link-underline) 99%,
+				var(--text-link-underline-transparent)
+			),
 			linear-gradient(var(--text-link-underline), var(--text-link-underline));
 		background-size:
 			var(--text-link-u-thickness) var(--text-link-u-thickness),
@@ -660,13 +669,22 @@
 		--text-link-u-thickness: 0.1em;
 		--text-link-u-clear: 0.1em;
 		--text-link-u-r: calc(var(--text-link-u-thickness) / 2);
+		--text-link-underline-transparent: rgb(from var(--text-link-underline) r g b / 0);
 		padding: 0 0.02em calc(var(--text-link-u-thickness) + var(--text-link-u-clear));
 		margin: 0 -0.02em;
 		border-radius: 0;
 		background-color: transparent;
 		background-image:
-			radial-gradient(circle closest-side at 50% 50%, var(--text-link-underline) 100%, transparent),
-			radial-gradient(circle closest-side at 50% 50%, var(--text-link-underline) 100%, transparent),
+			radial-gradient(
+				circle closest-side at 50% 50%,
+				var(--text-link-underline) 99%,
+				var(--text-link-underline-transparent)
+			),
+			radial-gradient(
+				circle closest-side at 50% 50%,
+				var(--text-link-underline) 99%,
+				var(--text-link-underline-transparent)
+			),
 			linear-gradient(var(--text-link-underline), var(--text-link-underline));
 		background-size:
 			var(--text-link-u-thickness) var(--text-link-u-thickness),
