@@ -224,6 +224,13 @@ export function initCustomScrollbar() {
 		shell.classList.remove('is-leaving')
 	}
 
+	function setShellSurfaceVisibilityStyle(nextVisible: boolean) {
+		surface.style.opacity = nextVisible ? '1' : '0'
+		surface.style.transform = nextVisible
+			? 'translate3d(0, 0, 0)'
+			: `translate3d(${SHELL_OFFSET_PX}px, 0, 0)`
+	}
+
 	function stopShellVisibilityAnimation() {
 		if (!shellVisibilityAnim) {
 			return
@@ -237,7 +244,9 @@ export function initCustomScrollbar() {
 		stopShellVisibilityAnimation()
 		const animation = animate(surface, {
 			opacity: nextVisible ? 1 : 0,
-			x: nextVisible ? 0 : SHELL_OFFSET_PX,
+			transform: nextVisible
+				? 'translate3d(0, 0, 0)'
+				: `translate3d(${SHELL_OFFSET_PX}px, 0, 0)`,
 		}, {
 			duration: SHELL_VISIBILITY_DURATION,
 			ease: [0.22, 1, 0.36, 1],
@@ -282,8 +291,7 @@ export function initCustomScrollbar() {
 		stopShellVisibilityAnimation()
 		clearLeaveState()
 		if (!wasLeaving) {
-			surface.style.opacity = '0'
-			surface.style.transform = `translate3d(${SHELL_OFFSET_PX}px, 0, 0)`
+			setShellSurfaceVisibilityStyle(false)
 		}
 		visible = true
 		shell.classList.add('is-visible')
@@ -322,6 +330,7 @@ export function initCustomScrollbar() {
 		}
 
 		shell.classList.add('is-leaving')
+		setShellSurfaceVisibilityStyle(true)
 		animateShellVisibility(false, finishLeave)
 
 		leaveFallbackTimer = window.setTimeout(() => {
@@ -453,6 +462,10 @@ export function initCustomScrollbar() {
 	function showTemporarily(options: { active?: boolean, fromScroll?: boolean } = {}) {
 		const { maxScroll } = getScrollMetrics()
 		if (maxScroll <= 1) {
+			return
+		}
+
+		if (shell.classList.contains('is-leaving') && !options.active && !hover && !dragging) {
 			return
 		}
 
