@@ -34,3 +34,5 @@
 - **Visitor Geo** — country code from Cloudflare `cf.country` header.
 - **PhotoSwipe** — image lightbox for article images.
 - **Expressive Code** — syntax-highlighted code blocks with copy buttons.
+- **Site Client** — the browser-only module registry initialized by `src/scripts/site-client.ts`. Feature modules live in `src/client`.
+- **Font Pipeline** — build-time font subsetting and MiSans CJK weight mapping. Vite plugins live in `src/lib/fonts`; font-loading Astro components live in `src/components/fonts`.

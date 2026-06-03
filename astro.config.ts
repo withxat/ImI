@@ -22,11 +22,11 @@ const jiti = createJiti(import.meta.url, {
 const { getExpressiveCodeBlockLocale } = await jiti.import<typeof import('./src/lib/expressive-code.ts')>(
 	'./src/lib/expressive-code.ts',
 )
-const { default: cjkFontPolish } = await jiti.import<typeof import('./src/lib/cjk-font-polish.ts')>(
-	'./src/lib/cjk-font-polish.ts',
+const { default: cjkFontPolish } = await jiti.import<typeof import('./src/lib/fonts/cjk-font-polish.ts')>(
+	'./src/lib/fonts/cjk-font-polish.ts',
 )
-const { default: misansGlyphCollector, MISANS_GLYPH_SCAN_FILES } = await jiti.import<typeof import('./src/lib/misans-glyph-collector.ts')>(
-	'./src/lib/misans-glyph-collector.ts',
+const { default: misansGlyphCollector, MISANS_GLYPH_SCAN_FILES } = await jiti.import<typeof import('./src/lib/fonts/mi-sans-glyph-collector.ts')>(
+	'./src/lib/fonts/mi-sans-glyph-collector.ts',
 )
 
 export default defineConfig({

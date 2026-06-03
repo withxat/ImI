@@ -887,7 +887,7 @@
 		@apply block w-full max-w-full border-collapse overflow-x-auto;
 	}
 
-	/* Article block reveals (driven by article-reveal-client.tsx) */
+	/* Article block reveals (driven by src/client/article-reveal.ts) */
 	@keyframes article-line-reveal {
 		from {
 			opacity: 0;
@@ -948,7 +948,7 @@
 	}
 }
 
-/* Page reveal (see src/lib/page-reveal.ts) */
+/* Page reveal (see src/client/page-reveal.ts) */
 [data-reveal][data-reveal-pending]:not([data-reveal-ready='true']) {
 	opacity: 0;
 	filter: blur(var(--reveal-blur, 10px));

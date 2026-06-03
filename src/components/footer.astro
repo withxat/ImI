@@ -90,7 +90,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 </footer>
 
 <script>
-import { onAstroPageLoad } from '@/lib/astro-page-lifecycle'
+import { onAstroPageLoad } from '@/client/astro-page-lifecycle'
 
 onAstroPageLoad(() => {
 	const isOnDesign = window.location.pathname === '/design'

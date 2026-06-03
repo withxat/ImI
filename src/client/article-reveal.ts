@@ -2,7 +2,7 @@ import {
 	classifyRevealPosition,
 	createScrollObserver,
 	prefersReducedMotion,
-} from '@/lib/reveal-engine'
+} from '@/client/reveal-engine'
 
 export function setupArticleReveal(root: HTMLElement, animate = true) {
 	const reduce = prefersReducedMotion()

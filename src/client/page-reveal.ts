@@ -4,7 +4,7 @@ import {
 	initRevealHidden,
 	prefersReducedMotion,
 	revealElement,
-} from '@/lib/reveal-engine'
+} from '@/client/reveal-engine'
 
 export interface PageRevealOptions {
 	/** When false, show content immediately (client navigations). */

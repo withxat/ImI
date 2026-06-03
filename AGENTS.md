@@ -323,19 +323,22 @@ Micro interactions: encouraged.
 /src
   /assets
     /icons       # local SVG icons (loaded by unplugin-icons)
+    /fonts       # build-time font sources and generated MiSans static instances
+  /client        # browser-only modules registered by src/scripts/site-client.ts
   /components
+    /fonts       # font loading / subset side-effect components
     /mdx         # MDX element overrides (a, h1-h6, img, table, etc.)
     /ui          # reusable UI primitives (button, badge, container, popover, etc.)
-    /ui-fonts    # font loading components
     *.astro      # page-level components (header, footer, seo, reveal, etc.)
   /layouts
     root-layout.astro
   /lib
+    /fonts       # Vite font-subset plugins and MiSans glyph manifest generation
     /i18n
       /messages  # per-locale message files + types
       *.ts       # locale resolution, cookie, switch logic
     /theme       # theme bootstrap + constants
-    *.ts         # blog, seo-data, rss, reveal-engine, view-transition, etc.
+    *.ts         # SSR/shared helpers (blog, seo-data, rss, view-transition, etc.)
   /pages
     index.astro
     404.astro
