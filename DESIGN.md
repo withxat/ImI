@@ -249,7 +249,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 **Display Font:** Hanken Grotesk (variable, 100–900, roman + italic). Self-hosted; matched with a Latin-only fallback (`Hanken Grotesk Fallback`) that retunes `.AppleSystemUIFont` metrics so `font-display: swap` never resizes UI strings before the real face arrives.
 
-**Body Font:** Hanken Grotesk for Latin / **MiSans** static light / normal / medium slices for CJK content (auto-fallback via `vite-plugin-font`).
+**Body Font:** Hanken Grotesk for Latin / **MiSans VF** for CJK content (auto-fallback via `vite-plugin-font`).
 
 **Wordmark Font:** Fugaz One (subset). Used **only** for the three letters "Xat" — wordmark identity, never anywhere else.
 
@@ -415,7 +415,7 @@ Footer-only signature. A `background-clip: text` gradient that animates `backgro
 - **Don't** reach for a modal as the first thought for any flow. The site has no modals; popovers and hover cards are the affordance for inline context.
 - **Don't** use uppercase letter-spaced labels as section eyebrows ("FEATURES" / "TESTIMONIALS"). The `Eyebrow` component is sentence-case, no tracking, no caps. Repeated tiny tracked-caps labels read as AI scaffolding.
 - **Don't** introduce a new color scale (no `blue-50..blue-900` ramps in source). Status colors are imported from Tailwind as needed; the brand palette is the 6–8 tokens above.
-- **Don't** set `font-variation-settings` on elements. MiSans uses static light / normal / medium webfont slices mapped to Latin-facing `font-weight` values through the font pipeline; element-level axis overrides would bypass that CJK weight curve. (This is from `AGENTS.md`; carrying it forward.)
+- **Don't** set `font-variation-settings` on elements. MiSans maps Latin-facing `font-weight` values to tuned CJK `wght` axis values via `@font-face` descriptors; element-level axis overrides would bypass that CJK weight curve. (This is from `AGENTS.md`; carrying it forward.)
 - **Don't** animate any CSS layout property (`width`, `height`, `padding`, `margin`, `top`, `left`). For collapsing regions, animate `grid-template-rows`. For motion, animate `transform`, `opacity`, and `filter`.
 - **Don't** style code blocks to follow the site theme. Code is Vesper-dark in both light and dark site modes. The code surface is its own world.
 - **Don't** write em dashes ("—") with `--` or otherwise; use the proper em dash character only where editorially needed, and reach for periods, colons, or parentheses first. (System-wide editorial rule.)

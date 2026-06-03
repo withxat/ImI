@@ -1,19 +1,19 @@
 /**
- * Pseudo-weight remapping for MiSans static subsets emitted by `vite-plugin-font`.
+ * Pseudo-weight remapping for MiSans VF subsets emitted by `vite-plugin-font`.
  *
  * The problem: Hanken (Latin) and MiSans (CJK) share the same `font-weight`
  * scale visually but not numerically — applying `font-weight: 600` to a mixed
  * line gives a beautiful SemiBold Latin and a too-heavy CJK in the same breath.
  *
- * The fix: feed vite-plugin-font three static MiSans weights, then rewrite the
- * emitted faces into one family with Latin-aligned `font-weight` descriptors.
+ * The fix: clone each generated MiSans VF face into one family with
+ * Latin-aligned `font-weight` descriptors and tuned `wght` axis values.
  * Browsers per-glyph-select the closest weight face per family stack, so a
- * single `font-weight: 600` resolves to Hanken@600 + MiSans Medium on the same
+ * single `font-weight: 600` resolves to Hanken@600 + MiSans@wght500 on the same
  * line — no DOM wrapping needed.
  *
- * The old version used `font-variation-settings` inside `@font-face`, but iOS
- * Safari does not honor that descriptor. Static instances keep the polish while
- * staying inside the widely-supported `@font-face` surface.
+ * Safari may ignore the `font-variation-settings` descriptor on `@font-face`;
+ * in that case it still receives MiSans VF and falls back to the font's default
+ * instance instead of PingFang.
  */
 
 // Vite isn't a direct dependency (it ships transitively via Astro). The shape
@@ -31,60 +31,44 @@ interface CjkFontPolishPlugin {
 
 export const CJK_FONT_FAMILY = 'MiSans'
 
-const CJK_FONT_IMPORTS: ReadonlyArray<readonly [pattern: RegExp, latinWeight: number]> = [
-	[/mi-sans-light(?:\.woff2|_woff2)(?:[/?]|$)/, 400],
-	[/mi-sans-normal(?:\.woff2|_woff2)(?:[/?]|$)/, 500],
-	[/mi-sans-medium(?:\.woff2|_woff2)(?:[/?]|$)/, 600],
+const CJK_WEIGHT_MAP: ReadonlyArray<readonly [latin: number, wght: number]> = [
+	[400, 330],
+	[500, 415],
+	[600, 500],
 ]
 
 const TARGET_ID_RE = /\/\.subsets\/.+\/result\.css(?:\?|$)/
-const RESULT_CSS_IMPORT_RE = /import\s+['"]([^'"]*\/result\.css(?:\?[^'"]*)?)['"]/g
 const FONT_FACE_RE = /@font-face\s*\{([^}]*)\}/g
 const FONT_FAMILY_DECL_RE = /font-family\s*:[^;}]*;?/gi
 const FONT_WEIGHT_DECL_RE = /font-weight\s*:[^;}]*;?/gi
 const FONT_VARIATION_DECL_RE = /font-variation-settings\s*:[^;}]*;?/gi
+const LOCAL_SRC_RE = /src\s*:\s*local\([^)]*\)\s*,/gi
 
-function normalizeResultCssId(id: string): string {
-	return id.split('?')[0] ?? id
-}
-
-function latinWeightForFontImport(id: string): number | undefined {
-	return CJK_FONT_IMPORTS.find(([pattern]) => pattern.test(id))?.[1]
-}
-
-function polishFontFace(rawBody: string, latinWeight: number): string {
+function polishFontFace(rawBody: string): string {
 	const body = rawBody
 		.replace(FONT_FAMILY_DECL_RE, '')
 		.replace(FONT_WEIGHT_DECL_RE, '')
 		.replace(FONT_VARIATION_DECL_RE, '')
+		.replace(LOCAL_SRC_RE, 'src:')
 		.trim()
-	return `@font-face{font-family:'${CJK_FONT_FAMILY}';font-weight:${latinWeight};${body}}`
+	return CJK_WEIGHT_MAP
+		.map(([latin, wght]) =>
+			`@font-face{font-family:'${CJK_FONT_FAMILY}';font-weight:${latin};font-variation-settings:'wght' ${wght};${body}}`,
+		)
+		.join('\n')
 }
 
 export default function cjkFontPolish(): CjkFontPolishPlugin {
-	const cssWeights = new Map<string, number>()
-
 	return {
 		enforce: 'pre',
 		name: 'cjk-font-polish',
 		transform(code, id) {
-			if (TARGET_ID_RE.test(id) && code.includes('@font-face')) {
-				const cssWeight = cssWeights.get(normalizeResultCssId(id)) ?? latinWeightForFontImport(id)
-				if (!cssWeight)
-					return null
-
-				const next = code.replace(FONT_FACE_RE, (_: string, body: string) => polishFontFace(body, cssWeight))
-				return { code: next, map: null }
-			}
-
-			const fontWeight = latinWeightForFontImport(id)
-			if (fontWeight) {
-				for (const match of code.matchAll(RESULT_CSS_IMPORT_RE))
-					cssWeights.set(normalizeResultCssId(match[1]!), fontWeight)
+			if (!TARGET_ID_RE.test(id))
 				return null
-			}
-
-			return null
+			if (!code.includes('@font-face'))
+				return null
+			const next = code.replace(FONT_FACE_RE, (_: string, body: string) => polishFontFace(body))
+			return { code: next, map: null }
 		},
 	}
 }

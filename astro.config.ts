@@ -91,7 +91,6 @@ export default defineConfig({
 			}),
 			misansGlyphCollector(),
 			Font.vite({
-				include: [/\.otf/, /\.ttf/, /\.woff2/],
 				scanFiles: MISANS_GLYPH_SCAN_FILES,
 			}),
 			cjkFontPolish(),
