@@ -2,15 +2,18 @@
 /**
  * Site-wide UI stack (all locales): Hanken Grotesk + MiSans.
  *
- * MiSans VF is intentionally mapped to Latin-facing weights through
- * `cjk-font-polish` so mixed Hanken+MiSans lines stay balanced:
+ * MiSans static instances are generated from MiSans VF and mapped to
+ * Latin-facing weights through `cjk-font-polish` so mixed Hanken+MiSans lines stay balanced:
  * 400 -> wght 330, 500 -> wght 415, 600 -> wght 500.
  *
  * The import below is required for side-effects (it triggers vite-plugin-font's
  * subset emission); we use its generated fallback stack after the MiSans family.
  */
-import { fontFamilyFallback } from '@/assets/fonts/mi-sans-vf.ttf?subsets'
+import { fontFamilyFallback } from '@/assets/fonts/mi-sans-wght-330.ttf?subsets'
 import { CJK_FONT_FAMILY } from '@/lib/cjk-font-polish'
+
+import '@/assets/fonts/mi-sans-wght-415.ttf?subsets'
+import '@/assets/fonts/mi-sans-wght-500.ttf?subsets'
 
 const stack = `"Hanken Grotesk", "Hanken Grotesk Fallback", "${CJK_FONT_FAMILY}", ${fontFamilyFallback}`
 const rootFontCss = `:root:root {

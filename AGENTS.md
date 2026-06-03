@@ -91,7 +91,7 @@ Fonts (self-hosted, `public/fonts/`):
 - **Fugaz One** (subset) — brand accent
 - **Calling Code** (regular, bold, italic) — monospace / code
 - **Source Han Serif SC** (subset) — serif bio lead
-- **MiSans VF** (via `vite-plugin-font`) — CJK content font, auto-generated fallbacks
+- **MiSans static instances** generated from MiSans VF (via `vite-plugin-font`) — CJK content font, auto-generated fallbacks
 
 Linting:
 
@@ -374,7 +374,7 @@ Micro interactions: encouraged.
 - `transition:animate` and `transition:persist` for Astro view transitions.
 - Content collections are typed via `src/content.config.ts` using Zod schemas.
 - i18n: use `getMessages(locale)` to get typed copy; add new strings to all three locale files + the types file.
-- Do not set the `font-variation-settings` CSS property on elements. MiSans maps Latin-facing `font-weight` values to tuned CJK `wght` axis values via `@font-face` descriptors; element-level axis overrides would bypass that CJK weight curve.
+- Do not set the `font-variation-settings` CSS property on elements. MiSans uses generated static instances at tuned CJK `wght` axis values mapped to Latin-facing `font-weight` values through the font pipeline; element-level axis overrides would bypass that CJK weight curve.
 
 ---
 
