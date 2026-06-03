@@ -2,10 +2,10 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { env } from 'cloudflare:workers'
-import { renderInnerHTML } from 'number-flow'
 
 import { intlLocaleFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
+import { formatSiteStatNumber } from '@/lib/site-stats/format.ts'
 import { fetchSiteStats } from '@/lib/site-stats/server.ts'
 
 interface Props {
@@ -15,36 +15,33 @@ interface Props {
 const { locale } = Astro.props as Props
 const copy = getMessages(locale).footer.stats
 const intlLocale = intlLocaleFor(locale)
-const numberFormat = { maximumFractionDigits: 0, useGrouping: true } as const
 
 const stats = await fetchSiteStats(env)
-const renderOptions = { format: numberFormat, locales: intlLocale }
-const totalHtml = renderInnerHTML(stats.totalViews, renderOptions)
-const onlineHtml = renderInnerHTML(stats.onlineNow, renderOptions)
+const totalLabel = formatSiteStatNumber(stats.totalViews, intlLocale)
+const onlineLabel = formatSiteStatNumber(stats.onlineNow, intlLocale)
 ---
 
 <p
 	aria-live="polite"
 	class="text-sm text-muted-foreground tabular-nums [--number-flow-mask-height:0.2em]"
+	data-site-stats-locale={intlLocale}
 	data-site-stats
 >
 	{copy.beforeTotal}
-	<number-flow
+	<span
 		class="inline align-baseline leading-none"
 		data-site-stats-flow="total"
 		data-site-stats-value={stats.totalViews}
-		set:html={totalHtml}
-	/>
+		data-site-stats-digit
+	>{totalLabel}</span>
 	{copy.afterTotal}
 	{copy.middle}
 	{copy.beforeOnline}
-	<number-flow
+	<span
 		class="inline align-baseline leading-none"
 		data-site-stats-flow="online"
 		data-site-stats-value={stats.onlineNow}
-		set:html={onlineHtml}
-	/>
+		data-site-stats-digit
+	>{onlineLabel}</span>
 	{copy.afterOnline}
 </p>
-
-<number-flow-group />

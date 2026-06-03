@@ -32,25 +32,40 @@ async function siteStatsRequest(
 }
 
 export async function fetchSiteStats(env: Env): Promise<SiteStatsSnapshot> {
-	const response = await siteStatsRequest(env, '/stats')
-	if (!response?.ok)
-		return { onlineNow: 0, totalViews: SITE_STATS_INITIAL_TOTAL }
+	try {
+		const response = await siteStatsRequest(env, '/stats')
+		if (!response?.ok)
+			return { onlineNow: 0, totalViews: SITE_STATS_INITIAL_TOTAL }
 
-	return response.json() as Promise<SiteStatsSnapshot>
+		return await response.json() as SiteStatsSnapshot
+	}
+	catch {
+		return { onlineNow: 0, totalViews: SITE_STATS_INITIAL_TOTAL }
+	}
 }
 
 export async function recordSiteView(env: Env, sessionId: string) {
-	await siteStatsRequest(env, '/view', {
-		body: JSON.stringify({ sessionId }),
-		headers: { 'Content-Type': 'application/json' },
-		method: 'POST',
-	})
+	try {
+		await siteStatsRequest(env, '/view', {
+			body: JSON.stringify({ sessionId }),
+			headers: { 'Content-Type': 'application/json' },
+			method: 'POST',
+		})
+	}
+	catch {
+		// Stats are best-effort; never block page rendering.
+	}
 }
 
 export async function heartbeatSitePresence(env: Env, sessionId: string) {
-	await siteStatsRequest(env, '/heartbeat', {
-		body: JSON.stringify({ sessionId }),
-		headers: { 'Content-Type': 'application/json' },
-		method: 'POST',
-	})
+	try {
+		await siteStatsRequest(env, '/heartbeat', {
+			body: JSON.stringify({ sessionId }),
+			headers: { 'Content-Type': 'application/json' },
+			method: 'POST',
+		})
+	}
+	catch {
+		// Stats are best-effort; never block page rendering.
+	}
 }

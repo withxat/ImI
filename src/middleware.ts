@@ -69,7 +69,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 			tasks.push(recordSiteView(env, sessionId))
 		}
 
-		context.locals.cfContext?.waitUntil(Promise.all(tasks))
+		context.locals.cfContext?.waitUntil(
+			Promise.all(tasks).catch(() => undefined),
+		)
 	}
 
 	return response
