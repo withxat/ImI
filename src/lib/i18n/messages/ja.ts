@@ -214,7 +214,6 @@ const ja: Messages = {
 			afterTotal: ' 回見られました',
 			beforeOnline: 'いま ',
 			beforeTotal: '',
-			middle: ' · ',
 		},
 	},
 	header: {

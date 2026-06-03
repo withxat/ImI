@@ -214,7 +214,6 @@ const en: Messages = {
 			afterTotal: ' times',
 			beforeOnline: '',
 			beforeTotal: 'Seen ',
-			middle: ' · ',
 		},
 	},
 	header: {

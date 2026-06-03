@@ -2,6 +2,7 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { env } from 'cloudflare:workers'
+import Dot from '~icons/lucide/dot'
 
 import { intlLocaleFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
@@ -19,29 +20,37 @@ const intlLocale = intlLocaleFor(locale)
 const stats = await fetchSiteStats(env)
 const totalLabel = formatSiteStatNumber(stats.totalViews, intlLocale)
 const onlineLabel = formatSiteStatNumber(stats.onlineNow, intlLocale)
+
+const dotClass = 'size-3 shrink-0 text-muted-foreground opacity-70'
+const rowClass
+	= 'flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-muted-foreground tabular-nums [--number-flow-mask-height:0.2em]'
 ---
 
-<p
+<div
 	aria-live="polite"
-	class="text-sm text-muted-foreground tabular-nums [--number-flow-mask-height:0.2em]"
+	class={rowClass}
 	data-site-stats-locale={intlLocale}
 	data-site-stats
 >
-	{copy.beforeTotal}
-	<span
-		class="inline align-baseline leading-none"
-		data-site-stats-flow="total"
-		data-site-stats-value={stats.totalViews}
-		data-site-stats-digit
-	>{totalLabel}</span>
-	{copy.afterTotal}
-	{copy.middle}
-	{copy.beforeOnline}
-	<span
-		class="inline align-baseline leading-none"
-		data-site-stats-flow="online"
-		data-site-stats-value={stats.onlineNow}
-		data-site-stats-digit
-	>{onlineLabel}</span>
-	{copy.afterOnline}
-</p>
+	<span class="inline-flex flex-wrap items-center">
+		{copy.beforeTotal}
+		<span
+			class="inline align-baseline leading-none"
+			data-site-stats-flow="total"
+			data-site-stats-value={stats.totalViews}
+			data-site-stats-digit
+		>{totalLabel}</span>
+		{copy.afterTotal}
+	</span>
+	<Dot aria-hidden="true" class={dotClass} />
+	<span class="inline-flex flex-wrap items-center">
+		{copy.beforeOnline}
+		<span
+			class="inline align-baseline leading-none"
+			data-site-stats-flow="online"
+			data-site-stats-value={stats.onlineNow}
+			data-site-stats-digit
+		>{onlineLabel}</span>
+		{copy.afterOnline}
+	</span>
+</div>

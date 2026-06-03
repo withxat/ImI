@@ -27,11 +27,13 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 	<Container class="pt-28 pb-8 text-base/7 text-muted-foreground">
 		<div class="space-y-3">
 			<FooterWanderer copy={m.wanderer} locale={locale} />
-			<FooterSiteStats locale={locale} />
-			<p class="text-sm text-muted-foreground">
-				{m.footer.connect}
-			</p>
-			<FooterNav />
+			<div class="space-y-3">
+				<FooterSiteStats locale={locale} />
+				<p class="m-0 text-sm text-muted-foreground">
+					{m.footer.connect}
+				</p>
+				<FooterNav />
+			</div>
 			<div class="mt-16 flex items-center gap-2">
 				<a
 					class="

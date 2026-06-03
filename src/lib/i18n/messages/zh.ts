@@ -209,7 +209,6 @@ const zh: Messages = {
 			afterTotal: ' 次',
 			beforeOnline: '此刻 ',
 			beforeTotal: '被看见 ',
-			middle: ' · ',
 		},
 	},
 	header: {

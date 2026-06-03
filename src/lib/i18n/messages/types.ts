@@ -157,7 +157,6 @@ export interface Messages {
 			afterTotal: string
 			beforeOnline: string
 			beforeTotal: string
-			middle: string
 		}
 	}
 	header: {
