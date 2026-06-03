@@ -90,17 +90,6 @@
 	src: url('/fonts/calling-code-bold-italic.woff2') format('woff2');
 }
 
-/* Manual subset of Source Han Serif SC, weight 600 — covers only the chars used in
- * `m.home.bioLead` across en/zh/ja. Adding new copy that uses `font-serif` requires
- * regenerating this subset or it will fall back to system serifs character by character. */
-@font-face {
-	font-family: 'Source Han Serif SC Subset';
-	font-style: normal;
-	font-weight: 600;
-	font-display: swap;
-	src: url('/fonts/source-han-serif-sc-semibold-subset.woff2') format('woff2');
-}
-
 @custom-variant dark (&:is(html.dark *));
 
 /* Fonts + deps not backed by `:root` / `@theme inline`. Palette values live in `:root`/`.dark` only. */
@@ -108,13 +97,11 @@
 	--font-display: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-text: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-ui: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-	/* `Source Han Serif SC Subset` only carries the bio-lead glyphs (see @font-face above);
-	 * everything else cascades to system serifs. */
 	--font-serif:
-		'Source Han Serif SC Subset', 'New York', 'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman',
-		'Droid Serif', Times, 'Source Serif 4', Georgia, 'Noto Serif SC', 'Songti SC', 'STSong', 'Noto Serif CJK SC',
-		'Noto Serif CJK TC', 'Source Han Serif SC', 'Source Han Serif TC', SimSun, NSimSun, FangSong, 'KaiTi', 'STKaiti',
-		'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', 'MS PMincho', 'MS Mincho', ui-serif, serif;
+		'New York', 'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman', 'Droid Serif', Times,
+		'Source Serif 4', Georgia, 'Noto Serif SC', 'Songti SC', 'STSong', 'Noto Serif CJK SC', 'Noto Serif CJK TC',
+		'Source Han Serif SC', 'Source Han Serif TC', SimSun, NSimSun, FangSong, 'KaiTi', 'STKaiti', 'Hiragino Mincho ProN',
+		'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', 'MS PMincho', 'MS Mincho', ui-serif, serif;
 
 	/* The system's one signature shadow: a 1–2px rose-tinted halo, not lift.
 	 * Uses --tw-shadow-color so color overrides (dark:shadow-black/35, hover at /45)

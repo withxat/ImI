@@ -10,16 +10,51 @@
  * subset emission); we use its generated fallback stack after the MiSans family.
  */
 import { fontFamilyFallback } from '@/assets/fonts/mi-sans-wght-330.ttf?subsets'
+import { css as sourceHanSerifCss, fontFamilyFallback as sourceHanSerifFallback } from '@/assets/fonts/source-han-serif-sc-vf.ttf?subsets&key=serif'
 import { CJK_FONT_FAMILY } from '@/lib/fonts/cjk-font-polish'
 
 import '@/assets/fonts/mi-sans-wght-415.ttf?subsets'
 import '@/assets/fonts/mi-sans-wght-500.ttf?subsets'
 
 const stack = `"Hanken Grotesk", "Hanken Grotesk Fallback", "${CJK_FONT_FAMILY}", ${fontFamilyFallback}`
+const serifStack = [
+	`"${sourceHanSerifCss.family}"`,
+	sourceHanSerifFallback,
+	'"New York"',
+	'"Iowan Old Style"',
+	'"Apple Garamond"',
+	'Baskerville',
+	'"Times New Roman"',
+	'"Droid Serif"',
+	'Times',
+	'"Source Serif 4"',
+	'Georgia',
+	'"Noto Serif SC"',
+	'"Songti SC"',
+	'"STSong"',
+	'"Noto Serif CJK SC"',
+	'"Noto Serif CJK TC"',
+	'"Source Han Serif SC"',
+	'"Source Han Serif TC"',
+	'SimSun',
+	'NSimSun',
+	'FangSong',
+	'"KaiTi"',
+	'"STKaiti"',
+	'"Hiragino Mincho ProN"',
+	'"Hiragino Mincho Pro"',
+	'"Yu Mincho"',
+	'YuMincho',
+	'"MS PMincho"',
+	'"MS Mincho"',
+	'ui-serif',
+	'serif',
+].join(', ')
 const rootFontCss = `:root:root {
   --font-display: ${stack};
   --font-text: ${stack};
   --font-ui: ${stack};
+  --font-serif: ${serifStack};
 }`
 ---
 

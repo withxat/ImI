@@ -27,3 +27,7 @@ declare module '*.ttf?subsets' {
 declare module '*.ttf?subsets&key=content' {
 	export * from '*.ttf?subsets'
 }
+
+declare module '*.ttf?subsets&key=serif' {
+	export * from '*.ttf?subsets'
+}

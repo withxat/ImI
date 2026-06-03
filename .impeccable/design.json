@@ -137,7 +137,7 @@
 			},
 			"bio-lead": {
 				"displayName": "Bio Lead",
-				"purpose": "Home page lead line only. Source Han Serif SC Subset."
+				"purpose": "Home page lead line only. Source Han Serif SC emitted by vite-plugin-font."
 			},
 			"wordmark": {
 				"displayName": "Wordmark",

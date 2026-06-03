@@ -82,7 +82,7 @@ typography:
     lineHeight: 1.5
     letterSpacing: "0"
   bio-lead:
-    fontFamily: "'Source Han Serif SC Subset', 'New York', 'Iowan Old Style', Baskerville, 'Times New Roman', Georgia, 'Noto Serif SC', 'Hiragino Mincho ProN', ui-serif, serif"
+    fontFamily: "var(--font-serif)"
     fontSize: "1rem"
     fontWeight: 600
     lineHeight: 1.75
@@ -195,7 +195,7 @@ motion, component HTML/CSS, narrative).
 
 The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — held together by hairlines, not boxes. The accent is **Quiet Rose** in light mode and **Warm Apricot** in dark, used on no more than ~10% of any screen: the wordmark, link affordances, an icon tint, a hover halo around a card. The accent is the brand's voice; its rarity is what makes it land.
 
-The "Cute" lives in specific, named places — never as ambient decoration. A `Fugaz One` wordmark used only for the three letters "Xat". A coin-flip mascot on the design page. A `wanderer` gradient text in the footer that animates rose to cyan as a metaphor for the visitor's geographic journey to this site. The "Shiny" is the soft pink halo (`highlight-soft`) that appears under interactive surfaces on hover. The "Elegance" is the trilingual typography stack — Hanken Grotesk for Latin, MiSans for CJK content, a tiny Source Han Serif subset for the bio lead — tuned with per-locale `text-wrap`, `line-break`, and `hyphens` rules so Chinese, Japanese, and English each break the way their typography traditions expect.
+The "Cute" lives in specific, named places — never as ambient decoration. A `Fugaz One` wordmark used only for the three letters "Xat". A coin-flip mascot on the design page. A `wanderer` gradient text in the footer that animates rose to cyan as a metaphor for the visitor's geographic journey to this site. The "Shiny" is the soft pink halo (`highlight-soft`) that appears under interactive surfaces on hover. The "Elegance" is the trilingual typography stack — Hanken Grotesk for Latin, MiSans for CJK content, a tiny `vite-plugin-font` Source Han Serif subset for the bio lead — tuned with per-locale `text-wrap`, `line-break`, and `hyphens` rules so Chinese, Japanese, and English each break the way their typography traditions expect.
 
 The system explicitly rejects: corporate SaaS chrome, brutalist heaviness, templated icon-title-card grids, neon-on-black AI tooling tropes, and editorial-magazine pastiche (no Fraunces, no italic drop caps, no broadsheet columns). It is **not** "premium-minimal" in the lazy lifestyle-brand sense — it earns minimalism through restraint plus one or two committed, named decisions per surface.
 
@@ -253,7 +253,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 **Wordmark Font:** Fugaz One (subset). Used **only** for the three letters "Xat" — wordmark identity, never anywhere else.
 
-**Bio-Lead Font:** Source Han Serif SC Subset (semibold). A hand-subsetted woff2 containing exactly the glyphs used in the home page bio lead across en/zh/ja. Adding new copy that uses `font-serif` requires regenerating the subset — that constraint is the cost of the subset's tiny size.
+**Bio-Lead Font:** Source Han Serif SC (semibold). Emitted by `vite-plugin-font` from `source-han-serif-sc-vf.ttf` with a dedicated `serif` glyph key generated from the home page bio lead across en/zh/ja.
 
 **Code Font:** Calling Code (regular, bold, italic). A humanist mono with distinctive italic.
 
@@ -267,7 +267,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 - **Body** (Hanken Grotesk + MiSans, 400, 16px / 28px, `text-base/7`): Paragraphs, bio copy, descriptions. Max ~65ch via `max-w-prose`.
 - **Label** (Hanken Grotesk, 500, 14px / 1.25, `text-sm font-medium`): Eyebrow labels, button text, badge text.
 - **Mono** (Calling Code, 400, 12px / 1.5, `text-xs font-mono`): Capability numbers (`01`, `02`), code references inline, color value readouts, theme-class names on the design page.
-- **Bio-Lead** (Source Han Serif SC Subset, 600, 16px / 28px): The home page lead line `Building production-quality interfaces and AI-native products` / `打造生产级界面与 AI 原生产品` / `本番品質の UI と AI ネイティブなプロダクトをつくる`. The only place the system uses serif.
+- **Bio-Lead** (Source Han Serif SC via `vite-plugin-font`, 600, 16px / 28px): The home page lead line `Building production-quality interfaces and AI-native products` / `打造生产级界面与 AI 原生产品` / `本番品質の UI と AI ネイティブなプロダクトをつくる`. The only place the system uses serif.
 - **Wordmark** (Fugaz One, 400, 24–30px / 1): The string "Xat", colored `text-highlight-strong`. The system's single brand mark.
 
 ### Named Rules
@@ -278,7 +278,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 **The One Gradient Rule.** `background-clip: text` combined with a gradient background appears in **exactly one** place: the footer `wanderer-gradient-text` animation. Its role is metaphorical — the visitor's geographic journey to this site. Decorative gradient text is forbidden everywhere else in the system.
 
-**The Serif Subset Discipline.** New copy that uses `font-serif` requires regenerating the `source-han-serif-sc-semibold-subset.woff2` to include the new glyphs. Skipping this falls through to system serifs character by character and looks broken. If you can't regenerate the subset, don't use `font-serif`.
+**The Serif Subset Discipline.** `font-serif` is reserved for the home bio lead. Its Source Han Serif glyph set is generated automatically from the localized `bioLead` strings; new serif use must first extend that glyph source deliberately.
 
 ## 4. Elevation
 

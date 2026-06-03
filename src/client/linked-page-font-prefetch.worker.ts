@@ -107,7 +107,7 @@ function collectStylesheetHrefs(html: string, pageUrl: string) {
 function shouldPrefetchUnrangedFont(fontFace: string, documentText: string, hasCode: boolean) {
 	const family = unquoteCssValue(fontFace.match(FONT_FAMILY_RE)?.[1] ?? '')
 
-	if (family === 'Hanken Grotesk' || family === 'Fugaz One' || family === 'Source Han Serif SC Subset')
+	if (family === 'Hanken Grotesk' || family === 'Fugaz One')
 		return true
 
 	if (family === 'Calling Code')

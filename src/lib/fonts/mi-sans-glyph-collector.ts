@@ -13,6 +13,7 @@ interface MisansGlyphCollectorPlugin {
 const GLYPH_DIR = '.cache/misans-glyphs'
 const UI_GLYPHS_FILE = `${GLYPH_DIR}/ui.txt`
 const CONTENT_GLYPHS_FILE = `${GLYPH_DIR}/content.txt`
+const SERIF_GLYPHS_FILE = `${GLYPH_DIR}/serif.txt`
 
 const UI_SOURCE_FILES = [
 	'src/lib/i18n/code-block-copy.ts',
@@ -39,6 +40,7 @@ const EMOJI_RE = /^\p{Extended_Pictographic}$/u
 export const MISANS_GLYPH_SCAN_FILES = {
 	content: [CONTENT_GLYPHS_FILE],
 	default: [UI_GLYPHS_FILE],
+	serif: [SERIF_GLYPHS_FILE],
 } satisfies Record<string, string[]>
 
 async function pathExists(filePath: string): Promise<boolean> {
@@ -143,6 +145,37 @@ function collectGlyphs(sources: readonly string[]): string {
 	return [...glyphs].sort((a, b) => a.codePointAt(0)! - b.codePointAt(0)!).join('')
 }
 
+function collectHomeBioLeadSources(sources: readonly string[]): string[] {
+	const values: string[] = []
+	const bioLeadStringRe = /\bbioLead:\s*(['"`])((?:\\.|(?!\1)[\s\S])*)\1/g
+
+	for (const source of sources) {
+		for (const match of source.matchAll(bioLeadStringRe))
+			values.push(match[2] ?? '')
+	}
+
+	return values
+}
+
+// Unlike `collectGlyphs`, the bio lead renders in Source Han Serif end to end, so
+// its Latin/digit/punctuation glyphs must ship in the subset too — not just CJK.
+function collectSerifGlyphs(sources: readonly string[]): string {
+	const glyphs = new Set<string>()
+
+	for (const source of sources) {
+		for (const char of source) {
+			const codePoint = char.codePointAt(0)!
+			if (codePoint < 0x20 || /\s/u.test(char))
+				continue
+			if (VARIATION_SELECTOR_RE.test(char) || EMOJI_MODIFIER_RE.test(char) || EMOJI_RE.test(char))
+				continue
+			glyphs.add(char)
+		}
+	}
+
+	return [...glyphs].sort((a, b) => a.codePointAt(0)! - b.codePointAt(0)!).join('')
+}
+
 async function collectPostSources(): Promise<{ body: string[], frontmatter: string[] }> {
 	const postFiles = await listFiles(POSTS_DIR, new Set(['.md', '.mdx']))
 	const posts = await readExistingFiles(postFiles)
@@ -189,10 +222,12 @@ async function generateMisansGlyphs(): Promise<void> {
 		...posts.frontmatter,
 		...posts.body,
 	])
+	const serifGlyphs = collectSerifGlyphs(collectHomeBioLeadSources(uiSources.map(stripTsComments)))
 
 	await Promise.all([
 		writeGlyphFile(UI_GLYPHS_FILE, uiGlyphs),
 		writeGlyphFile(CONTENT_GLYPHS_FILE, contentGlyphs),
+		writeGlyphFile(SERIF_GLYPHS_FILE, serifGlyphs),
 	])
 }
 
