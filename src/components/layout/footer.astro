@@ -7,6 +7,7 @@ import { version as appVersion } from '../../../package.json'
 import shinyImi from '@/assets/shiny-imi.png'
 import Container from '@/components/layout/container.astro'
 import FooterNav from '@/components/layout/footer-nav.astro'
+import FooterSiteStats from '@/components/layout/footer-site-stats.astro'
 import FooterWanderer from '@/components/layout/footer-wanderer.astro'
 import { getMessages } from '@/lib/i18n/messages'
 
@@ -26,6 +27,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 	<Container class="pt-28 pb-8 text-base/7 text-muted-foreground">
 		<div class="space-y-3">
 			<FooterWanderer copy={m.wanderer} locale={locale} />
+			<FooterSiteStats locale={locale} />
 			<p class="text-sm text-muted-foreground">
 				{m.footer.connect}
 			</p>

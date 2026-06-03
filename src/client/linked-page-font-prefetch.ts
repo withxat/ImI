@@ -49,7 +49,7 @@ function prefetchFont(href: string) {
 	link.href = normalized
 	link.rel = 'prefetch'
 	link.type = fontTypeFor(normalized)
-	document.head.append(link)
+	document.head.appendChild(link)
 }
 
 function seedExistingFontHints() {

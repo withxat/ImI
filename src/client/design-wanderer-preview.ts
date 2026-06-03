@@ -55,7 +55,6 @@ function applyFocalPoint(
 ) {
 	const mask = `radial-gradient(circle ${LENS_RADIUS_PX}px at ${x}px ${y}px, black 100%, transparent 100%)`
 	overlay.style.maskImage = mask
-	overlay.style.webkitMaskImage = mask
 	zoom.style.transform = `scale(${ZOOM_FACTOR})`
 	zoom.style.transformOrigin = `${x}px ${y}px`
 	ring.style.width = `${LENS_RADIUS_PX * 2}px`

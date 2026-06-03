@@ -75,7 +75,7 @@ function collectSectionMarkers(markersHost: HTMLElement): SectionMarker[] {
 			button.className = 'custom-scrollbar-marker'
 			button.setAttribute('aria-label', title)
 			button.dataset.title = title
-			markersHost.append(button)
+			markersHost.appendChild(button)
 			return { button, element, title, y: 0 }
 		})
 		.filter(marker => marker.title.length > 0)
@@ -98,7 +98,7 @@ function createTooltip() {
 	const tooltip = document.createElement('div')
 	tooltip.className = 'custom-scrollbar-tooltip'
 	tooltip.hidden = true
-	document.body.append(tooltip)
+	document.body.appendChild(tooltip)
 	return tooltip
 }
 
@@ -131,9 +131,10 @@ function createScrollbarShell() {
 
 	const surface = document.createElement('div')
 	surface.className = 'custom-scrollbar-surface'
-	surface.append(trackShadow, track, thumb, markersHost)
-	shell.append(surface)
-	document.body.append(shell)
+	for (const node of [trackShadow, track, thumb, markersHost])
+		surface.appendChild(node)
+	shell.appendChild(surface)
+	document.body.appendChild(shell)
 
 	return { markersHost, shell, surface, thumb, track, trackShadow }
 }

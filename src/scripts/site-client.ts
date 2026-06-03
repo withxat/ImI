@@ -9,6 +9,7 @@ import { initNameAudioButtons } from '@/client/name-audio'
 import { initPageReveals } from '@/client/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/client/photoswipe-gallery'
 import { disposePrimeBindings, initPrimeBindings } from '@/client/prime-bindings'
+import { disposeSiteStatsModule, runSiteStatsModule } from '@/client/site-stats'
 import { initThemeSwitcher } from '@/client/theme-switcher'
 
 function shouldAnimatePageEntrance() {
@@ -67,6 +68,11 @@ registerModule('custom-scrollbar', {
 registerModule('design-wanderer-preview', {
 	dispose: () => disposeDesignWandererPreview(),
 	init: () => initDesignWandererPreview(),
+})
+
+registerModule('site-stats', {
+	dispose: () => disposeSiteStatsModule(),
+	init: () => runSiteStatsModule(),
 })
 
 // Dispose all modules before view transition swap

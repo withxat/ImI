@@ -1,11 +1,28 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "imi",
+	"main": "./src/worker.ts",
 	"compatibility_date": "2026-05-09",
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
 	"observability": {
 		"enabled": true
-	}
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "SITE_STATS",
+				"class_name": "SiteStats"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1-site-stats",
+			"new_sqlite_classes": [
+				"SiteStats"
+			]
+		}
+	]
 }

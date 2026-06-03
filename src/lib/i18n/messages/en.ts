@@ -209,6 +209,13 @@ const en: Messages = {
 	footer: {
 		connect: 'Connect through any of these:',
 		moeIcp: 'Moe ICP Filing No. 20264698',
+		stats: {
+			afterOnline: ' wandering now',
+			afterTotal: ' times',
+			beforeOnline: '',
+			beforeTotal: 'Seen ',
+			middle: ' · ',
+		},
 	},
 	header: {
 		goHome: 'Go to home',

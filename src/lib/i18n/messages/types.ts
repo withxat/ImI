@@ -152,6 +152,13 @@ export interface Messages {
 	footer: {
 		connect: string
 		moeIcp: string
+		stats: {
+			afterOnline: string
+			afterTotal: string
+			beforeOnline: string
+			beforeTotal: string
+			middle: string
+		}
 	}
 	header: {
 		goHome: string

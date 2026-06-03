@@ -1,4 +1,8 @@
+/// <reference path="../worker-configuration.d.ts" />
+
 import type { MiddlewareHandler } from 'astro'
+
+import { env } from 'cloudflare:workers'
 
 import { LOCALE_COOKIE_NAME } from '@/lib/i18n/constants'
 import {
@@ -7,6 +11,13 @@ import {
 } from '@/lib/i18n/locale-switch'
 import { resolveLocaleFromHeaders } from '@/lib/i18n/request-locale'
 import { localeCookieOptions } from '@/lib/i18n/set-locale-cookie'
+import { heartbeatSitePresence, recordSiteView } from '@/lib/site-stats/server.ts'
+import {
+	getOrCreateVisitorSessionId,
+	hasRecordedVisitorView,
+	markVisitorViewRecorded,
+	shouldTrackSiteVisit,
+} from '@/lib/site-stats/tracking.ts'
 import { readVisitorGeoFromRequest } from '@/lib/visitor-geo'
 
 function trimTrailingSlash(pathname: string) {
@@ -47,5 +58,19 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 	// 4) Visitor geo (Cloudflare headers/cf).
 	context.locals.visitorGeo = readVisitorGeoFromRequest(request)
 
-	return next()
+	const response = await next()
+
+	if (shouldTrackSiteVisit(request, url.pathname)) {
+		const sessionId = getOrCreateVisitorSessionId(context.cookies)
+		const tasks: Promise<unknown>[] = [heartbeatSitePresence(env, sessionId)]
+
+		if (!hasRecordedVisitorView(context.cookies)) {
+			markVisitorViewRecorded(context.cookies)
+			tasks.push(recordSiteView(env, sessionId))
+		}
+
+		context.locals.cfContext?.waitUntil(Promise.all(tasks))
+	}
+
+	return response
 }

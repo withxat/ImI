@@ -209,6 +209,13 @@ const ja: Messages = {
 	footer: {
 		connect: 'こちらからどうぞ：',
 		moeIcp: '萌えICP登録済み♡ 20264698号',
+		stats: {
+			afterOnline: ' 人が滞在中',
+			afterTotal: ' 回見られました',
+			beforeOnline: 'いま ',
+			beforeTotal: '',
+			middle: ' · ',
+		},
 	},
 	header: {
 		goHome: 'ホームへ',
