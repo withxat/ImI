@@ -21,6 +21,8 @@ const UI_SOURCE_FILES = [
 	'src/lib/i18n/messages/ja.ts',
 	'src/lib/i18n/messages/zh.ts',
 ]
+const UI_SOURCE_DIR = 'src'
+const UI_SOURCE_EXTENSIONS = new Set(['.astro', '.ts', '.tsx'])
 
 const CONTENT_CONFIG_FILES = [
 	'content/config.json',
@@ -77,6 +79,12 @@ function stripTsComments(source: string): string {
 	return source
 		.replace(/\/\*[\s\S]*?\*\//g, '')
 		.replace(/(^|[^:])\/\/.*$/gm, '$1')
+}
+
+function stripSourceComments(source: string): string {
+	return stripTsComments(source)
+		.replace(/<!--[\s\S]*?-->/g, '')
+		.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
 }
 
 function splitMdxFrontmatter(source: string): { body: string, frontmatter: string } {
@@ -163,14 +171,16 @@ async function writeGlyphFile(filePath: string, content: string): Promise<void> 
 }
 
 async function generateMisansGlyphs(): Promise<void> {
-	const [uiSources, configSources, posts] = await Promise.all([
+	const [uiSources, sourceFiles, configSources, posts] = await Promise.all([
 		readExistingFiles(UI_SOURCE_FILES),
+		listFiles(UI_SOURCE_DIR, UI_SOURCE_EXTENSIONS).then(readExistingFiles),
 		readExistingFiles(CONTENT_CONFIG_FILES),
 		collectPostSources(),
 	])
 
 	const uiGlyphs = collectGlyphs([
-		...uiSources.map(stripTsComments),
+		...uiSources.map(stripSourceComments),
+		...sourceFiles.map(stripSourceComments),
 		...configSources,
 		...posts.frontmatter,
 	])
@@ -190,6 +200,7 @@ function shouldRegenerate(file: string): boolean {
 	const relative = path.relative(process.cwd(), file)
 	return (
 		UI_SOURCE_FILES.includes(relative)
+		|| (relative.startsWith(`${UI_SOURCE_DIR}/`) && UI_SOURCE_EXTENSIONS.has(path.extname(relative)))
 		|| CONTENT_CONFIG_FILES.includes(relative)
 		|| relative.startsWith(`${POSTS_DIR}/`)
 	)

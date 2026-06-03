@@ -1,22 +1,22 @@
 ---
 /**
- * Site-wide UI stack (all locales): Hanken Grotesk + MiSans Polish.
+ * Site-wide UI stack (all locales): Hanken Grotesk + MiSans.
  *
- * `MiSans Polish` is the rewritten family name emitted by the `cjk-font-polish`
- * Vite plugin (see `src/lib/cjk-font-polish.ts`). The plugin clones each
- * @font-face vite-plugin-font produced for MiSans into three pseudo-weights via
- * the `font-variation-settings` descriptor — `font-weight: 600` on a mixed
- * Hanken+MiSans line yields Latin@600 + CJK@wght500 in one declaration.
+ * The three static MiSans files are intentionally mapped to Latin-facing
+ * weights through `cjk-font-polish` so mixed Hanken+MiSans lines stay balanced:
+ * 400 -> light, 500 -> normal, 600 -> medium.
  *
  * The import below is required for side-effects (it triggers vite-plugin-font's
- * subset emission); we deliberately ignore its runtime exports because the
- * family name is rewritten away by the polish plugin.
+ * subset emission); we use its generated fallback stack after the MiSans family.
  */
-import { fontFamilyFallback } from '@/assets/mi-sans-vf.ttf?subsets'
-import { CJK_POLISH_FAMILY } from '@/lib/cjk-font-polish'
+import { fontFamilyFallback } from '@/assets/fonts/mi-sans-light.woff2?subsets'
+import { CJK_FONT_FAMILY } from '@/lib/cjk-font-polish'
 
-const stack = `"Hanken Grotesk", "Hanken Grotesk Fallback", "${CJK_POLISH_FAMILY}", ${fontFamilyFallback}`
-const rootFontCss = `:root {
+import '@/assets/fonts/mi-sans-medium.woff2?subsets'
+import '@/assets/fonts/mi-sans-normal.woff2?subsets'
+
+const stack = `"Hanken Grotesk", "Hanken Grotesk Fallback", "${CJK_FONT_FAMILY}", ${fontFamilyFallback}`
+const rootFontCss = `:root:root {
   --font-display: ${stack};
   --font-text: ${stack};
   --font-ui: ${stack};
