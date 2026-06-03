@@ -25,19 +25,19 @@ const { pathname, search } = Astro.url
 <div aria-label={ariaLabel} class={className} role="navigation">
 	<p class="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-muted-foreground">
 		{LOCALES.map((locale, index) => (
-			<span class="inline-flex items-center whitespace-nowrap">
+			<>
 				{index > 0 && (
-					<Dot aria-hidden="true" class="mr-2 size-3 shrink-0 text-muted-foreground opacity-70" />
+					<Dot aria-hidden="true" class="size-3 shrink-0 text-muted-foreground opacity-70" />
 				)}
 				{locale === currentLocale
 					? (
-							<span class="font-medium text-highlight-strong" lang={locale}>
+							<span class="font-medium whitespace-nowrap text-highlight-strong" lang={locale}>
 								{LOCALE_LABEL[locale]}
 							</span>
 						)
 					: (
 							<a
-								class="text-link-muted"
+								class="text-link-muted whitespace-nowrap"
 								data-astro-prefetch="tap"
 								href={buildLocaleSwitchHref(pathname, search, locale)}
 								lang={locale}
@@ -45,7 +45,7 @@ const { pathname, search } = Astro.url
 								{LOCALE_LABEL[locale]}
 							</a>
 						)}
-			</span>
+			</>
 		))}
 	</p>
 </div>
