@@ -10,7 +10,7 @@
  * subset emission); we use its generated fallback stack after the MiSans family.
  */
 import { fontFamilyFallback } from '@/assets/fonts/mi-sans-wght-330.ttf?subsets'
-import { css as sourceHanSerifCss, fontFamilyFallback as sourceHanSerifFallback } from '@/assets/fonts/source-han-serif-sc-vf.ttf?subsets&key=serif'
+import { css as sourceHanSerifCss } from '@/assets/fonts/source-han-serif-sc-vf.ttf?subsets&key=serif'
 import { CJK_FONT_FAMILY } from '@/lib/fonts/cjk-font-polish'
 
 import '@/assets/fonts/mi-sans-wght-415.ttf?subsets'
@@ -19,7 +19,6 @@ import '@/assets/fonts/mi-sans-wght-500.ttf?subsets'
 const stack = `"Hanken Grotesk", "Hanken Grotesk Fallback", "${CJK_FONT_FAMILY}", ${fontFamilyFallback}`
 const serifStack = [
 	`"${sourceHanSerifCss.family}"`,
-	sourceHanSerifFallback,
 	'"New York"',
 	'"Iowan Old Style"',
 	'"Apple Garamond"',
