@@ -4,7 +4,7 @@ import type { Locale } from '@/lib/i18n/constants'
 import { getImage } from 'astro:assets'
 import { ClientRouter } from 'astro:transitions'
 
-import shinyTf from '@/assets/shiny-tf.png'
+import shinyImi from '@/assets/shiny-imi.png'
 import MisansUi from '@/components/fonts/mi-sans-global-font.astro'
 import Footer from '@/components/layout/footer.astro'
 import { htmlLangFor } from '@/lib/i18n/constants'
@@ -22,7 +22,7 @@ const rssJa = getMessages('ja').blog
 
 const isOnDesignPage = Astro.url.pathname === '/design'
 const designFavicon = isOnDesignPage
-	? await getImage({ format: 'png', height: 64, src: shinyTf, width: 64 })
+	? await getImage({ format: 'png', height: 64, src: shinyImi, width: 64 })
 	: null
 ---
 
