@@ -378,6 +378,7 @@ Micro interactions: encouraged.
 - Content collections are typed via `src/content.config.ts` using Zod schemas.
 - i18n: use `getMessages(locale)` to get typed copy; add new strings to all three locale files + the types file.
 - Do not set the `font-variation-settings` CSS property on elements. MiSans uses generated static instances at tuned CJK `wght` axis values mapped to Latin-facing `font-weight` values through the font pipeline; element-level axis overrides would bypass that CJK weight curve.
+- **Page-column responsive layout:** `Container` is `@container/page` with `max-w-2xl`. When the column is at full width (~39rem content after padding), that is the desktop layout — not viewport `lg:`. Use `@lg/page:` / `@max-lg/page:` or the `page-grid-2` utility for multi-column blocks inside the column. Do not use viewport `lg:grid-cols-*` for page-level grids (container `@2xl` / 42rem never hits because padding reduces inline size below 42rem).
 
 ---
 

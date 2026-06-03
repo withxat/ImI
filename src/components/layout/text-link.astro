@@ -1,18 +1,30 @@
 ---
 import { cn } from '@/lib/cn'
 
-interface Props {
+type Props = {
 	class?: string
-	href: string
-}
+} & (
+	| { decorative: true, href?: never }
+	| { decorative?: false, href: string }
+)
 
-const { class: className, href } = Astro.props as Props
+const { class: className, decorative = false, href } = Astro.props as Props
+
+const linkClass = cn('text-link inline-flex items-center gap-2 font-ui text-sm', className)
 ---
 
-<a
-	class={cn('text-link inline-flex items-center gap-2 font-ui text-sm', className)}
-	href={href}
-	data-astro-prefetch
->
-	<slot />
-</a>
+{decorative
+	? (
+			<span class={cn(linkClass, 'cursor-pointer')}>
+				<slot />
+			</span>
+		)
+	: (
+			<a
+				class={linkClass}
+				href={href}
+				data-astro-prefetch
+			>
+				<slot />
+			</a>
+		)}

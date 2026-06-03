@@ -6,6 +6,7 @@ import { Image } from 'astro:assets'
 
 import shinyImi from '@/assets/shiny-imi.png'
 import shinyTf from '@/assets/shiny-tf.png'
+import ComponentPreviewCanvas from '@/components/design/component-preview-canvas.astro'
 import HomeCardLink from '@/components/home/home-card-link.astro'
 import Container from '@/components/layout/container.astro'
 import SiteHeader from '@/components/layout/site-header.astro'
@@ -268,18 +269,15 @@ const fontSpecimens: FontSpecimen[] = [
 										</div>
 
 										<div
-											class="
-												group/colorcard grid gap-6
-												lg:grid-cols-2
-											"
+											class="group/colorcard page-grid-2"
 											data-mode="light"
 											data-color-card
 										>
 											{(['light', 'dark'] as const).map((paneMode) => {
 												const scopeClass = paneMode === 'light' ? 'theme-light' : 'theme-dark'
 												const hiddenClass = paneMode === 'light'
-													? 'max-lg:group-data-[mode=dark]/colorcard:hidden'
-													: 'max-lg:group-data-[mode=light]/colorcard:hidden'
+													? '@max-lg/page:group-data-[mode=dark]/colorcard:hidden'
+													: '@max-lg/page:group-data-[mode=light]/colorcard:hidden'
 												return (
 													<div
 														class={`
@@ -292,7 +290,7 @@ const fontSpecimens: FontSpecimen[] = [
 														<div
 															class="
 																flex items-center gap-2 border-b border-border px-5 py-2.5
-																lg:hidden
+																@lg/page:hidden
 															"
 															aria-label={m.design.colors.tablistLabel}
 															role="group"
@@ -320,7 +318,7 @@ const fontSpecimens: FontSpecimen[] = [
 														</div>
 														<div class="
 															hidden border-b border-border px-5 py-2.5
-															lg:block
+															@lg/page:block
 														"
 														>
 															<p class="font-mono text-xs font-medium text-muted-foreground">.{paneMode}</p>
@@ -367,9 +365,9 @@ const fontSpecimens: FontSpecimen[] = [
 							<p class="max-w-prose text-base/7 text-muted-foreground">{m.design.elevation.intro}</p>
 							<p class="max-w-prose text-sm text-muted-foreground">{m.design.elevation.flatNote}</p>
 						</div>
-						<div class="rounded-xl border border-highlight-soft/75 bg-background px-5 py-6 shadow-halo">
+						<div class="rounded-xl border border-border bg-background px-5 py-6 shadow-halo">
 							<p class="font-mono text-xs text-muted-foreground">shadow-halo</p>
-							<p class="mt-3 text-sm text-foreground">highlight-surface · surface-callout</p>
+							<p class="mt-3 text-sm text-foreground">0 1px 2px · highlight-soft / 30%</p>
 						</div>
 					</section>
 
@@ -400,21 +398,27 @@ const fontSpecimens: FontSpecimen[] = [
 								<h3 class="text-lg font-medium text-foreground">{m.design.components.particlesTitle}</h3>
 								<p class="max-w-prose text-sm text-muted-foreground">{m.design.components.particlesIntro}</p>
 							</div>
-							<ul class="space-y-3">
-								<li class="rounded-xl border border-border px-5 py-4">
-									<p class="font-mono text-xs text-muted-foreground">
-										TextLink — {m.design.components.textLinkDescriptor}
+							<ul class="page-grid-2">
+								<ComponentPreviewCanvas
+									contentClass="origin-bottom-right scale-[8.5]"
+									descriptor={m.design.components.textLinkDescriptor}
+									name="TextLink"
+									stageClass="items-end justify-end p-8"
+								>
+									<TextLink class="whitespace-nowrap" decorative>{m.home.viewAllPosts}</TextLink>
+								</ComponentPreviewCanvas>
+								<ComponentPreviewCanvas
+									descriptor={m.design.components.wandererDescriptor}
+									name="Wanderer gradient"
+									magnifierTour
+								>
+									<p
+										class="wanderer-gradient-text relative z-0 text-4xl font-bold"
+										data-wanderer-specimen
+									>
+										{m.wanderer.wanderer}
 									</p>
-									<p class="mt-2 text-base/7 text-muted-foreground">
-										<TextLink href="/post">{m.home.viewAllPosts}</TextLink>
-									</p>
-								</li>
-								<li class="rounded-xl border border-border px-5 py-4">
-									<p class="font-mono text-xs text-muted-foreground">
-										Wanderer gradient — {m.design.components.wandererDescriptor}
-									</p>
-									<p class="wanderer-gradient-text mt-2 text-2xl font-bold">{m.wanderer.wanderer}</p>
-								</li>
+								</ComponentPreviewCanvas>
 							</ul>
 						</div>
 					</section>

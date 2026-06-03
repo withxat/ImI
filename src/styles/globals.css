@@ -188,6 +188,44 @@
 	@apply border-highlight-soft bg-accent/50 shadow-highlight-soft/45 dark:border-border dark:shadow-black/40;
 }
 
+/*
+ * Page-column layout (Container is @container/page, max-w-2xl).
+ * At full column width (~39rem content) use @lg/page (32rem), not viewport lg: or @2xl:.
+ */
+@utility page-grid-2 {
+	@apply grid gap-6 @lg/page:grid-cols-2;
+}
+
+/* Figma-style line grid for design-system component previews */
+@utility design-preview-canvas {
+	--design-grid-line: color-mix(in oklab, var(--border) 72%, transparent);
+	--design-preview-fill: color-mix(in oklab, var(--muted) 42%, var(--background));
+	background-color: var(--design-preview-fill);
+	background-image:
+		linear-gradient(to right, var(--design-grid-line) 1px, transparent 1px),
+		linear-gradient(to bottom, var(--design-grid-line) 1px, transparent 1px);
+	background-position: -1px -1px;
+	background-size: 8px 8px;
+}
+
+/* Loupe zoom plane: opaque fill, with the preview grid enlarged by transform. */
+@utility design-loupe-zoom-layer {
+	background-color: color-mix(in oklab, var(--background) 96%, var(--foreground));
+}
+
+@utility design-loupe-overlay {
+	filter: saturate(1.08);
+}
+
+@utility design-loupe-ring {
+	border: 1px solid color-mix(in oklab, var(--foreground) 28%, transparent);
+	box-shadow:
+		inset 0 1px 0 color-mix(in oklab, var(--background) 84%, transparent),
+		inset 0 -1px 6px color-mix(in oklab, var(--foreground) 10%, transparent),
+		0 0 0 1px color-mix(in oklab, var(--background) 42%, transparent),
+		0 10px 22px -16px color-mix(in oklab, var(--foreground) 42%, transparent);
+}
+
 @layer base {
 	:root {
 		color-scheme: light;

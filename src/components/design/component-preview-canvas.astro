@@ -1,0 +1,63 @@
+---
+import { cn } from '@/lib/cn'
+
+interface Props {
+	class?: string
+	contentClass?: string
+	descriptor?: string
+	magnifierTour?: boolean
+	name: string
+	stageClass?: string
+}
+
+const { class: className, contentClass, descriptor, magnifierTour = false, name, stageClass } = Astro.props as Props
+---
+
+<li class={cn('space-y-2', className)}>
+	<div
+		class={cn(
+			`
+				flex min-h-36 items-center justify-center overflow-hidden rounded-xl border border-border design-preview-canvas px-6
+				py-10
+			`,
+			magnifierTour && 'relative',
+			stageClass,
+		)}
+		data-wanderer-preview={magnifierTour ? '' : undefined}
+	>
+		{magnifierTour
+			? (
+					<div class="pointer-events-none absolute inset-0 flex items-center justify-center" data-wanderer-loupe-root>
+						{contentClass
+							? (
+									<div class={contentClass}>
+										<slot />
+									</div>
+								)
+							: <slot />}
+						<div
+							aria-hidden="true"
+							class="pointer-events-none absolute z-20 rounded-full design-loupe-ring"
+							data-wanderer-loupe-ring
+						/>
+						<div
+							aria-hidden="true"
+							class="pointer-events-none absolute inset-0 z-10 overflow-hidden design-loupe-overlay"
+							data-wanderer-loupe-overlay
+						>
+							<div class="absolute inset-0 design-preview-canvas design-loupe-zoom-layer" data-wanderer-loupe-zoom />
+						</div>
+					</div>
+				)
+			: contentClass
+				? (
+						<div class={contentClass}>
+							<slot />
+						</div>
+					)
+				: <slot />}
+	</div>
+	<p class="font-mono text-xs text-muted-foreground">
+		{name}{descriptor ? ` — ${descriptor}` : ''}
+	</p>
+</li>
