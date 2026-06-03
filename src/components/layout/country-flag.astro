@@ -5,14 +5,14 @@ interface Props {
 
 const { code } = Astro.props as Props
 
-const flagSvgs = import.meta.glob<string>('../assets/flags/*.svg', {
+const flagSvgs = import.meta.glob<string>('../../assets/flags/*.svg', {
 	eager: true,
 	import: 'default',
 	query: '?raw',
 })
 
 const iso = code?.trim().toUpperCase()
-const svg = iso ? flagSvgs[`../assets/flags/${iso.toLowerCase()}.svg`] : null
+const svg = iso ? flagSvgs[`../../assets/flags/${iso.toLowerCase()}.svg`] : null
 ---
 
 {svg

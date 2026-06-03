@@ -30,6 +30,8 @@ const CONTENT_CONFIG_FILES = [
 ]
 
 const POSTS_DIR = 'content/posts'
+const FLAGS_DIR = 'src/assets/flags'
+const UI_LOCALES = ['en', 'zh', 'ja'] as const
 
 const STATIC_PUNCTUATION = '，。！？、；：「」『』（）《》—…·￥“”‘’～ー・'
 const GLYPH_RE = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\p{Script=Bopomofo}\p{Script=Common}\p{Script=Inherited}]/u
@@ -191,6 +193,21 @@ async function collectPostSources(): Promise<{ body: string[], frontmatter: stri
 	return { body, frontmatter }
 }
 
+async function collectRegionDisplayNameSources(): Promise<string[]> {
+	const flagFiles = await listFiles(FLAGS_DIR, new Set(['.svg']))
+	const regionCodes = flagFiles.map(file => path.basename(file, '.svg').toUpperCase())
+	const names: string[] = []
+
+	// Footer geo labels come from runtime Intl.DisplayNames, so source scanning cannot see them.
+	for (const locale of UI_LOCALES) {
+		const displayNames = new Intl.DisplayNames([locale], { type: 'region' })
+		for (const code of regionCodes)
+			names.push(displayNames.of(code) ?? code)
+	}
+
+	return names
+}
+
 async function writeGlyphFile(filePath: string, content: string): Promise<void> {
 	await fs.mkdir(path.dirname(filePath), { recursive: true })
 
@@ -204,11 +221,12 @@ async function writeGlyphFile(filePath: string, content: string): Promise<void> 
 }
 
 async function generateMisansGlyphs(): Promise<void> {
-	const [uiSources, sourceFiles, configSources, posts] = await Promise.all([
+	const [uiSources, sourceFiles, configSources, posts, regionDisplayNames] = await Promise.all([
 		readExistingFiles(UI_SOURCE_FILES),
 		listFiles(UI_SOURCE_DIR, UI_SOURCE_EXTENSIONS).then(readExistingFiles),
 		readExistingFiles(CONTENT_CONFIG_FILES),
 		collectPostSources(),
+		collectRegionDisplayNameSources(),
 	])
 
 	const uiGlyphs = collectGlyphs([
@@ -216,6 +234,7 @@ async function generateMisansGlyphs(): Promise<void> {
 		...sourceFiles.map(stripSourceComments),
 		...configSources,
 		...posts.frontmatter,
+		...regionDisplayNames,
 	])
 	const contentGlyphs = collectGlyphs([
 		...configSources,
@@ -237,6 +256,7 @@ function shouldRegenerate(file: string): boolean {
 		UI_SOURCE_FILES.includes(relative)
 		|| (relative.startsWith(`${UI_SOURCE_DIR}/`) && UI_SOURCE_EXTENSIONS.has(path.extname(relative)))
 		|| CONTENT_CONFIG_FILES.includes(relative)
+		|| relative.startsWith(`${FLAGS_DIR}/`)
 		|| relative.startsWith(`${POSTS_DIR}/`)
 	)
 }
