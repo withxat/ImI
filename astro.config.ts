@@ -25,6 +25,9 @@ const { getExpressiveCodeBlockLocale } = await jiti.import<typeof import('./src/
 const { default: cjkFontPolish } = await jiti.import<typeof import('./src/lib/cjk-font-polish.ts')>(
 	'./src/lib/cjk-font-polish.ts',
 )
+const { default: misansGlyphCollector, MISANS_GLYPH_SCAN_FILES } = await jiti.import<typeof import('./src/lib/misans-glyph-collector.ts')>(
+	'./src/lib/misans-glyph-collector.ts',
+)
 
 export default defineConfig({
 	adapter: cloudflare(),
@@ -86,12 +89,9 @@ export default defineConfig({
 					local: FileSystemIconLoader('./src/assets/icons'),
 				},
 			}),
+			misansGlyphCollector(),
 			Font.vite({
-				scanFiles: {
-					content: ['content/**/*.{json,md,mdx}'],
-					default: ['src/**/*.{astro,css,ts}'],
-				},
-				whiteList: '，。！？、；：「」『』（）《》—…·￥',
+				scanFiles: MISANS_GLYPH_SCAN_FILES,
 			}),
 			cjkFontPolish(),
 		],
