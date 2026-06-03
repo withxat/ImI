@@ -205,10 +205,10 @@ const zh: Messages = {
 		connect: '可以通过这些方式联系：',
 		moeIcp: '萌ICP备20264698号',
 		stats: {
-			afterOnline: ' 人路过',
-			afterTotal: ' 次',
-			beforeOnline: '此刻 ',
-			beforeTotal: '被看见 ',
+			afterOnline: '人路过',
+			afterTotal: '次',
+			beforeOnline: '此刻',
+			beforeTotal: '被看见',
 		},
 	},
 	header: {

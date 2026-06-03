@@ -22,8 +22,9 @@ const totalLabel = formatSiteStatNumber(stats.totalViews, intlLocale)
 const onlineLabel = formatSiteStatNumber(stats.onlineNow, intlLocale)
 
 const dotClass = 'size-3 shrink-0 text-muted-foreground opacity-70'
+const segmentClass = 'inline-flex flex-wrap items-center gap-x-2'
 const rowClass
-	= 'flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-muted-foreground tabular-nums [--number-flow-mask-height:0.2em]'
+	= 'flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-muted-foreground tabular-nums [--number-flow-mask-height:0.2em] [--number-flow-mask-width:0.25em]'
 ---
 
 <div
@@ -32,7 +33,7 @@ const rowClass
 	data-site-stats-locale={intlLocale}
 	data-site-stats
 >
-	<span class="inline-flex flex-wrap items-center">
+	<span class={segmentClass}>
 		{copy.beforeTotal}
 		<span
 			class="inline align-baseline leading-none"
@@ -43,7 +44,7 @@ const rowClass
 		{copy.afterTotal}
 	</span>
 	<Dot aria-hidden="true" class={dotClass} />
-	<span class="inline-flex flex-wrap items-center">
+	<span class={segmentClass}>
 		{copy.beforeOnline}
 		<span
 			class="inline align-baseline leading-none"

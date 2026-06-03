@@ -210,10 +210,10 @@ const en: Messages = {
 		connect: 'Connect through any of these:',
 		moeIcp: 'Moe ICP Filing No. 20264698',
 		stats: {
-			afterOnline: ' wandering now',
-			afterTotal: ' times',
+			afterOnline: 'wandering now',
+			afterTotal: 'times',
 			beforeOnline: '',
-			beforeTotal: 'Seen ',
+			beforeTotal: 'Seen',
 		},
 	},
 	header: {
