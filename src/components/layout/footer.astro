@@ -3,11 +3,11 @@ import type { Locale } from '@/lib/i18n/constants'
 
 import { Image } from 'astro:assets'
 
-import { version as appVersion } from '../../package.json'
+import { version as appVersion } from '../../../package.json'
 import shinyImi from '@/assets/shiny-imi.png'
-import Container from '@/components/container.astro'
-import FooterNav from '@/components/footer-nav.astro'
-import FooterWanderer from '@/components/footer-wanderer.astro'
+import Container from '@/components/layout/container.astro'
+import FooterNav from '@/components/layout/footer-nav.astro'
+import FooterWanderer from '@/components/layout/footer-wanderer.astro'
 import { getMessages } from '@/lib/i18n/messages'
 
 interface Props {

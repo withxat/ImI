@@ -2,10 +2,10 @@
 export const THEME_STORAGE_KEY = 'theme' as const
 
 /**
- * Blocking script injected in `_layout.tsx` — runs before first paint so
+ * Blocking script injected in `root-layout.astro` — runs before first paint so
  * navigations / hydrate never flash the wrong palette.
  *
- * Mirrors theme application in `@/components/theme-switcher.tsx`.
+ * Mirrors theme application in `@/components/layout/theme-switcher.astro`.
  */
 export function getThemeBootstrapScript(): string {
 	const k = JSON.stringify(THEME_STORAGE_KEY)
