@@ -6,6 +6,7 @@ import { Image } from 'astro:assets'
 import { version as appVersion } from '../../../package.json'
 import shinyImi from '@/assets/shiny-imi.png'
 import Container from '@/components/layout/container.astro'
+import { FOOTER_META_INLINE_ROW, FOOTER_META_STACK } from '@/components/layout/footer-meta-rhythm.ts'
 import FooterNav from '@/components/layout/footer-nav.astro'
 import FooterSiteStats from '@/components/layout/footer-site-stats.astro'
 import FooterWanderer from '@/components/layout/footer-wanderer.astro'
@@ -27,14 +28,18 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 	<Container class="pt-28 pb-8 text-base/7 text-muted-foreground">
 		<div class="space-y-3">
 			<FooterWanderer copy={m.wanderer} locale={locale} />
-			<div class="space-y-3">
+			<div class={FOOTER_META_STACK}>
 				<FooterSiteStats locale={locale} />
 				<p class="m-0 text-sm text-muted-foreground">
 					{m.footer.connect}
 				</p>
 				<FooterNav />
 			</div>
-			<div class="mt-16 flex items-center gap-2">
+			<div class={`
+				mt-16
+				${FOOTER_META_INLINE_ROW}
+			`}
+			>
 				<a
 					class="
 						group inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors

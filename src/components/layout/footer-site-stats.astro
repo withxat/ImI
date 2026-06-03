@@ -4,6 +4,7 @@ import type { Locale } from '@/lib/i18n/constants'
 import { env } from 'cloudflare:workers'
 import Dot from '~icons/lucide/dot'
 
+import { FOOTER_META_INLINE_ROW, FOOTER_STAT_DIGIT_GAP } from '@/components/layout/footer-meta-rhythm.ts'
 import { intlLocaleFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
 import { formatSiteStatNumber } from '@/lib/site-stats/format.ts'
@@ -22,9 +23,9 @@ const totalLabel = formatSiteStatNumber(stats.totalViews, intlLocale)
 const onlineLabel = formatSiteStatNumber(stats.onlineNow, intlLocale)
 
 const dotClass = 'size-3 shrink-0 text-muted-foreground opacity-70'
-const segmentClass = 'inline-flex flex-wrap items-center gap-x-2'
+const segmentClass = `inline-flex flex-wrap items-center ${FOOTER_STAT_DIGIT_GAP}`
 const rowClass
-	= 'flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-muted-foreground tabular-nums [--number-flow-mask-height:0.2em] [--number-flow-mask-width:0.25em]'
+	= `${FOOTER_META_INLINE_ROW} font-ui text-sm text-muted-foreground tabular-nums [--number-flow-mask-height:0.2em] [--number-flow-mask-width:0.25em]`
 ---
 
 <div
