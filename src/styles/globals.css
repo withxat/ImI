@@ -665,6 +665,26 @@
 		animation: wanderer-gradient-flow 7.5s cubic-bezier(0.45, 0, 0.2, 1) infinite alternate;
 	}
 
+	.site-stat-number {
+		--number-flow-mask-height: 0.16em;
+		--number-flow-mask-width: 0.12em;
+		font-kerning: none;
+		line-height: 1;
+	}
+
+	.site-stat-number::part(digit),
+	.site-stat-digit {
+		display: inline-block;
+		min-width: 1.2em;
+		margin-inline: 0.035em;
+		border: 1px solid color-mix(in oklab, var(--color-border) 72%, var(--color-highlight-soft));
+		border-radius: 0.42em;
+		background: color-mix(in oklab, var(--color-background) 82%, var(--color-highlight-soft));
+		color: var(--color-foreground);
+		box-shadow: 0 1px 2px color-mix(in oklab, var(--color-highlight-soft) 28%, transparent);
+		text-align: center;
+	}
+
 	.dark .wanderer-gradient-text {
 		background-image: linear-gradient(
 			110deg,

@@ -6,7 +6,6 @@ import Dot from '~icons/lucide/dot'
 
 import { intlLocaleFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
-import { formatSiteStatNumber } from '@/lib/site-stats/format.ts'
 import { fetchSiteStats } from '@/lib/site-stats/server.ts'
 
 interface Props {
@@ -18,13 +17,42 @@ const copy = getMessages(locale).footer.stats
 const intlLocale = intlLocaleFor(locale)
 
 const stats = await fetchSiteStats(env)
-const totalLabel = formatSiteStatNumber(stats.totalViews, intlLocale)
-const onlineLabel = formatSiteStatNumber(stats.onlineNow, intlLocale)
 
 const dotClass = 'size-3 shrink-0 text-muted-foreground opacity-70'
 const segmentClass = 'inline-flex flex-wrap items-center gap-x-[0.25em]'
 const rowClass
-	= 'flex flex-wrap items-center gap-2 font-ui text-sm text-muted-foreground tabular-nums [--number-flow-mask-height:0.2em] [--number-flow-mask-width:0.25em]'
+	= 'flex flex-wrap items-center gap-2 font-ui text-sm text-muted-foreground tabular-nums'
+const numberClass = 'site-stat-number align-baseline'
+const numberFormat = {
+	maximumFractionDigits: 0,
+	useGrouping: true,
+} satisfies Intl.NumberFormatOptions
+
+type StatNumberPart = {
+	type: 'digit' | 'symbol'
+	value: string
+}
+
+function statNumberParts(value: number) {
+	const parts: StatNumberPart[] = []
+
+	for (const part of new Intl.NumberFormat(intlLocale, numberFormat).formatToParts(value)) {
+		if (part.type === 'integer') {
+			parts.push(...[...part.value].map(digit => ({
+				type: 'digit' as const,
+				value: digit,
+			})))
+			continue
+		}
+
+		parts.push({
+			type: 'symbol',
+			value: part.value,
+		})
+	}
+
+	return parts
+}
 ---
 
 <div
@@ -36,22 +64,34 @@ const rowClass
 	<span class={segmentClass}>
 		{copy.beforeTotal}
 		<span
-			class="inline align-baseline leading-none"
+			class={numberClass}
 			data-site-stats-flow="total"
 			data-site-stats-value={stats.totalViews}
 			data-site-stats-digit
-		>{totalLabel}</span>
+		>
+			{statNumberParts(stats.totalViews).map(part => (
+				part.type === 'digit'
+					? <span class="site-stat-digit">{part.value}</span>
+					: <span>{part.value}</span>
+			))}
+		</span>
 		{copy.afterTotal}
 	</span>
 	<Dot aria-hidden="true" class={dotClass} />
 	<span class={segmentClass}>
 		{copy.beforeOnline}
 		<span
-			class="inline align-baseline leading-none"
+			class={numberClass}
 			data-site-stats-flow="online"
 			data-site-stats-value={stats.onlineNow}
 			data-site-stats-digit
-		>{onlineLabel}</span>
+		>
+			{statNumberParts(stats.onlineNow).map(part => (
+				part.type === 'digit'
+					? <span class="site-stat-digit">{part.value}</span>
+					: <span>{part.value}</span>
+			))}
+		</span>
 		{copy.afterOnline}
 	</span>
 </div>

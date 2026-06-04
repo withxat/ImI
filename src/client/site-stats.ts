@@ -52,6 +52,11 @@ async function sendPresence() {
 function upgradeDigits(root: HTMLElement) {
 	const locale = root.dataset.siteStatsLocale ?? document.documentElement.lang ?? 'en'
 
+	for (const flow of numberFlows(root)) {
+		flow.locales = locale
+		flow.format = NUMBER_FORMAT
+	}
+
 	for (const span of root.querySelectorAll<HTMLElement>('[data-site-stats-digit]')) {
 		const flow = document.createElement('number-flow') as NumberFlowElement
 		flow.className = span.className
