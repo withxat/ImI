@@ -148,7 +148,7 @@ Current pages:
 | `/design` | SSR | design system reference |
 | `/404` | SSR | fallback |
 | `feed.xml`, `feed.en.xml`, `feed.ja.xml` | SSR | RSS feeds |
-| `sitemap.xml` | SSR | sitemap |
+| `/sitemap-index.xml`, `/sitemap-0.xml` | static (build) | `@astrojs/sitemap`, zh canonical URLs |
 
 ---
 
@@ -291,7 +291,7 @@ Micro interactions: encouraged.
 - Metadata per page via `<Seo>` component
 - OG tags + Twitter cards
 - Canonical URLs
-- Sitemap (`/sitemap.xml`)
+- Sitemap (`/sitemap-index.xml`, `/sitemap-0.xml` via `@astrojs/sitemap`)
 - RSS per locale (`/feed.xml`, `/feed.en.xml`, `/feed.ja.xml`)
 - JSON-LD structured data
 - `robots.txt` (if present)
@@ -349,7 +349,7 @@ Micro interactions: encouraged.
     feed.xml.ts
     feed.en.xml.ts
     feed.ja.xml.ts
-    sitemap.xml.ts
+    (sitemap via `@astrojs/sitemap` at build → `dist/client/sitemap-*.xml`)
   /scripts
     site-client.ts
   /styles

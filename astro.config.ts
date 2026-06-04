@@ -1,7 +1,10 @@
+import type { ChangeFreqEnum } from '@astrojs/sitemap'
+
 import { fileURLToPath } from 'node:url'
 
 import cloudflare from '@astrojs/cloudflare'
 import mdx from '@astrojs/mdx'
+import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import expressiveCode from 'astro-expressive-code'
 import { defineConfig } from 'astro/config'
@@ -28,6 +31,10 @@ const { default: cjkFontPolish } = await jiti.import<typeof import('./src/lib/fo
 const { default: misansGlyphCollector, MISANS_GLYPH_SCAN_FILES } = await jiti.import<typeof import('./src/lib/fonts/mi-sans-glyph-collector.ts')>(
 	'./src/lib/fonts/mi-sans-glyph-collector.ts',
 )
+const { buildSitemapData, normalizeSitemapPathname } = await jiti.import<typeof import('./src/lib/sitemap-build.ts')>(
+	'./src/lib/sitemap-build.ts',
+)
+const sitemapBuild = await buildSitemapData()
 
 export default defineConfig({
 	adapter: cloudflare(),
@@ -75,6 +82,33 @@ export default defineConfig({
 				remarkCjkFriendly,
 				remarkCjkFriendlyGfmStrikethrough,
 			],
+		}),
+		sitemap({
+			customPages: sitemapBuild.customPages,
+			filter: (page) => {
+				const { pathname } = new URL(page)
+				if (pathname !== '/' && pathname.endsWith('/'))
+					return false
+				return sitemapBuild.allowedPathnames.has(normalizeSitemapPathname(page))
+			},
+			namespaces: {
+				image: false,
+				news: false,
+				video: false,
+				xhtml: false,
+			},
+			serialize(item) {
+				const meta = sitemapBuild.metaByPathname.get(normalizeSitemapPathname(item.url))
+				if (!meta)
+					return undefined
+
+				item.changefreq = meta.changefreq as ChangeFreqEnum
+				item.priority = meta.priority
+				if (meta.lastmod)
+					item.lastmod = meta.lastmod.toISOString()
+
+				return item
+			},
 		}),
 	],
 	output: 'server',

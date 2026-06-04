@@ -18,6 +18,7 @@
 		"ui:preset": "bejamas preset"
 	},
 	"dependencies": {
+		"@astrojs/sitemap": "^3.7.3",
 		"@data-slot/accordion": "^0.2.166",
 		"@data-slot/core": "^0.2.166",
 		"@data-slot/dialog": "^0.2.166",
