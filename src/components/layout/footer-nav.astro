@@ -1,8 +1,6 @@
 ---
 import Dot from '~icons/lucide/dot'
 
-import { FOOTER_META_INLINE_ROW } from '@/components/layout/footer-meta-rhythm.ts'
-
 const LINKS = [
 	{ href: 'https://github.com/withxat', label: 'GitHub' },
 	{ href: 'https://x.com/withxat', label: 'Twitter' },
@@ -11,11 +9,7 @@ const LINKS = [
 ] as const
 ---
 
-<nav class={`
-	${FOOTER_META_INLINE_ROW}
-	font-ui text-sm
-`}
->
+<nav class="flex flex-wrap items-center gap-2 font-ui text-sm">
 	{LINKS.map((item, index) => (
 		<>
 			{index > 0 && (
