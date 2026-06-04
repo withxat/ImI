@@ -16,6 +16,7 @@
 		"src",
 		"src/worker.ts",
 		"astro.config.ts",
+		"scripts",
 		"src/**/*.astro"
 	]
 }

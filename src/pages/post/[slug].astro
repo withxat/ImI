@@ -15,7 +15,7 @@ import RootLayout from '@/layouts/root-layout.astro'
 import { formatPostDate, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { mdxComponents } from '@/lib/mdx-components'
-import { articleBreadcrumbJsonLd, blogPostingJsonLd, SITE_NAME } from '@/lib/seo-data'
+import { articleBreadcrumbJsonLd, blogPostingJsonLd, postOgImageUrl, SITE_NAME } from '@/lib/seo-data'
 import { toTranslator } from '@/types/translator'
 
 export const prerender = false
@@ -50,6 +50,7 @@ const { Content } = await render(post.entry)
 				canonicalPath,
 				date: post.date,
 				description: post.summary,
+				image: postOgImageUrl(slug),
 				locale,
 				tags: post.tags,
 				title: post.title,
@@ -62,6 +63,7 @@ const { Content } = await render(post.entry)
 		]}
 		canonicalPath={canonicalPath}
 		description={post.summary}
+		image={postOgImageUrl(slug)}
 		locale={locale}
 		slot="head"
 		title={`${post.title} - Xat`}
