@@ -1,7 +1,7 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { htmlLangFor } from '@/lib/i18n/constants'
-import { defaultOgImageUrl, postOgImageUrl } from '@/lib/og/paths'
+import { defaultOgImageUrl, pageOgImageUrl, postOgImageUrl } from '@/lib/og/paths'
 
 export const SITE_URL = 'https://xat.sh'
 export const SITE_NAME = 'Xat'
@@ -13,7 +13,7 @@ export const PROFILE_AVATAR_SRC = 'https://avatars.githubusercontent.com/u/54651
 /** Build-time Satori PNG (`pnpm og:generate`), Chinese copy. */
 export const DEFAULT_OG_IMAGE = defaultOgImageUrl()
 
-export { postOgImageUrl }
+export { pageOgImageUrl, postOgImageUrl }
 
 /** Twitter handle for `twitter:site` / `twitter:creator` (with leading @). */
 export const TWITTER_SITE = '@withxat'

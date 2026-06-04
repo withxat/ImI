@@ -30,6 +30,17 @@ export const OG_FONT_FAMILY = {
 /** Matches site stack: Hanken first, MiSans for CJK. */
 export const OG_BODY_FONT_STACK = `${OG_FONT_FAMILY.display}, ${OG_FONT_FAMILY.cjk}`
 
+/** Shared OG typography scale (Satori px). */
+export const OG_TYPE = {
+	avatar: 76,
+	body: 32,
+	eyebrow: 32,
+	headline: 64,
+	meta: 26,
+	pill: 24,
+	wordmark: 54,
+} as const
+
 export const ZH_CATEGORY_NAMES: Record<string, string> = {
 	design: '设计',
 	life: '生活',

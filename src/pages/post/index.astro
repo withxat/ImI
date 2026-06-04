@@ -13,6 +13,7 @@ import RootLayout from '@/layouts/root-layout.astro'
 import { getPostsByCategory } from '@/lib/blog'
 import { cn } from '@/lib/cn'
 import { getMessages } from '@/lib/i18n/messages'
+import { pageOgImageUrl } from '@/lib/seo-data'
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
@@ -30,6 +31,7 @@ const groups = rawGroups.map((group) => {
 	<Seo
 		canonicalPath="/post"
 		description={m.blog.pageDescription}
+		image={pageOgImageUrl('post')}
 		locale={locale}
 		slot="head"
 		title={m.blog.pageTitle}

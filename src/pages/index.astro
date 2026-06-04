@@ -20,7 +20,7 @@ import { htmlLangFor } from '@/lib/i18n/constants'
 import { getIntroBadgeLabel } from '@/lib/i18n/intro-badges'
 import { getMessages } from '@/lib/i18n/messages'
 import { getCapabilities } from '@/lib/projects'
-import { personJsonLd, PROFILE_AVATAR_SRC, websiteJsonLd } from '@/lib/seo-data'
+import { DEFAULT_OG_IMAGE, personJsonLd, PROFILE_AVATAR_SRC, websiteJsonLd } from '@/lib/seo-data'
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
@@ -58,6 +58,7 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 		]}
 		canonicalPath="/"
 		description={m.home.metaDescription}
+		image={DEFAULT_OG_IMAGE}
 		locale={locale}
 		slot="head"
 		title={m.home.title}

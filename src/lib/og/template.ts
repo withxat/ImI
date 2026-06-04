@@ -4,6 +4,7 @@ import {
 	OG_FONT_FAMILY,
 	OG_HEIGHT,
 	OG_SITE_DEFAULT,
+	OG_TYPE,
 	OG_WIDTH,
 	ZH_CATEGORY_NAMES,
 } from '@/lib/og/constants'
@@ -23,8 +24,13 @@ export interface SiteOgInput {
 	summary: string
 }
 
-const BRAND_AVATAR_SIZE = 68
-const BRAND_WORDMARK_SIZE = 48
+export interface PageOgInput {
+	avatarSrc: string
+	header: string
+	summary: string
+	title: string
+}
+
 /** Nudge main column above vertical center (room for bottom brand). */
 const CONTENT_TOP_PADDING = 12
 
@@ -45,7 +51,7 @@ function dateHeader(dateLabel: string) {
 			children: dateLabel,
 			style: {
 				color: OG_COLORS.muted,
-				fontSize: 22,
+				fontSize: OG_TYPE.meta,
 				fontWeight: 500,
 				width: '100%',
 			},
@@ -60,13 +66,13 @@ function brandCorner(avatarSrc: string) {
 			children: [
 				{
 					props: {
-						height: BRAND_AVATAR_SIZE,
+						height: OG_TYPE.avatar,
 						src: avatarSrc,
 						style: {
 							border: `1px solid ${OG_COLORS.border}`,
 							borderRadius: 999,
 						},
-						width: BRAND_AVATAR_SIZE,
+						width: OG_TYPE.avatar,
 					},
 					type: 'img',
 				},
@@ -76,7 +82,7 @@ function brandCorner(avatarSrc: string) {
 						style: {
 							color: OG_COLORS.accent,
 							fontFamily: OG_FONT_FAMILY.wordmark,
-							fontSize: BRAND_WORDMARK_SIZE,
+							fontSize: OG_TYPE.wordmark,
 							fontWeight: 400,
 							letterSpacing: 0,
 							lineHeight: 1,
@@ -88,7 +94,7 @@ function brandCorner(avatarSrc: string) {
 			style: {
 				alignItems: 'center',
 				display: 'flex',
-				gap: 18,
+				gap: 20,
 				justifyContent: 'flex-end',
 				marginTop: 'auto',
 				width: '100%',
@@ -108,10 +114,10 @@ function categoryPill(label: string) {
 				border: `1px solid ${OG_COLORS.border}`,
 				borderRadius: 999,
 				color: OG_COLORS.muted,
-				fontSize: 20,
+				fontSize: OG_TYPE.pill,
 				fontWeight: 500,
 				marginTop: 20,
-				padding: '8px 18px',
+				padding: '10px 20px',
 			},
 		},
 		type: 'div',
@@ -130,7 +136,7 @@ export function siteOgTemplate(input: SiteOgInput) {
 									children: input.eyebrow,
 									style: {
 										color: OG_COLORS.accent,
-										fontSize: 28,
+										fontSize: OG_TYPE.eyebrow,
 										fontWeight: 500,
 									},
 								},
@@ -138,11 +144,11 @@ export function siteOgTemplate(input: SiteOgInput) {
 							},
 							{
 								props: {
-									children: truncate(input.summary, 56),
+									children: truncate(input.summary, 50),
 									style: {
 										display: 'flex',
 										flexDirection: 'column',
-										fontSize: 52,
+										fontSize: OG_TYPE.headline,
 										fontWeight: 600,
 										letterSpacing: '-0.02em',
 										lineHeight: 1.2,
@@ -153,6 +159,78 @@ export function siteOgTemplate(input: SiteOgInput) {
 								type: 'div',
 							},
 						],
+						style: {
+							display: 'flex',
+							flex: 1,
+							flexDirection: 'column',
+							justifyContent: 'flex-start',
+							paddingTop: CONTENT_TOP_PADDING,
+						},
+					},
+					type: 'div',
+				},
+				brandCorner(input.avatarSrc),
+			],
+			style: shellStyle,
+		},
+		type: 'div',
+	}
+}
+
+function pageTitleBlock(title: string, summary: string) {
+	return {
+		props: {
+			children: [
+				{
+					props: {
+						children: truncate(title, 64),
+						style: {
+							display: 'flex',
+							fontSize: OG_TYPE.headline,
+							fontWeight: 600,
+							letterSpacing: '-0.02em',
+							lineHeight: 1.15,
+							marginTop: 28,
+							maxWidth: 1000,
+						},
+					},
+					type: 'div',
+				},
+				{
+					props: {
+						children: truncate(summary, 88),
+						style: {
+							color: OG_COLORS.muted,
+							display: 'flex',
+							fontSize: OG_TYPE.body,
+							fontWeight: 400,
+							lineHeight: 1.45,
+							marginTop: 20,
+							maxWidth: 960,
+						},
+					},
+					type: 'div',
+				},
+			],
+			style: {
+				display: 'flex',
+				flex: 1,
+				flexDirection: 'column',
+				justifyContent: 'flex-start',
+			},
+		},
+		type: 'div',
+	}
+}
+
+export function pageOgTemplate(input: PageOgInput) {
+	return {
+		props: {
+			children: [
+				dateHeader(input.header),
+				{
+					props: {
+						children: [pageTitleBlock(input.title, input.summary)],
 						style: {
 							display: 'flex',
 							flex: 1,
@@ -182,49 +260,7 @@ export function postOgTemplate(input: PostOgInput) {
 					props: {
 						children: [
 							categoryPill(categoryLabel),
-							{
-								props: {
-									children: [
-										{
-											props: {
-												children: truncate(input.title, 72),
-												style: {
-													display: 'flex',
-													fontSize: 56,
-													fontWeight: 600,
-													letterSpacing: '-0.02em',
-													lineHeight: 1.15,
-													marginTop: 28,
-													maxWidth: 1000,
-												},
-											},
-											type: 'div',
-										},
-										{
-											props: {
-												children: truncate(input.summary, 96),
-												style: {
-													color: OG_COLORS.muted,
-													display: 'flex',
-													fontSize: 28,
-													fontWeight: 400,
-													lineHeight: 1.45,
-													marginTop: 20,
-													maxWidth: 960,
-												},
-											},
-											type: 'div',
-										},
-									],
-									style: {
-										display: 'flex',
-										flex: 1,
-										flexDirection: 'column',
-										justifyContent: 'flex-start',
-									},
-								},
-								type: 'div',
-							},
+							pageTitleBlock(input.title, input.summary),
 						],
 						style: {
 							display: 'flex',

@@ -14,6 +14,7 @@ import TextLink from '@/components/layout/text-link.astro'
 import Seo from '@/components/meta/seo.astro'
 import RootLayout from '@/layouts/root-layout.astro'
 import { getMessages } from '@/lib/i18n/messages'
+import { pageOgImageUrl } from '@/lib/seo-data'
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
@@ -135,6 +136,7 @@ const fontSpecimens: FontSpecimen[] = [
 	<Seo
 		canonicalPath="/design"
 		description={m.design.pageDescription}
+		image={pageOgImageUrl('design')}
 		locale={locale}
 		slot="head"
 		title={m.design.pageTitle}
