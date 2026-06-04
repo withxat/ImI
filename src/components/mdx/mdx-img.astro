@@ -1,7 +1,11 @@
 ---
-import { Image } from 'astro:assets'
+import { getImage, Image } from 'astro:assets'
 
 import { cn } from '@/lib/cn'
+
+/** Inline article column (~640px); 1280 covers 2× DPR without serving full originals. */
+const ARTICLE_IMAGE_WIDTHS = [640, 1280] as const
+const ARTICLE_IMAGE_SIZES = '(min-width: 768px) 640px, 100vw'
 
 interface Props {
 	alt: string
@@ -29,6 +33,10 @@ const {
 } = Astro.props as Props
 
 const isRemote = src.startsWith('http://') || src.startsWith('https://')
+
+const remoteFullSize = isRemote
+	? await getImage({ inferSize: true, src })
+	: null
 ---
 
 <figure class={cn('my-8', className)}>
@@ -37,11 +45,15 @@ const isRemote = src.startsWith('http://') || src.startsWith('https://')
 				<Image
 					alt={alt}
 					class="rounded-lg"
+					data-pswp-fullsrc={src}
+					data-pswp-height={remoteFullSize?.attributes.height}
+					data-pswp-width={remoteFullSize?.attributes.width}
 					decoding={decoding}
 					fetchpriority={fetchpriority}
 					loading={loading}
-					sizes={sizes ?? '(min-width: 768px) 640px, 100vw'}
+					sizes={sizes ?? ARTICLE_IMAGE_SIZES}
 					src={src}
+					widths={ARTICLE_IMAGE_WIDTHS}
 					inferSize
 					{...rest}
 				/>
@@ -54,9 +66,10 @@ const isRemote = src.startsWith('http://') || src.startsWith('https://')
 					fetchpriority={fetchpriority}
 					height={height ?? 720}
 					loading={loading}
-					sizes={sizes ?? '(min-width: 768px) 640px, 100vw'}
+					sizes={sizes ?? ARTICLE_IMAGE_SIZES}
 					src={src}
 					width={width ?? 1280}
+					widths={ARTICLE_IMAGE_WIDTHS}
 					{...rest}
 				/>
 			)}

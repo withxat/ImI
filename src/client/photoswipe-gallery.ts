@@ -40,12 +40,30 @@ function handleBodyClick(e: MouseEvent) {
 	openPhotoSwipe(el)
 }
 
+function readFullSize(el: HTMLImageElement, fallbackW: number, fallbackH: number) {
+	const fullSrc = el.dataset.pswpFullsrc?.trim()
+	if (!fullSrc) {
+		return {
+			h: fallbackH,
+			src: el.currentSrc || el.src,
+			w: fallbackW,
+		}
+	}
+
+	const dataW = Number(el.dataset.pswpWidth)
+	const dataH = Number(el.dataset.pswpHeight)
+	return {
+		h: dataH > 0 ? dataH : fallbackH,
+		src: fullSrc,
+		w: dataW > 0 ? dataW : fallbackW,
+	}
+}
+
 async function openPhotoSwipe(el: HTMLImageElement) {
-	const { h, w } = dimensionsForImage(el)
-	const src = el.currentSrc || el.src
-	const msrc = el.currentSrc || el.src
-	const srcset = el.srcset?.trim() ? el.srcset : undefined
-	const sizes = el.sizes?.trim() ? el.sizes : undefined
+	const { h: thumbH, w: thumbW } = dimensionsForImage(el)
+	const thumbSrc = el.currentSrc || el.src
+	const { h, src, w } = readFullSize(el, thumbW, thumbH)
+	const msrc = thumbSrc
 
 	// Close any existing instance first
 	if (activePswp) {
@@ -70,9 +88,7 @@ async function openPhotoSwipe(el: HTMLImageElement) {
 				element: el,
 				height: h,
 				msrc,
-				...(sizes ? { sizes } : {}),
 				src,
-				...(srcset ? { srcset } : {}),
 				width: w,
 			},
 		],
