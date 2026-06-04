@@ -134,6 +134,7 @@ const ja: Messages = {
 			particlesTitle: 'Particles',
 			primeIntro: 'ボタン、バッジ、ポップオーバー、ダイアログ。bejamas/ui からそのままコピーし、触らない。',
 			primeTitle: 'Prime',
+			statDigitsDescriptor: 'footer のライブ統計に使う金属調のオドメーター数字',
 			textLinkDescriptor: '丸みのあるカプセル下線（text-decoration ではない）',
 			title: 'コンポーネント',
 			wandererDescriptor: 'グラデーションのアニメーションテキスト、footer の強調のみ',

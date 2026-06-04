@@ -129,6 +129,7 @@ const zh: Messages = {
 			particlesTitle: 'Particles',
 			primeIntro: '按钮、徽章、弹层、对话框，整段从 bejamas/ui 复制过来，原样保留。',
 			primeTitle: 'Prime',
+			statDigitsDescriptor: '用于 footer 实时统计的金属转盘数字',
 			textLinkDescriptor: '圆角胶囊下划线，非 text-decoration',
 			title: '组件',
 			wandererDescriptor: '渐变动效文字，仅用于 footer 的强调',

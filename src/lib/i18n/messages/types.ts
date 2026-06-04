@@ -98,6 +98,7 @@ export interface DesignSystemCopy {
 		particlesTitle: string
 		primeIntro: string
 		primeTitle: string
+		statDigitsDescriptor: string
 		textLinkDescriptor: string
 		title: string
 		wandererDescriptor: string

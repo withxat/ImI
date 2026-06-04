@@ -666,18 +666,22 @@
 	}
 
 	.site-stat-number {
-		--number-flow-mask-height: 0.16em;
+		--number-flow-mask-height: 0.04em;
 		--number-flow-mask-width: 0.12em;
 		font-kerning: none;
 		line-height: 1;
+		vertical-align: -0.14em;
 	}
 
 	.site-stat-number::part(digit),
 	.site-stat-digit {
+		font-size: 0.75em;
 		display: inline-block;
 		min-width: 1.2em;
 		overflow: hidden;
+		padding-block: 0.1em;
 		margin-inline: 0.035em;
+		vertical-align: -0.14em;
 		border: 1px solid color-mix(in oklab, var(--color-border) 72%, var(--color-highlight-soft));
 		border-radius: 0.42em;
 		background: linear-gradient(

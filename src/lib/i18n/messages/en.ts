@@ -134,6 +134,7 @@ const en: Messages = {
 			particlesTitle: 'Particles',
 			primeIntro: 'Buttons, badges, popovers, dialogs. Copied wholesale from bejamas/ui and left alone.',
 			primeTitle: 'Prime',
+			statDigitsDescriptor: 'Metallic odometer digits for live footer stats',
 			textLinkDescriptor: 'Pill underline with rounded end caps, not text-decoration',
 			title: 'Components',
 			wandererDescriptor: 'Animated gradient text, footer-only emphasis',
