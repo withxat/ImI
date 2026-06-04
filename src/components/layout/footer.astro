@@ -28,7 +28,6 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 		<div class="space-y-3">
 			<FooterWanderer copy={m.wanderer} locale={locale} />
 			<div class="flex flex-col gap-3">
-				<FooterSiteStats locale={locale} />
 				<p class="m-0 text-sm text-muted-foreground">
 					{m.footer.connect}
 				</p>
@@ -71,7 +70,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 			</div>
 			<a
 				class="
-					flex items-center gap-1.5 text-sm text-muted-foreground
+					flex w-fit items-center gap-1.5 text-sm text-muted-foreground
 					hover:text-highlight-text
 				"
 				href="https://icp.gov.moe/?keyword=20264698"
@@ -88,6 +87,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 				/>
 				{m.footer.moeIcp}
 			</a>
+			<FooterSiteStats locale={locale} />
 		</div>
 	</Container>
 </footer>
