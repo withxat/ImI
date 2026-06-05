@@ -111,6 +111,9 @@ importers:
       lefthook:
         specifier: ^2.1.8
         version: 2.1.8
+      rehype-fluent-emoji:
+        specifier: link:../rehype-fluent-emoji
+        version: link:../rehype-fluent-emoji
       remark-cjk-friendly:
         specifier: ^2.0.1
         version: 2.0.1(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(unified@11.0.5)

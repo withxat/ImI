@@ -1,4 +1,5 @@
 import type { ChangeFreqEnum } from '@astrojs/sitemap'
+import type { AstroIntegration } from 'astro'
 
 import { fileURLToPath } from 'node:url'
 
@@ -9,6 +10,7 @@ import tailwindcss from '@tailwindcss/vite'
 import expressiveCode from 'astro-expressive-code'
 import { defineConfig } from 'astro/config'
 import { createJiti } from 'jiti'
+import rehypeFluentEmoji from 'rehype-fluent-emoji'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
 import remarkGfm from 'remark-gfm'
@@ -35,6 +37,28 @@ const { buildSitemapData, normalizeSitemapPathname } = await jiti.import<typeof 
 	'./src/lib/sitemap-build.ts',
 )
 const sitemapBuild = await buildSitemapData()
+
+function fluentEmoji(): AstroIntegration {
+	return {
+		hooks: {
+			'astro:config:setup': ({ config, updateConfig }) => {
+				updateConfig({
+					markdown: {
+						rehypePlugins: [
+							[rehypeFluentEmoji, {
+								assetBase: '/emoji/fluent',
+								className: 'fluent-emoji',
+								style: 'color',
+							}],
+							...config.markdown.rehypePlugins,
+						],
+					},
+				})
+			},
+		},
+		name: 'imi-fluent-emoji',
+	}
+}
 
 export default defineConfig({
 	adapter: cloudflare(),
@@ -76,6 +100,7 @@ export default defineConfig({
 			themes: ['vesper'],
 			useDarkModeMediaQuery: false,
 		}),
+		fluentEmoji(),
 		mdx({
 			remarkPlugins: [
 				remarkGfm,

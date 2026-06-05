@@ -4,7 +4,7 @@ import { getImage, Image } from 'astro:assets'
 import { cn } from '@/lib/cn'
 
 /** Inline article column (~640px); 1280 covers 2× DPR without serving full originals. */
-const ARTICLE_IMAGE_WIDTHS = [640, 1280] as const
+const ARTICLE_IMAGE_WIDTHS: number[] = [640, 1280]
 const ARTICLE_IMAGE_SIZES = '(min-width: 768px) 640px, 100vw'
 
 interface Props {
@@ -32,6 +32,7 @@ const {
 	...rest
 } = Astro.props as Props
 
+const isFluentEmoji = className?.split(/\s+/).includes('fluent-emoji') ?? false
 const isRemote = src.startsWith('http://') || src.startsWith('https://')
 
 const remoteFullSize = isRemote
@@ -39,43 +40,57 @@ const remoteFullSize = isRemote
 	: null
 ---
 
-<figure class={cn('my-8', className)}>
-	{isRemote
-		? (
-				<Image
-					alt={alt}
-					class="rounded-lg"
-					data-pswp-fullsrc={src}
-					data-pswp-height={remoteFullSize?.attributes.height}
-					data-pswp-width={remoteFullSize?.attributes.width}
-					decoding={decoding}
-					fetchpriority={fetchpriority}
-					loading={loading}
-					sizes={sizes ?? ARTICLE_IMAGE_SIZES}
-					src={src}
-					widths={ARTICLE_IMAGE_WIDTHS}
-					inferSize
-					{...rest}
-				/>
-			)
-		: (
-				<Image
-					alt={alt}
-					class="rounded-lg"
-					decoding={decoding}
-					fetchpriority={fetchpriority}
-					height={height ?? 720}
-					loading={loading}
-					sizes={sizes ?? ARTICLE_IMAGE_SIZES}
-					src={src}
-					width={width ?? 1280}
-					widths={ARTICLE_IMAGE_WIDTHS}
-					{...rest}
-				/>
-			)}
-	{alt && (
-		<figcaption class="text-center text-sm text-muted-foreground">
-			{alt}
-		</figcaption>
-	)}
-</figure>
+{isFluentEmoji
+	? (
+			<img
+				alt={alt}
+				class={className}
+				decoding={decoding}
+				fetchpriority={fetchpriority}
+				loading={loading}
+				src={src}
+				{...rest}
+			/>
+		)
+	: (
+			<figure class={cn('my-8', className)}>
+				{isRemote
+					? (
+							<Image
+								alt={alt}
+								class="rounded-lg"
+								data-pswp-fullsrc={src}
+								data-pswp-height={remoteFullSize?.attributes.height}
+								data-pswp-width={remoteFullSize?.attributes.width}
+								decoding={decoding}
+								fetchpriority={fetchpriority}
+								loading={loading}
+								sizes={sizes ?? ARTICLE_IMAGE_SIZES}
+								src={src}
+								widths={ARTICLE_IMAGE_WIDTHS}
+								inferSize
+								{...rest}
+							/>
+						)
+					: (
+							<Image
+								alt={alt}
+								class="rounded-lg"
+								decoding={decoding}
+								fetchpriority={fetchpriority}
+								height={height ?? 720}
+								loading={loading}
+								sizes={sizes ?? ARTICLE_IMAGE_SIZES}
+								src={src}
+								width={width ?? 1280}
+								widths={ARTICLE_IMAGE_WIDTHS}
+								{...rest}
+							/>
+						)}
+				{alt && (
+					<figcaption class="text-center text-sm text-muted-foreground">
+						{alt}
+					</figcaption>
+				)}
+			</figure>
+		)}

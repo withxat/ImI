@@ -827,6 +827,11 @@
 		cursor: zoom-in;
 	}
 
+	.article-body img.fluent-emoji {
+		@apply my-0 inline-block h-[1.2em] w-[1.2em] shrink-0 align-[-0.18em];
+		cursor: default;
+	}
+
 	.article-body li,
 	.article-body p {
 		@apply text-muted-foreground;
