@@ -57,7 +57,7 @@ const ja: Messages = {
 			},
 			items: [
 				{
-					description: '🙂 コピーしても Unicode のままの Fluent emoji',
+					description: '🤗 コピーしても Unicode のままの Fluent emoji',
 					title: 'rehype-fluent-emoji',
 				},
 			],

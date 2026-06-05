@@ -52,7 +52,7 @@ const zh: Messages = {
 			},
 			items: [
 				{
-					description: '🙂 复制时仍然是真 Unicode 的 Fluent emoji',
+					description: '🤗 复制时仍然是真 Unicode 的 Fluent emoji',
 					title: 'rehype-fluent-emoji',
 				},
 			],

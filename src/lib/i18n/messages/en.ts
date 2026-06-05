@@ -57,7 +57,7 @@ const en: Messages = {
 			},
 			items: [
 				{
-					description: '🙂 Fluent emoji that still copies as Unicode',
+					description: '🤗 Fluent emoji that still copies as Unicode',
 					title: 'rehype-fluent-emoji',
 				},
 			],

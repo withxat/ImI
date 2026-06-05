@@ -45,7 +45,7 @@
 				"items": [
 					{
 						"title": "rehype-fluent-emoji",
-						"description": "🙂 Fluent emoji that still copies as Unicode",
+						"description": "🤗 Fluent emoji that still copies as Unicode",
 						"link": "https://github.com/withxat/rehype-fluent-emoji"
 					}
 				],
