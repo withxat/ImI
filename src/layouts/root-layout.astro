@@ -3,6 +3,7 @@ import type { Locale } from '@/lib/i18n/constants'
 
 import { getImage } from 'astro:assets'
 import { ClientRouter } from 'astro:transitions'
+import { FLUENT_EMOJI_CSS } from 'rehype-fluent-emoji'
 
 import shinyImi from '@/assets/shiny-imi.png'
 import MisansUi from '@/components/fonts/mi-sans-global-font.astro'
@@ -52,6 +53,7 @@ const designFavicon = isOnDesignPage
 		<script set:html={getThemeBootstrapScript()} is:inline />
 
 		<MisansUi />
+		<style set:html={FLUENT_EMOJI_CSS} is:inline />
 		<ClientRouter />
 
 		<slot name="head" />
