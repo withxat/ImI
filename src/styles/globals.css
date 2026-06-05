@@ -827,19 +827,6 @@
 		cursor: zoom-in;
 	}
 
-	.article-body [data-fluent-emoji] {
-		display: inline-block;
-		width: 1.2em;
-		height: 1.2em;
-		background-image: var(--fluent-emoji-url);
-		background-position: center;
-		background-size: contain;
-		background-repeat: no-repeat;
-		color: transparent;
-		-webkit-text-fill-color: transparent;
-		vertical-align: -0.1em;
-	}
-
 	.article-body li,
 	.article-body p {
 		@apply text-muted-foreground;
