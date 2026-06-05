@@ -47,7 +47,7 @@ function fluentEmoji(): AstroIntegration {
 						rehypePlugins: [
 							[rehypeFluentEmoji, {
 								className: 'fluent-emoji',
-								style: 'color',
+								style: '3d',
 							}],
 							...config.markdown.rehypePlugins,
 						],

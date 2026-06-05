@@ -112,8 +112,8 @@ importers:
         specifier: ^2.1.8
         version: 2.1.8
       rehype-fluent-emoji:
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.0.1
+        version: 1.0.1
       remark-cjk-friendly:
         specifier: ^2.0.1
         version: 2.0.1(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(unified@11.0.5)
@@ -4598,8 +4598,8 @@ packages:
   rehype-expressive-code@0.42.0:
     resolution: {integrity: sha512-8rp/1YMEVVSYbtz+bFBx+uSx3vA4i4T8RwRm5Q/IWbucQnnQqQ0hDqtmKOr8tv+59Cik6cu5aH3WPo0I7csuTA==}
 
-  rehype-fluent-emoji@1.0.0:
-    resolution: {integrity: sha512-SJZ7OoefaaDuWNnnvOKmCdfAuWAiXOjPD5zHfhVV3cL7P4se5id2pjKTbYntWvf8f0tRoZPY5/CKLMdZ28FOtA==}
+  rehype-fluent-emoji@1.0.1:
+    resolution: {integrity: sha512-eDvxyO4baNjbzA0YNxtOld3Drwmgr1b2l8+yTj4xwv5WTvTQ0R5xS8BNVNFx18W0AvwOThuZTmi/LBC/NMQUVQ==}
     engines: {node: '>=18'}
 
   rehype-parse@9.0.1:
@@ -10616,7 +10616,7 @@ snapshots:
     dependencies:
       expressive-code: 0.42.0
 
-  rehype-fluent-emoji@1.0.0:
+  rehype-fluent-emoji@1.0.1:
     dependencies:
       '@types/hast': 3.0.4
       emoji-regex: 10.6.0
