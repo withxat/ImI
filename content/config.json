@@ -42,7 +42,13 @@
 			{
 				"title": "Interface Craft",
 				"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
-				"items": [],
+				"items": [
+					{
+						"title": "rehype-fluent-emoji",
+						"description": "🙂 Fluent emoji that still copies as Unicode",
+						"link": "https://github.com/withxat/rehype-fluent-emoji"
+					}
+				],
 				"emptyState": {
 					"title": "Work in progress",
 					"description": "Quiet motion R&D—links when it's showtime."

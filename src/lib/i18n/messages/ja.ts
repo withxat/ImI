@@ -55,7 +55,12 @@ const ja: Messages = {
 				description: 'モーションの静かな R&D — 見せ場が来たらリンクを。',
 				title: '作業中',
 			},
-			items: [],
+			items: [
+				{
+					description: '🙂 コピーしても Unicode のままの Fluent emoji',
+					title: 'rehype-fluent-emoji',
+				},
+			],
 			summary: 'モーション、マイクロインタラクション、密度の高いツールに人間味を足す細部。',
 			title: 'インターフェースの作り込み',
 		},

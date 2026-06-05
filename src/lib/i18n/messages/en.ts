@@ -55,7 +55,12 @@ const en: Messages = {
 				description: 'Quiet motion R&D—links when it\'s showtime.',
 				title: 'Work in progress',
 			},
-			items: [],
+			items: [
+				{
+					description: '🙂 Fluent emoji that still copies as Unicode',
+					title: 'rehype-fluent-emoji',
+				},
+			],
 			summary: 'Motion, micro-interactions, and the invisible details that make dense tools feel humane.',
 			title: 'Interface craft',
 		},

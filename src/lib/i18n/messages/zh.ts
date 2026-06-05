@@ -50,7 +50,12 @@ const zh: Messages = {
 				description: '动效与微交互的安静实验 —— 值得展示时再上链接。',
 				title: '进行中',
 			},
-			items: [],
+			items: [
+				{
+					description: '🙂 复制时仍然是真 Unicode 的 Fluent emoji',
+					title: 'rehype-fluent-emoji',
+				},
+			],
 			summary: '动效、微交互，以及让复杂工具仍然有人情味的细节。',
 			title: '界面工艺',
 		},
