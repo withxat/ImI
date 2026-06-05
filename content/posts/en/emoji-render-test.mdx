@@ -1,0 +1,49 @@
+---
+title: Fluent Emoji render test
+date: 2026-06-05
+category: tech
+summary: A regular article for checking how rehype-fluent-emoji renders inside MDX.
+tags:
+  - MDX
+  - Emoji
+  - Astro
+translator:
+  - openai
+  - GPT 5.5
+---
+
+## Why test this
+
+This article is not trying to turn the page into an emoji wall 😀. It is here to check one specific thing: when MDX is used for normal writing, can emoji inside paragraphs be replaced with Fluent Emoji visuals without disrupting Chinese text layout, links, code blocks, or lists?
+
+If everything works, symbols like sparkles ✨, fire 🔥, rockets 🚀, and rainbows 🌈 should become little icons in one consistent style. But the sentence should still feel like a sentence first, not a string of decorations fighting for attention.
+
+## A day of test notes
+
+In the morning, I make a cup of coffee ☕, open the laptop 💻, and jot down a small checklist 📝. I picture the flow as a light patrol: inspect the content pipeline with a magnifying glass 🔍, fit one small puzzle piece 🧩, then put the suspicious edges back in the box 📦.
+
+The mood while wiring the config is roughly this: when the plugin mounts, I smile 🙂; when the first emoji turns into Fluent style, I want to give it a thumbs up 👍; and when CSS does not stretch it into a giant article image, I can safely say: good, today was not wasted ✅.
+
+## A bit more density
+
+The next section deliberately raises the emoji density, while keeping the text readable:
+
+- Design check: color 🎨, rhythm 🎧, hierarchy 📚, and a little bit of sparkle ✨.
+- Engineering check: build 🛠️, test 🧪, search 🔍, notes 📝.
+- Experience check: not too loud 😀, not too crowded 🙂, and not every paragraph needs to feel like a party 🎉.
+- Content check: there is fire 🔥, there is heart ❤️, there is direction 🧭, but the words are still the main thing.
+
+One more continuous scene: at night 🌙, I open the preview and see the rocket 🚀 near the heading, the rainbow 🌈 in the paragraph, the books 📚 in the list, and the coffee ☕ all sitting nicely on the baseline. They do not squeeze the line height or trigger the image gallery. They feel like a tiny set of UI parts that just learned how to behave.
+
+## Code blocks should stay untouched
+
+Emoji inside code should not be replaced. If the snippet below still shows native characters, the plugin is correctly skipping the code/pre path:
+
+```ts
+const status = 'build passed ✅'
+const mood = 'ship it 🚀'
+```
+
+## Wrap-up
+
+The goal of this test post is simple: let Fluent Emoji show up in a real article environment 👋🏻. If it can quietly enhance the text instead of breaking the reading flow, this MDX pipeline passes the first round ✅✨.
