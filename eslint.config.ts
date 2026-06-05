@@ -11,10 +11,6 @@ config.append({
 	},
 })
 
-config.append({
-	ignores: ['public/emoji/fluent/**/*.svg'],
-})
-
 // Vite loads astro.config.ts before path aliases exist — @/ imports break CI builds.
 config.append({
 	files: ['astro.config.ts'],
