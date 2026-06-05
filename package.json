@@ -54,7 +54,7 @@
 		"eslint-plugin-astro": "^1.7.0",
 		"jiti": "^2.7.0",
 		"lefthook": "^2.1.8",
-		"rehype-fluent-emoji": "^1.0.1",
+		"rehype-fluent-emoji": "^1.0.2",
 		"remark-cjk-friendly": "^2.0.1",
 		"remark-cjk-friendly-gfm-strikethrough": "^2.0.1",
 		"remark-gfm": "^4.0.1",

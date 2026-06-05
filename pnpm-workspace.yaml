@@ -1,5 +1,6 @@
 minimumReleaseAgeExclude:
   - rehype-fluent-emoji@1.0.1
+  - rehype-fluent-emoji@1.0.2
 shellEmulator: true
 trustPolicy: no-downgrade
 
