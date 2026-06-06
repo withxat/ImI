@@ -18,6 +18,7 @@ const THUMB_TOUCH_HIT_SLOP = 18
 const MIN_THUMB_HEIGHT = 44
 const HIDE_DELAY = 1600
 const MARKER_HIT_RADIUS = 9
+const DRAG_TOOLTIP_OFFSET_MAX = 18
 
 const SCROLLBAR_NAV_LABEL: Record<string, string> = {
 	en: 'Page sections',
@@ -552,6 +553,12 @@ export function initCustomScrollbar() {
 		tooltip.style.right = `${HOTZONE_WIDTH + 8}px`
 	}
 
+	function dragTooltipY(marker: SectionMarker) {
+		const thumbCenter = thumbTop + thumbHeight / 2
+		const offset = clamp(thumbCenter - marker.y, -DRAG_TOOLTIP_OFFSET_MAX, DRAG_TOOLTIP_OFFSET_MAX)
+		return marker.y + offset
+	}
+
 	function findMarkerAt(clientY: number) {
 		return markers.find(marker => Math.abs(marker.y - clientY) <= MARKER_HIT_RADIUS) ?? null
 	}
@@ -617,7 +624,7 @@ export function initCustomScrollbar() {
 
 	function updateDragTooltip() {
 		const marker = findMarkerInsideThumb()
-		updateTooltip(marker, marker?.y ?? 0)
+		updateTooltip(marker, marker ? dragTooltipY(marker) : 0)
 	}
 
 	function handleScroll() {
