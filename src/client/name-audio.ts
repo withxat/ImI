@@ -39,7 +39,7 @@ export function initNameAudioButtons() {
 	const { signal } = ac
 
 	for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-name-play]')) {
-		const root = btn.closest('span') as HTMLElement | null
+		const root = btn.closest<HTMLElement>('[data-name-audio-root]')
 		if (!root)
 			continue
 
@@ -96,8 +96,7 @@ export function initNameAudioButtons() {
 		}, { signal })
 
 		btn.addEventListener('click', () => {
-			ipa.classList.remove('hidden')
-			ipa.classList.add('inline-flex')
+			root.dataset.nameAudioState = 'open'
 			audio.currentTime = 0
 			void audio.play()
 		}, { signal })

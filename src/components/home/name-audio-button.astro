@@ -10,15 +10,18 @@ const WAVE_MID = 'M16 9a5 5 0 0 1 0 6'
 const WAVE_OUTER = 'M19.364 18.364a9 9 0 0 0 0-12.728'
 ---
 
-<span class="inline-flex items-baseline gap-0.75">
+<span class="group/name-audio inline-flex items-baseline gap-0.75" data-name-audio-state="idle" data-name-audio-root>
 	<span
 		class="
-			hidden -translate-y-0.75 text-sm whitespace-nowrap text-highlight-strong
+			inline-grid -translate-y-0.75 grid-cols-[0fr] font-mono text-sm whitespace-nowrap text-highlight-strong opacity-0 transition-[grid-template-columns,opacity] duration-300
+			ease-out
+			group-data-[name-audio-state=open]/name-audio:grid-cols-[1fr] group-data-[name-audio-state=open]/name-audio:opacity-100
+			motion-reduce:transition-none
 			sm:text-base
 		"
 		data-name-ipa
 	>
-		/ˈeɪtoʊ/
+		<span class="min-w-0 overflow-hidden">/ˈeɪtoʊ/</span>
 	</span>
 	<Button
 		class="
