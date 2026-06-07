@@ -112,8 +112,8 @@ importers:
         specifier: ^2.1.8
         version: 2.1.8
       rehype-fluent-emoji:
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^1.0.3
+        version: 1.0.3
       remark-cjk-friendly:
         specifier: ^2.0.1
         version: 2.0.1(@types/mdast@4.0.4)(micromark-util-types@2.0.2)(micromark@4.0.2)(unified@11.0.5)
@@ -4598,9 +4598,10 @@ packages:
   rehype-expressive-code@0.42.0:
     resolution: {integrity: sha512-8rp/1YMEVVSYbtz+bFBx+uSx3vA4i4T8RwRm5Q/IWbucQnnQqQ0hDqtmKOr8tv+59Cik6cu5aH3WPo0I7csuTA==}
 
-  rehype-fluent-emoji@1.0.2:
-    resolution: {integrity: sha512-iyUzQjBSoQp/BcnE4eX6jeNdNQokAtqiV80uMK2i6eZQCPCnS44TamOJIeqstLXMvAStBC0uMmVavcpFDt27nQ==}
+  rehype-fluent-emoji@1.0.3:
+    resolution: {integrity: sha512-peKDwVxfnEM90qR1wmp8Pnxnyawf/pftsQaVah/YYy+O4zr3DTh4+XHZo/smXZjQ5QJzDsiwbwbGmC8MEzkneg==}
     engines: {node: '>=18'}
+    hasBin: true
 
   rehype-parse@9.0.1:
     resolution: {integrity: sha512-ksCzCD0Fgfh7trPDxr2rSylbwq9iYDkSn8TCDmEJ49ljEUBxDVCzCHv7QNzZOfODanX4+bWQ4WZqLCRWYLfhag==}
@@ -4764,6 +4765,11 @@ packages:
 
   semver@7.8.1:
     resolution: {integrity: sha512-rkVq3IXh+4FDGch+KwzX3aV9W3kO54GyEgpvBzSyctDA6Xtd7RJQV1xmXbeQp5v7+VzLOfVqiutSE6GICgPFvg==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  semver@7.8.2:
+    resolution: {integrity: sha512-c8jsqUZm3omBOI66G90z1Dyw5z622G8oLG+omfsHBJf3CWQTlOcwOjvOG6wtiNfW6anKm/eA39LMwMtMez2TiQ==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -7254,7 +7260,7 @@ snapshots:
       eslint: 10.4.0(jiti@2.7.0)
       json-stable-stringify-without-jsonify: 1.0.1
       lodash.merge: 4.6.2
-      semver: 7.8.1
+      semver: 7.8.2
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
@@ -10616,7 +10622,7 @@ snapshots:
     dependencies:
       expressive-code: 0.42.0
 
-  rehype-fluent-emoji@1.0.2:
+  rehype-fluent-emoji@1.0.3:
     dependencies:
       '@types/hast': 3.0.4
       emoji-regex-xs: 2.0.1
@@ -10862,6 +10868,8 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.8.1: {}
+
+  semver@7.8.2: {}
 
   send@1.2.1:
     dependencies:

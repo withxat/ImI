@@ -46,6 +46,7 @@ function fluentEmoji(): AstroIntegration {
 					markdown: {
 						rehypePlugins: [
 							[rehypeFluentEmoji, {
+								assetBase: '/emoji',
 								className: 'fluent-emoji',
 								style: '3d',
 							}],

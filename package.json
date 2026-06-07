@@ -6,7 +6,8 @@
 	"packageManager": "pnpm@11.4.0",
 	"scripts": {
 		"dev": "astro dev",
-		"build": "pnpm og:generate && astro build",
+		"build": "pnpm emoji:sync && pnpm og:generate && astro build",
+		"emoji:sync": "rehype-fluent-emoji sync content --out public/emoji --style 3d",
 		"og:generate": "node scripts/run-og-generate.mjs",
 		"start": "astro preview",
 		"typegen": "wrangler types",
@@ -54,7 +55,7 @@
 		"eslint-plugin-astro": "^1.7.0",
 		"jiti": "^2.7.0",
 		"lefthook": "^2.1.8",
-		"rehype-fluent-emoji": "^1.0.2",
+		"rehype-fluent-emoji": "^1.0.3",
 		"remark-cjk-friendly": "^2.0.1",
 		"remark-cjk-friendly-gfm-strikethrough": "^2.0.1",
 		"remark-gfm": "^4.0.1",
