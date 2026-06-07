@@ -135,6 +135,72 @@ rehype-fluent-emoji sync content --out public/emoji --style 3d
 
 这种 API 看起来少了一点「自动」，但我更喜欢。它不神秘，也不替你做多余的决定。
 
+## 资源仓库也被重做了
+
+说到资产，其实这里还有另一层工作。
+
+这个插件最早可以直接使用 [shuding/fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode) 整理好的资源。那个项目把 [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) 从 CLDR 文件夹名整理成扁平 CDN 资源，同时支持两种 URL：
+
+```txt
+👋_color.svg
+1f44b_color.svg
+```
+
+也就是说，你既可以用 emoji 字形做文件名，也可以用 Unicode 码点做文件名。
+
+但后来我在自己的 [withxat/fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) fork 里开了一个 `webp` 分支，把它从「整理资源」继续往前推了一步，变成一个更适合长期使用的 WebP CDN 仓库。
+
+这里的取舍很明确。
+
+首先，只保留 Unicode 码点 URL：
+
+```txt
+1f44b_3d.webp
+```
+
+不再生成 `👋_color.svg` 这类 emoji 字形路径。
+
+因为 URL 应该尽量可预测。emoji 放在 URL 里虽然很可爱，但不同客户端、CDN、复制环境对 Unicode 路径的处理并不总是一致。码点命名更无聊，但也更稳定。
+
+其次，所有资源都统一成 WebP。原本 Fluent Emoji 里会混用 PNG 和 SVG，不同风格对应不同格式。现在构建时会用 [sharp](https://sharp.pixelplumbing.com/) 把 PNG 和 SVG 都转成 `.webp`，SVG 会先以 512px、`density: 300` 栅格化，再用质量 90 输出 WebP。
+
+最后生成的大约是 11,030 个 Unicode-only WebP 文件。
+
+这里还有一个小细节：文件名里会剥掉 `fe0f`，也就是 Variation Selector-16。
+
+比如：
+
+```txt
+1f44b fe0f              -> 1f44b
+1f3f3 fe0f 200d 26a7 fe0f -> 1f3f3-200d-26a7
+```
+
+`fe0f` 用来要求 emoji 呈现形式，但对资源识别来说通常是噪音。去掉它之后，`1f44b` 和 `1f44b fe0f` 会稳定落到同一个 URL 上。
+
+这个 fork 还把上游 `microsoft/fluentui-emoji` 放进了 `vendor/fluentui-emoji` submodule，构建脚本也从 Node 脚本换成了 Bun + TypeScript。半年后要重新生成一次资源时，不需要再回忆「先 clone 哪个仓库、复制哪个脚本、再跑哪个命令」，只要 `git submodule update --init`，然后 `bun run build`。
+
+工具链听起来不像产品功能，但它决定了这个资源仓库以后还能不能维护下去。
+
+README 里也同时给了两个 CDN 入口：
+
+- jsDelivr：`cdn.jsdelivr.net/gh/withxat/fluentui-emoji-unicode@webp/assets/...`
+- Raw GitHub：`raw.githubusercontent.com/withxat/fluentui-emoji-unicode/webp/assets/...`
+
+前者适合平时走 CDN，后者适合想直接指向 GitHub 原始文件的场景。
+
+技术链路大概就是这样：
+
+```txt
+microsoft/fluentui-emoji (submodule)
+        -> metadata.json -> Unicode 码点
+        -> sharp (PNG/SVG -> WebP)
+        -> 过滤 fe0f，只保留码点文件名
+assets/{unicode}_{style}.webp
+        -> jsDelivr / GitHub Raw CDN
+```
+
+所以这件事不只是「把图片换成 WebP」。更准确地说，是把资源仓库从「整理文件」变成了「定义稳定的 CDN 契约」。
+
 ## 颜色、Safari 和现实世界
 
 Fluent Emoji 有不同风格，常见的是 `color`、`flat`、`high-contrast` 和 `3d`。
@@ -143,9 +209,9 @@ Fluent Emoji 有不同风格，常见的是 `color`、`flat`、`high-contrast` �
 
 在 Safari 里，部分 Fluent Emoji 的 `color` SVG 看起来会发虚。排查后发现，这和 SVG 内部比较复杂的滤镜渲染有关，不是简单调一下 `display`、`background-size` 就能完全解决。
 
-最后我在自己的站点里用了 `3d` 风格的 PNG。
+最后我在自己的站点里用了 `3d` 风格的 WebP。
 
-这不是因为 PNG 更「高级」，而是它在这个场景里更可靠。文章里的 emoji 很小，读者也不会把它当成矢量插画放大看。相比理论上的格式优雅，我更关心它在真实页面里是不是清楚、稳定、别抢戏。
+这不是因为 WebP 更「高级」，而是它在这个场景里更可靠。文章里的 emoji 很小，读者也不会把它当成矢量插画放大看。相比理论上的格式优雅，我更关心它在真实页面里是不是清楚、稳定、体积小，而且别抢戏。
 
 工程里经常会遇到这种选择：你原本以为自己在选一个技术上更漂亮的答案，最后发现真正好的答案是那个少出问题的答案。
 

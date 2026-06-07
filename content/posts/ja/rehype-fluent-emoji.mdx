@@ -138,6 +138,72 @@ rehype-fluent-emoji sync content --out public/emoji --style 3d
 
 この API は少し「自動」ではなくなる。でも僕はこちらの方が好きだ。謎が少なく、余計な判断を代わりにしない。
 
+## アセットリポジトリも作り直した
+
+アセットについては、もう一段階別の作業もある。
+
+最初は、プラグインから [shuding/fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode) が整理したリソースをそのまま使えた。このプロジェクトは [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) を CLDR 由来のフォルダ名からフラットな CDN リソースへ整理し、2 種類の URL をサポートしている。
+
+```txt
+👋_color.svg
+1f44b_color.svg
+```
+
+つまり、emoji の字形そのものでも、Unicode コードポイントでも参照できる。
+
+その後、自分の [withxat/fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) fork に `webp` ブランチを作り、そこからさらに一歩進めた。ただの「リソース整理」ではなく、長く使いやすい WebP CDN リポジトリにしたかった。
+
+ここでの取捨選択はかなりはっきりしている。
+
+まず、Unicode コードポイントの URL だけを残した。
+
+```txt
+1f44b_3d.webp
+```
+
+`👋_color.svg` のような emoji 字形のパスはもう生成しない。
+
+URL はできるだけ予測しやすい方がいい。URL の中に emoji が入っているのはかわいいが、クライアント、CDN、コピー経路によって Unicode パスの扱いが常に揃うとは限らない。コードポイント命名は地味だが、その分かなり安定している。
+
+次に、すべてのアセットを WebP に統一した。元の Fluent Emoji は、スタイルによって PNG と SVG が混在している。新しいビルドでは [sharp](https://sharp.pixelplumbing.com/) を使い、PNG も SVG も `.webp` に変換する。SVG は 512px、`density: 300` でラスタライズしてから、quality 90 の WebP として出力する。
+
+最終的には、およそ 11,030 個の Unicode-only WebP ファイルになる。
+
+さらに小さな Unicode の処理として、ファイル名から `fe0f`、つまり Variation Selector-16 を剥がしている。
+
+たとえばこうだ。
+
+```txt
+1f44b fe0f                  -> 1f44b
+1f3f3 fe0f 200d 26a7 fe0f   -> 1f3f3-200d-26a7
+```
+
+`fe0f` は emoji 表示を要求するためのものだが、アセットを探す上ではたいていノイズになる。取り除くことで、`1f44b` と `1f44b fe0f` が同じ安定した URL に落ちる。
+
+この fork では、上流の `microsoft/fluentui-emoji` も `vendor/fluentui-emoji` submodule として入れている。ビルドスクリプトも Node スクリプトから Bun + TypeScript に書き換えた。半年後にもう一度アセットを生成したくなっても、「どのリポジトリを clone して、どのスクリプトをコピーして、どのコマンドを実行するんだっけ」と思い出す必要がない。`git submodule update --init` の後に `bun run build` でよい。
+
+ツールチェーンはプロダクト機能には見えにくい。でも、このリポジトリを後から維持できるかどうかは、かなりそこにかかっている。
+
+README には CDN 入口も 2 つ載せている。
+
+- jsDelivr：`cdn.jsdelivr.net/gh/withxat/fluentui-emoji-unicode@webp/assets/...`
+- Raw GitHub：`raw.githubusercontent.com/withxat/fluentui-emoji-unicode/webp/assets/...`
+
+前者は CDN 配信向き。後者は GitHub の元ファイルを直接参照したい場合に使える。
+
+流れとしては、だいたいこうなる。
+
+```txt
+microsoft/fluentui-emoji (submodule)
+        -> metadata.json -> Unicode コードポイント
+        -> sharp (PNG/SVG -> WebP)
+        -> fe0f を除去し、コードポイントファイル名だけを残す
+assets/{unicode}_{style}.webp
+        -> jsDelivr / GitHub Raw CDN
+```
+
+つまりこれは、単に「画像を WebP に変換した」だけではない。より正確には、アセットリポジトリを「整理されたファイル群」から「安定した CDN 契約」へ変えた。
+
 ## 色、Safari、現実のブラウザ
 
 Fluent Emoji にはいくつかのスタイルがある。よく使うものだと、`color`、`flat`、`high-contrast`、`3d` などだ。
@@ -146,9 +212,9 @@ Fluent Emoji にはいくつかのスタイルがある。よく使うものだ�
 
 Safari では、一部の Fluent Emoji の `color` SVG が少しぼやけて見える。調べていくと、SVG 内部の重めのフィルター描画が関係していそうだった。`display` や `background-size` を少し調整するだけで完全に解ける問題ではない。
 
-なので自分のサイトでは、`3d` スタイルの PNG を使っている。
+なので自分のサイトでは、`3d` スタイルの WebP を使っている。
 
-PNG の方が「高級」だからではない。この場面では、そちらの方が信頼できるからだ。記事内の emoji は小さい。読者もそれを拡大して見るベクターイラストとして扱っているわけではない。理論上のフォーマットの美しさより、実際のページでくっきり、安定して、静かに見えることの方が大事だ。
+WebP の方が「高級」だからではない。この場面では、そちらの方が信頼できるからだ。記事内の emoji は小さい。読者もそれを拡大して見るベクターイラストとして扱っているわけではない。理論上のフォーマットの美しさより、実際のページでくっきり、安定して、転送量も小さく、静かに見えることの方が大事だ。
 
 エンジニアリングでは、こういう選択によく出会う。最初は技術的にきれいな答えを選んでいるつもりでも、最後には問題を起こしにくい答えの方がよかったと分かる。
 

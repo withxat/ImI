@@ -138,6 +138,72 @@ In other words, the plugin only generates asset URLs. Where the assets live, whe
 
 This API is a little less "automatic", but I like it more. It is not mysterious, and it does not make extra decisions for you.
 
+## The asset repository changed too
+
+There is another layer to the asset story.
+
+At first, the plugin could use assets organized by [shuding/fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode). That project takes [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) from CLDR-style folders and turns it into flat CDN assets with two URL shapes:
+
+```txt
+👋_color.svg
+1f44b_color.svg
+```
+
+So you could address an emoji either by the glyph itself, or by its Unicode code point.
+
+Later, in my [withxat/fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) fork, I opened a `webp` branch and pushed it a little further. It is no longer only a resource organizer. It is now a smaller, more maintainable WebP CDN repository with stable URLs.
+
+The tradeoffs are pretty clear.
+
+First, it only keeps Unicode code point URLs:
+
+```txt
+1f44b_3d.webp
+```
+
+It no longer generates glyph paths like `👋_color.svg`.
+
+URLs should be predictable. Emoji inside URLs are cute, but different clients, CDNs, and copy paths do not always treat Unicode paths consistently. Code point names are more boring, but much more stable.
+
+Second, every asset is converted to WebP. Fluent Emoji originally mixes PNG and SVG depending on the style. The new build uses [sharp](https://sharp.pixelplumbing.com/) to convert both PNG and SVG into `.webp`. SVG assets are rasterized at 512px with `density: 300`, then exported as WebP at quality 90.
+
+The result is about 11,030 Unicode-only WebP files.
+
+There is also a small Unicode detail: filenames strip `fe0f`, also known as Variation Selector-16.
+
+For example:
+
+```txt
+1f44b fe0f                  -> 1f44b
+1f3f3 fe0f 200d 26a7 fe0f   -> 1f3f3-200d-26a7
+```
+
+`fe0f` asks for emoji presentation, but for asset lookup it is usually noise. Removing it makes `1f44b` and `1f44b fe0f` resolve to the same stable URL.
+
+The fork also keeps upstream `microsoft/fluentui-emoji` as a `vendor/fluentui-emoji` submodule, and rewrites the build script from a Node script to Bun + TypeScript. If I need to rebuild the assets six months later, I do not have to remember which repository to clone, which script to copy, and which command to run. It is just `git submodule update --init`, then `bun run build`.
+
+Tooling does not sound like a product feature, but it decides whether the repository can still be maintained later.
+
+The README also gives two CDN entry points:
+
+- jsDelivr: `cdn.jsdelivr.net/gh/withxat/fluentui-emoji-unicode@webp/assets/...`
+- Raw GitHub: `raw.githubusercontent.com/withxat/fluentui-emoji-unicode/webp/assets/...`
+
+The first is better for CDN delivery. The second points straight at the GitHub source files.
+
+The pipeline is roughly:
+
+```txt
+microsoft/fluentui-emoji (submodule)
+        -> metadata.json -> Unicode code points
+        -> sharp (PNG/SVG -> WebP)
+        -> strip fe0f, keep code point filenames only
+assets/{unicode}_{style}.webp
+        -> jsDelivr / GitHub Raw CDN
+```
+
+So this is not only "convert the images to WebP". More precisely, it turns the asset repository from "organized files" into "a stable CDN contract".
+
 ## Color, Safari, and the real world
 
 Fluent Emoji has several styles, including `color`, `flat`, `high-contrast`, and `3d`.
@@ -146,9 +212,9 @@ At first, I naturally wanted to use `color` SVG. SVG sounds elegant. But real br
 
 In Safari, some Fluent Emoji `color` SVGs look soft. After digging into it, the cause seems related to heavier filters inside the SVGs. It is not something you can fully solve by tweaking `display` or `background-size`.
 
-So on my own site, I use the `3d` PNG style.
+So on my own site, I use the `3d` WebP style.
 
-Not because PNG is more "advanced", but because it is more reliable in this context. Emoji inside articles are small. Readers are not treating them as vector illustrations to zoom into. Compared with theoretical format elegance, I care more about whether they are sharp, stable, and quiet on the real page.
+Not because WebP is more "advanced", but because it is more reliable in this context. Emoji inside articles are small. Readers are not treating them as vector illustrations to zoom into. Compared with theoretical format elegance, I care more about whether they are sharp, stable, smaller to transfer, and quiet on the real page.
 
 Engineering often comes down to this kind of choice. You start out thinking you are choosing the technically prettier answer, then discover that the better answer is the one that causes fewer problems.
 
