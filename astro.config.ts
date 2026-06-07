@@ -1,6 +1,7 @@
 import type { ChangeFreqEnum } from '@astrojs/sitemap'
 import type { AstroIntegration } from 'astro'
 
+import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 
 import cloudflare from '@astrojs/cloudflare'
@@ -37,6 +38,18 @@ const { buildSitemapData, normalizeSitemapPathname } = await jiti.import<typeof 
 	'./src/lib/sitemap-build.ts',
 )
 const sitemapBuild = await buildSitemapData()
+const commitSha = getCommitSha()
+
+function getCommitSha() {
+	try {
+		return execFileSync('git', ['rev-parse', '--short=6', 'HEAD'], {
+			encoding: 'utf8',
+		}).trim()
+	}
+	catch {
+		return 'dev'
+	}
+}
 
 function fluentEmoji(): AstroIntegration {
 	return {
@@ -139,6 +152,9 @@ export default defineConfig({
 	output: 'server',
 	site: 'https://xat.sh',
 	vite: {
+		define: {
+			'import.meta.env.PUBLIC_IMI_COMMIT_SHA': JSON.stringify(commitSha),
+		},
 		plugins: [
 			tailwindcss(),
 			Icons({

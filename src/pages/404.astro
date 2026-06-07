@@ -10,6 +10,10 @@ import RootLayout from '@/layouts/root-layout.astro'
 import { getMessages } from '@/lib/i18n/messages'
 import { pageOgImageUrl } from '@/lib/seo-data'
 
+export const prerender = true
+
+Astro.response.status = 404
+
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
 const { notFound } = m.home

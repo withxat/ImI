@@ -3,7 +3,6 @@ import type { Locale } from '@/lib/i18n/constants'
 
 import { Image } from 'astro:assets'
 
-import { version as appVersion } from '../../../package.json'
 import shinyImi from '@/assets/shiny-imi.png'
 import Container from '@/components/layout/container.astro'
 import FooterNav from '@/components/layout/footer-nav.astro'
@@ -17,6 +16,7 @@ interface Props {
 
 const { locale } = Astro.props as Props
 const m = getMessages(locale)
+const commitSha = import.meta.env.PUBLIC_IMI_COMMIT_SHA
 
 const moeIcp = (await import('@/assets/icons/moe-icp.svg?raw')).default
 
@@ -34,27 +34,19 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 				<FooterNav />
 			</div>
 			<div class="mt-16 flex flex-wrap items-center gap-2">
-				<a
-					class="
-						group inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors
-						hover:text-highlight-text
-					"
-					href="https://github.com/withxat/imi"
-					target="_blank"
+				<span
+					class="inline-flex items-center gap-1.5 text-sm text-muted-foreground"
 				>
 					<Image
-						class="
-							size-4 shrink-0 transition-transform duration-300 ease-out
-							group-hover:rotate-12
-						"
 						alt=""
+						class="size-4 shrink-0"
 						densities={[1, 2]}
 						height={20}
 						src={shinyImi}
 						width={20}
 					/>
-					ImI v{appVersion}
-				</a>
+					ImI {commitSha}
+				</span>
 				<span class="text-xs" hidden={isOnDesignPage}>|</span>
 				<a
 					class="

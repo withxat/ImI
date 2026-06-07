@@ -43,7 +43,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 
 	// 2) Normalize trailing slash (keep behavior consistent with prior drop-trailing-slash).
 	const trimmed = trimTrailingSlash(url.pathname)
-	if (trimmed !== url.pathname) {
+	if (!context.isPrerendered && trimmed !== url.pathname) {
 		const nextUrl = new URL(request.url)
 		nextUrl.pathname = trimmed
 		return Response.redirect(nextUrl.toString(), 308)
