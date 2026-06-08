@@ -1,0 +1,21 @@
+{
+	"background_color": "#ffffff",
+	"description": "Xat is a design engineer building AI-native products, interfaces, and frontend systems.",
+	"display": "minimal-ui",
+	"icons": [
+		{
+			"src": "/apple-touch-icon.png",
+			"sizes": "180x180",
+			"type": "image/png"
+		},
+		{
+			"src": "/icon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml"
+		}
+	],
+	"name": "Xat",
+	"short_name": "Xat",
+	"start_url": "/",
+	"theme_color": "#ffffff"
+}

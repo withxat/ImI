@@ -36,6 +36,7 @@ const localizedCategory = category
 const categoryEyebrow = localizedCategory ? localizedCategory.name : post.category
 const canonicalPath = `/post/${post.slug}`
 const articleSection = localizedCategory?.name
+const seoDescription = post.seoDescription ?? post.summary
 const translator = toTranslator(post.translator)
 
 const { Content } = await render(post.entry)
@@ -49,7 +50,7 @@ const { Content } = await render(post.entry)
 				articleSection,
 				canonicalPath,
 				date: post.date,
-				description: post.summary,
+				description: seoDescription,
 				image: postOgImageUrl(slug),
 				locale,
 				tags: post.tags,
@@ -62,8 +63,9 @@ const { Content } = await render(post.entry)
 			]),
 		]}
 		canonicalPath={canonicalPath}
-		description={post.summary}
+		description={seoDescription}
 		image={postOgImageUrl(slug)}
+		imageAlt={`Open Graph image for ${post.title} by Xat`}
 		locale={locale}
 		slot="head"
 		title={`${post.title} - Xat`}

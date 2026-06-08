@@ -31,8 +31,11 @@ const designFavicon = isOnDesignPage
 	<head>
 		<meta charset="utf-8" />
 		<meta content="width=device-width, initial-scale=1" name="viewport" />
+		<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color" />
+		<meta content="#252529" media="(prefers-color-scheme: dark)" name="theme-color" />
 
 		<link crossorigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
+		<link href="/site.webmanifest" rel="manifest" />
 		<link as="font" crossorigin="anonymous" href="/fonts/hanken-grotesk-vf.ttf" rel="preload" type="font/ttf" />
 
 		<link href={RSS_FEED_URL} hreflang="zh" rel="alternate" title={rssZh.pageTitle} type="application/rss+xml" />

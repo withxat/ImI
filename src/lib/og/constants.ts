@@ -33,11 +33,11 @@ export const OG_BODY_FONT_STACK = `${OG_FONT_FAMILY.display}, ${OG_FONT_FAMILY.c
 /** Shared OG typography scale (Satori px). */
 export const OG_TYPE = {
 	avatar: 76,
-	body: 32,
-	eyebrow: 32,
-	headline: 64,
-	meta: 26,
-	pill: 24,
+	body: 36,
+	eyebrow: 36,
+	headline: 72,
+	meta: 30,
+	pill: 28,
 	wordmark: 54,
 } as const
 

@@ -2,6 +2,7 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { htmlLangFor, LOCALES, ogLocaleFor } from '@/lib/i18n/constants'
+import { OG_HEIGHT, OG_WIDTH } from '@/lib/og/constants'
 import {
 	absoluteUrl,
 	DEFAULT_DESCRIPTION,
@@ -15,6 +16,7 @@ interface Props {
 	canonicalPath: string
 	description?: string
 	image?: string
+	imageAlt?: string
 	jsonLd?: unknown | unknown[]
 	locale: Locale
 	title: string
@@ -25,6 +27,7 @@ const {
 	canonicalPath,
 	description = DEFAULT_DESCRIPTION,
 	image = DEFAULT_OG_IMAGE,
+	imageAlt,
 	jsonLd,
 	locale,
 	title,
@@ -36,6 +39,7 @@ const jsonLdItems = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : []
 const contentLanguage = htmlLangFor(locale)
 const primaryOgLocale = ogLocaleFor(locale)
 const otherLocales = LOCALES.filter(l => l !== locale)
+const resolvedImageAlt = imageAlt ?? `${title} Open Graph image`
 ---
 
 <title>{title}</title>
@@ -48,16 +52,20 @@ const otherLocales = LOCALES.filter(l => l !== locale)
 <meta content={description} property="og:description" />
 <meta content={canonicalUrl} property="og:url" />
 <meta content={image} property="og:image" />
+<meta content={String(OG_WIDTH)} property="og:image:width" />
+<meta content={String(OG_HEIGHT)} property="og:image:height" />
+<meta content={resolvedImageAlt} property="og:image:alt" />
 <meta content={primaryOgLocale} property="og:locale" />
 {otherLocales.map(l => (
 	<meta content={ogLocaleFor(l)} property="og:locale:alternate" />
 ))}
-<meta content="summary" name="twitter:card" />
+<meta content="summary_large_image" name="twitter:card" />
 <meta content={TWITTER_SITE} name="twitter:site" />
 <meta content={TWITTER_SITE} name="twitter:creator" />
 <meta content={title} name="twitter:title" />
 <meta content={description} name="twitter:description" />
 <meta content={image} name="twitter:image" />
+<meta content={resolvedImageAlt} name="twitter:image:alt" />
 {jsonLdItems.map(item => (
 	<script set:html={escapeJsonForHtml(item)} type="application/ld+json" is:inline />
 ))}

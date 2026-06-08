@@ -153,7 +153,7 @@ export function siteOgTemplate(input: SiteOgInput) {
 										letterSpacing: '-0.02em',
 										lineHeight: 1.2,
 										marginTop: 24,
-										maxWidth: 920,
+										maxWidth: 1040,
 									},
 								},
 								type: 'div',
