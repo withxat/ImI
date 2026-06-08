@@ -14,11 +14,11 @@ translator:
 
 I have always liked Microsoft Fluent Emoji.
 
-Not because it is more "correct" than system emoji, but because it has a subtle product feel: soft, consistent, dimensional, yet not so loud that it turns into a sticker pack. Inside an article, especially one with Chinese text, it often makes a sentence feel just a little lighter.
+Not because it is more "correct" than system emoji, but because it has a subtle product feel: soft, consistent, dimensional, yet not so loud that it turns into a sticker pack. Inside an article, especially one with Chinese text, it often makes a sentence feel just a little lighter ✨.
 
 But that is also where the problem starts.
 
-If I only write `🙂` once in a while, system emoji are good enough. The real reason I wanted to build [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) is that I wanted to use Fluent Emoji consistently in MDX articles while keeping the abilities text should already have.
+If I only write 🙂 once in a while, system emoji are good enough. The real reason I wanted to build [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) is that I wanted to use Fluent Emoji consistently in MDX articles while keeping the abilities text should already have.
 
 It should be copyable.
 
@@ -36,11 +36,11 @@ The blunt approach is very simple: scan the text and replace emoji with `<img>`.
 
 That gets you a visible result quickly. The images load, the article looks different, and the demo seems to work. But it immediately brings a few problems.
 
-First, copy behavior stops feeling natural. You select a sentence, expecting the original Unicode emoji, but image nodes are mixed into the middle.
+Copy behavior stops feeling natural. You select a sentence, expecting the original Unicode emoji, but image nodes are mixed into the middle.
 
-Second, the semantics become vague. Emoji are part of the text. They are not necessarily illustrations, and they do not always need to be announced as images by screen readers.
+The semantics become vague. Emoji are part of the text. They are not necessarily illustrations, and they do not always need to be announced as images by screen readers.
 
-Third, styling can get out of control. Article images often receive shared rules for rounded corners, max width, lazy loading, lightbox behavior, and so on. If emoji become ordinary images, they can be caught by those article image styles.
+Styling can get out of control. Article images often receive shared rules for rounded corners, max width, lazy loading, lightbox behavior, and so on. If emoji become ordinary images, they can be caught by those article image styles.
 
 So the plugin is not simply "turn emoji into images". It does something more specific:
 
@@ -52,11 +52,11 @@ That means copied text still contains real emoji, while the reading experience g
 
 I did not want this to become a client-side script.
 
-Articles already pass through the MDX, remark, and rehype pipeline at build time. Emoji replacement naturally belongs there. Once the HTML is generated, the browser should only need to render it normally, not wait for a JavaScript pass that scans the DOM again.
+Articles already pass through the MDX → remark → rehype pipeline at build time. Emoji replacement naturally belongs there. Once the HTML is generated, the browser should only need to render it normally, not wait for a JavaScript pass that scans the DOM again.
 
 This also matches my preference for content sites: if something can be done at build time, do not push it to the client.
 
-If you want to try it directly, you can read the source on [GitHub](https://github.com/withxat/rehype-fluent-emoji), or check the package and install details on [npmx.dev](https://npmx.dev/package/rehype-fluent-emoji). The quickest install command is:
+If you want to try it directly, you can read the source on [GitHub](https://github.com/withxat/rehype-fluent-emoji), or check the package and install details on [npmx.dev](https://npmx.dev/package/rehype-fluent-emoji). The most direct way:
 
 ```bash
 pnpm add -D rehype-fluent-emoji
@@ -104,7 +104,7 @@ The most stable approach ended up being a split between the root element, text l
 - The visual layer displays Fluent Emoji.
 - Shared CSS keeps the Unicode glyph transparent during selection without taking over the page's own selection background.
 
-This can sound like too much design for a tiny emoji, but I think this is exactly what a plugin should handle.
+This can sound like too much design for a tiny emoji 🙂, but I think this is exactly what a plugin should handle.
 
 A good content plugin should not only look good in a demo. It should also disappear into ordinary actions like copying, selecting, reading, and searching.
 
@@ -140,7 +140,7 @@ This API is a little less "automatic", but I like it more. It is not mysterious,
 
 ## The asset repository changed too
 
-There is another layer to the asset story.
+There is another layer to the assets.
 
 At first, the plugin could use assets organized by [shuding/fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode). That project takes [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) from CLDR-style folders and turns it into flat CDN assets with two URL shapes:
 
@@ -232,7 +232,7 @@ Then the MDX pipeline uses `rehype-fluent-emoji` to render emoji inside posts.
 
 I also wrote a plain [Fluent Emoji render test](/post/emoji-render-test) to check how it behaves in paragraphs, lists, links, and code blocks. It is not a feature intro. It is more like a patrol page for "please do not break the article".
 
-If an emoji can sit quietly inside a sentence, without stretching line height, polluting copied text, or behaving unpredictably across browsers, it has done its job.
+If an emoji 🙂 can sit quietly inside a sentence, without stretching line height, polluting copied text, or behaving unpredictably across browsers, it has done its job.
 
 ## Outro
 

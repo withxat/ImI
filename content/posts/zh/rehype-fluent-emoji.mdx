@@ -11,11 +11,11 @@ tags:
 
 我一直很喜欢 Microsoft Fluent Emoji。
 
-倒不是因为它比系统 emoji 更「正确」，而是它有一种很微妙的产品感：柔和、统一、立体，但又不会像某些贴纸包一样过分抢戏。放在文章里，尤其是中文文章里，它经常能让一个句子变得更轻一点。
+倒不是因为它比系统 emoji 更「正确」，而是它有一种很微妙的产品感：柔和、统一、立体，但又不会像某些贴纸包一样过分抢戏。放在文章里，尤其是中文文章里，它经常能让一个句子变得更轻一点 ✨。
 
 但问题也在这里。
 
-如果只是偶尔写一个 `🙂`，系统 emoji 已经够用了。真正让我想做 [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) 的原因，是我想在 MDX 文章里稳定地使用 Fluent Emoji，同时保留文字本身应该有的能力。
+如果只是偶尔写一个 🙂，系统 emoji 已经够用了。真正让我想做 [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) 的原因，是我想在 MDX 文章里稳定地使用 Fluent Emoji，同时保留文字本身应该有的能力。
 
 比如可以复制。
 
@@ -33,11 +33,11 @@ tags:
 
 这样视觉上很快就能看到效果，图片也能加载出来，但它立刻会带来几个问题。
 
-首先，复制出来的内容不再自然。你选中一段文字，本来应该得到原本的 Unicode emoji，结果中间混进图片节点，体验就变得很奇怪。
+复制出来的内容不再自然。你选中一段文字，本来应该得到原本的 Unicode emoji，结果中间混进图片节点，体验就变得很奇怪。
 
-其次，语义也会变得暧昧。emoji 本来是文本的一部分，不一定是插图，也不一定需要被读屏器当成一张图片读出来。
+语义也会变得暧昧。emoji 本来是文本的一部分，不一定是插图，也不一定需要被读屏器当成一张图片读出来。
 
-再其次，样式很容易失控。文章里的图片通常会被统一加上圆角、最大宽度、懒加载、灯箱等等处理。如果 emoji 也变成普通图片，它就很容易被这些文章图片规则误伤。
+样式很容易失控。文章里的图片通常会被统一加上圆角、最大宽度、懒加载、灯箱等等处理。如果 emoji 也变成普通图片，它就很容易被这些文章图片规则误伤。
 
 所以这个插件做的事情不是「把 emoji 变成图片」，而是更具体一点：
 
@@ -49,11 +49,11 @@ tags:
 
 我一开始就不太想把它做成客户端脚本。
 
-文章已经在构建时经过 MDX、remark、rehype 的管线了，emoji 替换这种事天然适合放在那里完成。HTML 生成出来之后，浏览器只需要正常渲染，不需要再等一段 JavaScript 扫描 DOM。
+文章已经在构建时经过 MDX → remark → rehype 的管线了，emoji 替换这种事天然适合放在那里完成。HTML 生成出来之后，浏览器只需要正常渲染，不需要再等一段 JavaScript 扫描 DOM。
 
 这也符合我对内容站的偏好：能在构建时完成的，就不要拖到客户端。
 
-如果你想直接试一下，可以去 [GitHub](https://github.com/withxat/rehype-fluent-emoji) 看源码，也可以去 [npmx.dev](https://npmx.dev/package/rehype-fluent-emoji) 看包信息和安装方式。最直接的安装命令是：
+如果你想直接试一下，可以去 [GitHub](https://github.com/withxat/rehype-fluent-emoji) 看源码，也可以去 [npmx.dev](https://npmx.dev/package/rehype-fluent-emoji) 看包信息和安装方式。最直接的方式：
 
 ```bash
 pnpm add -D rehype-fluent-emoji
@@ -101,7 +101,7 @@ export default {
 - 视觉层负责显示 Fluent Emoji。
 - 选中状态通过共享 CSS 继续让 Unicode 字形保持透明，但不抢页面自己的选区背景。
 
-这听起来像是在给一个小表情做过度设计，但我觉得这恰好是插件应该做的事。
+这听起来像是在给一个小表情 🙂 做过度设计，但我觉得这恰好是插件应该做的事。
 
 一个好的内容插件不应该只在 demo 里好看，也应该在复制、选择、阅读、搜索这些普通动作里不露馅。
 
@@ -137,7 +137,7 @@ rehype-fluent-emoji sync content --out public/emoji --style 3d
 
 ## 资源仓库也被重做了
 
-说到资产，其实这里还有另一层工作。
+说到资产，这里还有另一层工作。
 
 这个插件最早可以直接使用 [shuding/fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode) 整理好的资源。那个项目把 [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) 从 CLDR 文件夹名整理成扁平 CDN 资源，同时支持两种 URL：
 
@@ -229,7 +229,7 @@ Fluent Emoji 有不同风格，常见的是 `color`、`flat`、`high-contrast` �
 
 我还写了一篇很普通的 [Fluent Emoji 渲染测试](/post/emoji-render-test)，专门看它在中文段落、列表、链接、代码块里的表现。它不是功能介绍，更像是一个「别把文章搞坏」的巡检页。
 
-如果一颗 emoji 能安静地待在句子里，既不撑开行高，也不污染复制结果，还能在不同浏览器里保持稳定，那它就完成任务了。
+如果一颗 emoji 🙂 能安静地待在句子里，既不撑开行高，也不污染复制结果，还能在不同浏览器里保持稳定，那它就完成任务了。
 
 ## Outro
 
