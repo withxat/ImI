@@ -107,6 +107,8 @@
 	 * Uses --tw-shadow-color so color overrides (dark:shadow-black/35, hover at /45)
 	 * cascade through without redefining the geometry. */
 	--shadow-halo: 0 1px 2px 0 var(--tw-shadow-color, color-mix(in srgb, var(--color-highlight-soft) 30%, transparent));
+	/* Article media edge: a shadow-drawn hairline plus the signature halo. */
+	--shadow-image-edge: 0 0 0 1px color-mix(in oklab, var(--foreground) 10%, transparent), var(--shadow-halo);
 }
 
 @theme inline {
@@ -824,6 +826,7 @@
 
 	.article-body img {
 		@apply my-2 w-full;
+		box-shadow: var(--shadow-image-edge);
 		cursor: zoom-in;
 	}
 

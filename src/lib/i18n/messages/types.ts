@@ -105,6 +105,10 @@ export interface DesignSystemCopy {
 	}
 	elevation: {
 		flatNote: string
+		haloDescription: string
+		haloLabel: string
+		imageEdgeDescription: string
+		imageEdgeLabel: string
 		intro: string
 		title: string
 	}

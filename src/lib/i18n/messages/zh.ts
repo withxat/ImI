@@ -141,7 +141,11 @@ const zh: Messages = {
 		},
 		elevation: {
 			flatNote: '表面默认平贴页面。层次靠细线，不靠抬起。',
-			intro: '只有一种轻阴影，用 highlight-soft 着色。无玻璃态，无厚重投影，不演绎层级。',
+			haloDescription: '0 1px 2px · highlight-soft / 30%',
+			haloLabel: '交互表面的标志性 halo',
+			imageEdgeDescription: '1px 墨色边缘 · shadow-halo',
+			imageEdgeLabel: '文章媒体边缘',
+			intro: '轻阴影以 highlight-soft 着色。无玻璃态，无厚重投影，不演绎层级。',
 			title: '层次',
 		},
 		eyebrow: '设计系统',

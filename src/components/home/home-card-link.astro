@@ -56,7 +56,7 @@ const hasHref = Boolean(href)
 					>
 						{title}
 					</span>
-					<span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>
+					{description && <span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>}
 				</span>
 			</div>
 		)
@@ -71,7 +71,7 @@ const hasHref = Boolean(href)
 						>
 							{title}
 						</span>
-						<span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>
+						{description && <span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>}
 					</span>
 					<ArrowUpRight aria-hidden="true" class={iconClass} />
 				</a>
@@ -90,7 +90,7 @@ const hasHref = Boolean(href)
 						>
 							{title}
 						</span>
-						<span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>
+						{description && <span class="block truncate text-sm text-muted-foreground" title={description}>{description}</span>}
 					</span>
 					<ArrowRight aria-hidden="true" class={iconClass} />
 				</a>

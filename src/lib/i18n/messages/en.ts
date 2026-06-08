@@ -146,7 +146,11 @@ const en: Messages = {
 		},
 		elevation: {
 			flatNote: 'Surfaces are flat at rest. Depth is carried by hairlines, not lift.',
-			intro: 'One whisper shadow tinted with highlight-soft. No glass, no drop shadows, no elevation theatre.',
+			haloDescription: '0 1px 2px · highlight-soft / 30%',
+			haloLabel: 'Signature halo for interactive surfaces',
+			imageEdgeDescription: '1px ink edge · shadow-halo',
+			imageEdgeLabel: 'Article media edge',
+			intro: 'Whisper shadows tinted with highlight-soft. No glass, no drop shadows, no elevation theatre.',
 			title: 'Elevation',
 		},
 		eyebrow: 'Design System',

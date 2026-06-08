@@ -151,6 +151,11 @@
 				"purpose": "The single signature shadow. Rose-tinted halo on highlight-surface (cards, intro badges, popovers) and surface-callout (asides). Color cascades through --tw-shadow-color so utility overrides recolor without redefining geometry."
 			},
 			{
+				"name": "shadow-image-edge",
+				"value": "0 0 0 1px color-mix(in oklab, var(--foreground) 10%, transparent), var(--shadow-halo)",
+				"purpose": "Article media edge. A shadow-drawn 1px ink hairline plus the signature halo, used on screenshots and illustrations so images feel held by the page without becoming cards."
+			},
+			{
 				"name": "popover",
 				"value": "0 14px 36px -24px color-mix(in oklab, var(--foreground) 42%, transparent)",
 				"purpose": "Floating layer shadow for popovers and hover cards."

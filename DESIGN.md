@@ -202,7 +202,7 @@ The system explicitly rejects: corporate SaaS chrome, brutalist heaviness, templ
 **Key Characteristics:**
 - **Mono-ink + one accent.** Restrained color strategy. The accent appears on ≤10% of any screen and means *something*: identity, link, emphasis, or interaction state.
 - **Hairlines over fills.** Structure is carried by 1px borders at 8–15% opacity, not by background colors or shadows.
-- **Whisper shadows, never elevation.** The system ships one shadow token (`shadow-halo`) tinted with the brand color at 30% opacity. Hover deepens to 45% via color override, never new geometry. The shadow suggests a halo, not lift.
+- **Whisper shadows, never elevation.** The system's base shadow token (`shadow-halo`) is tinted with the brand color at 30% opacity. Hover deepens to 45% via color override, never new geometry. Article media uses `shadow-image-edge`, a shadow-drawn hairline plus the same halo. Shadows suggest a halo or edge, not lift.
 - **Trilingual-first typography.** Every paragraph, heading, and label has explicit `lang`-aware breaking rules. Latin balances, CJK wraps, Japanese line-breaks strict.
 - **Reveal on entry.** Page-load and scroll-driven blur-in (10px → 0, opacity 0 → 1, 420ms `cubic-bezier(0.22, 1, 0.36, 1)`). Staggered children are how content arrives; static is how content rests.
 - **Single-column narrow.** Max width 42rem (`max-w-2xl`). Pages are scrolled essays, not dashboards.
@@ -284,11 +284,12 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 **The system is flat by default.** Cards, popovers, and surfaces sit on the page; they do not float above it. Depth is conveyed by hairline border (1px at 8–15% opacity) and by a single 0.045-luminance step in dark mode (`surface` = `oklch(0.19)` vs. `background` = `oklch(0.145)`).
 
-Shadows exist, but they are **whispers** — pink/rose-tinted at low opacity, suggesting a halo around interactive elements rather than physical lift. The system ships one shadow primitive:
+Shadows exist, but they are **whispers** — pink/rose-tinted at low opacity, suggesting a halo around interactive elements or a quiet media edge rather than physical lift. The system ships two named shadow primitives:
 
 ### Shadow Vocabulary
 
 - **shadow-halo** (`0 1px 2px 0 var(--tw-shadow-color, color-mix(in srgb, var(--color-highlight-soft) 30%, transparent))`): The single signature shadow. 1–2px geometry, rose-tinted by default, used by `highlight-surface` (cards, intro badges, popovers) and `.surface-callout` (asides). Color is intentionally indirected through `--tw-shadow-color` so utility overrides (`dark:shadow-black/35`, `hover:shadow-highlight-soft/45`) recolor the same geometry without redefining it.
+- **shadow-image-edge** (`0 0 0 1px color-mix(in oklab, var(--foreground) 10%, transparent), var(--shadow-halo)`): Article media edge. The first layer draws a 1px ink-tinted edge without consuming layout space; the second layer reuses `shadow-halo` so screenshots and illustrations feel held by the page without becoming card-like.
 
 Hover state shadows are recolored, not enlarged. `highlight-surface-hover` shifts the `box-shadow` color from `highlight-soft/30` to `highlight-soft/45` without changing the geometry — the surface "warms up" rather than "lifts up".
 
@@ -347,6 +348,12 @@ This is what gives the inline intro badges, the home-page entry cards, and the p
 - **Style:** Not a `text-decoration: underline`. Two radial-gradient circles at the line endpoints plus a horizontal bar between them, drawn via `background-image` and clipped per-line with `box-decoration-break: clone`. Result: a soft pill underline at line-ends that survives line-wrapping cleanly.
 - **Color:** `--text-link-underline` defaults to a mix of `highlight-soft 75%` + `background`. On hover, lifts to full `highlight-soft`.
 - **Three variants:** `.text-link` (default, accent text + underline), `.text-link-muted` (muted text, accent on hover — used for locale switcher), `.article-body a` (same as `.text-link` but scoped to MDX content).
+
+### Article Images
+
+- **Shape:** `rounded-lg` (10px) inside the narrow article column.
+- **Edge:** `shadow-image-edge` — a shadow-drawn 1px ink edge plus `shadow-halo`. This gives screenshots and illustrations a quiet border-like boundary without adding a real border box or turning images into cards.
+- **Interaction:** `cursor: zoom-in`; linked images are PhotoSwipe affordances, not card links.
 
 ### Popovers / Hover Cards
 

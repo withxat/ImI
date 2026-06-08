@@ -146,7 +146,11 @@ const ja: Messages = {
 		},
 		elevation: {
 			flatNote: '面は静止時フラット。深さはヘアラインで、持ち上げではない。',
-			intro: '一つだけのささやかな影、highlight-soft で染める。グラスなし、ドロップシャドウなし、エレベーション演出なし。',
+			haloDescription: '0 1px 2px · highlight-soft / 30%',
+			haloLabel: 'インタラクティブ面のシグネチャ halo',
+			imageEdgeDescription: '1px インクエッジ · shadow-halo',
+			imageEdgeLabel: '記事メディアのエッジ',
+			intro: 'ささやかな影を highlight-soft で染める。グラスなし、ドロップシャドウなし、エレベーション演出なし。',
 			title: 'エレベーション',
 		},
 		eyebrow: 'デザインシステム',

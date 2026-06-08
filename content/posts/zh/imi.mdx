@@ -1,0 +1,203 @@
+---
+title: ImI，找自己
+date: 2026-06-08
+category: tech
+summary: 「哗啦啦啦啦啦天在下雨～」
+tags:
+  - Astro
+  - Design Engineer
+  - Blog
+  - CJK
+---
+
+现在是 2026 年，距离我第一次尝试建立自己的博客，似乎已经过去了 13 年。
+
+于是我又忍不住重构了自己的博客，并给它起名叫 ImI。
+
+至于 ImI 是什么，以及两个 `i` 都是大写的意义，可能就像中文流行词「何意味（nani-imi）」一样，没有意义。
+
+又或是希望自己能在这个 AI 创造力爆发的年代，给自己留下一点意义。
+
+![ImI 首页全貌](https://assets.xat.sh/images/ImI-dark.png)
+
+## Hmm…… Astro
+
+整体的技术选型其实很简单。
+
+我很早就将博客迁到了 Astro，也曾帮助朋友建立过一个 Astro 博客主题。自诩对 Astro 还是有一些理解，所以这次重构当然也该是 Astro……吗？
+
+最后的答案是 Yes 🙂‍↕️
+
+但我一度尝试把它以 Waku 为底架开发，还顺手给 Waku 提了个 PR。
+
+理由也很简单。作为 React 开发者，我还是希望自己的网站上、文章里，能多一些有趣的组件和元素。React 生态也更熟悉一些。
+
+我爱 Base UI，更准确地说应该是爱 COSS。它们都只对 React 推出了组件库。
+
+Astro 当然也可以引入 React 组件支持，但既然是自己的项目，我又太希望技术选型能优雅一点。
+
+而这个方案对我来说，还是太重了。
+
+Waku 还不太成熟，特别在 SSR 方面，从当前版本号就可见一斑。更痛苦的是 Content Collection 的缺失。
+
+尽管平替品繁多，但论完善度与更新积极性，Astro 的第一方支持实在是强太多。这里提一嘴 Fuma Nama 的 [Fumadocs MDX](https://www.fumadocs.dev/docs/mdx) 也很不错。
+
+总之，在 Waku 上一顿改，实在是筋疲力竭，最终还是回到了 Astro 的怀抱。
+
+它足够轻，足够熟，也足够适合一个以内容为主、但又偶尔想塞点奇怪组件的个人站点。
+
+## 配色、字体以及 CJK
+
+我自诩为一名 Design Engineer，所以花了很多心思，希望这个站点能尽量体现出一点品味。
+
+当然，品味这东西也很危险。
+
+很容易写着写着就变成「我有一个特别高级的想法」，最后做出来像某个免费模板的暗色版。
+
+### 来一点魔法吧
+
+我在发现 Vesper 后就对它的 Palette 爱不释手，几乎运用到了所有日常程序中。
+
+所以我很自然地参考了它，作为这个站点暗色模式的主题方案。
+
+大面积的空白，基础的内容层级，以及只作为修饰出现的强调色，这些也很大程度上来自 Vesper 给我的启发。
+
+![Vesper 配色](https://assets.xat.sh/images/vesper.png)
+
+亮色主题的灵感则来自我的入宅作《零之使魔》中露易丝的一头粉发。
+
+顺带一提，我目前的 Avatar 也是 AI 魔改后的露易丝。尽管少了几分神韵，但我颇为满意。
+
+![亮色主题 accent 色](https://assets.xat.sh/images/ImI-light-palette.png)
+
+### 买，都可以买，买不起
+
+Aperçu 怎么能这么好看 **😭**
+
+![Aperçu 预览图](https://assets.xat.sh/images/apercu-demo.webp)
+
+但价格也太不美丽了吧！（指单字重 $60，全部买下来 $768，这还没算 Webfont 的价格）
+
+没办法，只能退而求其次，找来找去，Hanken Grotesk 既符合我的审美又免费，太棒了。
+
+![Hanken Grotesk 预览图](https://assets.xat.sh/images/hanken-grotesk-typeface.jpg)
+
+Monospace 我选择了 Calling Code。我很喜欢它，它很棒的阅读体验一度让我想将它作为正文字体来使用，也为此购买了字体授权。
+
+![Calling Code 预览图](https://assets.xat.sh/images/calling-code-preview.png)
+
+至于 CJK 字体，我的第一选择就是 MiSans。
+
+![MiSans 预览图](https://assets.xat.sh/images/misans-preview.png)
+
+我不是米粉，也从没购买过米家以外的小米相关产品。但这个字体还是给我留下了很好的印象。
+
+这类选择有时看起来像是「随便选个字体」，但对中文站点来说，字体几乎决定了阅读体验的底色。
+
+英文排版可以依赖大量成熟的字体、间距与断行经验，中文却很容易在网页上被系统默认值带偏。尤其是中英混排，稍不注意，页面就会变得又挤又碎。
+
+所以我宁愿在字体上多折腾一点。
+
+![字体样张](https://assets.xat.sh/images/specimens.png)
+
+## 好吧，我就是个纠结症
+
+提到 CJK 字体，就会自然谈到这个网站的 i18n 方案。
+
+它不完美，甚至可以说有些糟糕。
+
+由于我很反感在 URL 里塞 `/zh` 这样的 prefix 或 suffix，所以这个网站会读取浏览器默认语言来自动调整展示语言。
+
+这就带来了许多问题。
+
+首先是 sitemap 中只能稳定包含一种语言的链接。其次 OG 图、canonical URL、RSS 这些面向机器的东西，也很难在没有语言路径的情况下保持绝对清晰。
+
+考虑到我的博客文章大部分都是用中文写下，因此我还是把中文作为主要语言。
+
+更有趣的是，由于建站时大部分界面文案都是先写英文版本，再翻译回中文，导致有些中文读起来格外晦涩难懂。
+
+我宽慰自己这也是种特色，慢慢也骗过自己接受了。
+
+目前这个站点仅支持中日英三语，这也是我能掌握的三种语言（日语还在学习中……
+
+它们共享同一套路由，共享同一套内容结构，却又在字体、断行、文案上保留各自的处理方式。
+
+这不一定是最正确的 i18n 方案，但至少是我愿意维护的方案。
+
+## 让自己满意吧！
+
+我是个资深 RSS 用户，这也让我见识到了很多优秀的设计。
+
+完全出于尊敬，我厚颜无耻地抄袭了许多大师们的创意。
+
+首先是 [Emil Kowalski](https://emilkowal.ski/)。我最早从 Sonner 认识他，这是一个后来被接入 shadcn/ui 的优雅 toast 组件。他推出的 [Animations on Web](https://animations.dev/) 也是一个很棒的课程。
+
+这个博客的整体视觉，很大部分启发自他的个人主页。
+
+![Emil Kowalski](https://assets.xat.sh/images/emil-kowalski.png)
+
+然后是 [Josh Comeau](https://www.joshwcomeau.com/)。这是一位前端专家，写了很多很有价值的文章，覆盖 React、CSS、动画，也启发我给站点加入许多小心思。
+
+我是他博客的忠实读者，今年也正式购买了他出品的 [Whimsical Animations](https://whimsy.joshwcomeau.com/) 课程。
+
+[Rauno Freiberg](https://rauno.me/) 是一位大师。在我脑海里，他超越了设计与工程的界限。
+
+我的博客布局最初完全是以他的 [Web Interface Guidelines](https://interfaces.rauno.me/) 为基础完善而来。尽管在一步步改进后，已经慢慢看不出原型。
+
+[Jakub Krehel](https://jakub.kr/) 的个人主页也给了我许多灵感。
+
+![Jakub Krehel](https://assets.xat.sh/images/jakub-krehel.png)
+
+啊，行文时再次访问他的站点，还是让我产生了许多新的想法。这确实配得上「that's good work」。
+
+在我推进自己博客的同时，[Jace](https://ja.mt/) 的 portfolio 出现在了我的 X 时间线上。
+
+![Jace](https://assets.xat.sh/images/jace.png)
+
+太精致了。
+
+这也给了我很多灵感与动力。这个网站上的 underline 都是圆角样式，也正是被他启发。
+
+也许你已经注意到，这个博客的滚动条没有继承浏览器默认样式。
+
+是的，我一直有自定义滚动条的想法。[螺莉莉](https://roriri.one/) 的这篇「[一根上流滚动条的诞生](https://roriri.one/2026/05/06/better-scroll-bar)」非常值得一读。
+
+我从他的站点模仿复刻出了自己的版本。也许相比起来没那么上流，但希望不会沦为下流。
+
+## 优雅、可爱，再加一点……细节！
+
+真正把一个站点从「看起来还行」推向「我满意了」的，往往不是某个巨大的功能。
+
+而是一些很小、很难解释、甚至有点不划算的细节。
+
+比如 MiSans 与 Hanken Grotesk 的字重并不对齐。同样的 `font-weight` 下，MiSans 视觉上会比 Hanken Grotesk 更粗一些。
+
+好在二者都有可变字体，最直接的方法当然是通过 [`font-variation-settings`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variation-settings) 来调整。
+
+然而这种方式在 Safari 上却 [无法生效](https://caniuse.com/mdn-css_at-rules_font-face_font-variation-settings)。
+
+什么新时代 IE。
+
+无奈只能手动生成几个静态字重，再把 CJK 的视觉重量映射回页面上使用的 `400`、`500`、`600`。
+
+还有文章里的 reveal 动画、页脚里的 wanderer 文案、设计系统页面上的小玩具、头像的 preload、代码块主题、图片画廊，以及这个站点里每一个看起来不太必要但我就是想做的东西。
+
+它们很难被写进简历里。
+
+但我知道它们在。
+
+## ImI，然后再见
+
+我很喜欢一点点看自己做的东西从简陋慢慢走向完善的样子。
+
+创造的乐趣，我想这也是我成为 Web 开发者的原因。
+
+但我离 Design Engineer 这个 title 似乎还离得远。
+
+先脚踏实地一点点做起吧。
+
+谢谢你能读到这里。
+
+如果你想复刻我的这个博客，那你可能会愿意看看 [设计系统页](/design)，我把更具体的一些细节放在了那里。
+
+![设计系统页](https://assets.xat.sh/images/ImI-design-system.png)
