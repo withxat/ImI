@@ -1,8 +1,8 @@
 ---
-title: 記事の Emoji を Fluent らしくする
+title: Emoji に新しいスキンを着せる
 date: 2026-06-08
 category: tech
-summary: rehype-fluent-emoji と、emoji プラグインが守るべき境界について。
+summary: Fluent Emoji へ愛を込めて。
 tags:
   - rehype
   - Emoji
@@ -14,55 +14,89 @@ translator:
 
 Microsoft Fluent Emoji がずっと好きだ。
 
-システム emoji より「正しい」からではない。柔らかく、統一感があって、少し立体的で、それでいてステッカーパックみたいに主張しすぎない。記事の中に置くと、特に中国語の記事では、文の空気を少し軽くしてくれることがある ✨。
+![Fluent Emoji](https://assets.xat.sh/images/fluent-emoji.webp)
 
-でも、問題もそこから始まる。
+Microsoft が Fluent Emoji を含む Windows 11 の開発プレビューを出したとき、僕はすぐにシステムをアップグレードした ✨。
 
-たまに 🙂 をひとつ書くだけなら、システム emoji で十分だ。僕が [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) を作りたくなった本当の理由は、MDX の記事で Fluent Emoji を安定して使いつつ、文字が本来持っている能力を残したかったからだ。
+それからすぐ、Web 上でも Fluent Emoji を表示したいと思うようになり、[rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) が生まれた。
 
-たとえば、コピーできること。
+## コピーという小さなこと
 
-行の高さを壊さないこと。
+オープンソース emoji の先駆けである [Twemoji](https://github.com/twitter/twemoji) のおかげで、Web ページ上の emoji を Twemoji に置き換えるためのエコシステムはすでにある。
 
-コードブロック内の emoji は置き換えないこと。
+ただ、多くの実装は emoji をそのまま画像に置き換える。
 
-ビルド結果の中に、実行時の副作用をこっそり隠さないこと。
+画像に置き換えると、コピーの挙動が少し変になる。たとえば選択したテキストに含まれる emoji がうまくコピーできなかったり、選択中の文字と画像のスタイルを合わせる必要が出てきたりする。
 
-どれも小さく聞こえる。でも記事の中で emoji を文字の一部として扱うなら、こういう小さなことの積み重ねが、それを強化にするのか、面倒ごとにするのかを決める。
+![Emoji treated as an image](https://assets.xat.sh/images/emoji-as-image.png)
 
-## 画像に置き換えるだけではない
+JavaScript で copy イベントを監視して、コピー内容を動的に書き換える方法でも実現はできる。でも、それはかなり汚い。
 
-一番荒い方法はとても簡単だ。テキストを走査して、emoji を `<img>` に置き換える。
+僕は、一文をコピーしただけなのに中に著作権表示を差し込まれるような挙動がずっと嫌いだ。本質的には、クリップボードを乗っ取る怪しいソフトウェアとあまり変わらない。
 
-これなら見た目の変化はすぐに出る。画像も読み込まれるし、デモとしては動いて見える。でもすぐにいくつか問題が出てくる。
+emoji はそもそも文字だ。僕の記事の一文をコピーして別の場所に貼り付けたら、そこには同じ一文があるべきで、中の表情だけ消えていてほしくない。
 
-コピーした内容が自然ではなくなる。文章を選択したら本来の Unicode emoji が取れてほしいのに、途中に画像ノードが混ざってしまう。
+最終的に良かったのは、テキストレイヤーとビジュアルレイヤーを分ける実装だった。
 
-意味づけも曖昧になる。emoji は文字の一部であって、必ずしも挿絵ではない。スクリーンリーダーに毎回画像として読ませたいものでもない。
+- テキストレイヤーには Unicode を残し、選択とコピーに参加させる。
+- ビジュアルレイヤーは Fluent Emoji の表示を担当する。
+- 選択状態では共有 CSS によって Unicode の字形を透明に保ちつつ、ページ自身の選択背景は奪わない。
 
-スタイルも崩れやすい。記事内の画像には、角丸、最大幅、遅延読み込み、ライトボックスなどの共通処理がよく入る。emoji まで普通の画像になると、そういう記事画像向けのルールに巻き込まれやすい。
+## 画像はどこから来るのか
 
-だからこのプラグインがやっているのは、「emoji を画像にする」ことではない。もう少し具体的にはこうだ。
+レイアウト設計の問題が解けたら、次は Fluent Emoji の画像をどこから持ってくるかだ。
 
-Unicode emoji をテキストレイヤーとして残し、その上に Fluent Emoji の見た目を載せる。
+Microsoft はたしかにとても寛大に [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) を提供してくれている。ただ、そのリポジトリ構造は直接使うにはあまり向いていない。
 
-これならコピーしたときには本物の emoji が残り、読むときには統一された Fluent の見た目になる。テキストとビジュアルがそれぞれ自分の仕事をするので、境界がかなりはっきりする。
+オープンソースコミュニティには [fluent-emoji-webfont](https://github.com/tetunori/fluent-emoji-webfont) もあるが、まだ互換性の問題があるので、最初には選ばなかった。
 
-## rehype でやるのがちょうどいい
+![Fluent Emoji Webfont](https://assets.xat.sh/images/fluent-emoji-webfont.png)
 
-最初から、これをクライアント側のスクリプトにはしたくなかった。
+そこで [LobeHub](https://fluent-emoji.lobehub.com/)、[emoji-regex-xs](https://github.com/slevithan/emoji-regex-xs)、[unicode-emoji-json](https://github.com/muan/unicode-emoji-json) などを見ていったあと、ようやく [fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode) にたどり着いた。
 
-記事はすでにビルド時に MDX → remark → rehype のパイプラインを通る。emoji の置き換えは、自然にそこで終わらせるのがよい。HTML が生成された後、ブラウザは普通に描画するだけでよく、JavaScript がもう一度 DOM を走査するのを待つ必要はない。
+これは期待にかなり近かった。Fluent Emoji リポジトリ内の画像を、Unicode 文字コードにもとづくファイル名へ変換してくれる。
 
-これはコンテンツサイトに対する僕の好みにも合っている。ビルド時にできることは、クライアントへ持ち込まない。
+ただ、ひとつ問題があった。このリポジトリは基本的にリネームだけを行っているため、多くのファイルはまだ SVG 形式のままだ。そして Safari は、filter を含む Fluent Emoji の SVG 画像をかなり苦手としていて、表示結果が期待ほど良くなかった。
 
-直接試したい場合は、[GitHub](https://github.com/withxat/rehype-fluent-emoji) でソースを見られるし、[npmx.dev](https://npmx.dev/package/rehype-fluent-emoji) でパッケージ情報やインストール方法も確認できる。いちばん直接的な方法はこれだ。
+そこで僕は [fork](https://github.com/withxat/fluentui-emoji-unicode) して形式変換を追加し、画像形式を WebP に統一した。
+
+## 何をするか、何をしないか
+
+unified の中では remark と rehype の役割がかなりはっきりしているので、これは rehype プラグインとして作る方が意味に合っている。
+
+画像をローカルの `public` 配下にダウンロードしたいという需要もある。CDN に強く依存したくないからだ。
+
+ただ、それは rehype の仕事の範囲を超えているので、別のコマンドとして作った。
+
+```bash
+rehype-fluent-emoji sync content --out public/emoji --style 3d
+```
+
+明示的に同期コマンドを実行すると、記事の中で使われている emoji アセットが指定したディレクトリにダウンロードされる。
+
+その後、レンダリング時にはプラグインをこう設定するだけでいい。
+
+```ts
+{
+  assetBase: '/emoji'
+}
+```
+
+つまり、プラグインが担当するのは **URL を生成すること** だけだ。画像をどこに置くか、いつ同期するか、CDN に載せるかどうかは、使う側が自分で決める。
+
+これによって少し自由度も生まれる。僕の [fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) を自分のサーバーにデプロイしてもいいし、GitLab や Gitee に fork してもいい。
+
+もちろん、ローカルに取得する工程を省いて、`https://raw.githubusercontent.com` や `https://cdn.jsdelivr.net` を直接参照してもいい。
+
+## 試してみる
+
+[GitHub](https://github.com/withxat/rehype-fluent-emoji) でソースを見てもらってもいいし、[npmx.dev](https://npmx.dev/package/rehype-fluent-emoji) からこの rehype プラグインをインストールしてもらってもいい。
 
 ```bash
 pnpm add -D rehype-fluent-emoji
 ```
 
-`rehype-fluent-emoji` がやることは、おおよそこんな感じだ。
+Astro では、おおよそこんな設定になる。
 
 ```ts
 import rehypeFluentEmoji from 'rehype-fluent-emoji'
@@ -82,145 +116,9 @@ export default {
 }
 ```
 
-HAST の中にある通常のテキストノードから emoji を探し、`code`、`pre`、`script`、`style` のような置き換えるべきではない経路はスキップする。
-
-最終的には、テキストレイヤーとビジュアルレイヤーを持つ span のような構造になる。見えているのは Fluent Emoji だが、DOM には元の Unicode 文字が残っている。
-
-ここが、多くの「emoji を画像へ変換する」系の実装との大きな違いだ。
-
-## コピーという小さなこと
-
-コピーの挙動は、僕がいちばん気にしている部分だ。
-
-記事の中の emoji は装飾素材ではない。文字だ。誰かが僕の記事から一文をコピーして別の場所へ貼り付けたとき、その文は同じ文であってほしい。中の表情だけ消えていてほしくない。
-
-実際にやってみると、この部分は少しややこしい。
-
-Unicode emoji を透明にして、背景画像で Fluent Emoji を表示するだけなら、通常状態では問題なく見える。でもテキストを選択した瞬間、ブラウザごとの選択範囲の挙動が顔を出す。`::selection`、透明な文字、背景画像の扱いは、ブラウザによって完全には揃っていない。
-
-最終的に比較的安定したのは、ルート要素、テキストレイヤー、ビジュアルレイヤーを分ける形だった。
-
-- テキストレイヤーは Unicode emoji を保持し、選択とコピーに参加する。
-- ビジュアルレイヤーは Fluent Emoji を表示する。
-- 共有 CSS で、選択状態でも Unicode の字形を透明に保ちつつ、ページ自身の選択背景は奪わない。
-
-小さな emoji 🙂 に対して大げさに聞こえるかもしれない。でも僕は、これはプラグインが面倒を見るべきことだと思っている。
-
-よいコンテンツプラグインは、デモで見栄えがいいだけでは足りない。コピー、選択、読書、検索みたいな普通の動作の中でも、違和感なく消えていてほしい。
-
-## アセットにも境界が必要
-
-もうひとつ気にしているのが、アセットのダウンロードだ。
-
-Fluent Emoji の画像は、どこかから持ってこなければならない。いちばん便利そうなのは、プラグインが実行時に足りないものを見つけて、自動でダウンロードし、場合によっては `public/emoji` に書き込むことだ。
-
-でも、僕はその方向が好きではない。
-
-rehype プラグインの本質はコンテンツの変換だ。記事をビルドしている最中に、こっそりネットワークへ出たり、ファイルを書いたり、プロジェクトのディレクトリを変えたりするべきではない。CI、SSR、エッジ環境では、暗黙の副作用はかなり面倒になる。
-
-だから今の境界はもっとはっきりしている。
-
-```bash
-rehype-fluent-emoji sync content --out public/emoji --style 3d
-```
-
-明示的に同期コマンドを実行し、記事で使われている emoji アセットを指定したディレクトリへダウンロードする。
-
-あとはレンダリング時に、アセットの場所だけを渡せばいい。
-
-```ts
-{
-  assetBase: '/emoji'
-}
-```
-
-つまり、プラグインはアセット URL を生成するだけだ。アセットをどこに置くか、いつ同期するか、CDN に載せるかどうかは、使う側が決める。
-
-この API は少し「自動」ではなくなる。でも僕はこちらの方が好きだ。謎が少なく、余計な判断を代わりにしない。
-
-## アセットリポジトリも作り直した
-
-アセットにも、もう一段階別の作業がある。
-
-最初は、プラグインから [shuding/fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode) が整理したリソースをそのまま使えた。このプロジェクトは [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) を CLDR 由来のフォルダ名からフラットな CDN リソースへ整理し、2 種類の URL をサポートしている。
-
-```txt
-👋_color.svg
-1f44b_color.svg
-```
-
-つまり、emoji の字形そのものでも、Unicode コードポイントでも参照できる。
-
-その後、自分の [withxat/fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) fork に `webp` ブランチを作り、そこからさらに一歩進めた。ただの「リソース整理」ではなく、長く使いやすい WebP CDN リポジトリにしたかった。
-
-ここでの取捨選択はかなりはっきりしている。
-
-まず、Unicode コードポイントの URL だけを残した。
-
-```txt
-1f44b_3d.webp
-```
-
-`👋_color.svg` のような emoji 字形のパスはもう生成しない。
-
-URL はできるだけ予測しやすい方がいい。URL の中に emoji が入っているのはかわいいが、クライアント、CDN、コピー経路によって Unicode パスの扱いが常に揃うとは限らない。コードポイント命名は地味だが、その分かなり安定している。
-
-次に、すべてのアセットを WebP に統一した。元の Fluent Emoji は、スタイルによって PNG と SVG が混在している。新しいビルドでは [sharp](https://sharp.pixelplumbing.com/) を使い、PNG も SVG も `.webp` に変換する。SVG は 512px、`density: 300` でラスタライズしてから、quality 90 の WebP として出力する。
-
-最終的には、およそ 11,030 個の Unicode-only WebP ファイルになる。
-
-さらに小さな Unicode の処理として、ファイル名から `fe0f`、つまり Variation Selector-16 を剥がしている。
-
-たとえばこうだ。
-
-```txt
-1f44b fe0f                  -> 1f44b
-1f3f3 fe0f 200d 26a7 fe0f   -> 1f3f3-200d-26a7
-```
-
-`fe0f` は emoji 表示を要求するためのものだが、アセットを探す上ではたいていノイズになる。取り除くことで、`1f44b` と `1f44b fe0f` が同じ安定した URL に落ちる。
-
-この fork では、上流の `microsoft/fluentui-emoji` も `vendor/fluentui-emoji` submodule として入れている。ビルドスクリプトも Node スクリプトから Bun + TypeScript に書き換えた。半年後にもう一度アセットを生成したくなっても、「どのリポジトリを clone して、どのスクリプトをコピーして、どのコマンドを実行するんだっけ」と思い出す必要がない。`git submodule update --init` の後に `bun run build` でよい。
-
-ツールチェーンはプロダクト機能には見えにくい。でも、このリポジトリを後から維持できるかどうかは、かなりそこにかかっている。
-
-README には CDN 入口も 2 つ載せている。
-
-- jsDelivr：`cdn.jsdelivr.net/gh/withxat/fluentui-emoji-unicode@webp/assets/...`
-- Raw GitHub：`raw.githubusercontent.com/withxat/fluentui-emoji-unicode/webp/assets/...`
-
-前者は CDN 配信向き。後者は GitHub の元ファイルを直接参照したい場合に使える。
-
-流れとしては、だいたいこうなる。
-
-```txt
-microsoft/fluentui-emoji (submodule)
-        -> metadata.json -> Unicode コードポイント
-        -> sharp (PNG/SVG -> WebP)
-        -> fe0f を除去し、コードポイントファイル名だけを残す
-assets/{unicode}_{style}.webp
-        -> jsDelivr / GitHub Raw CDN
-```
-
-つまりこれは、単に「画像を WebP に変換した」だけではない。より正確には、アセットリポジトリを「整理されたファイル群」から「安定した CDN 契約」へ変えた。
-
-## 色、Safari、現実のブラウザ
-
-Fluent Emoji にはいくつかのスタイルがある。よく使うものだと、`color`、`flat`、`high-contrast`、`3d` などだ。
-
-最初はもちろん `color` SVG を使いたかった。SVG はいかにも優雅に聞こえる。でも現実のブラウザは、優雅さと安定性が同じではないことを教えてくる。
-
-Safari では、一部の Fluent Emoji の `color` SVG が少しぼやけて見える。調べていくと、SVG 内部の重めのフィルター描画が関係していそうだった。`display` や `background-size` を少し調整するだけで完全に解ける問題ではない。
-
-なので自分のサイトでは、`3d` スタイルの WebP を使っている。
-
-WebP の方が「高級」だからではない。この場面では、そちらの方が信頼できるからだ。記事内の emoji は小さい。読者もそれを拡大して見るベクターイラストとして扱っているわけではない。理論上のフォーマットの美しさより、実際のページでくっきり、安定して、転送量も小さく、静かに見えることの方が大事だ。
-
-エンジニアリングでは、こういう選択によく出会う。最初は技術的にきれいな答えを選んでいるつもりでも、最後には問題を起こしにくい答えの方がよかったと分かる。
-
 ## このサイトでの使い方
 
-今このサイトでは、記事のビルド前に emoji アセットを同期している。
+今このサイトでは、まず記事で使われている Emoji 画像をローカルへ同期している。
 
 ```json
 {
@@ -228,20 +126,14 @@ WebP の方が「高級」だからではない。この場面では、そちら
 }
 ```
 
-その後、MDX パイプラインで `rehype-fluent-emoji` を使い、記事内の emoji をレンダリングする。
+その後、MDX の中で `rehype-fluent-emoji` を使い、記事内の emoji をレンダリングしている。
 
-普通の記事として [Fluent Emoji レンダリングテスト](/post/emoji-render-test) も書いた。段落、リスト、リンク、コードブロックの中でどう振る舞うかを見るためのものだ。機能紹介というより、「記事を壊さないでくれ」という巡回ページに近い。
+[Fluent Emoji レンダリングテスト](/post/emoji-render-test) では、段落、リスト、リンク、コードブロックの中でどう表示されるかを確認できる。
 
-emoji 🙂 が文の中に静かに置かれて、行の高さを広げず、コピー結果を汚さず、ブラウザごとに不安定な振る舞いをしないなら、それで役目は果たしている。
+## さようなら 👋
 
-## おわりに
+このプラグイン自体は複雑ではない。でも、細部を少しずつ改善していく過程がとても好きだったし、最終的な仕上がりにも満足している。
 
-このプラグイン自体は複雑ではない。でも、僕が好きなタイプのエンジニアリング問題をよく表している。
+この解き方も気に入っている。見た目は楽しくしつつ、デフォルトの挙動は壊さない。
 
-表面上は「emoji をかわいくする」だけだ。実際には、意味づけ、コピー、選択、ビルド時の副作用、アセット管理、ブラウザの描画差分に触れることになる。
-
-僕が好きな解き方ははっきりしている。見た目は少し楽しくしていい。でも下にある挙動は、できるだけ普通であってほしい。
-
-普通であることは、悪いことではない。
-
-emoji プラグインの理想の状態はシンプルだ。気づいたときにはかわいく見える。コピーしても何も壊れない。削除しても、記事はちゃんと同じ記事のままでいる。
+もっと面白いものを作っていけたらいいな〜

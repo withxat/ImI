@@ -1,8 +1,8 @@
 ---
-title: Giving article emoji a Fluent look
+title: Giving Emoji a new skin
 date: 2026-06-08
 category: tech
-summary: A note on rehype-fluent-emoji, and the boundaries an emoji plugin should keep.
+summary: A little love for Fluent Emoji.
 tags:
   - rehype
   - Emoji
@@ -14,55 +14,89 @@ translator:
 
 I have always liked Microsoft Fluent Emoji.
 
-Not because it is more "correct" than system emoji, but because it has a subtle product feel: soft, consistent, dimensional, yet not so loud that it turns into a sticker pack. Inside an article, especially one with Chinese text, it often makes a sentence feel just a little lighter ✨.
+![Fluent Emoji](https://assets.xat.sh/images/fluent-emoji.webp)
 
-But that is also where the problem starts.
+When Microsoft shipped a Windows 11 development preview with Fluent Emoji, I upgraded right away ✨.
 
-If I only write 🙂 once in a while, system emoji are good enough. The real reason I wanted to build [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) is that I wanted to use Fluent Emoji consistently in MDX articles while keeping the abilities text should already have.
+That quickly made me want to show Fluent Emoji on the web, and [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) was born.
 
-It should be copyable.
+## The small matter of copying
 
-It should not break line height.
+Thanks to [Twemoji](https://github.com/twitter/twemoji), an early open source emoji pioneer, there is already an ecosystem for replacing emoji on web pages with Twemoji.
 
-Emoji inside code blocks should not be replaced.
+Most of those solutions, though, replace emoji directly with images.
 
-The build output should not hide a pile of runtime side effects.
+Replacing emoji with images makes copying feel strange. For example, selected text may no longer copy correctly, and the selected-state styling between text and images also has to be aligned.
 
-These all sound tiny. But if you actually treat emoji as part of the text in an article, these small things decide whether the plugin is an enhancement or a nuisance.
+![Emoji treated as an image](https://assets.xat.sh/images/emoji-as-image.png)
 
-## Not just images
+You can also listen for the copy event in JavaScript and dynamically rewrite the clipboard contents, but that feels so dirty.
 
-The blunt approach is very simple: scan the text and replace emoji with `<img>`.
+I have always hated the behavior of copying a piece of text only to find a copyright notice stuffed into it. At its core, it is not that different from shady software hijacking your clipboard.
 
-That gets you a visible result quickly. The images load, the article looks different, and the demo seems to work. But it immediately brings a few problems.
+Because emoji are text. If someone copies a sentence from my article and pastes it somewhere else, they should get the same sentence, not one with the emoji missing.
 
-Copy behavior stops feeling natural. You select a sentence, expecting the original Unicode emoji, but image nodes are mixed into the middle.
+The better solution turned out to be separating the text layer from the visual layer:
 
-The semantics become vague. Emoji are part of the text. They are not necessarily illustrations, and they do not always need to be announced as images by screen readers.
+- The text layer keeps the Unicode emoji for selection and copying.
+- The visual layer displays Fluent Emoji.
+- During selection, shared CSS keeps the Unicode glyph transparent without taking over the page's own selection background.
 
-Styling can get out of control. Article images often receive shared rules for rounded corners, max width, lazy loading, lightbox behavior, and so on. If emoji become ordinary images, they can be caught by those article image styles.
+## Where the images come from
 
-So the plugin is not simply "turn emoji into images". It does something more specific:
+Once the layout problem was solved, the next question was where the Fluent Emoji images should come from.
 
-Keep the Unicode emoji as a text layer, then place a Fluent Emoji visual layer above it.
+Microsoft is genuinely generous in providing [Fluent Emoji](https://github.com/microsoft/fluentui-emoji), but the repository structure is not very convenient to use directly.
 
-That means copied text still contains real emoji, while the reading experience gets a consistent Fluent look. Text and visuals each do their own job, and the boundary becomes much clearer.
+The open source community also has [fluent-emoji-webfont](https://github.com/tetunori/fluent-emoji-webfont), but because there are still compatibility issues, I did not prioritize it.
 
-## rehype is the right place
+![Fluent Emoji Webfont](https://assets.xat.sh/images/fluent-emoji-webfont.png)
 
-I did not want this to become a client-side script.
+After looking through [LobeHub](https://fluent-emoji.lobehub.com/), [emoji-regex-xs](https://github.com/slevithan/emoji-regex-xs), and [unicode-emoji-json](https://github.com/muan/unicode-emoji-json), I finally found [fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode).
 
-Articles already pass through the MDX → remark → rehype pipeline at build time. Emoji replacement naturally belongs there. Once the HTML is generated, the browser should only need to render it normally, not wait for a JavaScript pass that scans the DOM again.
+It matched what I wanted almost perfectly: it converts the images in the Fluent Emoji repository into filenames based on Unicode character codes.
 
-This also matches my preference for content sites: if something can be done at build time, do not push it to the client.
+There was one problem, though. Because that repository mostly only renames files, many of them are still SVGs, and Safari handles Fluent Emoji SVGs with filters especially poorly. The rendered result was not as good as I hoped.
 
-If you want to try it directly, you can read the source on [GitHub](https://github.com/withxat/rehype-fluent-emoji), or check the package and install details on [npmx.dev](https://npmx.dev/package/rehype-fluent-emoji). The most direct way:
+So I [forked it](https://github.com/withxat/fluentui-emoji-unicode) and added format conversion, unifying the images as WebP.
+
+## What it does, and what it does not do
+
+In the unified ecosystem, remark and rehype have clear responsibilities, so building this as a rehype plugin is the more semantic fit.
+
+Downloading images into the local `public` directory is also a real need, because I do not want to depend on a CDN.
+
+But that goes beyond rehype's job, so I made it a separate command.
+
+```bash
+rehype-fluent-emoji sync content --out public/emoji --style 3d
+```
+
+Run the explicit sync command, and it downloads the emoji assets used in your articles into the directory you choose.
+
+Then rendering only needs this plugin configuration:
+
+```ts
+{
+  assetBase: '/emoji'
+}
+```
+
+In other words, the plugin is only responsible for **generating URLs**. Where the images live, when they are synced, and whether they are served from a CDN are all left to the user.
+
+This also gives you some freedom. You can deploy my [fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) fork to your own server, or fork it to GitLab or Gitee.
+
+Of course, you can also skip pulling assets locally and reference them directly through `https://raw.githubusercontent.com` or `https://cdn.jsdelivr.net`.
+
+## Give it a try
+
+You are welcome to read the source on [GitHub](https://github.com/withxat/rehype-fluent-emoji), or install this rehype plugin from [npmx.dev](https://npmx.dev/package/rehype-fluent-emoji).
 
 ```bash
 pnpm add -D rehype-fluent-emoji
 ```
 
-Roughly speaking, `rehype-fluent-emoji` works like this:
+In Astro, the configuration looks roughly like this:
 
 ```ts
 import rehypeFluentEmoji from 'rehype-fluent-emoji'
@@ -82,145 +116,9 @@ export default {
 }
 ```
 
-It looks for emoji in normal text nodes inside HAST, and skips paths that should not be rewritten, such as `code`, `pre`, `script`, and `style`.
-
-The final structure is roughly a span with both a text layer and a visual layer. You see Fluent Emoji, but the original Unicode character is still in the DOM.
-
-That is the biggest difference between this and many "emoji to image" solutions.
-
-## The small matter of copying
-
-Copy behavior is the part I care about most.
-
-Because emoji are not decorative assets in an article. They are text. If someone copies a sentence from my article and pastes it somewhere else, they should get the same sentence, not one with the emoji missing.
-
-This becomes a little tricky in practice.
-
-If you simply make the Unicode emoji transparent and use a background image for Fluent Emoji, the normal state can look fine. But once text is selected, browser selection behavior starts to leak through. Different browsers do not handle `::selection`, transparent text, and background images in exactly the same way.
-
-The most stable approach ended up being a split between the root element, text layer, and visual layer:
-
-- The text layer keeps the Unicode emoji and participates in selection and copying.
-- The visual layer displays Fluent Emoji.
-- Shared CSS keeps the Unicode glyph transparent during selection without taking over the page's own selection background.
-
-This can sound like too much design for a tiny emoji 🙂, but I think this is exactly what a plugin should handle.
-
-A good content plugin should not only look good in a demo. It should also disappear into ordinary actions like copying, selecting, reading, and searching.
-
-## Assets should have a boundary too
-
-Another part I care about is asset downloading.
-
-Fluent Emoji images have to come from somewhere. The most convenient approach would be for the plugin to discover missing assets at runtime, download them, and maybe even write them into `public/emoji`.
-
-I do not like that direction.
-
-A rehype plugin should transform content. It should not quietly access the network, write files, or change your project directory while your articles are being built. In CI, SSR, and edge runtime contexts, implicit side effects are especially annoying.
-
-So the boundary is clearer now:
-
-```bash
-rehype-fluent-emoji sync content --out public/emoji --style 3d
-```
-
-Run an explicit sync command, and it downloads the emoji assets used by your articles into the directory you choose.
-
-Then rendering only needs to know where those assets live:
-
-```ts
-{
-  assetBase: '/emoji'
-}
-```
-
-In other words, the plugin only generates asset URLs. Where the assets live, when they are synced, and whether they are served from a CDN are all decisions left to the user.
-
-This API is a little less "automatic", but I like it more. It is not mysterious, and it does not make extra decisions for you.
-
-## The asset repository changed too
-
-There is another layer to the assets.
-
-At first, the plugin could use assets organized by [shuding/fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode). That project takes [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) from CLDR-style folders and turns it into flat CDN assets with two URL shapes:
-
-```txt
-👋_color.svg
-1f44b_color.svg
-```
-
-So you could address an emoji either by the glyph itself, or by its Unicode code point.
-
-Later, in my [withxat/fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) fork, I opened a `webp` branch and pushed it a little further. It is no longer only a resource organizer. It is now a smaller, more maintainable WebP CDN repository with stable URLs.
-
-The tradeoffs are pretty clear.
-
-First, it only keeps Unicode code point URLs:
-
-```txt
-1f44b_3d.webp
-```
-
-It no longer generates glyph paths like `👋_color.svg`.
-
-URLs should be predictable. Emoji inside URLs are cute, but different clients, CDNs, and copy paths do not always treat Unicode paths consistently. Code point names are more boring, but much more stable.
-
-Second, every asset is converted to WebP. Fluent Emoji originally mixes PNG and SVG depending on the style. The new build uses [sharp](https://sharp.pixelplumbing.com/) to convert both PNG and SVG into `.webp`. SVG assets are rasterized at 512px with `density: 300`, then exported as WebP at quality 90.
-
-The result is about 11,030 Unicode-only WebP files.
-
-There is also a small Unicode detail: filenames strip `fe0f`, also known as Variation Selector-16.
-
-For example:
-
-```txt
-1f44b fe0f                  -> 1f44b
-1f3f3 fe0f 200d 26a7 fe0f   -> 1f3f3-200d-26a7
-```
-
-`fe0f` asks for emoji presentation, but for asset lookup it is usually noise. Removing it makes `1f44b` and `1f44b fe0f` resolve to the same stable URL.
-
-The fork also keeps upstream `microsoft/fluentui-emoji` as a `vendor/fluentui-emoji` submodule, and rewrites the build script from a Node script to Bun + TypeScript. If I need to rebuild the assets six months later, I do not have to remember which repository to clone, which script to copy, and which command to run. It is just `git submodule update --init`, then `bun run build`.
-
-Tooling does not sound like a product feature, but it decides whether the repository can still be maintained later.
-
-The README also gives two CDN entry points:
-
-- jsDelivr: `cdn.jsdelivr.net/gh/withxat/fluentui-emoji-unicode@webp/assets/...`
-- Raw GitHub: `raw.githubusercontent.com/withxat/fluentui-emoji-unicode/webp/assets/...`
-
-The first is better for CDN delivery. The second points straight at the GitHub source files.
-
-The pipeline is roughly:
-
-```txt
-microsoft/fluentui-emoji (submodule)
-        -> metadata.json -> Unicode code points
-        -> sharp (PNG/SVG -> WebP)
-        -> strip fe0f, keep code point filenames only
-assets/{unicode}_{style}.webp
-        -> jsDelivr / GitHub Raw CDN
-```
-
-So this is not only "convert the images to WebP". More precisely, it turns the asset repository from "organized files" into "a stable CDN contract".
-
-## Color, Safari, and the real world
-
-Fluent Emoji has several styles, including `color`, `flat`, `high-contrast`, and `3d`.
-
-At first, I naturally wanted to use `color` SVG. SVG sounds elegant. But real browsers like to remind you that elegance is not the same thing as stability.
-
-In Safari, some Fluent Emoji `color` SVGs look soft. After digging into it, the cause seems related to heavier filters inside the SVGs. It is not something you can fully solve by tweaking `display` or `background-size`.
-
-So on my own site, I use the `3d` WebP style.
-
-Not because WebP is more "advanced", but because it is more reliable in this context. Emoji inside articles are small. Readers are not treating them as vector illustrations to zoom into. Compared with theoretical format elegance, I care more about whether they are sharp, stable, smaller to transfer, and quiet on the real page.
-
-Engineering often comes down to this kind of choice. You start out thinking you are choosing the technically prettier answer, then discover that the better answer is the one that causes fewer problems.
-
 ## How this site uses it
 
-This site now syncs emoji assets before building articles:
+This site now syncs the emoji images used in articles to local files first:
 
 ```json
 {
@@ -228,20 +126,14 @@ This site now syncs emoji assets before building articles:
 }
 ```
 
-Then the MDX pipeline uses `rehype-fluent-emoji` to render emoji inside posts.
+Then MDX uses `rehype-fluent-emoji` to render emoji inside posts.
 
-I also wrote a plain [Fluent Emoji render test](/post/emoji-render-test) to check how it behaves in paragraphs, lists, links, and code blocks. It is not a feature intro. It is more like a patrol page for "please do not break the article".
+You can check the [Fluent Emoji render test](/post/emoji-render-test) to see how it behaves in paragraphs, lists, links, and code blocks.
 
-If an emoji 🙂 can sit quietly inside a sentence, without stretching line height, polluting copied text, or behaving unpredictably across browsers, it has done its job.
+## Goodbye 👋
 
-## Outro
+The plugin itself is not complicated, but I really enjoyed the process of refining the details bit by bit. I am very happy with the final result.
 
-The plugin itself is not complicated, but it represents a kind of engineering problem I like.
+I also like this solution: visually fun, without breaking default behavior.
 
-On the surface, it is just "make emoji prettier". In practice, it touches semantics, copying, selection, build side effects, asset management, and browser rendering differences.
-
-The solution I prefer is clear: the visual layer can be more fun, but the underlying behavior should stay as ordinary as possible.
-
-Ordinary is not a bad thing.
-
-The ideal state for an emoji plugin is simple: it looks cute when you notice it, nothing breaks when you copy it, and if you remove it, the article is still the same article.
+I hope I can make more interesting things like this~

@@ -1,8 +1,8 @@
 ---
-title: 给文章里的 Emoji 换一套表情
+title: 给 Emoji 换一套皮肤
 date: 2026-06-08
 category: tech
-summary: 聊聊 rehype-fluent-emoji，和一个表情插件应该守住的边界。
+summary: 把爱献给 Fluent Emoji。
 tags:
   - rehype
   - Emoji
@@ -11,55 +11,89 @@ tags:
 
 我一直很喜欢 Microsoft Fluent Emoji。
 
-倒不是因为它比系统 emoji 更「正确」，而是它有一种很微妙的产品感：柔和、统一、立体，但又不会像某些贴纸包一样过分抢戏。放在文章里，尤其是中文文章里，它经常能让一个句子变得更轻一点 ✨。
+![Fluent Emoji](https://assets.xat.sh/images/fluent-emoji.webp)
 
-但问题也在这里。
+在 Microsoft 推出包含 Fluent Emoji 的 Windows 11 开发预览时，我第一时间升级了系统 ✨。
 
-如果只是偶尔写一个 🙂，系统 emoji 已经够用了。真正让我想做 [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) 的原因，是我想在 MDX 文章里稳定地使用 Fluent Emoji，同时保留文字本身应该有的能力。
+我随即产生了在网页上显示 Fluent Emoji 的想法，于是 [rehype-fluent-emoji](https://github.com/withxat/rehype-fluent-emoji) 诞生了。
 
-比如可以复制。
+## 复制这件小事
 
-比如不会破坏行高。
+得益于 [Twemoji](https://github.com/twitter/twemoji) 作为开源 Emoji 的先行者，已经有相关生态能实现将网页上 emoji 替换为 Twemoji。
 
-比如代码块里的 emoji 不应该被替换。
+但方案大多都是直接替换为图片。
 
-比如构建产物不要突然藏着一堆运行时副作用。
+替换为图片会让复制行为变怪，比如选中文字的情况下复制不到，选中时文字与图片间样式也会需要对齐。
 
-这些听起来都很小，但如果你真的在一篇文章里把 emoji 当作文字的一部分使用，这些小事会一起决定它到底是一个增强，还是一个麻烦。
+![Emoji 被当作图片](https://assets.xat.sh/images/emoji-as-image.png)
 
-## 不只是换成图片
+通过 JavaScript 监听复制 Event 来动态替换复制内容也能走通这条路，但这好脏。
 
-最粗暴的方式当然很简单：扫描文本，把 emoji 换成 `<img>`。
+我一直很反感复制一段文字，还在里面塞一段版权声明的行为……本质上和那些劫持剪贴板的流氓软件没什么区别。
 
-这样视觉上很快就能看到效果，图片也能加载出来，但它立刻会带来几个问题。
+因为 emoji 本身是文字，复制我文章里的一句话，粘贴到别处后，应该得到同一句话，而不是丢掉里面的表情。
 
-复制出来的内容不再自然。你选中一段文字，本来应该得到原本的 Unicode emoji，结果中间混进图片节点，体验就变得很奇怪。
+最后比较好的实现方案是把文本层、视觉层都分开：
 
-语义也会变得暧昧。emoji 本来是文本的一部分，不一定是插图，也不一定需要被读屏器当成一张图片读出来。
+- 文本层保留 Unicode，用来参与选择和复制。
+- 视觉层负责显示 Fluent Emoji。
+- 选中状态通过共享 CSS 继续让 Unicode 字形保持透明，但不抢页面自己的选区背景。
 
-样式很容易失控。文章里的图片通常会被统一加上圆角、最大宽度、懒加载、灯箱等等处理。如果 emoji 也变成普通图片，它就很容易被这些文章图片规则误伤。
+## 图片从哪来
 
-所以这个插件做的事情不是「把 emoji 变成图片」，而是更具体一点：
+解决了布局设计上，接着就是 Fluent Emoji 的图片从哪来的问题。
 
-保留 Unicode emoji 作为文本层，再在上面放一层 Fluent Emoji 的视觉层。
+Microsoft 确实十分慷慨得提供了 [Fluent Emoji](https://github.com/microsoft/fluentui-emoji)，但它的仓库结构并不适合直接拿来用。
 
-这样复制时拿到的仍然是真正的 emoji，阅读时看到的是统一的 Fluent 风格。文字和视觉各做各的事，边界会清楚很多。
+开源社区也有人做出了 [fluent-emoji-webfont](https://github.com/tetunori/fluent-emoji-webfont)，但因为还有兼容性问题，我也没有优先考虑。
 
-## rehype 适合做这件事
+![Fluent Emoji Webfont](https://assets.xat.sh/images/fluent-emoji-webfont.png)
 
-我一开始就不太想把它做成客户端脚本。
+于是在先后考察 [LobeHub](https://fluent-emoji.lobehub.com/)、[emoji-regex-xs](https://github.com/slevithan/emoji-regex-xs)、[unicode-emoji-json](https://github.com/muan/unicode-emoji-json) 这些库后，我终于找到了 [fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode) 这个项目。
 
-文章已经在构建时经过 MDX → remark → rehype 的管线了，emoji 替换这种事天然适合放在那里完成。HTML 生成出来之后，浏览器只需要正常渲染，不需要再等一段 JavaScript 扫描 DOM。
+它完美符合我的预期，把 Fluent Emoji 仓库里的图片转换为 Unicode 字符编码的文件名。
 
-这也符合我对内容站的偏好：能在构建时完成的，就不要拖到客户端。
+不过有一个问题，因为这个仓库只做了重命名，文件大多还是 SVG 格式，而 Safari 对于 Fluent Emoji 这种包含 filter 的 SVG 图片支持特别差，导致显示的效果不如预期。
 
-如果你想直接试一下，可以去 [GitHub](https://github.com/withxat/rehype-fluent-emoji) 看源码，也可以去 [npmx.dev](https://npmx.dev/package/rehype-fluent-emoji) 看包信息和安装方式。最直接的方式：
+于是我 [fork](https://github.com/withxat/fluentui-emoji-unicode) 并加上了格式转换，把图片格式统一为了 WebP。
+
+## 做什么，不做什么
+
+unified 下的 remark 和 rehype 其实分工明确，所以做成 rehype 插件更符合语义。
+
+图片下载到本地 public 下也是一个需求，因为我不想强依赖 CDN。
+
+不过这超出了 rehype 的工作范畴，所以我把它做成了一个单独的命令。
+
+```bash
+rehype-fluent-emoji sync content --out public/emoji --style 3d
+```
+
+显式执行同步命令，把文章里用到的 emoji 资产下载到指定目录。
+
+然后渲染时只需要配置插件：
+
+```ts
+{
+  assetBase: '/emoji'
+}
+```
+
+也就是说，插件只负责**生成 URL**。图片在哪里、什么时候同步、是否放 CDN，都交给使用者自己决定。
+
+这也给你一些自由度，你完全可以把我的 [fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) 部署到自己的服务器，或是 fork 到 GitLab，Gitee。
+
+当然你也可以略过拉取到本地这一步，直接用 `https://raw.githubusercontent.com` 或是 `https://cdn.jsdelivr.net` 来引用。
+
+## 来试试吧
+
+欢迎你去 [GitHub](https://github.com/withxat/rehype-fluent-emoji) 看源码，也可以去 [npmx.dev](https://npmx.dev/package/rehype-fluent-emoji) 来安装这个 rehype 插件。
 
 ```bash
 pnpm add -D rehype-fluent-emoji
 ```
 
-`rehype-fluent-emoji` 做的事大概是这样：
+在 Astro 里大概是这样配置：
 
 ```ts
 import rehypeFluentEmoji from 'rehype-fluent-emoji'
@@ -79,145 +113,9 @@ export default {
 }
 ```
 
-它会在 HAST 里找出普通文本节点中的 emoji，并跳过 `code`、`pre`、`script`、`style` 这些不应该被改写的路径。
-
-最后生成出来的结构大致是一个带有文本层和视觉层的 span。你看见的是 Fluent Emoji，但 DOM 里仍然保留原本的 Unicode 字符。
-
-这也是它和很多「emoji 转图片」方案最大的差别。
-
-## 复制这件小事
-
-复制行为是我最在意的部分。
-
-因为 emoji 在文章里不是装饰素材，它是文字。一个人复制我文章里的一句话，粘贴到别处后，应该得到同一句话，而不是丢掉里面的表情。
-
-这件事做到最后会有点绕。
-
-如果直接把 Unicode emoji 设置成透明，再用背景图显示 Fluent Emoji，普通状态看起来没问题，但选中文本时又会暴露出浏览器自己的选区行为。尤其是不同浏览器对 `::selection`、透明文字、背景图的处理并不完全一致。
-
-最后比较稳的方式，是把根元素、文本层、视觉层都分开：
-
-- 文本层保留 Unicode，用来参与选择和复制。
-- 视觉层负责显示 Fluent Emoji。
-- 选中状态通过共享 CSS 继续让 Unicode 字形保持透明，但不抢页面自己的选区背景。
-
-这听起来像是在给一个小表情 🙂 做过度设计，但我觉得这恰好是插件应该做的事。
-
-一个好的内容插件不应该只在 demo 里好看，也应该在复制、选择、阅读、搜索这些普通动作里不露馅。
-
-## 资产也应该有边界
-
-另一个我很在意的点，是资产下载。
-
-Fluent Emoji 的图片总得从某个地方来。最方便的做法，是插件运行时发现缺什么就下载什么，甚至自动写入 `public/emoji`。
-
-但我不喜欢这个方向。
-
-因为 rehype 插件本质上应该负责转换内容，而不是在你构建文章时悄悄联网、写文件、改变项目目录。尤其是在 CI、SSR、边缘环境这些场景里，隐式副作用会很烦。
-
-所以现在的边界更清楚：
-
-```bash
-rehype-fluent-emoji sync content --out public/emoji --style 3d
-```
-
-显式执行同步命令，把文章里用到的 emoji 资产下载到指定目录。
-
-然后渲染时只需要告诉插件：
-
-```ts
-{
-  assetBase: '/emoji'
-}
-```
-
-也就是说，插件只负责生成指向资产的 URL。资产在哪里、什么时候同步、是否放 CDN，都交给使用者自己决定。
-
-这种 API 看起来少了一点「自动」，但我更喜欢。它不神秘，也不替你做多余的决定。
-
-## 资源仓库也被重做了
-
-说到资产，这里还有另一层工作。
-
-这个插件最早可以直接使用 [shuding/fluentui-emoji-unicode](https://github.com/shuding/fluentui-emoji-unicode) 整理好的资源。那个项目把 [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) 从 CLDR 文件夹名整理成扁平 CDN 资源，同时支持两种 URL：
-
-```txt
-👋_color.svg
-1f44b_color.svg
-```
-
-也就是说，你既可以用 emoji 字形做文件名，也可以用 Unicode 码点做文件名。
-
-但后来我在自己的 [withxat/fluentui-emoji-unicode](https://github.com/withxat/fluentui-emoji-unicode) fork 里开了一个 `webp` 分支，把它从「整理资源」继续往前推了一步，变成一个更适合长期使用的 WebP CDN 仓库。
-
-这里的取舍很明确。
-
-首先，只保留 Unicode 码点 URL：
-
-```txt
-1f44b_3d.webp
-```
-
-不再生成 `👋_color.svg` 这类 emoji 字形路径。
-
-因为 URL 应该尽量可预测。emoji 放在 URL 里虽然很可爱，但不同客户端、CDN、复制环境对 Unicode 路径的处理并不总是一致。码点命名更无聊，但也更稳定。
-
-其次，所有资源都统一成 WebP。原本 Fluent Emoji 里会混用 PNG 和 SVG，不同风格对应不同格式。现在构建时会用 [sharp](https://sharp.pixelplumbing.com/) 把 PNG 和 SVG 都转成 `.webp`，SVG 会先以 512px、`density: 300` 栅格化，再用质量 90 输出 WebP。
-
-最后生成的大约是 11,030 个 Unicode-only WebP 文件。
-
-这里还有一个小细节：文件名里会剥掉 `fe0f`，也就是 Variation Selector-16。
-
-比如：
-
-```txt
-1f44b fe0f              -> 1f44b
-1f3f3 fe0f 200d 26a7 fe0f -> 1f3f3-200d-26a7
-```
-
-`fe0f` 用来要求 emoji 呈现形式，但对资源识别来说通常是噪音。去掉它之后，`1f44b` 和 `1f44b fe0f` 会稳定落到同一个 URL 上。
-
-这个 fork 还把上游 `microsoft/fluentui-emoji` 放进了 `vendor/fluentui-emoji` submodule，构建脚本也从 Node 脚本换成了 Bun + TypeScript。半年后要重新生成一次资源时，不需要再回忆「先 clone 哪个仓库、复制哪个脚本、再跑哪个命令」，只要 `git submodule update --init`，然后 `bun run build`。
-
-工具链听起来不像产品功能，但它决定了这个资源仓库以后还能不能维护下去。
-
-README 里也同时给了两个 CDN 入口：
-
-- jsDelivr：`cdn.jsdelivr.net/gh/withxat/fluentui-emoji-unicode@webp/assets/...`
-- Raw GitHub：`raw.githubusercontent.com/withxat/fluentui-emoji-unicode/webp/assets/...`
-
-前者适合平时走 CDN，后者适合想直接指向 GitHub 原始文件的场景。
-
-技术链路大概就是这样：
-
-```txt
-microsoft/fluentui-emoji (submodule)
-        -> metadata.json -> Unicode 码点
-        -> sharp (PNG/SVG -> WebP)
-        -> 过滤 fe0f，只保留码点文件名
-assets/{unicode}_{style}.webp
-        -> jsDelivr / GitHub Raw CDN
-```
-
-所以这件事不只是「把图片换成 WebP」。更准确地说，是把资源仓库从「整理文件」变成了「定义稳定的 CDN 契约」。
-
-## 颜色、Safari 和现实世界
-
-Fluent Emoji 有不同风格，常见的是 `color`、`flat`、`high-contrast` 和 `3d`。
-
-一开始我当然更想用 `color` SVG，毕竟 SVG 听起来很优雅。但真实浏览器会提醒你：优雅不代表一定稳。
-
-在 Safari 里，部分 Fluent Emoji 的 `color` SVG 看起来会发虚。排查后发现，这和 SVG 内部比较复杂的滤镜渲染有关，不是简单调一下 `display`、`background-size` 就能完全解决。
-
-最后我在自己的站点里用了 `3d` 风格的 WebP。
-
-这不是因为 WebP 更「高级」，而是它在这个场景里更可靠。文章里的 emoji 很小，读者也不会把它当成矢量插画放大看。相比理论上的格式优雅，我更关心它在真实页面里是不是清楚、稳定、体积小，而且别抢戏。
-
-工程里经常会遇到这种选择：你原本以为自己在选一个技术上更漂亮的答案，最后发现真正好的答案是那个少出问题的答案。
-
 ## 在这个站点里的用法
 
-现在这个站点的文章构建会先同步 emoji 资产：
+现在这个站点会先把文章里用到 Emoji 图片同步到本地：
 
 ```json
 {
@@ -225,20 +123,14 @@ Fluent Emoji 有不同风格，常见的是 `color`、`flat`、`high-contrast` �
 }
 ```
 
-然后 MDX 管线里使用 `rehype-fluent-emoji` 渲染文章里的 emoji。
+然后 MDX 里使用 `rehype-fluent-emoji` 渲染文章里的 emoji。
 
-我还写了一篇很普通的 [Fluent Emoji 渲染测试](/post/emoji-render-test)，专门看它在中文段落、列表、链接、代码块里的表现。它不是功能介绍，更像是一个「别把文章搞坏」的巡检页。
+你可以查看 [Fluent Emoji 渲染测试](/post/emoji-render-test)，看它在段落、列表、链接、代码块里的表现。
 
-如果一颗 emoji 🙂 能安静地待在句子里，既不撑开行高，也不污染复制结果，还能在不同浏览器里保持稳定，那它就完成任务了。
+## 再见 👋
 
-## Outro
+这个插件本身并不复杂，但我很喜欢一点点改进细节的过程，最后的效果我很满意。
 
-这个插件本身并不复杂，但它挺能代表我喜欢的一类工程问题。
+我也很喜欢这个解法：视觉上有趣，但不破坏默认行为。
 
-表面上只是「把 emoji 变漂亮」，真正做起来却会碰到语义、复制、选择、构建副作用、资产管理、浏览器渲染差异这些细节。
-
-而我喜欢的解法也很明确：视觉上可以更有趣，底层行为要尽量普通。
-
-普通不是坏事。
-
-一个 emoji 插件最理想的状态，就是你看到它时觉得可爱，复制它时什么都没有坏掉，删除它时文章还是那篇文章。
+希望能做出更多有趣的东西～
