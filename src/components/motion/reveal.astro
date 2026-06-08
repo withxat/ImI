@@ -6,6 +6,7 @@ interface Props {
 	class?: string
 	staggerIndex?: number
 	staggerStep?: number
+	y?: number
 }
 
 const {
@@ -14,6 +15,7 @@ const {
 	class: className,
 	staggerIndex = 0,
 	staggerStep = 0.048,
+	y = 10,
 } = Astro.props as Props
 ---
 
@@ -24,7 +26,8 @@ const {
 	data-reveal-pending-base-delay={baseDelay}
 	data-reveal-stagger-index={staggerIndex}
 	data-reveal-stagger-step={staggerStep}
-	style={`--reveal-blur: ${blur}px; opacity: 0; filter: blur(${blur}px); transition-property: opacity, filter; transition-duration: 420ms; transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);`}
+	data-reveal-y={y}
+	style={`--reveal-blur: ${blur}px; --reveal-y: ${y}px; opacity: 0; filter: blur(${blur}px); transform: translate3d(0, ${y}px, 0); transition-property: opacity, filter, transform; transition-duration: 420ms; transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);`}
 	data-reveal
 >
 	<slot />

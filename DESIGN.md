@@ -384,8 +384,8 @@ A composed component that wraps the bejamas `Button` (variant `outline`) inside 
 
 Animations live in `src/lib/reveal-engine.ts`. Two primitives:
 
-- **`<Reveal>`**: A single element fades from `opacity: 0, filter: blur(10px)` to `opacity: 1, filter: none` over 420ms `cubic-bezier(0.22, 1, 0.36, 1)`. Scroll-triggered for below-fold content via `IntersectionObserver`.
-- **`<StaggerReveal>`**: Same animation applied to children with a 48ms stagger (with a 60ms base delay).
+- **`<Reveal>`**: A single element rises from `opacity: 0, filter: blur(10px), translateY(10px)` to `opacity: 1, filter: none, translateY(0)` over 420ms `cubic-bezier(0.22, 1, 0.36, 1)`. Scroll-triggered for below-fold content via `IntersectionObserver`.
+- **`<StaggerReveal>`**: Same rise-and-soften animation applied to children with a 48ms stagger (with a 60ms base delay).
 
 Both honor `prefers-reduced-motion: reduce` (animations disabled, opacity instantly 1).
 

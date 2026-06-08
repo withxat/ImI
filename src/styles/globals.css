@@ -956,17 +956,20 @@
 		from {
 			opacity: 0;
 			filter: blur(10px);
+			transform: translate3d(0, 10px, 0);
 		}
 
 		to {
 			opacity: 1;
 			filter: blur(0);
+			transform: translate3d(0, 0, 0);
 		}
 	}
 
 	.article-body > *.article-reveal-stagger {
 		opacity: 0;
 		filter: blur(10px);
+		transform: translate3d(0, 10px, 0);
 		animation: article-line-reveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 		animation-delay: var(--article-reveal-delay, 0ms);
 	}
@@ -974,19 +977,23 @@
 	.article-body > *.article-reveal-pending:not(.article-reveal-done) {
 		opacity: 0;
 		filter: blur(10px);
+		transform: translate3d(0, 10px, 0);
 	}
 
 	.article-body > *.article-reveal-done:not(.article-reveal-stagger):not(.article-reveal-skip) {
 		opacity: 1;
 		filter: blur(0);
+		transform: translate3d(0, 0, 0);
 		transition:
 			opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-			filter 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+			filter 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+			transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	.article-body > *.article-reveal-skip {
 		opacity: 1 !important;
 		filter: none !important;
+		transform: none !important;
 		transition: none !important;
 	}
 
@@ -996,6 +1003,7 @@
 			animation: none;
 			opacity: 1;
 			filter: none;
+			transform: none;
 		}
 
 		.article-body > *.article-reveal-done:not(.article-reveal-skip) {
@@ -1016,34 +1024,40 @@
 [data-reveal][data-reveal-pending]:not([data-reveal-ready='true']) {
 	opacity: 0;
 	filter: blur(var(--reveal-blur, 10px));
+	transform: translate3d(0, var(--reveal-y, 10px), 0);
 }
 
 /* Stagger children hidden until JS initialises (SSR-hidden for view-transition parity). */
 [data-stagger-reveal][data-stagger-pending] > * {
 	opacity: 0;
 	filter: blur(var(--stagger-blur, 10px));
+	transform: translate3d(0, var(--stagger-y, 10px), 0);
 }
 
 /* Article body children hidden until JS initialises. */
 [data-article-reveal][data-article-pending] > * {
 	opacity: 0;
 	filter: blur(10px);
+	transform: translate3d(0, 10px, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
 	[data-reveal][data-reveal-pending]:not([data-reveal-ready='true']) {
 		opacity: 1;
 		filter: none;
+		transform: none;
 	}
 
 	[data-stagger-reveal][data-stagger-pending] > * {
 		opacity: 1;
 		filter: none;
+		transform: none;
 	}
 
 	[data-article-reveal][data-article-pending] > * {
 		opacity: 1;
 		filter: none;
+		transform: none;
 	}
 }
 

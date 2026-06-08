@@ -7,6 +7,7 @@ export interface RevealOptions {
 	duration?: number
 	easing?: string
 	instant?: boolean
+	y?: number
 }
 
 export interface ScrollObserverOptions {
@@ -56,19 +57,32 @@ export function revealElement(el: HTMLElement, options: RevealOptions = {}): voi
 
 	el.removeAttribute('data-reveal-pending')
 	el.dataset.revealReady = 'true'
-	el.style.transitionProperty = 'opacity, filter'
+	el.style.transitionProperty = 'opacity, filter, transform'
 	el.style.transitionTimingFunction = easing
 	el.style.transitionDuration = instant ? '0ms' : `${duration}ms`
 	el.style.filter = 'none'
 	el.style.opacity = '1'
+	el.style.transform = 'translate3d(0, 0, 0)'
+
+	const clearRevealTransform = () => {
+		el.style.transform = ''
+	}
+
+	if (instant) {
+		clearRevealTransform()
+		return
+	}
+
+	el.addEventListener('transitionend', clearRevealTransform, { once: true })
 }
 
 /** Initialize an element for reveal (set it to hidden state). */
-export function initRevealHidden(el: HTMLElement, blur = 10): void {
+export function initRevealHidden(el: HTMLElement, blur = 10, y = 10): void {
 	el.setAttribute('data-reveal-pending', '')
 	el.dataset.revealReady = 'false'
 	el.style.opacity = '0'
 	el.style.filter = `blur(${blur}px)`
+	el.style.transform = `translate3d(0, ${y}px, 0)`
 }
 
 /** Create an IntersectionObserver for scroll-based reveals. */

@@ -16,8 +16,10 @@ function initRevealElement(el: HTMLElement, animate: boolean) {
 	const blur = Number(el.dataset.revealBlur ?? 10)
 	const idx = Number(el.dataset.revealStaggerIndex ?? 0)
 	const step = Number(el.dataset.revealStaggerStep ?? 0.048)
+	const y = Number(el.dataset.revealY ?? 10)
 
 	el.style.setProperty('--reveal-blur', `${blur}px`)
+	el.style.setProperty('--reveal-y', `${y}px`)
 
 	const rect = el.getBoundingClientRect()
 	const strategy = classifyRevealPosition(rect, animate, prefersReducedMotion())
@@ -29,14 +31,14 @@ function initRevealElement(el: HTMLElement, animate: boolean) {
 
 		case 'stagger': {
 			const delay = baseDelay + idx * step
-			initRevealHidden(el, blur)
+			initRevealHidden(el, blur, y)
 			requestAnimationFrame(() => revealElement(el, { instant: false }))
 			el.style.transitionDelay = `${delay}s`
 			break
 		}
 
 		case 'observe': {
-			initRevealHidden(el, blur)
+			initRevealHidden(el, blur, y)
 			const io = createScrollObserver((observedEl) => {
 				revealElement(observedEl, { instant: false })
 				io.unobserve(observedEl)
@@ -56,7 +58,10 @@ export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 	const blur = Number(root.dataset.staggerBlur ?? 10)
 	const baseDelay = Number(root.dataset.staggerDelay ?? 0.06)
 	const step = Number(root.dataset.staggerStep ?? 0.052)
+	const y = Number(root.dataset.staggerY ?? 10)
 	const itemClass = root.dataset.staggerItemClass ?? ''
+
+	root.style.setProperty('--stagger-y', `${y}px`)
 
 	const reduce = prefersReducedMotion()
 	const children = [...root.children] as HTMLElement[]
@@ -65,7 +70,7 @@ export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 		if (itemClass)
 			child.classList.add(...itemClass.split(/\s+/).filter(Boolean))
 
-		child.style.transitionProperty = 'opacity, filter'
+		child.style.transitionProperty = 'opacity, filter, transform'
 		child.style.transitionTimingFunction = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
 		const rect = child.getBoundingClientRect()
@@ -80,6 +85,7 @@ export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 				const delay = baseDelay + index * step
 				child.style.opacity = '0'
 				child.style.filter = `blur(${blur}px)`
+				child.style.transform = `translate3d(0, ${y}px, 0)`
 				requestAnimationFrame(() => {
 					child.style.transitionDelay = `${delay}s`
 					revealElement(child, { instant: false })
@@ -90,6 +96,7 @@ export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 			case 'observe': {
 				child.style.opacity = '0'
 				child.style.filter = `blur(${blur}px)`
+				child.style.transform = `translate3d(0, ${y}px, 0)`
 				const io = createScrollObserver((observedEl) => {
 					revealElement(observedEl, { instant: false })
 					io.unobserve(observedEl)

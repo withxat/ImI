@@ -5,6 +5,7 @@ interface Props {
 	delayChildren?: number
 	itemClass?: string
 	staggerChildren?: number
+	y?: number
 }
 
 const {
@@ -13,6 +14,7 @@ const {
 	delayChildren = 0.06,
 	itemClass,
 	staggerChildren = 0.052,
+	y = 10,
 } = Astro.props as Props
 ---
 
@@ -23,6 +25,8 @@ const {
 	data-stagger-item-class={itemClass ?? ''}
 	data-stagger-pending=""
 	data-stagger-step={staggerChildren}
+	data-stagger-y={y}
+	style={`--stagger-y: ${y}px;`}
 	data-stagger-reveal
 >
 	<slot />
