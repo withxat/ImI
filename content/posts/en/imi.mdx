@@ -2,7 +2,7 @@
 title: ImI, finding myself
 date: 2026-06-08
 category: tech
-summary: “Hua-la-la-la-la-la, the sky is raining~”
+summary: "Hua-la-la-la-la-la, the sky is raining~"
 seoDescription: A behind-the-scenes story of rebuilding ImI with Astro, CJK typography, multilingual content, design-system choices, and a search for personal meaning in the AI era.
 tags:
   - Astro
@@ -14,13 +14,15 @@ translator:
   - GPT 5.5
 ---
 
-It is 2026 now. Thirteen years seem to have passed since the first time I tried to build a blog of my own.
+It is 2026 now. Almost thirteen years have passed since the first time I tried to build a blog of my own.
 
-So, inevitably, I rebuilt it again.
+My last blog rebuild was almost two years ago as well.
 
-I named it ImI.
+![Legacy site archive](https://assets.xat.sh/images/legacy-portfolio.png)
 
-As for what ImI means, and why both `i`s are uppercase, maybe it is like the Chinese internet phrase “何意味 (nani-imi)”: no meaning at all.
+So I could not resist rebuilding my blog again, and I named it ImI.
+
+As for what ImI means, and why both `i`s are uppercase, maybe it is like the Chinese internet phrase "何意味 (nani-imi)": no meaning at all.
 
 Or maybe, in this age where AI creativity keeps exploding, I just wanted to leave a little meaning for myself.
 
@@ -30,21 +32,21 @@ Or maybe, in this age where AI creativity keeps exploding, I just wanted to leav
 
 The overall technical choice was actually simple.
 
-I moved my blog to Astro quite early, and I once helped a friend build an Astro blog theme. I like to think I understand Astro reasonably well, so this rebuild should obviously be Astro... right?
+I moved my blog to [Astro](https://astro.build/) quite early, and I once helped a friend build an [Astro blog theme](https://github.com/radishzzz/astro-theme-retypeset). I like to think I understand Astro reasonably well, so this rebuild should obviously be Astro... right?
 
 The final answer was Yes 🙂‍↕️
 
-But for a while, I did try building it on top of Waku. I even sent Waku a PR along the way.
+But for a while, I did try building it on top of [Waku](https://waku.gg/). I even sent Waku a [PR](https://github.com/wakujs/waku/pull/2074) along the way.
 
 The reason was straightforward. As a React developer, I still wanted my own site, and my articles, to have room for more interesting components and elements. The React ecosystem is also more familiar to me.
 
-I love Base UI. More precisely, I probably love COSS. Both only ship React component libraries.
+I love [Base UI](https://base-ui.com/). More precisely, I probably love [coss ui](https://coss.com/ui). Both only ship React component libraries.
 
 Astro can of course bring in React components, but because this is my own project, I wanted the technical choice to feel a little more elegant.
 
 For me, that setup was still too heavy.
 
-Waku is not mature enough yet, especially around SSR. You can tell just from its current version number. The more painful part was the lack of Content Collections.
+Waku is not mature enough yet, especially around SSR. You can tell just from its current version number. The more painful part was the lack of [Content Collections](https://docs.astro.build/en/guides/content-collections/).
 
 There are many alternatives, but in terms of completeness and update cadence, Astro's first-party support is simply much stronger. Fuma Nama's [Fumadocs MDX](https://www.fumadocs.dev/docs/mdx) is also worth mentioning here.
 
@@ -58,7 +60,7 @@ I call myself a Design Engineer, so I spent a lot of effort trying to make this 
 
 Of course, taste is dangerous.
 
-It is very easy to write “I have a particularly refined idea” in your head, then end up with something that looks like the dark-mode version of a free template.
+It is very easy to write "I have a particularly refined idea" in your head, then end up with something that looks like the dark-mode version of a free template.
 
 ### A little magic
 
@@ -98,7 +100,7 @@ As for CJK, my first choice was MiSans.
 
 I am not a Xiaomi fan, and I have never bought Xiaomi-related products outside the Mijia ecosystem. But this typeface left a very good impression on me.
 
-Sometimes this kind of decision looks like “just pick a font”, but for a Chinese site, typography almost determines the base texture of reading.
+Sometimes this kind of decision looks like "just pick a font", but for a Chinese site, typography almost determines the base texture of reading.
 
 English typography can rely on many mature typefaces, spacing habits, and line-breaking conventions. Chinese on the web is much easier to distort through defaults. Especially with mixed Chinese and English text, a page can become cramped and fragmented very quickly.
 
@@ -150,11 +152,11 @@ I am a loyal reader of his blog, and this year I officially bought his [Whimsica
 
 The original layout of my blog was built almost entirely on top of his [Web Interface Guidelines](https://interfaces.rauno.me/), though after rounds of iteration the prototype is slowly harder to see.
 
-[Jakub Krehel](https://jakub.kr/) and his elegant personal site also gave me a lot of inspiration.
+[Jakub Krehel](https://jakub.kr/)'s personal site also gave me a lot of inspiration.
 
 ![Jakub Krehel](https://assets.xat.sh/images/jakub-krehel.png)
 
-Ah, visiting his site again while writing this gave me more new ideas. It really deserves the phrase “that's good work.”
+Ah, visiting his site again while writing this gave me more new ideas. It really deserves the phrase "that's good work."
 
 While I was working on my own blog, [Jace](https://ja.mt/)'s portfolio appeared on my X timeline.
 
@@ -166,13 +168,13 @@ That gave me a lot of inspiration and motivation too. The rounded underline styl
 
 Maybe you have already noticed that this blog does not inherit the browser's default scrollbar style.
 
-Yes, I have always wanted to make a custom scrollbar. [Roriri](https://roriri.one/)'s article, “[The birth of an upper-class scrollbar](https://roriri.one/2026/05/06/better-scroll-bar)”, is absolutely worth reading.
+Yes, I have always wanted to make a custom scrollbar. [Roriri](https://roriri.one/)'s article, "[The birth of an upper-class scrollbar](https://roriri.one/2026/05/06/better-scroll-bar)", is absolutely worth reading.
 
 I imitated and rebuilt my own version from his site. It may not be quite as upper-class by comparison, but I hope it does not fall into the lower class either.
 
 ## Elegant, cute, and then... details!
 
-What really pushes a site from “looks fine” to “I am satisfied” is often not one huge feature.
+What really pushes a site from "looks fine" to "I am satisfied" is often not one huge feature.
 
 It is the tiny details that are hard to explain, and sometimes not even worth the time on paper.
 
@@ -180,7 +182,7 @@ For example, MiSans and Hanken Grotesk do not align in visual weight. At the sam
 
 Luckily both have variable fonts, so the most direct solution would be adjusting them with [`font-variation-settings`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variation-settings).
 
-Unfortunately, that does not work in Safari.
+Unfortunately, that [does not work in Safari](https://caniuse.com/mdn-css_at-rules_font-face_font-variation-settings).
 
 The new IE of our age.
 

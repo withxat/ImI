@@ -14,11 +14,13 @@ translator:
   - GPT 5.5
 ---
 
-今は 2026 年。自分のブログを初めて作ろうとした頃から、どうやら 13 年ほど経ったらしい。
+今は 2026 年。自分のブログを初めて作ろうとした頃から、もう 13 年ほど経った。
 
-そしてまた、我慢できずに自分のブログを作り直した。
+前回ブログを作り直したのも、もう 2 年近く前のことだ。
 
-名前は ImI。
+![旧サイトの記録](https://assets.xat.sh/images/legacy-portfolio.png)
+
+そしてまた、我慢できずに自分のブログを作り直し、名前を ImI とつけた。
 
 ImI が何なのか、そしてなぜ二つの `i` がどちらも大文字なのかは、中国語の流行語「何意味（nani-imi）」みたいに、意味がないのかもしれない。
 
@@ -30,21 +32,21 @@ ImI が何なのか、そしてなぜ二つの `i` がどちらも大文字な�
 
 技術選定は、全体としてはとてもシンプルだった。
 
-僕はかなり早い時期にブログを Astro へ移していたし、友人の Astro ブログテーマ作りを手伝ったこともある。Astro については多少理解しているつもりだったので、今回のリビルドも当然 Astro……なのか？
+僕はかなり早い時期にブログを [Astro](https://astro.build/) へ移していたし、友人の [Astro ブログテーマ](https://github.com/radishzzz/astro-theme-retypeset) 作りを手伝ったこともある。Astro については多少理解しているつもりだったので、今回のリビルドも当然 Astro……なのか？
 
 最終的な答えは Yes 🙂‍↕️
 
-ただ、一時期は Waku を土台にして作ろうともしていた。ついでに Waku へ PR まで出した。
+ただ、一時期は [Waku](https://waku.gg/) を土台にして作ろうともしていた。ついでに Waku へ [PR](https://github.com/wakujs/waku/pull/2074) まで出した。
 
 理由は単純だ。React 開発者として、自分のサイトや記事の中に、もう少し面白いコンポーネントや要素を置きたかった。React のエコシステムにも慣れている。
 
-Base UI が好きだ。もっと正確に言うなら COSS が好きなのだと思う。どちらも React 向けのコンポーネントライブラリしか出していない。
+[Base UI](https://base-ui.com/) が好きだ。もっと正確に言うなら [coss ui](https://coss.com/ui) が好きなのだと思う。どちらも React 向けのコンポーネントライブラリしか出していない。
 
 Astro でも React コンポーネントはもちろん使える。でも自分のプロジェクトだからこそ、技術選定にも少し優雅さがほしかった。
 
 そしてその構成は、自分にはまだ重すぎた。
 
-Waku はまだ成熟しているとは言いにくく、特に SSR まわりは現在のバージョン番号からもその雰囲気が伝わる。さらに痛かったのは Content Collection がないこと。
+Waku はまだ成熟しているとは言いにくく、特に SSR まわりは現在のバージョン番号からもその雰囲気が伝わる。さらに痛かったのは [Content Collection](https://docs.astro.build/en/guides/content-collections/) がないこと。
 
 代替品は多いが、完成度と更新の活発さで見ると、Astro のファーストパーティサポートはやはり強すぎる。ここで Fuma Nama の [Fumadocs MDX](https://www.fumadocs.dev/docs/mdx) も一応触れておきたい。かなり良い。
 
@@ -150,7 +152,7 @@ URL に `/zh` のような prefix や suffix を入れるのがとても嫌い�
 
 このブログのレイアウトは、最初はほとんど彼の [Web Interface Guidelines](https://interfaces.rauno.me/) を土台にして作った。改良していくうちに、だんだん原型は見えにくくなったけれど。
 
-[Jakub Krehel](https://jakub.kr/) の優雅な個人サイトにも、多くのインスピレーションをもらった。
+[Jakub Krehel](https://jakub.kr/) の個人サイトにも、多くのインスピレーションをもらった。
 
 ![Jakub Krehel](https://assets.xat.sh/images/jakub-krehel.png)
 
