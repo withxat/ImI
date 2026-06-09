@@ -3,6 +3,7 @@ import ArrowRight from '~icons/local/arrow-right'
 import ArrowUpRight from '~icons/local/arrow-up-right'
 
 import { cn } from '@/lib/cn'
+import { postCardTransitionName } from '@/lib/view-transition'
 
 interface Props {
 	class?: string
@@ -10,6 +11,7 @@ interface Props {
 	external?: boolean
 	href?: string
 	prefetchOnView?: boolean
+	slug?: string
 	title: string
 }
 
@@ -19,8 +21,11 @@ const {
 	external = false,
 	href,
 	prefetchOnView = false,
+	slug,
 	title,
 } = Astro.props as Props
+
+const postTransitionName = slug && !external ? postCardTransitionName(slug) : undefined
 
 const containerClass = cn(
 	`
@@ -80,7 +85,9 @@ const hasHref = Boolean(href)
 				<a
 					class={containerClass}
 					data-astro-prefetch={prefetchOnView ? 'viewport' : undefined}
+					data-post-card-vt={postTransitionName ? 'source' : undefined}
 					href={href}
+					transition:name={postTransitionName}
 				>
 					<span class="min-w-0 flex-1 space-y-1">
 						<span class="

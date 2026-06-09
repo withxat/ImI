@@ -16,6 +16,7 @@ import { formatPostDate, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { mdxComponents } from '@/lib/mdx-components'
 import { articleBreadcrumbJsonLd, blogPostingJsonLd, postOgImageUrl, SITE_NAME } from '@/lib/seo-data'
+import { postCardTransitionName } from '@/lib/view-transition'
 import { toTranslator } from '@/types/translator'
 
 export const prerender = false
@@ -76,7 +77,7 @@ const { Content } = await render(post.entry)
 		<MiSansContentFont />
 		<Container class="page-shell">
 			<StaggerReveal class="flex flex-col space-y-8">
-				<div class="space-y-8">
+				<div class="space-y-8" data-post-card-vt="target" transition:name={postCardTransitionName(post.slug)}>
 					<SiteHeader locale={locale} messages={m} showBack />
 					<div class="space-y-3">
 						<Eyebrow>{categoryEyebrow}</Eyebrow>

@@ -1034,6 +1034,13 @@
 	transform: translate3d(0, var(--stagger-y, 10px), 0);
 }
 
+/* Post card → article hero morph must stay visible for the incoming VT snapshot. */
+[data-stagger-reveal][data-stagger-pending] > [data-post-card-vt='target'] {
+	opacity: 1;
+	filter: none;
+	transform: none;
+}
+
 /* Article body children hidden until JS initialises. */
 [data-article-reveal][data-article-pending] > * {
 	opacity: 0;
@@ -1089,6 +1096,10 @@ html[data-astro-transition] .highlight-surface {
 }
 
 @media (prefers-reduced-motion: reduce) {
+	[data-post-card-vt] {
+		view-transition-name: none !important;
+	}
+
 	::view-transition-old(root),
 	::view-transition-new(root) {
 		animation: none !important;
