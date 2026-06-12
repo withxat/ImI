@@ -1,62 +1,86 @@
+import type { PostWithMeta } from '@/lib/blog'
 import type { Locale } from '@/lib/i18n/constants'
+
+import rss from '@astrojs/rss'
+import rehypeStringify from 'rehype-stringify'
+import remarkCjkFriendly from 'remark-cjk-friendly'
+import remarkCjkFriendlyGfmStrikethrough from 'remark-cjk-friendly-gfm-strikethrough'
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import { unified } from 'unified'
 
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
-import { escapeCdata, escapeXml } from '@/lib/xml-utils'
 
 const SITE_URL = 'https://xat.sh'
+const RSS_CACHE_CONTROL = 'public, max-age=3600, s-maxage=86400'
 
 interface Post {
 	date: Date
+	entry?: PostWithMeta['entry']
 	slug: string
 	summary: string
 	tags: string[]
 	title: string
 }
 
-function postUrl(post: Pick<Post, 'slug'>) {
-	return `${SITE_URL}/post/${post.slug}`
+function postPath(post: Pick<Post, 'slug'>) {
+	return `/post/${post.slug}`
 }
 
 function postContent(post: Pick<Post, 'summary'>) {
-	return `<p>${escapeXml(post.summary)}</p>`
+	return `<p>${post.summary}</p>`
 }
 
-export function generateRssFeed(posts: Post[], locale: Locale) {
+async function rssContentHtml(post: Post) {
+	if (!post.entry?.body)
+		return postContent(post)
+
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkGfm)
+		.use(remarkCjkFriendly)
+		.use(remarkCjkFriendlyGfmStrikethrough)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(post.entry.body)
+	const html = String(file)
+
+	return html.replaceAll(/\b(href|src)="\/(?!\/)/g, `$1="${SITE_URL}/`)
+}
+
+export async function generateRssFeed(posts: Post[], locale: Locale) {
 	const m = getMessages(locale)
 	const channelTitle = m.blog.pageTitle
 	const channelDescription = m.blog.pageDescription
-	const xmlLang = escapeXml(htmlLangFor(locale))
+	const xmlLang = htmlLangFor(locale)
 
-	const items = posts.map((post) => {
-		const link = postUrl(post)
-		const content = postContent(post)
+	const items = await Promise.all(posts.map(async (post) => {
+		const content = await rssContentHtml(post)
 
-		return [
-			'<item>',
-			`<title>${escapeXml(post.title)}</title>`,
-			`<link>${escapeXml(link)}</link>`,
-			`<guid isPermaLink="true">${escapeXml(link)}</guid>`,
-			`<description>${escapeXml(post.summary)}</description>`,
-			`<pubDate>${post.date.toUTCString()}</pubDate>`,
-			`<content:encoded><![CDATA[${escapeCdata(content)}]]></content:encoded>`,
-			...post.tags.map(tag => `<category>${escapeXml(tag)}</category>`),
-			'</item>',
-		].join('')
+		return {
+			categories: post.tags,
+			content,
+			description: post.summary,
+			link: postPath(post),
+			pubDate: post.date,
+			title: post.title,
+		}
+	}))
+
+	const response = await rss({
+		customData: `<language>${xmlLang}</language>`,
+		description: channelDescription,
+		items,
+		site: SITE_URL,
+		stylesheet: '/rss.xsl',
+		title: channelTitle,
+		trailingSlash: false,
 	})
-
-	return [
-		'<?xml version="1.0" encoding="UTF-8"?>',
-		'<?xml-stylesheet href="/rss.xsl" type="text/xsl"?>',
-		`<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xml:lang="${xmlLang}">`,
-		'<channel>',
-		`<title>${escapeXml(channelTitle)}</title>`,
-		`<description>${escapeXml(channelDescription)}</description>`,
-		`<link>${SITE_URL}</link>`,
-		...items,
-		'</channel>',
-		'</rss>',
-	].join('')
+	response.headers.set('Cache-Control', RSS_CACHE_CONTROL)
+	response.headers.set('Content-Type', 'application/rss+xml; charset=utf-8')
+	return response
 }
 
 /** Default feed URL (Chinese); existing subscribers stay on this path. */

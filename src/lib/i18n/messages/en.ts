@@ -17,12 +17,11 @@ const en: Messages = {
 	},
 	capabilities: [
 		{
-			items: [
-				{
-					description: '👨‍🎨 Redesign OpenCat website',
-					title: 'OpenCat.app',
-				},
-			],
+			emptyState: {
+				description: 'Only work with clear ownership goes here.',
+				title: 'No public case yet',
+			},
+			items: [],
 			summary: 'Chat surfaces, agents, orchestration, and treating intelligence as UX—not a bolt-on.',
 			title: 'AI product experiences',
 		},

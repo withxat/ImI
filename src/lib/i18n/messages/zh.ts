@@ -12,12 +12,11 @@ const zh: Messages = {
 	},
 	capabilities: [
 		{
-			items: [
-				{
-					description: '👨‍🎨 OpenCat 网站重设计',
-					title: 'OpenCat.app',
-				},
-			],
+			emptyState: {
+				description: '只展示归属清晰的作品。',
+				title: '暂不放案例',
+			},
+			items: [],
 			summary: '对话界面、智能体、编排，把智能当作体验本身，而不是事后补丁。',
 			title: 'AI 产品体验',
 		},

@@ -17,12 +17,11 @@ const ja: Messages = {
 	},
 	capabilities: [
 		{
-			items: [
-				{
-					description: '👨‍🎨 OpenCat サイトのリデザイン',
-					title: 'OpenCat.app',
-				},
-			],
+			emptyState: {
+				description: '帰属が明確なものだけを載せます。',
+				title: '公開事例はまだ',
+			},
+			items: [],
 			summary: 'チャット UI、エージェント、オーケストレーション。知能をあと付けではなく体験として扱う。',
 			title: 'AI プロダクト体験',
 		},
