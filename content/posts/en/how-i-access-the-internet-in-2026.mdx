@@ -19,7 +19,7 @@ From then to now, I have roughly gone through packaged browser bundles, GoAgent,
 
 This is a quick record of my current setup. A note up front: **this is only a personal log. I do not recommend copying it. It mainly records the network setup I use for programming and learning.**
 
-{/* Image placeholder: an early Android ROM or XDA Developers screenshot would work well as the opening image. */}
+![Unreachable](https://assets.xat.sh/images/cant-be-reached.png)
 
 ## Current State
 
@@ -75,7 +75,7 @@ Some are even stranger: the outbound route is optimized, but the return route is
 
 You can think of it this way: when browsing the web, heavier resources like videos and images mostly come back on the return path, while the user’s outbound path is often just sending small requests. Optimizing only the outbound path is optimizing the wrong side of the knife.
 
-{/* Image placeholder: add a traceroute comparison for outbound and return paths, highlighting the “optimized outbound, ordinary return” pitfall. */}
+![A “good server” with only outbound optimization](https://assets.xat.sh/images/route.png)
 
 Some servers are indeed optimized, but all three carriers use the same optimized route, such as three-carrier CN2. If you happen to use China Telecom and the network is stable, the experience can be great. If you use another carrier, you may have to deal with cross-carrier routing inside China on the return path.
 
@@ -111,7 +111,7 @@ There are also some interesting options, such as **RFCHost a.k.a. HuaJuan Techno
 
 Still too expensive? What if I told you the route looks like this?
 
-{/* Image placeholder: add a Looking Glass or route screenshot for RFCHost / HuaJuan Hong Kong optimized routing, right after “looks like this.” */}
+![RFCHost Hong Kong optimized route](https://assets.xat.sh/images/rfchost.png)
 
 Of course, everything has a cost. Beautiful paper specs do not equal real experience. Its advertised 1Gbps port only gives me around 1Mbps here, barely enough to browse X.
 
@@ -139,7 +139,7 @@ On iOS, I usually use Loon, mostly for basic proxy functions.
 
 I also bought Surge for both iOS and macOS. It is an excellent product, but because it lacks VLESS REALITY Vision support and my subscription has expired, I do not feel a strong need to keep using it.
 
-{/* Image placeholder: add a mihomo terminal status screenshot or a Loon routing screen to close the client section. */}
+![mihomo terminal status](https://assets.xat.sh/images/mihomo.png)
 
 ## Closing
 
@@ -150,3 +150,5 @@ There are many traps here. Providers disappearing is not rare. Frequent route ch
 My final setup is [V.PS](http://V.PS) Singapore Performance. I happened to catch their route change, and now all three carriers are optimized. It feels too expensive as a standalone proxy, but I have also migrated some services onto it, so hopefully I can make better use of the machine.
 
 As for residential IPs, proper residential service in Singapore is illegal, but I still bought a NAT machine from an unknown provider. It looks like the kind of thing that might disappear any day, but it is only $2 per month, so I am using it for now.
+
+![IP check](https://assets.xat.sh/images/ip-data.png)
