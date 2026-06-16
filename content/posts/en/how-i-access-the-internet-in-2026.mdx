@@ -1,0 +1,152 @@
+---
+title: How I access the internet in 2026
+date: 2026-06-16
+category: tech
+summary: From proxy providers to self-hosting, VPS routes, protocols, and clients.
+seoDescription: A personal record of my internet access setup in 2026, covering why I only keep proxy providers as a fallback, how I choose VPS providers, optimized routes, server locations, protocols, and clients.
+tags:
+  - Network
+  - VPS
+  - Proxy
+translator:
+  - openai
+  - GPT 5.5
+---
+
+I first became aware of the GFW because I wanted to browse [XDA Developers](https://www.xda-developers.com/) smoothly and learn about Android ROM optimization and porting.
+
+From then to now, I have roughly gone through packaged browser bundles, GoAgent, proxy providers, and finally self-hosting.
+
+This is a quick record of my current setup. A note up front: **this is only a personal log. I do not recommend copying it. It mainly records the network setup I use for programming and learning.**
+
+{/* Image placeholder: an early Android ROM or XDA Developers screenshot would work well as the opening image. */}
+
+## Current State
+
+I originally wanted to write a long opening about the birth of the GFW, or maybe some thoughts after reading *Slowly, They Disappeared as If They Had Never Existed*. I wrote quite a bit, sighed, and deleted all of it.
+
+In 2026, the GFW has increasingly shifted toward behavior recognition. Traffic characteristics, protocol fingerprints, and active probing have all become major signals. The biggest challenge is no longer speed. It is stability.
+
+## About Proxy Providers
+
+I do not buy them, but I respect everyone’s choice.
+
+For me, the biggest advantage of a proxy provider is cheap multi-region exit nodes. The drawbacks are also obvious:
+
+- **Opacity**, users can hardly verify upstream routes or whether there is an intermediate relay.
+- **Instability**, once a provider is specifically identified, large-scale failures can happen overnight.
+- **Privacy and compliance risk**, all traffic goes through a third party, so the trust cost is high.
+- **Dirty IPs**, Cloudflare Turnstile appears constantly, and Reddit often forces login.
+
+Not to mention the many providers that simply disappear. Since I am able to build my own setup, proxy providers are not very attractive to me.
+
+So my current attitude is closer to this: **proxy providers are only for emergencies**.
+
+## Self-Hosting
+
+First, a quick glossary:
+
+- Provider: the VPS provider.
+- Carrier: China Mobile, China Unicom, or China Telecom.
+
+The first choice is the provider. The VPS world is messy, and one-person shops are everywhere, so it takes some effort to choose carefully.
+
+I recommend this article as a reference: [Common VPS Region Recommendations - MeowVPS](https://meowvps.com/blog/resrec/). If you want to browse more options, [DigVPS](https://digvps.com/) is also useful.
+
+### Routes
+
+The current optimized international routes for the three major carriers are **9929** for China Unicom, **CN2 GIA** for China Telecom, and **CMIN2** for China Mobile.
+
+These three routes are roughly peers within their own carrier networks, but the actual experience still differs. Under matching carrier conditions, the common ranking seems to be:
+
+```plaintext
+CN2 GIA > 9929 > CMIN2
+```
+
+Compared with ordinary routes, optimized-route servers tend to have better speed and stability. Compared with common 4837, 163, and CMI routes, fewer people use them, so peak-hour congestion is usually better.
+
+Of course, they also cost more.
+
+#### Pitfalls
+
+You need to look closely. Some servers only optimize for one of the three carriers while the other two still use ordinary routes.
+
+Some are even stranger: the outbound route is optimized, but the return route is ordinary.
+
+You can think of it this way: when browsing the web, heavier resources like videos and images mostly come back on the return path, while the user’s outbound path is often just sending small requests. Optimizing only the outbound path is optimizing the wrong side of the knife.
+
+{/* Image placeholder: add a traceroute comparison for outbound and return paths, highlighting the “optimized outbound, ordinary return” pitfall. */}
+
+Some servers are indeed optimized, but all three carriers use the same optimized route, such as three-carrier CN2. If you happen to use China Telecom and the network is stable, the experience can be great. If you use another carrier, you may have to deal with cross-carrier routing inside China on the return path.
+
+If you are unlucky enough to run into a carrier that likes to QoS cross-carrier bandwidth, then congratulations. China Mobile, yes, I am talking about you.
+
+There are also naming games. Some providers define “three-carrier optimization” as “direct routes for all three carriers,” not truly optimized routes.
+
+Still, if the region you want does not have any optimized-route machines available, this kind of server is usually better than one that detours.
+
+A quick note on detours. Because every provider has different network access conditions, not every route from a machine to you is direct.
+
+For example, if you buy a Hong Kong server and you are in Guangzhou, but the route goes `Hong Kong -> Los Angeles -> Guangzhou`, that is a classic “detour through the US.”
+
+### Location
+
+If you ignore latency, the US West Coast is actually a reasonable choice. There are more providers to choose from, and prices are much lower than in Asia-Pacific regions.
+
+I once bought a RackNerd server for $10.98 per year. Of course, the specs were not impressive.
+
+In the AI era, the US West Coast also roughly covers the supported regions of most AI services. Another advantage is cheap residential IPs, though I personally do not care much about that.
+
+Once you move into Asia, common locations like Singapore, Hong Kong, and Japan become a seller’s market. There are few providers with optimized routes, so prices shoot up.
+
+A few examples from machines I have bought:
+
+I once got a Singapore VPS from ByteVirt during a limited sale: **$35/year**, 1C1G, with a three-carrier **4837** route. During a VMRack sale, I paid **the same price** for a 1C1G yearly machine with **separate optimized routes for all three carriers**.
+
+I also used to have a Singapore 1C1G machine from Misaka. It only had three-carrier CMI and still cost **$21/month**. To be fair, they focus on stability and good exit quality.
+
+Then there are providers like GoMami and Neburst, which can reach **$29+/month**. Very luxurious.
+
+There are also some interesting options, such as **RFCHost a.k.a. HuaJuan Technology**. Their optimized Hong Kong machines can go down to **$18.9/month** with regular discounts.
+
+Still too expensive? What if I told you the route looks like this?
+
+{/* Image placeholder: add a Looking Glass or route screenshot for RFCHost / HuaJuan Hong Kong optimized routing, right after “looks like this.” */}
+
+Of course, everything has a cost. Beautiful paper specs do not equal real experience. Its advertised 1Gbps port only gives me around 1Mbps here, barely enough to browse X.
+
+After all this comparison, it is easy to get stuck.
+
+I did buy several US West machines and used them for quite a while, but in the end I still chose Singapore. The time zone is the same, the Chinese-language environment is better, and the latency plus AI service coverage are good enough for me.
+
+Some new features still launch in the US first, such as last year’s [Your Year with ChatGPT](https://x.com/OpenAI/status/2003190103729144224), but I do not seem to care that much.
+
+### Protocol
+
+My self-hosted Shadowsocks setup was blocked intermittently 3 to 5 times. Maybe I used it wrong, but I stopped considering it after that.
+
+Since UDP QoS is severe in my area, Hysteria2 was naturally ruled out.
+
+AnyTLS also saw large-scale blocking some time ago.
+
+So I chose the more traditional VLESS + REALITY + Vision setup.
+
+### Clients
+
+On macOS, I run mihomo directly from the command line. Since I only use one node, once the routing rules are configured, there is not much interaction needed.
+
+On iOS, I usually use Loon, mostly for basic proxy functions.
+
+I also bought Surge for both iOS and macOS. It is an excellent product, but because it lacks VLESS REALITY Vision support and my subscription has expired, I do not feel a strong need to keep using it.
+
+{/* Image placeholder: add a mihomo terminal status screenshot or a Loon routing screen to close the client section. */}
+
+## Closing
+
+I still do not recommend self-hosting a proxy unless you have a strong need. Your current setup may already be good enough.
+
+There are many traps here. Providers disappearing is not rare. Frequent route changes and service degradation caused by DDoS attacks are things you only really understand after running into them.
+
+My final setup is [V.PS](http://V.PS) Singapore Performance. I happened to catch their route change, and now all three carriers are optimized. It feels too expensive as a standalone proxy, but I have also migrated some services onto it, so hopefully I can make better use of the machine.
+
+As for residential IPs, proper residential service in Singapore is illegal, but I still bought a NAT machine from an unknown provider. It looks like the kind of thing that might disappear any day, but it is only $2 per month, so I am using it for now.
