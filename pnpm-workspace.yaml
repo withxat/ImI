@@ -1,5 +1,3 @@
-minimumReleaseAgeExclude:
-  - rehype-fluent-emoji
 shellEmulator: true
 trustPolicy: no-downgrade
 
@@ -8,11 +6,6 @@ trustPolicyIgnoreAfter: 535600
 trustPolicyExclude:
   - tinyexec@1.2.2
 
-packages:
-  - .
-
-patchedDependencies:
-  cn-font-split@7.4.1: patches/cn-font-split@7.4.1.patch
 allowBuilds:
   cn-font-split: true
   esbuild: false

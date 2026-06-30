@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 
 import cloudflare from '@astrojs/cloudflare'
+import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
@@ -114,13 +115,7 @@ export default defineConfig({
 			useDarkModeMediaQuery: false,
 		}),
 		fluentEmoji(),
-		mdx({
-			remarkPlugins: [
-				remarkGfm,
-				remarkCjkFriendly,
-				remarkCjkFriendlyGfmStrikethrough,
-			],
-		}),
+		mdx(),
 		sitemap({
 			customPages: sitemapBuild.customPages,
 			filter: (page) => {
@@ -149,6 +144,15 @@ export default defineConfig({
 			},
 		}),
 	],
+	markdown: {
+		processor: unified({
+			remarkPlugins: [
+				remarkGfm,
+				remarkCjkFriendly,
+				remarkCjkFriendlyGfmStrikethrough,
+			],
+		}),
+	},
 	output: 'server',
 	site: 'https://xat.sh',
 	vite: {
