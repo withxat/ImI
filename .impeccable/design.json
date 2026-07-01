@@ -281,10 +281,10 @@
 	],
 	"narrative": {
 		"northStar": "Cute with Shiny Elegance",
-		"overview": "The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — held together by hairlines, not boxes. The accent is Quiet Rose in light mode and Warm Apricot in dark, used on no more than ~10% of any screen. The 'Cute' lives in specific, named places: the Fugaz One wordmark, the coin-flip mascot, the wanderer gradient footer. The 'Shiny' is the soft pink halo under interactive surfaces. The 'Elegance' is the trilingual typography stack tuned with per-locale breaking rules.",
+		"overview": "The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — whose page structure comes from spacing, rhythm, and typographic alignment. Hairlines appear only where a bounded surface needs an edge. The accent is Quiet Rose in light mode and Warm Apricot in dark, used on no more than ~10% of any screen. The 'Cute' lives in specific, named places: the Fugaz One wordmark, the coin-flip mascot, the wanderer gradient footer. The 'Shiny' is the soft pink halo under interactive surfaces. The 'Elegance' is the trilingual typography stack tuned with per-locale breaking rules.",
 		"keyCharacteristics": [
 			"Mono-ink + one accent (≤10% of any screen)",
-			"Hairlines over fills",
+			"Spacing-first structure; hairlines for bounded surfaces",
 			"Whisper shadows, never elevation",
 			"Trilingual-first typography",
 			"Reveal on entry (blur-in, 420ms ease-out-quart)",
@@ -298,8 +298,8 @@
 				"section": "colors"
 			},
 			{
-				"name": "The Hairlines-Not-Walls Rule",
-				"body": "In light mode, surface, card, and popover all collapse to background. Cards exist as bordered regions, not filled regions.",
+				"name": "The Boundaries-Not-Walls Rule",
+				"body": "In light mode, surface, card, and popover all collapse to background. Components that need containment exist as lightly bordered regions, while page sections remain open and are separated by spacing.",
 				"section": "colors"
 			},
 			{
@@ -329,7 +329,7 @@
 			},
 			{
 				"name": "The Border-First Rule",
-				"body": "When you reach for a shadow to separate a surface, try a hairline border first.",
+				"body": "When a bounded surface needs separation, try a hairline border before a shadow. Use whitespace for page structure.",
 				"section": "elevation"
 			}
 		],
@@ -337,7 +337,7 @@
 			"Do keep highlight-text and highlight-soft below ~10% of any rendered screen.",
 			"Do use OKLCH for every color token.",
 			"Do tint shadows with highlight-soft in light mode.",
-			"Do carry structure with hairline borders, not background fills.",
+			"Do carry page structure with spacing, rhythm, and alignment; reserve hairlines for bounded surfaces.",
 			"Do use text-wrap: balance on Latin headings and text-wrap: wrap on Japanese headings.",
 			"Do wrap prime-component customization in src/components/, not src/components/ui/.",
 			"Do use transition-colors duration-150 ease-out as the default transition.",

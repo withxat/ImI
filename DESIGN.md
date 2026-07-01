@@ -24,7 +24,7 @@ colors:
   muted-foreground: "oklch(0.45 0.004 260)"
   muted-foreground-dark: "oklch(0.68 0.006 260)"
 
-  # ─── Wash & edges (structure, hover state) ───
+  # ─── Wash & edges (surface boundaries, hover state) ───
   muted: "oklch(0 0 0 / 0.04)"
   muted-dark: "oklch(0.965 0.006 260 / 0.06)"
   border: "oklch(0 0 0 / 0.08)"
@@ -193,7 +193,7 @@ motion, component HTML/CSS, narrative).
 
 **Creative North Star: "Cute with Shiny Elegance."**
 
-The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — held together by hairlines, not boxes. The accent is **Quiet Rose** in light mode and **Warm Apricot** in dark, used on no more than ~10% of any screen: the wordmark, link affordances, an icon tint, a hover halo around a card. The accent is the brand's voice; its rarity is what makes it land.
+The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — whose page structure comes from spacing, rhythm, and typographic alignment. Hairlines appear only where a bounded surface needs an edge. The accent is **Quiet Rose** in light mode and **Warm Apricot** in dark, used on no more than ~10% of any screen: the wordmark, link affordances, an icon tint, a hover halo around a card. The accent is the brand's voice; its rarity is what makes it land.
 
 The "Cute" lives in specific, named places — never as ambient decoration. A `Fugaz One` wordmark used only for the three letters "Xat". A coin-flip mascot on the design page. A `wanderer` gradient text in the footer that animates rose to cyan as a metaphor for the visitor's geographic journey to this site. The "Shiny" is the soft pink halo (`highlight-soft`) that appears under interactive surfaces on hover. The "Elegance" is the trilingual typography stack — Hanken Grotesk for Latin, MiSans for CJK content, a tiny `vite-plugin-font` Source Han Serif subset for the bio lead — tuned with per-locale `text-wrap`, `line-break`, and `hyphens` rules so Chinese, Japanese, and English each break the way their typography traditions expect.
 
@@ -201,7 +201,7 @@ The system explicitly rejects: corporate SaaS chrome, brutalist heaviness, templ
 
 **Key Characteristics:**
 - **Mono-ink + one accent.** Restrained color strategy. The accent appears on ≤10% of any screen and means *something*: identity, link, emphasis, or interaction state.
-- **Hairlines over fills.** Structure is carried by 1px borders at 8–15% opacity, not by background colors or shadows.
+- **Spacing-first structure.** Sections are separated by whitespace and rhythm, not rules. When a card, popover, control, or media surface needs a boundary, use a 1px hairline at 8–15% opacity instead of a heavier fill or shadow.
 - **Whisper shadows, never elevation.** The system's base shadow token (`shadow-halo`) is tinted with the brand color at 30% opacity. Hover deepens to 45% via color override, never new geometry. Article media uses `shadow-image-edge`, a shadow-drawn hairline plus the same halo. Shadows suggest a halo or edge, not lift.
 - **Trilingual-first typography.** Every paragraph, heading, and label has explicit `lang`-aware breaking rules. Latin balances, CJK wraps, Japanese line-breaks strict.
 - **Reveal on entry.** Page-load and scroll-driven blur-in (10px → 0, opacity 0 → 1, 420ms `cubic-bezier(0.22, 1, 0.36, 1)`). Staggered children are how content arrives; static is how content rests.
@@ -228,7 +228,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 - **Whisper Ink** (light muted-foreground: `oklch(0.45 0.004 260)`) / **Dust Snow** (dark: `oklch(0.68 0.006 260)`): Secondary copy. Bio descriptions, eyebrow numbers, captions.
 - **Paper / Ink** (background: light `oklch(1 0 0)`, dark `oklch(0.145 0.004 260)`): The page canvas. Light reads as paper-clean; dark is near-black with a whisper of blue-violet.
 - **Riser** (surface / card / popover, dark only: `oklch(0.19 0.005 260)`): A single raised step above ink. In light mode there is no riser — `surface`, `card`, and `popover` all collapse to `background` and are separated by border instead of fill.
-- **Hairline** (border: light `oklch(0 0 0 / 0.08)` / dark `oklch(0.965 0.006 260 / 0.15)`): All structural separation. 1px, alpha-mixed against the surface so it never reads as a line painted on top.
+- **Hairline** (border: light `oklch(0 0 0 / 0.08)` / dark `oklch(0.965 0.006 260 / 0.15)`): The quiet edge for bounded components and media. It is 1px and alpha-mixed against the surface so it never reads as a line painted on top. It is not the default separator between page sections.
 
 ### Tertiary
 
@@ -239,7 +239,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 **The One Voice Rule.** `highlight-text` and `highlight-soft` together occupy ≤10% of any rendered screen. The accent's rarity is the point. If a screen feels "too pink", remove a use, don't desaturate the color.
 
-**The Hairlines-Not-Walls Rule.** In light mode, `surface`, `card`, and `popover` all collapse to the same value as `background`. Cards exist as bordered regions, not filled regions. In dark mode, a single 0.045-luminance step lifts them. Never stack more than one elevation step.
+**The Boundaries-Not-Walls Rule.** In light mode, `surface`, `card`, and `popover` all collapse to the same value as `background`. A component that needs containment exists as a lightly bordered region, not a filled wall. Page sections remain open and are separated by spacing. In dark mode, a single 0.045-luminance step lifts bounded surfaces. Never stack more than one elevation step.
 
 **The Selection Is Not the Link Rule.** Selection color is warm yellow (`Selection Honey`), not the rose accent, so a selected paragraph never reads as a hyperlink mid-read.
 
@@ -297,13 +297,13 @@ Hover state shadows are recolored, not enlarged. `highlight-surface-hover` shift
 
 **The Whisper-Only Rule.** Every shadow in the system is tinted with `highlight-soft` at <50% opacity. Pure black `rgba(0,0,0,X)` shadows are forbidden in light mode — they read as cheap, generic. Dark-mode shadows fall back to `black/35–40` because tinted shadows wash out against dark surfaces.
 
-**The Border-First Rule.** When you reach for a shadow to separate a surface from its background, try a hairline border first. Shadow is for state (hover, focus, halo), border is for structure.
+**The Border-First Rule.** When a bounded surface needs separation from its background, try a hairline border before a shadow. Shadow is for state (hover, focus, halo), border is for the surface edge, and whitespace is for page structure.
 
 **The No-Glass Rule.** No `backdrop-filter: blur()` as a decorative layer. The one exception is the code-block copy button's 2px backdrop blur, which is a functional readability fix on top of dark code surfaces, not a glassmorphism aesthetic.
 
 ## 5. Components
 
-Every component starts as a bejamas prime (`src/components/ui/<name>/`); custom compositions live in `src/components/` and wrap primes rather than modifying them. The visual language across all of them is: rounded-md to rounded-xl, 1px hairline borders, restrained transitions (150ms ease-out), `active:scale-98` press feedback, focus-ring at `ring/50` opacity.
+Every component starts as a bejamas prime (`src/components/ui/<name>/`); custom compositions live in `src/components/` and wrap primes rather than modifying them. The shared visual language is rounded-md to rounded-xl, restrained transitions (150ms ease-out), `active:scale-98` press feedback, and a focus ring at `ring/50` opacity. Components use a 1px hairline only when their boundary needs to be visible; ghost controls and open page sections remain borderless.
 
 ### Buttons
 
@@ -377,7 +377,7 @@ A composed component that wraps the bejamas `Button` (variant `outline`) inside 
 
 - **Header:** Locale switcher + theme switcher, baseline-aligned, justified across the page top. No global nav bar — this is a personal site, not an app.
 - **Footer:** Wanderer gradient text + footer nav + version + ICP filing. The wanderer line is the only animated element.
-- **Locale switcher:** Three `text-link-muted` text buttons separated by a divider. Active locale is `text-highlight-strong`. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
+- **Locale switcher:** Three `text-link-muted` text buttons separated by small dot glyphs. Active locale is `text-highlight-strong`. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
 - **Theme switcher:** Three buttons (Light / Dark / System) in a pill row.
 
 ### Reveal & Stagger (the entrance language)
@@ -402,7 +402,7 @@ Footer-only signature. A `background-clip: text` gradient that animates `backgro
 - **Do** keep `highlight-text` and `highlight-soft` together below ~10% of any rendered screen. Their rarity is what makes them read as identity.
 - **Do** use OKLCH for every color token. No hex in source. No `rgb()` either.
 - **Do** tint shadows with `highlight-soft` in light mode. Pure-black shadows read as cheap.
-- **Do** carry structure with hairline borders (1px at 8–15% opacity), not background fills.
+- **Do** carry page structure with spacing, rhythm, and alignment. Reserve hairline borders (1px at 8–15% opacity) for bounded surfaces that need a visible edge.
 - **Do** use `text-wrap: balance` on Latin headings and `text-wrap: wrap` on Japanese headings. The site has explicit per-locale rules; don't bypass them with utility classes.
 - **Do** wrap any new prime-component customization in `src/components/`, not by editing files in `src/components/ui/`. The prime directory is a mirror of the bejamas registry.
 - **Do** use `transition-colors duration-150 ease-out` as the default transition. The whole system breathes at the same tempo.
