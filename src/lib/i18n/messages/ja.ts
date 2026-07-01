@@ -95,8 +95,8 @@ const ja: Messages = {
 					title: 'サーフェス',
 				},
 				washEdges: {
-					description: 'hover / selected 状態に使う淡い背景色。',
-					title: '背景色と区切り線',
+					description: '操作状態の淡い背景色と、囲われた面の静かな境界。',
+					title: '背景色と境界',
 				},
 			},
 			intro: 'ワイドではパレットを並べて表示、ナローではタブで切り替える。既定値は現在のテーマに揃う。',
@@ -140,7 +140,7 @@ const ja: Messages = {
 			wandererDescriptor: 'グラデーションで動く文字。フッターの装飾だけに使う。',
 		},
 		elevation: {
-			flatNote: '面はページにフラットに置き、細線と柔らかな光で層を表す。',
+			flatNote: '面はページにフラットに置く。細線は縁を定め、柔らかな光は操作性を示す。',
 			haloDescription: '0 1px 2px · highlight-soft / 30%',
 			haloLabel: '操作できる面を示す、シグネチャの柔らかな縁',
 			imageEdgeDescription: '1px インクエッジ · shadow-halo',
@@ -153,7 +153,7 @@ const ja: Messages = {
 		northStar: {
 			characteristics: [
 				'モノインク基調 + 単一アクセント（Quiet Rose / Warm Apricot）',
-				'タイポグラフィと細線で画面を組む',
+				'余白、リズム、タイポグラフィの整列でページを組む',
 				'三言語の組版を最適化（zh / en / ja）',
 				'入場時のフェード、420ms ease-out-quart',
 				'レスポンシブな単一ナローカラム（最大 42rem）',
@@ -170,8 +170,8 @@ const ja: Messages = {
 					name: 'ひとつの声の原則',
 				},
 				{
-					body: 'タイポグラフィで画面を組み、細線で区切る。',
-					name: 'レイアウトの原則',
+					body: '余白、リズム、タイポグラフィの整列でページを組み、細線は必要な面の境界にだけ使う。',
+					name: '余白優先のレイアウト原則',
 				},
 				{
 					body: 'font-fugaz-one は「Xat」というロゴ文字にだけ使う。',

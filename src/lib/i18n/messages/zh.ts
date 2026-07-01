@@ -90,8 +90,8 @@ const zh: Messages = {
 					title: '表面',
 				},
 				washEdges: {
-					description: '用于 hover/selected 状态的弱底色。',
-					title: '底色与分隔线',
+					description: '用于交互状态的弱底色，以及封闭表面的轻边界。',
+					title: '底色与边界',
 				},
 			},
 			intro: '宽屏并排展示两套色板，窄屏可切换查看，默认跟随当前主题。',
@@ -135,7 +135,7 @@ const zh: Messages = {
 			wandererDescriptor: '渐变动效文字，仅用于页脚的文本装饰',
 		},
 		elevation: {
-			flatNote: '表面默认平贴页面，层次主要靠细线与柔光表达。',
+			flatNote: '表面默认平贴页面。细线界定边缘，柔光提示交互。',
 			haloDescription: '0 1px 2px · highlight-soft / 30%',
 			haloLabel: '可交互表面的标志性柔光边缘',
 			imageEdgeDescription: '1px 墨色边缘 · shadow-halo',
@@ -148,7 +148,7 @@ const zh: Messages = {
 		northStar: {
 			characteristics: [
 				'墨色主色调 + 单强调色（静谧玫瑰 / 暖杏）',
-				'用排版和细线组织界面',
+				'用留白、节奏与排版对齐组织页面',
 				'三语排版优化（中 / 英 / 日）',
 				'入场渐显动画，420ms ease-out-quart',
 				'响应式设计，单栏窄版（最大 42rem）',
@@ -165,8 +165,8 @@ const zh: Messages = {
 					name: '单一声音原则',
 				},
 				{
-					body: '用排版来组织界面，细线来分隔。',
-					name: '排版布局原则',
+					body: '用留白、节奏和排版对齐组织页面；细线仅界定需要边界的表面。',
+					name: '留白优先原则',
 				},
 				{
 					body: 'font-fugaz-one 仅用在 Logo 文本「Xat」。',

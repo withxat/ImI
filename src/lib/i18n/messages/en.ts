@@ -95,8 +95,8 @@ const en: Messages = {
 					title: 'Surface',
 				},
 				washEdges: {
-					description: 'Soft fills for hover and selected states.',
-					title: 'Wash & separators',
+					description: 'Soft interactive fills and quiet edges for bounded surfaces.',
+					title: 'Wash & edges',
 				},
 			},
 			intro: 'Both palettes show side by side on wide screens; tap to swap on narrow ones. Defaults to your current theme.',
@@ -140,7 +140,7 @@ const en: Messages = {
 			wandererDescriptor: 'Animated gradient text, used only as decoration in the footer',
 		},
 		elevation: {
-			flatNote: 'Surfaces sit flat against the page. Hairlines and soft glows do the layering.',
+			flatNote: 'Surfaces sit flat against the page. Hairlines mark their edges; soft glows signal interaction.',
 			haloDescription: '0 1px 2px · highlight-soft / 30%',
 			haloLabel: 'Signature soft edge for interactive surfaces',
 			imageEdgeDescription: '1px ink edge · shadow-halo',
@@ -153,7 +153,7 @@ const en: Messages = {
 		northStar: {
 			characteristics: [
 				'Mono-ink palette + one accent (Quiet Rose / Warm Apricot)',
-				'Typography and hairlines organize the interface',
+				'Spacing, rhythm, and typographic alignment organize the page',
 				'Trilingual typography, tuned for zh / en / ja',
 				'Reveal animation on entry, 420ms ease-out-quart',
 				'Responsive, narrow single column (42rem max)',
@@ -170,8 +170,8 @@ const en: Messages = {
 					name: 'One Voice Principle',
 				},
 				{
-					body: 'Typography organizes the interface; hairlines separate it.',
-					name: 'Layout Principle',
+					body: 'Spacing, rhythm, and typographic alignment organize the page; hairlines only bound surfaces.',
+					name: 'Spacing-first Layout Principle',
 				},
 				{
 					body: 'font-fugaz-one is used only for the "Xat" logo text.',
