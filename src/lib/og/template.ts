@@ -36,6 +36,7 @@ const CONTENT_TOP_PADDING = 12
 
 const shellStyle = {
 	backgroundColor: OG_COLORS.bg,
+	boxSizing: 'border-box',
 	color: OG_COLORS.primary,
 	display: 'flex',
 	flexDirection: 'column',
