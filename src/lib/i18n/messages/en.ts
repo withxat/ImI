@@ -33,7 +33,7 @@ const en: Messages = {
 				},
 				{
 					description: '🍊 A warm, minimal Astro blog template',
-					title: 'mikan',
+					title: 'Mikan',
 				},
 				{
 					description: '🫧 My personal website and digital garden',
@@ -61,7 +61,7 @@ const en: Messages = {
 			items: [
 				{
 					description: '😀 A Rehype plugin that renders Unicode Emoji as Fluent Emoji',
-					title: 'rehype-fluent-emoji',
+					title: 'Rehype-Fluent-Emoji',
 				},
 			],
 			summary: 'Tuning motion and interaction details until an interface feels smoother and looks better.',

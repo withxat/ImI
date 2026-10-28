@@ -15,12 +15,12 @@
 				"summary": "Architecture, performance budgets, and component systems that scale with the product.",
 				"items": [
 					{
-						"title": "Monorepo Template",
+						"title": "Monorepo-Template",
 						"description": "🍤 Just a template",
 						"link": "https://github.com/withxat/monorepo-template"
 					},
 					{
-						"title": "mikan",
+						"title": "Mikan",
 						"description": "🍊 A warm, minimal Astro blog template",
 						"link": "https://github.com/withxat/mikan"
 					},
@@ -52,7 +52,7 @@
 				"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
 				"items": [
 					{
-						"title": "rehype-fluent-emoji",
+						"title": "Rehype-Fluent-Emoji",
 						"description": "🤗 Fluent emoji that still copies as Unicode",
 						"link": "https://github.com/withxat/rehype-fluent-emoji"
 					}

@@ -33,7 +33,7 @@ const ja: Messages = {
 				},
 				{
 					description: '🍊 あたたかくてミニマルな Astro ブログテンプレート',
-					title: 'mikan',
+					title: 'Mikan',
 				},
 				{
 					description: '🫧 個人サイト兼デジタルガーデン',
@@ -61,7 +61,7 @@ const ja: Messages = {
 			items: [
 				{
 					description: '😀 Unicode Emoji を Fluent Emoji として描画する Rehype プラグイン',
-					title: 'rehype-fluent-emoji',
+					title: 'Rehype-Fluent-Emoji',
 				},
 			],
 			summary: 'モーションと操作の細部を詰めて、触りやすく、見た目も気持ちいい画面にする。',

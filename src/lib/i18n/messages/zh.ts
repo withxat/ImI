@@ -28,7 +28,7 @@ const zh: Messages = {
 				},
 				{
 					description: '🍊 一个温暖、简洁的 Astro 博客模板',
-					title: 'mikan',
+					title: 'Mikan',
 				},
 				{
 					description: '🫧 我的个人网站和数字花园',
@@ -56,7 +56,7 @@ const zh: Messages = {
 			items: [
 				{
 					description: '😀 将 Unicode Emoji 渲染为 Fluent Emoji 的 Rehype 插件',
-					title: 'rehype-fluent-emoji',
+					title: 'Rehype-Fluent-Emoji',
 				},
 			],
 			summary: '琢磨动效与交互细节，让界面更顺手，也更耐看。',
