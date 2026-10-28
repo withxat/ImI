@@ -31,3 +31,9 @@ pnpm dev
 | `pnpm typegen` | Regenerate Worker binding types after editing `wrangler.jsonc` |
 
 See [`AGENTS.md`](AGENTS.md), [`PRODUCT.md`](PRODUCT.md) and [`DESIGN.md`](DESIGN.md) for architecture, product and design notes.
+
+## License
+
+- Code: [MIT](LICENSE)
+- Posts in `content/posts/`: [CC BY-NC 4.0](content/LICENSE)
+- Third-party fonts and Fluent Emoji assets keep their own licenses.
