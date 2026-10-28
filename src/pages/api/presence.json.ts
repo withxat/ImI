@@ -6,10 +6,14 @@ import { env } from 'cloudflare:workers'
 
 import { VISITOR_SESSION_COOKIE } from '@/lib/site-stats/constants.ts'
 import { heartbeatSitePresence } from '@/lib/site-stats/server.ts'
+import { isLikelyBot } from '@/lib/site-stats/tracking.ts'
 
 export const prerender = false
 
-export const POST: APIRoute = async ({ cookies }) => {
+export const POST: APIRoute = async ({ cookies, request }) => {
+	if (isLikelyBot(request))
+		return new Response(null, { headers: { 'Cache-Control': 'no-store' }, status: 204 })
+
 	const sessionId = cookies.get(VISITOR_SESSION_COOKIE)?.value?.trim()
 	if (!sessionId)
 		return new Response('session required', { status: 401 })

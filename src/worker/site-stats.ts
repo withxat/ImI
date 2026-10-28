@@ -12,12 +12,28 @@ export interface SiteStatsSnapshot {
 	totalViews: number
 }
 
-interface SeenSessions {
-	[sessionId: string]: number
-}
-
 export class SiteStats extends DurableObject {
 	#active = new Map<string, number>()
+
+	constructor(ctx: DurableObjectState, env: Env) {
+		super(ctx, env)
+
+		ctx.blockConcurrencyWhile(async () => {
+			ctx.storage.sql.exec(`
+				CREATE TABLE IF NOT EXISTS seen_sessions (
+					session_id TEXT PRIMARY KEY,
+					last_seen INTEGER NOT NULL
+				);
+				CREATE INDEX IF NOT EXISTS seen_sessions_last_seen ON seen_sessions (last_seen);
+			`)
+
+			if (await ctx.storage.get<number>('totalViews') === undefined)
+				await ctx.storage.put('totalViews', SITE_STATS_INITIAL_TOTAL)
+
+			// Legacy: dedup map used to live in a single KV value.
+			await ctx.storage.delete('seenSessions')
+		})
+	}
 
 	override async fetch(request: Request): Promise<Response> {
 		const url = new URL(request.url)
@@ -38,7 +54,7 @@ export class SiteStats extends DurableObject {
 			}
 
 			if (url.pathname === '/heartbeat') {
-				this.#heartbeat(sessionId)
+				await this.#heartbeat(sessionId)
 				return new Response(null, { status: 204 })
 			}
 		}
@@ -48,19 +64,10 @@ export class SiteStats extends DurableObject {
 
 	override async alarm(): Promise<void> {
 		this.#pruneActive()
-		await this.#scheduleAlarm()
-	}
 
-	async #ensureInitialized() {
-		const total = await this.ctx.storage.get<number>('totalViews')
-		if (total === undefined)
-			await this.ctx.storage.put('totalViews', SITE_STATS_INITIAL_TOTAL)
-
-		const seen = await this.ctx.storage.get<SeenSessions>('seenSessions')
-		if (!seen)
-			await this.ctx.storage.put('seenSessions', {})
-
-		await this.#scheduleAlarm()
+		// Stop waking up once nobody is online; the next heartbeat re-arms it.
+		if (this.#active.size > 0)
+			await this.ctx.storage.setAlarm(Date.now() + PRUNE_ALARM_MS)
 	}
 
 	async #scheduleAlarm() {
@@ -76,39 +83,31 @@ export class SiteStats extends DurableObject {
 		}
 	}
 
-	#heartbeat(sessionId: string) {
+	async #heartbeat(sessionId: string) {
 		this.#active.set(sessionId, Date.now())
+		await this.#scheduleAlarm()
 	}
 
 	async #recordView(sessionId: string) {
-		await this.#ensureInitialized()
-		this.#heartbeat(sessionId)
+		await this.#heartbeat(sessionId)
 
 		const now = Date.now()
-		const seen = await this.ctx.storage.get<SeenSessions>('seenSessions') ?? {}
-		const lastSeen = seen[sessionId]
-		if (lastSeen && now - lastSeen < VIEW_DEDUP_MS)
-			return
+		const sql = this.ctx.storage.sql
+		sql.exec('DELETE FROM seen_sessions WHERE last_seen <= ?', now - VIEW_DEDUP_MS)
 
-		seen[sessionId] = now
-		const pruned = this.#pruneSeenSessions(seen, now)
-		await this.ctx.storage.put('seenSessions', pruned)
+		const inserted = sql.exec(
+			'INSERT INTO seen_sessions (session_id, last_seen) VALUES (?, ?) ON CONFLICT (session_id) DO NOTHING',
+			sessionId,
+			now,
+		).rowsWritten
+		if (inserted === 0)
+			return
 
 		const total = await this.ctx.storage.get<number>('totalViews') ?? SITE_STATS_INITIAL_TOTAL
 		await this.ctx.storage.put('totalViews', total + 1)
 	}
 
-	#pruneSeenSessions(seen: SeenSessions, now: number): SeenSessions {
-		const next: SeenSessions = {}
-		for (const [sessionId, timestamp] of Object.entries(seen)) {
-			if (now - timestamp < VIEW_DEDUP_MS)
-				next[sessionId] = timestamp
-		}
-		return next
-	}
-
 	async #getStats(): Promise<SiteStatsSnapshot> {
-		await this.#ensureInitialized()
 		this.#pruneActive()
 
 		const totalViews = await this.ctx.storage.get<number>('totalViews') ?? SITE_STATS_INITIAL_TOTAL

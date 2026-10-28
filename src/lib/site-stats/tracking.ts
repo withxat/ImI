@@ -10,8 +10,29 @@ const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365
 
 const TRACKED_PATH_PREFIXES = ['/', '/post', '/design'] as const
 
+// Crawlers, link unfurlers, monitors and headless/CLI clients. Bots rarely keep
+// cookies, so each request would otherwise mint a fresh session and count as a view.
+const BOT_USER_AGENT_PATTERN = /bot|crawl|spider|slurp|scrape|fetch|preview|monitor|uptime|lighthouse|pagespeed|headless|phantom|puppeteer|playwright|selenium|curl|wget|httpie|python|java\/|go-http|okhttp|axios|node-fetch|undici|feed|rss|facebookexternalhit|embedly|whatsapp|vercel|cloudflare/i
+
+interface Cf { botManagement?: { verifiedBot?: boolean } }
+
+export function isLikelyBot(request: Request) {
+	// Only populated on Bot Management plans; the UA check covers everything else.
+	if ((request as Request & { cf?: Cf }).cf?.botManagement?.verifiedBot)
+		return true
+
+	const userAgent = request.headers.get('user-agent')
+	if (!userAgent)
+		return true
+
+	return BOT_USER_AGENT_PATTERN.test(userAgent)
+}
+
 export function shouldTrackSiteVisit(request: Request, pathname: string) {
 	if (request.method !== 'GET')
+		return false
+
+	if (isLikelyBot(request))
 		return false
 
 	if (pathname.startsWith('/api/'))
