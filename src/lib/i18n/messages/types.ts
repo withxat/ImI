@@ -81,7 +81,6 @@ export type TypographyScaleRoleKey
 export interface DesignSystemCopy {
 	colors: {
 		groups: Record<ColorGroupKey, ColorGroupCopy>
-		intro: string
 		modeLabel: {
 			dark: string
 			light: string
@@ -104,7 +103,6 @@ export interface DesignSystemCopy {
 		wandererDescriptor: string
 	}
 	elevation: {
-		flatNote: string
 		haloDescription: string
 		haloLabel: string
 		imageEdgeDescription: string
@@ -115,7 +113,6 @@ export interface DesignSystemCopy {
 	eyebrow: string
 	flipMascot: string
 	northStar: {
-		characteristics: string[]
 		tagline: string
 		title: string
 	}
@@ -126,6 +123,7 @@ export interface DesignSystemCopy {
 		title: string
 	}
 	typography: {
+		intro: string
 		sampleDescriptors: {
 			accent: string
 			cjk: string

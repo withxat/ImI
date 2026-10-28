@@ -191,16 +191,16 @@ const fontSpecimens: FontSpecimen[] = [
 						<p class="max-w-prose text-base/7 text-muted-foreground">
 							{m.design.northStar.tagline}
 						</p>
-						<ul class="max-w-prose list-inside list-disc space-y-2 text-sm text-muted-foreground">
-							{m.design.northStar.characteristics.map(item => (
-								<li>{item}</li>
-							))}
-						</ul>
 					</section>
 
 					<!-- 2. Typography -->
 					<section class="space-y-8">
-						<h2 class="text-2xl font-medium text-foreground">{m.design.typography.title}</h2>
+						<div class="space-y-3">
+							<h2 class="text-2xl font-medium text-foreground">{m.design.typography.title}</h2>
+							<p class="max-w-prose text-base/7 text-muted-foreground">
+								{m.design.typography.intro}
+							</p>
+						</div>
 
 						<div class="space-y-4">
 							<h3 class="text-lg font-medium text-foreground">{m.design.typography.scaleTitle}</h3>
@@ -253,12 +253,7 @@ const fontSpecimens: FontSpecimen[] = [
 
 					<!-- 3. Colors -->
 					<section class="space-y-8">
-						<div class="space-y-3">
-							<h2 class="text-2xl font-medium text-foreground">{m.design.colors.title}</h2>
-							<p class="max-w-prose text-base/7 text-muted-foreground">
-								{m.design.colors.intro}
-							</p>
-						</div>
+						<h2 class="text-2xl font-medium text-foreground">{m.design.colors.title}</h2>
 
 						<div class="space-y-12">
 							{colorGroups.map((group) => {
@@ -365,7 +360,6 @@ const fontSpecimens: FontSpecimen[] = [
 						<div class="space-y-3">
 							<h2 class="text-2xl font-medium text-foreground">{m.design.elevation.title}</h2>
 							<p class="max-w-prose text-base/7 text-muted-foreground">{m.design.elevation.intro}</p>
-							<p class="max-w-prose text-sm text-muted-foreground">{m.design.elevation.flatNote}</p>
 						</div>
 						<div class="page-grid-2">
 							<div class="rounded-xl border border-border bg-background px-5 py-6 shadow-halo">

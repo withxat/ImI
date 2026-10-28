@@ -18,16 +18,6 @@
 						"title": "Monorepo-Template",
 						"description": "🍤 Just a template",
 						"link": "https://github.com/withxat/monorepo-template"
-					},
-					{
-						"title": "Mikan",
-						"description": "🍊 A warm, minimal Astro blog template",
-						"link": "https://github.com/withxat/mikan"
-					},
-					{
-						"title": "ImI",
-						"description": "🫧 My personal website and digital garden",
-						"link": "https://github.com/withxat/ImI"
 					}
 				]
 			},
@@ -55,6 +45,16 @@
 						"title": "Rehype-Fluent-Emoji",
 						"description": "🤗 Fluent emoji that still copies as Unicode",
 						"link": "https://github.com/withxat/rehype-fluent-emoji"
+					},
+					{
+						"title": "Mikan",
+						"description": "🍊 A warm, minimal Astro blog template",
+						"link": "https://github.com/withxat/mikan"
+					},
+					{
+						"title": "ImI",
+						"description": "🫧 My personal website and digital garden",
+						"link": "https://github.com/withxat/ImI"
 					}
 				],
 				"emptyState": {
