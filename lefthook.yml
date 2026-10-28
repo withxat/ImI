@@ -7,5 +7,5 @@ pre-commit:
       stage_fixed: true
 
     - name: typecheck
-      run: pnpm exec tsc --noEmit
-      glob: '**/*.{ts,tsx,js,jsx}'
+      run: pnpm exec astro check
+      glob: '**/*.{ts,tsx,js,jsx,astro}'

@@ -1,5 +1,4 @@
 import type { ChangeFreqEnum } from '@astrojs/sitemap'
-import type { AstroIntegration } from 'astro'
 
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
@@ -52,28 +51,6 @@ function getCommitSha() {
 	}
 }
 
-function fluentEmoji(): AstroIntegration {
-	return {
-		hooks: {
-			'astro:config:setup': ({ config, updateConfig }) => {
-				updateConfig({
-					markdown: {
-						rehypePlugins: [
-							[rehypeFluentEmoji, {
-								assetBase: '/emoji',
-								className: 'fluent-emoji',
-								style: '3d',
-							}],
-							...config.markdown.rehypePlugins,
-						],
-					},
-				})
-			},
-		},
-		name: 'imi-fluent-emoji',
-	}
-}
-
 export default defineConfig({
 	adapter: cloudflare(),
 	image: {
@@ -114,7 +91,6 @@ export default defineConfig({
 			themes: ['vesper'],
 			useDarkModeMediaQuery: false,
 		}),
-		fluentEmoji(),
 		mdx(),
 		sitemap({
 			customPages: sitemapBuild.customPages,
@@ -146,6 +122,13 @@ export default defineConfig({
 	],
 	markdown: {
 		processor: unified({
+			rehypePlugins: [
+				[rehypeFluentEmoji, {
+					assetBase: '/emoji',
+					className: 'fluent-emoji',
+					style: '3d',
+				}],
+			],
 			remarkPlugins: [
 				remarkGfm,
 				remarkCjkFriendly,
@@ -154,6 +137,8 @@ export default defineConfig({
 		}),
 	},
 	output: 'server',
+	// No Astro sessions are used; skip the adapter's auto-provisioned SESSION KV binding.
+	session: false,
 	site: 'https://xat.sh',
 	vite: {
 		define: {

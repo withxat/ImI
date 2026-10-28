@@ -10,6 +10,7 @@
 		"emoji:sync": "rehype-fluent-emoji sync content --out public/emoji --style 3d",
 		"og:generate": "node scripts/run-og-generate.mjs",
 		"start": "astro preview",
+		"postinstall": "wrangler types",
 		"typegen": "wrangler types",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
