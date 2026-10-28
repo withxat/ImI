@@ -31,6 +31,10 @@ const ja: Messages = {
 					description: '🍤 TypeScript Monorepo テンプレート',
 					title: 'Monorepo-Template',
 				},
+				{
+					description: '🍊 あたたかくてミニマルな Astro ブログテンプレート',
+					title: 'mikan',
+				},
 			],
 			summary: 'アーキテクチャも性能も、長く面倒を見られる形にする。',
 			title: 'フロントエンドエンジニアリング',

@@ -31,6 +31,10 @@ const en: Messages = {
 					description: '🍤 TypeScript monorepo template',
 					title: 'Monorepo-Template',
 				},
+				{
+					description: '🍊 A warm, minimal Astro blog template',
+					title: 'mikan',
+				},
 			],
 			summary: 'Get the architecture, performance, and long-term maintenance right.',
 			title: 'Frontend engineering',

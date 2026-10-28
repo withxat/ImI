@@ -26,6 +26,10 @@ const zh: Messages = {
 					description: '🍤 TypeScript Monorepo 模板',
 					title: 'Monorepo-Template',
 				},
+				{
+					description: '🍊 一个温暖、简洁的 Astro 博客模板',
+					title: 'mikan',
+				},
 			],
 			summary: '把架构、性能和长期维护一起做好。',
 			title: '前端工程化',

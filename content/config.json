@@ -18,6 +18,11 @@
 						"title": "Monorepo Template",
 						"description": "🍤 Just a template",
 						"link": "https://github.com/withxat/monorepo-template"
+					},
+					{
+						"title": "mikan",
+						"description": "🍊 A warm, minimal Astro blog template",
+						"link": "https://github.com/withxat/mikan"
 					}
 				]
 			},
