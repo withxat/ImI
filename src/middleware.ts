@@ -17,6 +17,7 @@ import {
 } from '@/lib/i18n/locale-switch'
 import { resolveLocaleFromHeaders } from '@/lib/i18n/request-locale'
 import { localeCookieOptions } from '@/lib/i18n/set-locale-cookie'
+import { withSecurityHeaders } from '@/lib/security-headers'
 import { heartbeatSitePresence, recordSiteView } from '@/lib/site-stats/server.ts'
 import {
 	getOrCreateVisitorSessionId,
@@ -44,7 +45,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 		nextUrl.searchParams.delete(LOCALE_SWITCH_PARAM)
 		const redirectTo = `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`
 		context.cookies.set(LOCALE_COOKIE_NAME, switchTarget, localeCookieOptions())
-		return context.redirect(redirectTo, 303)
+		return withSecurityHeaders(context.redirect(redirectTo, 303))
 	}
 
 	// 2) Normalize trailing slash (keep behavior consistent with prior drop-trailing-slash).
@@ -52,7 +53,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 	if (!context.isPrerendered && trimmed !== url.pathname) {
 		const nextUrl = new URL(request.url)
 		nextUrl.pathname = trimmed
-		return Response.redirect(nextUrl.toString(), 308)
+		return withSecurityHeaders(Response.redirect(nextUrl.toString(), 308))
 	}
 
 	// 3) Request-scoped locale (cookie first, then Accept-Language).
@@ -89,5 +90,5 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 		waitUntil?.(Promise.all(tasks).catch(() => undefined))
 	}
 
-	return response
+	return withSecurityHeaders(response)
 }

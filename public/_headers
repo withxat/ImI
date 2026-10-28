@@ -1,0 +1,33 @@
+# Workers static assets only; SSR responses get the same security headers in
+# src/lib/security-headers.ts. Keep the two in sync.
+
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+# Named by codepoint; the file for a given name never changes.
+/emoji/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Not content-hashed: rename the file when a font changes.
+/fonts/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=31536000
+
+# Regenerated on every build.
+/og/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+/icon.svg
+  Cache-Control: public, max-age=604800
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+
+/xat.mp3
+  Cache-Control: public, max-age=2592000
