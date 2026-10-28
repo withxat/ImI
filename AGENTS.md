@@ -177,7 +177,10 @@ Middleware (`src/middleware.ts`):
 2. Normalizes trailing slashes (308 redirect)
 3. Resolves locale from cookie, then `Accept-Language` header
 4. Reads Cloudflare visitor geo from `request.cf.country`
-5. After rendering, records a site view / presence heartbeat for tracked HTML GETs (via `waitUntil`)
+5. Serves SSR HTML from the edge cache (`src/lib/edge-cache.ts`) when possible
+6. After rendering (or a cache hit), records a site view / presence heartbeat for tracked HTML GETs (via `waitUntil`)
+
+Edge HTML cache: Workers Cache API (`caches.default`), 10 min TTL, keyed by path + locale + visitor country + commit SHA (so each deploy starts cold). Only query-less, non-`/api/` GETs that return 200 `text/html` without `Set-Cookie` or `no-store`/`private` are stored. Per-visitor cookies are added after the cache lookup and never stored. Responses carry `X-Imi-Cache: HIT|MISS`. Disabled in `astro dev`. Anything new that renders per-request data into HTML (beyond locale and country) must either join the cache key or opt out with `Cache-Control: private`.
 
 Messages live in `src/lib/i18n/messages/{en,zh,ja}.ts`, typed via `src/lib/i18n/messages/types.ts`.
 
@@ -288,6 +291,7 @@ Micro interactions: encouraged.
 - SSR-first HTML
 - Font preload for critical faces
 - View transitions (fade, 320ms) via Astro ClientRouter
+- Edge-cached SSR HTML (see middleware step 5)
 
 ---
 

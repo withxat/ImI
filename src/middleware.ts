@@ -4,6 +4,12 @@ import type { MiddlewareHandler } from 'astro'
 
 import { env } from 'cloudflare:workers'
 
+import {
+	edgeCacheKey,
+	isEdgeCacheableRequest,
+	matchEdgeCache,
+	putEdgeCache,
+} from '@/lib/edge-cache'
 import { LOCALE_COOKIE_NAME } from '@/lib/i18n/constants'
 import {
 	LOCALE_SWITCH_PARAM,
@@ -58,7 +64,18 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 	// 4) Visitor geo (Cloudflare headers/cf).
 	context.locals.visitorGeo = readVisitorGeoFromRequest(request)
 
-	const response = await next()
+	// 5) Edge HTML cache. Hits still fall through to stats tracking and cookies below.
+	const waitUntil = context.locals.cfContext?.waitUntil.bind(context.locals.cfContext)
+	const cacheKey = !context.isPrerendered && isEdgeCacheableRequest(request, url)
+		? edgeCacheKey({
+				countryCode: context.locals.visitorGeo.countryCode,
+				locale: context.locals.locale,
+				pathname: url.pathname,
+			})
+		: null
+
+	const cached = cacheKey ? await matchEdgeCache(cacheKey).catch(() => null) : null
+	const response = cached ?? (cacheKey ? putEdgeCache(cacheKey, await next(), waitUntil) : await next())
 
 	if (shouldTrackSiteVisit(request, url.pathname)) {
 		const sessionId = getOrCreateVisitorSessionId(context.cookies)
@@ -69,9 +86,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 			tasks.push(recordSiteView(env, sessionId))
 		}
 
-		context.locals.cfContext?.waitUntil(
-			Promise.all(tasks).catch(() => undefined),
-		)
+		waitUntil?.(Promise.all(tasks).catch(() => undefined))
 	}
 
 	return response
