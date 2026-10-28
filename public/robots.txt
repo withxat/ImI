@@ -1,3 +1,4 @@
 User-agent: *
-Disallow: /RSC/
+Allow: /
+
 Sitemap: https://xat.sh/sitemap-index.xml
