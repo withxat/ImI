@@ -3,11 +3,11 @@ import { dirname, join } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
+import { renderOgPng } from './og-render.ts'
 import { loadOgAvatarDataUrl } from '@/lib/og/avatar'
 import { OG_SITE_DEFAULT } from '@/lib/og/constants'
 import { OG_STATIC_PAGE_FILES, OG_STATIC_PAGES } from '@/lib/og/pages'
 import { loadZhPostsForOg, toPostOgContent } from '@/lib/og/posts'
-import { renderOgPng } from '@/lib/og/render'
 import { pageOgTemplate, postOgTemplate, siteOgTemplate } from '@/lib/og/template'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
