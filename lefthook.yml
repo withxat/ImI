@@ -8,4 +8,4 @@ pre-commit:
 
     - name: typecheck
       run: pnpm exec astro check
-      glob: '**/*.{ts,tsx,js,jsx,astro}'
+      glob: '*.{ts,tsx,js,jsx,astro}'
