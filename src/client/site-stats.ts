@@ -4,7 +4,7 @@ import 'number-flow/group'
 const POLL_MS = 45_000
 const NUMBER_FORMAT: Intl.NumberFormatOptions = {
 	maximumFractionDigits: 0,
-	useGrouping: true,
+	useGrouping: false,
 }
 
 interface SiteStatsPayload {
