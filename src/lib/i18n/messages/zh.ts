@@ -30,6 +30,10 @@ const zh: Messages = {
 					description: '🍊 一个温暖、简洁的 Astro 博客模板',
 					title: 'mikan',
 				},
+				{
+					description: '🫧 我的个人网站和数字花园',
+					title: 'ImI',
+				},
 			],
 			summary: '把架构、性能和长期维护一起做好。',
 			title: '前端工程化',

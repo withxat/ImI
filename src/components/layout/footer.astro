@@ -17,6 +17,7 @@ interface Props {
 const { locale } = Astro.props as Props
 const m = getMessages(locale)
 const commitSha = import.meta.env.PUBLIC_IMI_COMMIT_SHA
+const IMI_REPO_URL = 'https://github.com/withxat/ImI'
 
 const moeIcp = (await import('@/assets/icons/moe-icp.svg?raw')).default
 
@@ -45,7 +46,32 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 						src={shinyImi}
 						width={20}
 					/>
-					ImI <span class="font-mono">{commitSha}</span>
+					<a
+						class="
+							transition-colors
+							hover:text-highlight-text
+						"
+						href={IMI_REPO_URL}
+						rel="noreferrer"
+						target="_blank"
+					>
+						ImI
+					</a>
+					{commitSha && commitSha !== 'dev'
+						? (
+								<a
+									class="
+										font-mono transition-colors
+										hover:text-highlight-text
+									"
+									href={`${IMI_REPO_URL}/commit/${commitSha}`}
+									rel="noreferrer"
+									target="_blank"
+								>
+									{commitSha}
+								</a>
+							)
+						: <span class="font-mono">{commitSha}</span>}
 				</span>
 				<span class="text-xs" hidden={isOnDesignPage}>|</span>
 				<a

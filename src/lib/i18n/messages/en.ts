@@ -35,6 +35,10 @@ const en: Messages = {
 					description: '🍊 A warm, minimal Astro blog template',
 					title: 'mikan',
 				},
+				{
+					description: '🫧 My personal website and digital garden',
+					title: 'ImI',
+				},
 			],
 			summary: 'Get the architecture, performance, and long-term maintenance right.',
 			title: 'Frontend engineering',

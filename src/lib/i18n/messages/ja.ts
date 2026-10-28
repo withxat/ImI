@@ -35,6 +35,10 @@ const ja: Messages = {
 					description: '🍊 あたたかくてミニマルな Astro ブログテンプレート',
 					title: 'mikan',
 				},
+				{
+					description: '🫧 個人サイト兼デジタルガーデン',
+					title: 'ImI',
+				},
 			],
 			summary: 'アーキテクチャも性能も、長く面倒を見られる形にする。',
 			title: 'フロントエンドエンジニアリング',
