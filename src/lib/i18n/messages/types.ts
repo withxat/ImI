@@ -112,11 +112,15 @@ export interface DesignSystemCopy {
 export interface Messages {
 	blog: {
 		goHome: string
+		moreWriting: string
+		newer: string
+		older: string
 		pageDescription: string
 		pageTitle: string
 		/** Shown above translated article bodies when UI locale is not Chinese. */
 		postTranslatedNotice?: PostTranslatedNoticeCopy
 		title: string
+		toc: string
 	}
 	capabilities: CapabilityCopy[]
 	categories: Record<'design' | 'life' | 'tech', CategoryCopy>

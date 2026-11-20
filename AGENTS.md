@@ -210,7 +210,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - Home (`/`) — profile, bio, recent posts, projects list
 - Blog list (`/post`) — grouped by year, with dates
-- Blog detail (`/post/[slug]`) — MDX with TOC, reading time, tags, prev/next nav, translator info
+- Blog detail (`/post/[slug]`) — MDX with a section TOC (3+ h2s), newer/older links and a link to the archive at the end, translator info
 - Design system (`/design`) — typography, colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
 - 404 — styled page with the latest posts, also used for unknown post slugs
 
@@ -221,7 +221,6 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - MDX rendering with Astro content collections
 - Expressive Code syntax highlighting (Vesper theme)
 - Heading anchor links
-- Reading time
 - Tags and categories
 - Previous / next navigation
 - Translator metadata (optional, for AI-translated posts)

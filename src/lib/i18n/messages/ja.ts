@@ -5,6 +5,9 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const ja: Messages = {
 	blog: {
 		goHome: 'ホームへ',
+		moreWriting: 'ほかの記事',
+		newer: '次の記事',
+		older: '前の記事',
 		pageDescription: 'フロントエンド、デザイン、AI、それから Xat のこまごました記録。',
 		pageTitle: 'Xat のアーカイブ置き場',
 		postTranslatedNotice: {
@@ -13,6 +16,7 @@ const ja: Messages = {
 			switchToChineseAriaLabel: 'サイトの表示言語を中文に切り替えて原文を表示する',
 		},
 		title: 'すべての記事',
+		toc: '目次',
 	},
 	capabilities: [
 		{

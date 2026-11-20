@@ -5,9 +5,13 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const zh: Messages = {
 	blog: {
 		goHome: '回到首页',
+		moreWriting: '更多文章',
+		newer: '较新',
+		older: '较早',
 		pageDescription: '关于前端、设计、AI，以及 Xat 的零碎记录。',
 		pageTitle: 'Xat 的归档处',
 		title: '全部文章',
+		toc: '目录',
 	},
 	capabilities: [
 		{

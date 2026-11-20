@@ -5,6 +5,9 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const en: Messages = {
 	blog: {
 		goHome: 'Go to home',
+		moreWriting: 'More writing',
+		newer: 'Newer',
+		older: 'Older',
 		pageDescription: 'Notes on frontend, design, AI, and assorted bits from Xat.',
 		pageTitle: 'Xat\'s Archive',
 		postTranslatedNotice: {
@@ -12,7 +15,8 @@ const en: Messages = {
 			beforeLink: 'This article is an AI translation from the Chinese original. Switch the site language to ',
 			switchToChineseAriaLabel: 'Switch site language to Chinese for the original article',
 		},
-		title: 'All writings',
+		title: 'All writing',
+		toc: 'Contents',
 	},
 	capabilities: [
 		{
