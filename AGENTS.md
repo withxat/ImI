@@ -396,7 +396,7 @@ Micro interactions: encouraged.
 - Path alias `@/` maps to `./src/` (configured in `tsconfig.json` and `astro.config.ts` via `jiti`).
 - In `astro.config.ts`, use relative imports for `./src/...` because `@/` is not resolved during config loading.
 - Components are `.astro` files (not `.tsx`) — zero client JS by default.
-- Client-side JS lives in `src/client/` modules registered in `src/scripts/site-client.ts`; a page-local `<script>` is fine when only one page needs it.
+- Client-side JS lives in `src/client/` modules registered in `src/scripts/site-client.ts`; a page-local `<script>` is fine when only one page needs it. A module only one page uses (e.g. `design-specimens`) is registered with a dynamic `import()` behind a DOM check, so other pages do not ship it.
 - `data-astro-prefetch` on links for prefetch-on-hover.
 - `transition:animate` and `transition:persist` for Astro view transitions.
 - Content collections are typed via `src/content.config.ts` using Zod schemas.

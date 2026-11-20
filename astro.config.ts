@@ -60,6 +60,8 @@ export default defineConfig({
 		expressiveCode({
 			defaultLocale: 'en',
 			defaultProps: {
+				// One frame style: shell blocks skip the terminal title bar and its window dots.
+				frame: 'code',
 				wrap: false,
 			},
 			emitExternalStylesheet: true,

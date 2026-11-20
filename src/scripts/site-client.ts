@@ -1,7 +1,6 @@
 import { initArticleBodies } from '@/client/article-reveal'
 import { disposeAll, registerModule, runAll } from '@/client/client-registry'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/client/custom-scrollbar'
-import { disposeDesignSpecimens, initDesignSpecimens } from '@/client/design-specimens'
 import { initIntroBadges } from '@/client/intro-badge'
 import { initLinkedPageFontPrefetch } from '@/client/linked-page-font-prefetch'
 import { initMdxCopyButtons } from '@/client/mdx-copy'
@@ -65,9 +64,19 @@ registerModule('custom-scrollbar', {
 	init: () => initCustomScrollbar(),
 })
 
+// Only /design has specimens, so its code loads there instead of shipping on every page.
+let designSpecimens: typeof import('@/client/design-specimens') | undefined
+
 registerModule('design-specimens', {
-	dispose: () => disposeDesignSpecimens(),
-	init: () => initDesignSpecimens(),
+	dispose: () => designSpecimens?.disposeDesignSpecimens(),
+	init: () => {
+		if (!document.querySelector('[data-color-token]'))
+			return
+		void import('@/client/design-specimens').then((mod) => {
+			designSpecimens = mod
+			mod.initDesignSpecimens()
+		})
+	},
 })
 
 registerModule('site-stats', {
