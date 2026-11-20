@@ -73,14 +73,12 @@ Implemented today:
 
 - **Reduced motion.** Every animation in the site (page reveal, stagger children, article body line-reveal, wanderer gradient, coin-flip mascot, hover transforms) checks `prefers-reduced-motion: reduce` and disables itself. Reduced-motion users get the static, instant version of every screen, not a degraded one.
 - **Trilingual document semantics.** `<html lang>` is set per visitor locale; the `htmlLangFor` helper exists so inline copy in another language (e.g. the serif bio lead containing zh characters when UI is en) gets its own `lang` attribute. Per-locale `text-wrap`, `line-break`, and `hyphens` rules apply at the `:lang()` selector level, not as overrides on individual elements.
-- **Focus.** All interactive elements (Button prime, links, intro-badge popovers, custom scrollbar, coin button) have visible `:focus-visible` rings via `ring-ring/50` plus a 1px border shift. Focus is never removed; it is restyled.
+- **Focus.** All interactive elements have a visible `:focus-visible` ring at 3:1 or better: Button primes (intro badges, theme switcher, coin) keep `ring-ring/50` plus a 1px border shift, and links and index rows get a solid 2px outline. Focus is never removed; it is restyled. The intro-badge card is portaled to `<body>`, so `src/client/intro-badge.ts` bridges Tab from the badge into the card's links and back out.
 - **Semantic HTML.** Headings nest correctly (one `<h1>` per page, `<h2>` for section titles, `<h3>` for subsections). Lists are `<ul>` / `<ol>`. Nav is `<nav>` (header) + `<footer>`. Article body is `<article>`. Icon-only buttons carry `aria-label`. Popovers use `role="dialog"` and HoverCard handles its own focus trap.
-- **Color contrast.** Body text on background is well past AA (foreground `oklch(0.17)` on background `oklch(1)` ≈ 16:1; muted-foreground `oklch(0.45)` on background ≈ 6.4:1). The accent color is never used as body text; `text-highlight-strong` appears on identity terms and short emphasis only.
+- **Color contrast.** Body text on background is well past AA (foreground `oklch(0.17)` on background `oklch(1)` ≈ 16:1; muted-foreground `oklch(0.45)` on background ≈ 6.4:1). Accent text (`highlight-text`: links, emphasis, badge labels) is 5:1 in light mode and 11.9:1 in dark. The lighter brand rose (3.1:1) is kept for the large wordmark and decoration. The accent color is never used as body text.
 - **No flash on theme change.** A blocking inline script in `<head>` reads the stored theme and applies it before first paint. No flash of incorrect theme on navigation.
 
 Known gaps to monitor:
 
-- Link text contrast: light-mode `highlight-text` measures 3.1:1 on the white background, under AA's 4.5:1 for the text of `.text-link` and article links. Not yet decided: darken the rose, or give link text its own darker step.
 - Custom scrollbar is keyboard-operable via arrow keys but has not been tested with all screen readers; the native scrollbar is preserved as a fallback affordance via `scrollbar-width: none` + visible custom strip, not by hijacking the system scrollbar entirely.
 - PhotoSwipe gallery uses its built-in keyboard handling; verify before adding more gallery uses.
-- Theme switcher and locale switcher are keyboard-focusable but the visual focus indicator on the active state has not been audited across all three locales for contrast.

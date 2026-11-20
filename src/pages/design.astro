@@ -51,7 +51,7 @@ const typefaces: { family: string, glyph: string, glyphClass: string, key: Typef
 	{ family: 'MiSans', glyph: '字あ', glyphClass: 'font-ui font-medium text-foreground', key: 'miSans' },
 	{ family: 'Calling Code', glyph: 'Aa', glyphClass: 'font-mono text-foreground', key: 'callingCode' },
 	{ family: 'Source Han Serif SC VF', glyph: 'Aa', glyphClass: 'font-serif font-semibold text-foreground', key: 'sourceHanSerif' },
-	{ family: 'Fugaz One', glyph: 'Xat', glyphClass: 'font-fugaz-one text-highlight-strong', key: 'fugazOne' },
+	{ family: 'Fugaz One', glyph: 'Xat', glyphClass: 'font-fugaz-one text-highlight-brand', key: 'fugazOne' },
 ]
 
 // Each sample uses the classes and copy the site actually renders in that role;
@@ -65,7 +65,7 @@ const typeScale: { class: string, lang?: string, role: TypographyScaleRoleKey, s
 	{ class: 'font-mono text-xs text-foreground', role: 'mono', sample: '01 02 03 04' },
 	// The serif subset only carries the glyphs of the home bio lead, so the sample must be that exact line.
 	{ class: 'home-bio-lead max-w-prose font-serif text-base/7 font-semibold text-foreground', lang: htmlLangFor(locale), role: 'bioLead', sample: m.home.bioLead },
-	{ class: 'font-fugaz-one text-3xl text-highlight-strong', role: 'wordmark', sample: 'Xat' },
+	{ class: 'font-fugaz-one text-3xl text-highlight-brand', role: 'wordmark', sample: 'Xat' },
 ]
 
 interface ColorToken {
@@ -102,6 +102,7 @@ const colorGroups: { key: Exclude<ColorGroupKey, 'status'>, tokens: ColorToken[]
 		key: 'highlight',
 		tokens: [
 			{ against: '--background', name: 'highlight-text', role: 'highlightText', var: '--highlight-text' },
+			{ against: '--background', name: 'highlight-brand', role: 'highlightBrand', var: '--highlight-brand' },
 			{ name: 'highlight-soft', role: 'highlightSoft', var: '--highlight-soft' },
 			{ against: '--background', name: 'highlight-icon', role: 'highlightIcon', var: '--highlight-icon' },
 			{ name: 'selection', role: 'selection', var: '--selection' },
@@ -147,8 +148,7 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 						<button
 							class="
 								relative inline-block size-8 cursor-pointer rounded-md border-0 bg-transparent p-0 transition-transform duration-150
-								ease-out outline-none perspective-near
-								focus-visible:ring-2 focus-visible:ring-ring/50
+								ease-out perspective-near
 								active:scale-97
 							"
 							aria-label={m.design.flipMascot}
@@ -289,7 +289,7 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 														>
 															{token.against && 'Aa'}
 														</span>
-														<div class="min-w-0 font-mono text-[11px]/4 tabular-nums">
+														<div class="min-w-0 font-mono text-xs tabular-nums">
 															<span class="sr-only">{m.design.colors.modeLabel[mode.key]}</span>
 															<p class="text-foreground" data-color-value>—</p>
 															{token.against && <p class="min-h-4 text-muted-foreground" data-color-contrast />}
@@ -388,7 +388,7 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 							<div class="space-y-5 border-r border-dashed border-border pr-4" data-wrap-stage>
 								{wrapSamples.map(sample => (
 									<div class="space-y-1">
-										<p class="font-mono text-[11px] text-muted-foreground">
+										<p class="font-mono text-xs text-muted-foreground">
 											:lang({sample.lang}) · {sample.rule}
 										</p>
 										<p class="text-base/7 text-foreground" lang={sample.lang}>{sample.text}</p>
@@ -505,10 +505,10 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 									<circle cx="30.88" cy="8" fill="var(--highlight-text)" r="2.5" />
 									<circle cx="45.44" cy="8" fill="var(--highlight-text)" r="2.5" />
 								</svg>
-								<p class="font-mono text-[11px]/4 text-muted-foreground tabular-nums">
+								<p class="font-mono text-xs text-muted-foreground tabular-nums">
 									cubic-bezier(0.22, 1, 0.36, 1)
 								</p>
-								<p class="font-mono text-[11px]/4 text-muted-foreground tabular-nums" data-motion-readout>
+								<p class="font-mono text-xs text-muted-foreground tabular-nums" data-motion-readout>
 									420ms · 48ms stagger
 								</p>
 							</div>

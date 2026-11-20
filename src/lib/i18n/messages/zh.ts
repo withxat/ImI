@@ -5,9 +5,14 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const zh: Messages = {
 	blog: {
 		goHome: '回到首页',
+		moreWriting: '更多文章',
+		newer: '较新',
+		older: '较早',
 		pageDescription: '关于前端、设计、AI，以及 Xat 的零碎记录。',
 		pageTitle: 'Xat 的归档处',
+		postCountSuffix: ' 篇',
 		title: '全部文章',
+		toc: '目录',
 	},
 	capabilities: [
 		{
@@ -86,9 +91,10 @@ const zh: Messages = {
 				code: 'Vesper 代码底色',
 				codeForeground: '代码文字',
 				foreground: '主文字 · primary',
+				highlightBrand: '字标 · 旅人',
 				highlightIcon: '图标着色',
 				highlightSoft: '下划线 · 光晕',
-				highlightText: '字标 · 链接',
+				highlightText: '链接 · 强调',
 				muted: '悬停 · 行内代码 · accent',
 				mutedForeground: '次要文字',
 				selection: '文字选中',
@@ -161,6 +167,7 @@ const zh: Messages = {
 	},
 	home: {
 		bioLead: '爱打磨界面，也喜欢探索 AI 的可能性。',
+		designProject: '📐 本站的设计规范，数值全部读自线上 CSS',
 		introAfterProducts: '。',
 		introBeforeSystems: '',
 		introBetweenBadges: '让我习惯在设计、工程与真实需求之间寻找平衡，去构建',
@@ -168,9 +175,9 @@ const zh: Messages = {
 			'设计工程师，专注 AI 与前端，写些关于前端、设计、AI 的文章。',
 		notFound: {
 			description: '这里好像什么也没有，页面可能已经搬家了。',
-			goHome: '回到首页',
 			title: '页面未找到',
 		},
+		playName: '播放名字读音',
 		projectsEyebrow: '项目',
 		role: '设计工程师',
 		tagline: 'Xat - 设计工程师',

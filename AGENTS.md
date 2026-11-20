@@ -146,9 +146,9 @@ Current pages:
 |---|---|---|
 | `/` (home) | SSR | locale-dependent |
 | `/post` (list) | SSR | locale-dependent |
-| `/post/[slug]` | SSR | locale-dependent, 404 if missing |
+| `/post/[slug]` | SSR | locale-dependent; unknown slugs rewrite to `/404` |
 | `/design` | SSR | living design spec, values read from running CSS |
-| `/404` | static | fallback |
+| `/404` | SSR | locale-dependent: copy and latest posts follow the visitor's locale |
 | `feed.xml`, `feed.en.xml`, `feed.ja.xml` | SSR | RSS feeds |
 | `/api/stats.json` (GET), `/api/presence.json` (POST) | SSR | site stats, `no-store` |
 | `/sitemap-index.xml`, `/sitemap-0.xml` | static (build) | `@astrojs/sitemap`, zh canonical URLs |
@@ -210,9 +210,9 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - Home (`/`) — profile, bio, recent posts, projects list
 - Blog list (`/post`) — grouped by year, with dates
-- Blog detail (`/post/[slug]`) — MDX with TOC, reading time, tags, prev/next nav, translator info
+- Blog detail (`/post/[slug]`) — MDX with a section TOC (3+ h2s), newer/older links and a link to the archive at the end, translator info
 - Design system (`/design`) — typography, colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
-- 404
+- 404 — styled page with the latest posts, also used for unknown post slugs
 
 ---
 
@@ -221,7 +221,6 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - MDX rendering with Astro content collections
 - Expressive Code syntax highlighting (Vesper theme)
 - Heading anchor links
-- Reading time
 - Tags and categories
 - Previous / next navigation
 - Translator metadata (optional, for AI-translated posts)
@@ -243,7 +242,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Bio lead in serif font (CJK-subset Source Han Serif)
 - Intro badges with popover descriptions (systems / products)
 - Recent posts (4 latest) as date-led index rows
-- Projects list, flattened from the `capabilities` groups in `content/config.json`
+- Projects list, flattened from the `capabilities` groups in `content/config.json`, with a Design System row (links to `/design`) after ImI
 
 ---
 
@@ -397,7 +396,7 @@ Micro interactions: encouraged.
 - Path alias `@/` maps to `./src/` (configured in `tsconfig.json` and `astro.config.ts` via `jiti`).
 - In `astro.config.ts`, use relative imports for `./src/...` because `@/` is not resolved during config loading.
 - Components are `.astro` files (not `.tsx`) — zero client JS by default.
-- Client-side JS lives in `src/client/` modules registered in `src/scripts/site-client.ts`; a page-local `<script>` is fine when only one page needs it.
+- Client-side JS lives in `src/client/` modules registered in `src/scripts/site-client.ts`; a page-local `<script>` is fine when only one page needs it. A module only one page uses (e.g. `design-specimens`) is registered with a dynamic `import()` behind a DOM check, so other pages do not ship it.
 - `data-astro-prefetch` on links for prefetch-on-hover.
 - `transition:animate` and `transition:persist` for Astro view transitions.
 - Content collections are typed via `src/content.config.ts` using Zod schemas.

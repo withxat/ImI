@@ -5,14 +5,19 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const ja: Messages = {
 	blog: {
 		goHome: 'ホームへ',
+		moreWriting: 'ほかの記事',
+		newer: '次の記事',
+		older: '前の記事',
 		pageDescription: 'フロントエンド、デザイン、AI、それから Xat のこまごました記録。',
 		pageTitle: 'Xat のアーカイブ置き場',
+		postCountSuffix: ' 本',
 		postTranslatedNotice: {
 			afterLink: 'に切り替えると著者による原文を読めます。',
 			beforeLink: 'この記事は中国語の原文をAIが翻訳したものです。サイトの言語を',
 			switchToChineseAriaLabel: 'サイトの表示言語を中文に切り替えて原文を表示する',
 		},
 		title: 'すべての記事',
+		toc: '目次',
 	},
 	capabilities: [
 		{
@@ -91,9 +96,10 @@ const ja: Messages = {
 				code: 'Vesper 背景',
 				codeForeground: 'コード文字',
 				foreground: '主文字 · primary',
+				highlightBrand: 'ワードマーク · 旅人',
 				highlightIcon: 'アイコン色',
 				highlightSoft: '下線 · 光彩',
-				highlightText: 'ワードマーク · リンク',
+				highlightText: 'リンク · 強調',
 				muted: 'ホバー · コード · accent',
 				mutedForeground: '補助テキスト',
 				selection: '選択範囲',
@@ -166,6 +172,7 @@ const ja: Messages = {
 	},
 	home: {
 		bioLead: 'インターフェースを磨くのも、AI の可能性を探るのも好き。',
+		designProject: '📐 このサイトのデザイン仕様。数値はすべて実際の CSS から読んでいます',
 		introAfterProducts: 'を形にする。',
 		introBeforeSystems: '',
 		introBetweenBadges: 'のおかげで、デザイン・実装・本当のニーズの間でバランスを取りながら、',
@@ -173,15 +180,15 @@ const ja: Messages = {
 			'AI とフロントエンドを軸に活動するデザインエンジニア。コード、デザイン、AI について書いています。',
 		notFound: {
 			description: 'ここには何もないみたい。ページは引っ越したのかもしれません。',
-			goHome: 'ホームへ戻る',
 			title: 'ページが見つかりません',
 		},
+		playName: '名前の発音を再生',
 		projectsEyebrow: 'つくったもの',
 		role: 'デザインエンジニア',
 		tagline: 'Xat - デザインエンジニア',
 		title: 'Xat - デザインエンジニア',
 		viewAllPosts: 'すべて見る',
-		writingEyebrow: 'ライティング',
+		writingEyebrow: '書いたもの',
 	},
 	localeSwitcher: {
 		ariaLabel: '言語',

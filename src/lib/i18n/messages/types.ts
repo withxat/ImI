@@ -45,6 +45,7 @@ export type ColorRoleKey
 		| 'code'
 		| 'codeForeground'
 		| 'foreground'
+		| 'highlightBrand'
 		| 'highlightIcon'
 		| 'highlightSoft'
 		| 'highlightText'
@@ -111,11 +112,16 @@ export interface DesignSystemCopy {
 export interface Messages {
 	blog: {
 		goHome: string
+		moreWriting: string
+		newer: string
+		older: string
 		pageDescription: string
 		pageTitle: string
+		postCountSuffix: string
 		/** Shown above translated article bodies when UI locale is not Chinese. */
 		postTranslatedNotice?: PostTranslatedNoticeCopy
 		title: string
+		toc: string
 	}
 	capabilities: CapabilityCopy[]
 	categories: Record<'design' | 'life' | 'tech', CategoryCopy>
@@ -141,6 +147,7 @@ export interface Messages {
 	}
 	home: {
 		bioLead: string
+		designProject: string
 		introAfterProducts: string
 		introBeforeSystems: string
 		introBetweenBadges: string
@@ -148,9 +155,9 @@ export interface Messages {
 		metaDescription: string
 		notFound: {
 			description: string
-			goHome: string
 			title: string
 		}
+		playName: string
 		projectsEyebrow: string
 		role: string
 		tagline: string

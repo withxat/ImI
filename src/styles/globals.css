@@ -154,6 +154,7 @@
 	--color-surface: var(--surface);
 	--color-surface-foreground: var(--surface-foreground);
 	--color-highlight-soft: var(--highlight-soft);
+	--color-highlight-brand: var(--highlight-brand);
 	--color-highlight-text: var(--highlight-text);
 	--color-highlight-icon: var(--highlight-icon);
 	--color-selection: var(--selection);
@@ -234,6 +235,13 @@
 		text-rendering: optimizeLegibility;
 	}
 
+	/* Links and rows: a solid 2px ring with a gap. Prime controls opt out with
+	 * `outline-none` and draw their own `ring/50`; `--ring` keeps both above 3:1. */
+	:focus-visible {
+		outline: 2px solid var(--color-ring);
+		outline-offset: 2px;
+	}
+
 	html {
 		-webkit-text-size-adjust: 100%;
 		line-break: loose;
@@ -285,7 +293,7 @@
 	}
 
 	*::-webkit-scrollbar-thumb:hover {
-		background-color: color-mix(in oklab, var(--highlight-text) 72%, var(--foreground));
+		background-color: color-mix(in oklab, var(--highlight-brand) 72%, var(--foreground));
 	}
 
 	/* Japanese body copy: JLREQ-style strict breaks — scoped to flow text only so
@@ -428,7 +436,7 @@
 		width: 4px;
 		height: var(--cs-thumb-height);
 		border-radius: 999px;
-		background: color-mix(in oklab, var(--highlight-text) 72%, var(--foreground));
+		background: color-mix(in oklab, var(--highlight-brand) 72%, var(--foreground));
 		pointer-events: auto;
 		cursor: grab;
 		touch-action: none;
@@ -442,7 +450,7 @@
 	.custom-scrollbar.is-active .custom-scrollbar-thumb {
 		width: 6px;
 		right: calc(var(--cs-center-right) - 3px);
-		background: var(--highlight-text);
+		background: var(--highlight-brand);
 	}
 
 	.custom-scrollbar.is-dragging .custom-scrollbar-track,
@@ -530,7 +538,7 @@
 	.custom-scrollbar-marker.is-inside-thumb::after {
 		width: 7px;
 		height: 7px;
-		background: var(--highlight-text);
+		background: var(--highlight-brand);
 	}
 
 	.custom-scrollbar-marker.is-hovered::before,
@@ -618,6 +626,13 @@
 		color: var(--color-highlight-text);
 	}
 
+	/* Rounds the focus outline; the underline sits a full thickness above the corner, so 2px never clips its caps. */
+	.text-link:focus-visible,
+	.text-link-muted:focus-visible,
+	.article-body a:focus-visible {
+		border-radius: 2px;
+	}
+
 	.text-link:hover,
 	.article-body a:hover {
 		--text-link-underline: var(--color-highlight-soft);
@@ -650,11 +665,11 @@
 		display: inline-block;
 		background-image: linear-gradient(
 			110deg,
-			var(--color-highlight-text) 0%,
-			color-mix(in oklab, var(--color-highlight-text) 58%, var(--color-foreground)) 24%,
+			var(--color-highlight-brand) 0%,
+			color-mix(in oklab, var(--color-highlight-brand) 58%, var(--color-foreground)) 24%,
 			var(--color-cyan-600) 48%,
-			color-mix(in oklab, var(--color-foreground) 72%, var(--color-highlight-text)) 68%,
-			var(--color-highlight-text) 100%
+			color-mix(in oklab, var(--color-foreground) 72%, var(--color-highlight-brand)) 68%,
+			var(--color-highlight-brand) 100%
 		);
 		background-position: 0% 50%;
 		background-size: 260% 100%;
@@ -703,11 +718,11 @@
 	.dark .wanderer-gradient-text {
 		background-image: linear-gradient(
 			110deg,
-			var(--color-highlight-text) 0%,
-			color-mix(in oklab, var(--color-highlight-text) 70%, var(--color-cyan-300)) 28%,
+			var(--color-highlight-brand) 0%,
+			color-mix(in oklab, var(--color-highlight-brand) 70%, var(--color-cyan-300)) 28%,
 			var(--color-cyan-300) 52%,
-			color-mix(in oklab, var(--color-foreground) 70%, var(--color-highlight-text)) 72%,
-			var(--color-highlight-text) 100%
+			color-mix(in oklab, var(--color-foreground) 70%, var(--color-highlight-brand)) 72%,
+			var(--color-highlight-brand) 100%
 		);
 	}
 
@@ -829,7 +844,6 @@
 
 	.article-body li,
 	.article-body p {
-		@apply text-muted-foreground;
 		/* explicit wrap matches site-wide body copy (see @layer base p, li) */
 		text-wrap: wrap;
 	}
@@ -1111,7 +1125,7 @@ html[data-astro-transition] .highlight-surface {
 	--foreground: oklch(0.17 0.003 260);
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.18 0.004 260);
-	--code: oklch(0.20628 0.01199 277.83);
+	--code: oklch(0.173 0 0);
 	--code-foreground: var(--color-neutral-100);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.18 0.004 260);
@@ -1133,7 +1147,7 @@ html[data-astro-transition] .highlight-surface {
 	--warning-foreground: var(--color-amber-700);
 	--border: --alpha(var(--color-black) / 8%);
 	--input: --alpha(var(--color-black) / 10%);
-	--ring: var(--color-neutral-400);
+	--ring: var(--foreground);
 	--sidebar: var(--color-neutral-50);
 	--sidebar-foreground: color-mix(in srgb, var(--foreground) 64%, var(--sidebar));
 	--sidebar-primary: var(--primary);
@@ -1145,7 +1159,8 @@ html[data-astro-transition] .highlight-surface {
 	--surface: oklch(1 0 0);
 	--surface-foreground: oklch(0.18 0.004 260);
 	--highlight-soft: oklch(0.85654 0.06125 10.83);
-	--highlight-text: oklch(0.67303 0.11669 3.08);
+	--highlight-brand: oklch(0.67303 0.11669 3.08);
+	--highlight-text: oklch(0.56 0.13 3);
 	--highlight-icon: color-mix(in oklab, var(--foreground) 36%, var(--highlight-soft));
 	--selection: oklch(0.88 0.018 92);
 }
@@ -1157,7 +1172,7 @@ html[data-astro-transition] .highlight-surface {
 	--foreground: oklch(0.965 0.006 260);
 	--card: oklch(0.19 0.005 260);
 	--card-foreground: oklch(0.965 0.006 260);
-	--code: oklch(0.175 0.006 277.83);
+	--code: oklch(0.173 0 0);
 	--code-foreground: var(--color-neutral-200);
 	--popover: oklch(0.19 0.005 260);
 	--popover-foreground: oklch(0.965 0.006 260);
@@ -1178,6 +1193,7 @@ html[data-astro-transition] .highlight-surface {
 	--warning: var(--color-amber-500);
 	--warning-foreground: var(--color-amber-400);
 	--highlight-soft: oklch(0.72 0.018 20);
+	--highlight-brand: oklch(0.84 0.08 58);
 	--highlight-text: oklch(0.84 0.08 58);
 	/* Same mix as :root, re-declared so a nested .theme-dark scope resolves it with its own colors. */
 	--highlight-icon: color-mix(in oklab, var(--foreground) 36%, var(--highlight-soft));
@@ -1186,7 +1202,7 @@ html[data-astro-transition] .highlight-surface {
 	--surface-foreground: oklch(0.965 0.006 260);
 	--border: oklch(0.965 0.006 260 / 0.15);
 	--input: oklch(0.965 0.006 260 / 0.18);
-	--ring: var(--color-neutral-500);
+	--ring: var(--foreground);
 	--sidebar: oklch(0.115 0.004 260);
 	--sidebar-foreground: color-mix(in srgb, var(--foreground) 64%, var(--sidebar));
 	--sidebar-primary: var(--primary);
@@ -1204,7 +1220,7 @@ html[data-astro-transition] .highlight-surface {
 		--foreground: oklch(0.965 0.006 260);
 		--card: oklch(0.19 0.005 260);
 		--card-foreground: oklch(0.965 0.006 260);
-		--code: oklch(0.175 0.006 277.83);
+		--code: oklch(0.173 0 0);
 		--code-foreground: var(--color-neutral-200);
 		--popover: oklch(0.19 0.005 260);
 		--popover-foreground: oklch(0.965 0.006 260);
@@ -1225,13 +1241,14 @@ html[data-astro-transition] .highlight-surface {
 		--warning: var(--color-amber-500);
 		--warning-foreground: var(--color-amber-400);
 		--highlight-soft: oklch(0.72 0.018 20);
+		--highlight-brand: oklch(0.84 0.08 58);
 		--highlight-text: oklch(0.84 0.08 58);
 		--selection: color-mix(in srgb, oklch(0.84 0.08 58) 20%, oklch(0.145 0.004 260));
 		--surface: oklch(0.19 0.005 260);
 		--surface-foreground: oklch(0.965 0.006 260);
 		--border: oklch(0.965 0.006 260 / 0.15);
 		--input: oklch(0.965 0.006 260 / 0.18);
-		--ring: var(--color-neutral-500);
+		--ring: var(--foreground);
 		--sidebar: oklch(0.115 0.004 260);
 		--sidebar-foreground: color-mix(in srgb, var(--foreground) 64%, var(--sidebar));
 		--sidebar-primary: var(--primary);

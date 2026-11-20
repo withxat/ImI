@@ -5,14 +5,19 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const en: Messages = {
 	blog: {
 		goHome: 'Go to home',
+		moreWriting: 'More writing',
+		newer: 'Newer',
+		older: 'Older',
 		pageDescription: 'Notes on frontend, design, AI, and assorted bits from Xat.',
 		pageTitle: 'Xat\'s Archive',
+		postCountSuffix: ' posts',
 		postTranslatedNotice: {
 			afterLink: ' to read the author-written source text.',
 			beforeLink: 'This article is an AI translation from the Chinese original. Switch the site language to ',
 			switchToChineseAriaLabel: 'Switch site language to Chinese for the original article',
 		},
-		title: 'All writings',
+		title: 'All writing',
+		toc: 'Contents',
 	},
 	capabilities: [
 		{
@@ -31,7 +36,7 @@ const en: Messages = {
 		{
 			items: [
 				{
-					description: '📒 A strict TypeScript configuration for modern project',
+					description: '📒 A strict TypeScript configuration for modern projects',
 					title: 'TSConfig',
 				},
 				{
@@ -91,9 +96,10 @@ const en: Messages = {
 				code: 'Vesper canvas',
 				codeForeground: 'Code text',
 				foreground: 'Primary text · primary',
+				highlightBrand: 'Wordmark · wanderer',
 				highlightIcon: 'Icon tint',
 				highlightSoft: 'Underline · halo',
-				highlightText: 'Wordmark · links',
+				highlightText: 'Links · emphasis',
 				muted: 'Hover · inline code · accent',
 				mutedForeground: 'Secondary text',
 				selection: 'Text selection',
@@ -166,6 +172,7 @@ const en: Messages = {
 	},
 	home: {
 		bioLead: 'I love polishing interfaces and exploring what AI can do.',
+		designProject: '📐 The spec for this site, every value read from the live CSS',
 		introAfterProducts: '.',
 		introBeforeSystems: 'A ',
 		introBetweenBadges: ' taught me to balance design, engineering, and real needs while building ',
@@ -173,9 +180,9 @@ const en: Messages = {
 			'Design Engineer focused on AI and frontend, writing about code, design, and AI.',
 		notFound: {
 			description: 'Looks like there\'s nothing here. The page may have moved.',
-			goHome: 'Back to home',
 			title: 'Page not found',
 		},
+		playName: 'Play name pronunciation',
 		projectsEyebrow: 'Projects',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',

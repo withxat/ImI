@@ -10,9 +10,10 @@ import SiteHeader from '@/components/layout/site-header.astro'
 import Seo from '@/components/meta/seo.astro'
 import StaggerReveal from '@/components/motion/stagger-reveal.astro'
 import ArticleBody from '@/components/post/article-body.astro'
+import PostIndexRow from '@/components/post/post-index-row.astro'
 import PostTranslatedNoticeAside from '@/components/post/post-translated-notice-aside.astro'
 import RootLayout from '@/layouts/root-layout.astro'
-import { formatPostDate, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
+import { formatPostDate, formatPostMonth, getAllPosts, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { mdxComponents } from '@/lib/mdx-components'
 import { articleBreadcrumbJsonLd, blogPostingJsonLd, postOgImageUrl, SITE_NAME } from '@/lib/seo-data'
@@ -27,7 +28,7 @@ const m = getMessages(locale)
 const post = await getPostBySlug(slug, locale)
 
 if (!post) {
-	return new Response('Not found', { status: 404 })
+	return Astro.rewrite('/404')
 }
 
 const category = await getCategoryBySlug(post.category)
@@ -40,8 +41,16 @@ const articleSection = localizedCategory?.name
 const seoDescription = post.seoDescription ?? post.summary
 const translator = toTranslator(post.translator)
 
-const { Content } = await render(post.entry)
+const { Content, headings } = await render(post.entry)
+const sections = headings.filter(heading => heading.depth === 2)
 
+// Posts are newest first, so the newer neighbor sits before this one.
+const allPosts = await getAllPosts(locale)
+const index = allPosts.findIndex(entry => entry.slug === post.slug)
+const neighbors = [
+	{ label: m.blog.newer, post: allPosts[index - 1] },
+	{ label: m.blog.older, post: allPosts[index + 1] },
+].flatMap(({ label, post: entry }) => (entry ? [{ label, post: entry }] : []))
 ---
 
 <RootLayout>
@@ -66,7 +75,7 @@ const { Content } = await render(post.entry)
 		canonicalPath={canonicalPath}
 		description={seoDescription}
 		image={postOgImageUrl(slug)}
-		imageAlt={`Open Graph image for ${post.title} by Xat`}
+		imageAlt={`${post.title} - Xat`}
 		locale={locale}
 		slot="head"
 		title={`${post.title} - Xat`}
@@ -87,6 +96,26 @@ const { Content } = await render(post.entry)
 					<div class="font-ui text-sm text-muted-foreground">
 						<span>{formatPostDate(post.date, locale)}</span>
 					</div>
+					{sections.length >= 3 && (
+						<nav aria-label={m.blog.toc} class="font-ui text-sm">
+							<ol class="space-y-1.5">
+								{sections.map((section, i) => (
+									<li class="flex items-baseline gap-3">
+										<span class="font-mono text-xs text-muted-foreground/70 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+										<a
+											class="
+												text-muted-foreground transition-colors duration-150
+												hover:text-foreground
+											"
+											href={`#${section.slug}`}
+										>
+											{section.text}
+										</a>
+									</li>
+								))}
+							</ol>
+						</nav>
+					)}
 					{m.blog.postTranslatedNotice && (
 						<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} translator={translator} />
 					)}
@@ -95,6 +124,27 @@ const { Content } = await render(post.entry)
 				<ArticleBody>
 					<Content components={mdxComponents} />
 				</ArticleBody>
+
+				<nav aria-label={m.blog.moreWriting} class="mt-8 space-y-4">
+					<div class="flex items-baseline justify-between gap-6">
+						<Eyebrow as="h2" class="font-semibold">{m.blog.moreWriting}</Eyebrow>
+						<a class="text-link font-ui text-sm" href="/post" data-astro-prefetch>
+							{m.home.viewAllPosts}
+						</a>
+					</div>
+					<ul class="divide-y divide-border border-y border-border">
+						{neighbors.map(({ label, post: neighbor }) => (
+							<PostIndexRow
+								dateLabel={formatPostMonth(neighbor.date)}
+								href={`/post/${neighbor.slug}`}
+								meta={label}
+								slug={neighbor.slug}
+								summary={neighbor.summary}
+								title={neighbor.title}
+							/>
+						))}
+					</ul>
+				</nav>
 			</StaggerReveal>
 		</Container>
 	</section>

@@ -31,7 +31,7 @@ const { pathname, search } = Astro.url
 				)}
 				{locale === currentLocale
 					? (
-							<span class="font-medium whitespace-nowrap text-highlight-strong" lang={locale}>
+							<span aria-current="true" class="font-medium whitespace-nowrap text-foreground" lang={locale}>
 								{LOCALE_LABEL[locale]}
 							</span>
 						)

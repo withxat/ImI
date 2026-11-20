@@ -5,9 +5,6 @@ const { class: className, ...rest } = Astro.props as { [k: string]: unknown, cla
 ---
 
 <p
-	class={cn(`
-		leading-relaxed text-muted-foreground
-		not-first:mt-6
-	`, className)}
+	class={cn('not-first:mt-6', className)}
 	{...rest}
 ><slot /></p>
