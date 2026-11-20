@@ -576,13 +576,17 @@
 }
 
 @layer components {
-	/* Pill underline per line: two round caps plus a bar spanning between their centers. */
+	/*
+	 * Pill underline per line: two round caps plus a bar spanning between their centers.
+	 * Whole-px thickness keeps caps and bar snapping to the same device pixels, and the
+	 * 0.5px fade antialiases the caps; at a fractional ~1.5px they render square.
+	 */
 	.text-link,
 	.text-link-muted,
 	.article-body a {
 		@apply transition-colors duration-150;
 		text-decoration: none;
-		--text-link-u-thickness: 0.1em;
+		--text-link-u-thickness: max(2px, round(0.1em, 1px));
 		--text-link-u-clear: 0.1em;
 		--text-link-u-r: calc(var(--text-link-u-thickness) / 2);
 		--text-link-underline: color-mix(in srgb, var(--color-highlight-soft) 75%, var(--color-background));
@@ -594,12 +598,12 @@
 		background-image:
 			radial-gradient(
 				circle closest-side at 50% 50%,
-				var(--text-link-underline) 99%,
+				var(--text-link-underline) calc(100% - 0.5px),
 				var(--text-link-underline-transparent)
 			),
 			radial-gradient(
 				circle closest-side at 50% 50%,
-				var(--text-link-underline) 99%,
+				var(--text-link-underline) calc(100% - 0.5px),
 				var(--text-link-underline-transparent)
 			),
 			linear-gradient(var(--text-link-underline), var(--text-link-underline));
@@ -759,7 +763,7 @@
 	.article-body :is(h1, h2, h3, h4, h5, h6) a:hover {
 		color: var(--color-highlight-text);
 		--text-link-underline: currentColor;
-		--text-link-u-thickness: 0.1em;
+		--text-link-u-thickness: max(2px, round(0.1em, 1px));
 		--text-link-u-clear: 0.1em;
 		--text-link-u-r: calc(var(--text-link-u-thickness) / 2);
 		--text-link-underline-transparent: rgb(from var(--text-link-underline) r g b / 0);
@@ -770,12 +774,12 @@
 		background-image:
 			radial-gradient(
 				circle closest-side at 50% 50%,
-				var(--text-link-underline) 99%,
+				var(--text-link-underline) calc(100% - 0.5px),
 				var(--text-link-underline-transparent)
 			),
 			radial-gradient(
 				circle closest-side at 50% 50%,
-				var(--text-link-underline) 99%,
+				var(--text-link-underline) calc(100% - 0.5px),
 				var(--text-link-underline-transparent)
 			),
 			linear-gradient(var(--text-link-underline), var(--text-link-underline));
