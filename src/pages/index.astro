@@ -87,14 +87,14 @@ const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-
 							<AvatarFallback class="rounded-xl">X</AvatarFallback>
 						</Avatar>
 						<div class="space-y-0">
-							<h1 class="
+							<div class="
 								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
 								sm:text-3xl
 							"
 							>
-								<span class="font-fugaz-one font-normal text-highlight-strong">Xat</span>
-								<NameAudioButton />
-							</h1>
+								<h1 class="font-fugaz-one font-normal text-highlight-brand">Xat</h1>
+								<NameAudioButton label={m.home.playName} />
+							</div>
 							<p class="text-muted-foreground">{m.home.role}</p>
 						</div>
 					</div>
@@ -154,8 +154,8 @@ const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-
 										? (
 												<a
 													class="
-														group/project flex flex-col gap-1 py-3.5 text-left transition-colors outline-none
-														focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring/50
+														group/project flex flex-col gap-1 py-3.5 text-left transition-colors
+														focus-visible:rounded-sm
 														@lg/page:grid @lg/page:grid-cols-[12rem_minmax(0,1fr)_auto] @lg/page:items-baseline @lg/page:gap-x-6
 													"
 													href={project.link}

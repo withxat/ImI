@@ -4,7 +4,7 @@
 	"title": "Design System: Xat — Design Engineer Portfolio",
 	"extensions": {
 		"colorMeta": {
-			"highlight-text": {
+			"highlight-brand": {
 				"role": "primary",
 				"displayName": "Quiet Rose",
 				"canonical": "oklch(0.673 0.117 3)",
@@ -14,6 +14,21 @@
 					"oklch(0.35 0.09 3)",
 					"oklch(0.45 0.10 3)",
 					"oklch(0.55 0.11 3)",
+					"oklch(0.673 0.117 3)",
+					"oklch(0.75 0.10 3)",
+					"oklch(0.857 0.061 11)"
+				]
+			},
+			"highlight-text": {
+				"role": "primary",
+				"displayName": "Rose Ink",
+				"canonical": "oklch(0.56 0.13 3)",
+				"tonalRamp": [
+					"oklch(0.15 0.04 3)",
+					"oklch(0.25 0.07 3)",
+					"oklch(0.35 0.09 3)",
+					"oklch(0.45 0.10 3)",
+					"oklch(0.56 0.13 3)",
 					"oklch(0.673 0.117 3)",
 					"oklch(0.75 0.10 3)",
 					"oklch(0.857 0.061 11)"
@@ -97,16 +112,16 @@
 			"code": {
 				"role": "tertiary",
 				"displayName": "Code Vesper",
-				"canonical": "oklch(0.206 0.012 278)",
+				"canonical": "oklch(0.173 0 0)",
 				"tonalRamp": [
-					"oklch(0.10 0.01 278)",
-					"oklch(0.15 0.01 278)",
-					"oklch(0.206 0.012 278)",
-					"oklch(0.28 0.012 278)",
-					"oklch(0.38 0.01 278)",
-					"oklch(0.50 0.008 278)",
-					"oklch(0.65 0.005 278)",
-					"oklch(0.80 0.003 278)"
+					"oklch(0.10 0 0)",
+					"oklch(0.14 0 0)",
+					"oklch(0.173 0 0)",
+					"oklch(0.26 0 0)",
+					"oklch(0.38 0 0)",
+					"oklch(0.50 0 0)",
+					"oklch(0.65 0 0)",
+					"oklch(0.80 0 0)"
 				]
 			}
 		},
@@ -194,9 +209,18 @@
 			}
 		],
 		"breakpoints": [
-			{ "name": "sm", "value": "640px" },
-			{ "name": "md", "value": "768px" },
-			{ "name": "lg", "value": "1024px" }
+			{
+				"name": "sm",
+				"value": "640px"
+			},
+			{
+				"name": "md",
+				"value": "768px"
+			},
+			{
+				"name": "lg",
+				"value": "1024px"
+			}
 		]
 	},
 	"components": [
@@ -206,7 +230,7 @@
 			"refersTo": "button-primary",
 			"description": "Solid ink fill. The mono-ink identity carrier.",
 			"html": "<button class=\"ds-btn-primary\">View all</button>",
-			"css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; padding: 0.5rem 0.75rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; line-height: 1.25; color: oklch(1 0 0); background: oklch(0.17 0.003 260); border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: background 150ms ease-out, transform 150ms ease-out; } .ds-btn-primary:hover { background: oklch(0.17 0.003 260 / 0.9); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.708 0 0 / 0.5); }"
+			"css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; padding: 0.5rem 0.75rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; line-height: 1.25; color: oklch(1 0 0); background: oklch(0.17 0.003 260); border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: background 150ms ease-out, transform 150ms ease-out; } .ds-btn-primary:hover { background: oklch(0.17 0.003 260 / 0.9); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.17 0.003 260 / 0.5); }"
 		},
 		{
 			"name": "Outline Button",
@@ -214,7 +238,7 @@
 			"refersTo": "button-outline",
 			"description": "Hairline border, background fill. The workhorse variant.",
 			"html": "<button class=\"ds-btn-outline\">Outline</button>",
-			"css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; padding: 0.5rem 0.75rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; color: oklch(0.17 0.003 260); background: oklch(1 0 0); border: 1px solid oklch(0 0 0 / 0.08); border-radius: 8px; cursor: pointer; transition: background 150ms ease-out, color 150ms ease-out; } .ds-btn-outline:hover { background: oklch(0 0 0 / 0.04); } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.708 0 0 / 0.5); }"
+			"css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; padding: 0.5rem 0.75rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; color: oklch(0.17 0.003 260); background: oklch(1 0 0); border: 1px solid oklch(0 0 0 / 0.08); border-radius: 8px; cursor: pointer; transition: background 150ms ease-out, color 150ms ease-out; } .ds-btn-outline:hover { background: oklch(0 0 0 / 0.04); } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.17 0.003 260 / 0.5); }"
 		},
 		{
 			"name": "Ghost Button",

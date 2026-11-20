@@ -3,8 +3,10 @@ name: Xat — Design Engineer Portfolio
 description: A trilingual personal site for a design engineer — built like the work it presents.
 colors:
   # ─── Brand identity (carries voice; used sparingly) ───
-  highlight-text: "oklch(0.673 0.117 3)"
+  highlight-text: "oklch(0.56 0.13 3)"
   highlight-text-dark: "oklch(0.84 0.08 58)"
+  highlight-brand: "oklch(0.673 0.117 3)"
+  highlight-brand-dark: "oklch(0.84 0.08 58)"
   highlight-soft: "oklch(0.857 0.061 11)"
   highlight-soft-dark: "oklch(0.72 0.018 20)"
   selection: "oklch(0.88 0.018 92)"
@@ -31,11 +33,11 @@ colors:
   border-dark: "oklch(0.965 0.006 260 / 0.15)"
   input: "oklch(0 0 0 / 0.10)"
   input-dark: "oklch(0.965 0.006 260 / 0.18)"
-  ring: "oklch(0.708 0 0)"
-  ring-dark: "oklch(0.556 0 0)"
+  ring: "oklch(0.17 0.003 260)"
+  ring-dark: "oklch(0.965 0.006 260)"
 
   # ─── Code surface (a single dark Vesper canvas in BOTH modes) ───
-  code: "oklch(0.206 0.012 278)"
+  code: "oklch(0.173 0 0)"
   code-foreground: "oklch(0.961 0 0)"
 
   # ─── Status (semantic, imported from Tailwind v4 scale) ───
@@ -214,8 +216,9 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 ### Primary
 
-- **Quiet Rose** (light: `oklch(0.673 0.117 3)`): The brand voice in light mode. Used on the `Xat` wordmark, link affordances (`.text-link`), emphasized text (`text-highlight-strong`), and interactive icon tints (`text-highlight-icon`). The hue (~3°) is a desaturated red sitting at the rose/coral border. Never used as a solid block fill.
-- **Warm Apricot** (dark: `oklch(0.84 0.08 58)`): The same role in dark mode, shifted to ~58° (amber) so it reads warm against deep ink without losing identity. The shift is deliberate — straight rose at dark luminance reads muddy.
+- **Quiet Rose** (light `highlight-brand`: `oklch(0.673 0.117 3)`): The brand voice in light mode. Used on the `Xat` wordmark (`text-highlight-brand`), the wanderer gradient, and the custom scrollbar. The hue (~3°) is a desaturated red sitting at the rose/coral border. At 3.1:1 on white it is reserved for large or decorative marks. Never used as a solid block fill.
+- **Rose Ink** (light `highlight-text`: `oklch(0.56 0.13 3)`): The same hue one step darker, 5:1 on white, so it passes AA as text. Used on links (`.text-link`, article links), emphasized text (`text-highlight-strong`), and badge labels.
+- **Warm Apricot** (dark: `oklch(0.84 0.08 58)`): Both roles in dark mode (`highlight-brand` and `highlight-text` share it, 11.9:1), shifted to ~58° (amber) so it reads warm against deep ink without losing identity. The shift is deliberate — straight rose at dark luminance reads muddy.
 
 ### Secondary
 
@@ -243,7 +246,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 **The Selection Is Not the Link Rule.** Selection color is warm yellow (`Selection Honey`), not the rose accent, so a selected paragraph never reads as a hyperlink mid-read.
 
-**The Code Stays Dark Rule.** `--code` and `--code-foreground` are identical in light and dark modes. Vesper is the code identity; the site theme stops at the code-block frame.
+**The Code Stays Dark Rule.** `--code` is Vesper's own canvas (`#101010`) in light and dark modes. Vesper is the code identity; the site theme stops at the code-block frame. Every block uses the plain `code` frame: shell snippets get no terminal title bar or window dots.
 
 ## 3. Typography
 
@@ -268,7 +271,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 - **Label** (Hanken Grotesk, 500, 14px / 1.25, `text-sm font-medium`): Eyebrow labels, button text, badge text.
 - **Mono** (Calling Code, 400, 12px / 1.5, `text-xs font-mono`): Post dates in index rows (`2026·06`, `06·12`), year headings and the post count on /post, code references inline, and the computed values on /design.
 - **Bio-Lead** (Source Han Serif SC via `vite-plugin-font`, 600, 16px / 28px): The home page lead line `Building production-quality interfaces and AI-native products` / `打造生产级界面与 AI 原生产品` / `本番品質の UI と AI ネイティブなプロダクトをつくる`. The only place the system uses serif.
-- **Wordmark** (Fugaz One, 400, 24–30px / 1): The string "Xat", colored `text-highlight-strong`. The system's single brand mark.
+- **Wordmark** (Fugaz One, 400, 24–30px / 1): The string "Xat", colored `text-highlight-brand`. The system's single brand mark.
 
 ### Named Rules
 
@@ -303,7 +306,7 @@ Hover state shadows are recolored, not enlarged. `highlight-surface-hover` shift
 
 ## 5. Components
 
-Every component starts as a bejamas prime (`src/components/ui/<name>/`); custom compositions live in `src/components/` and wrap primes rather than modifying them. The shared visual language is rounded-md to rounded-xl, restrained transitions (150ms ease-out), `active:scale-98` press feedback, and a focus ring at `ring/50` opacity. Components use a 1px hairline only when their boundary needs to be visible; ghost controls and open page sections remain borderless.
+Every component starts as a bejamas prime (`src/components/ui/<name>/`); custom compositions live in `src/components/` and wrap primes rather than modifying them. The shared visual language is rounded-md to rounded-xl, restrained transitions (150ms ease-out), `active:scale-98` press feedback, and a visible focus ring (see Buttons → Focus). Components use a 1px hairline only when their boundary needs to be visible; ghost controls and open page sections remain borderless.
 
 ### Buttons
 
@@ -314,7 +317,7 @@ Every component starts as a bejamas prime (`src/components/ui/<name>/`); custom 
 - **Secondary:** `secondary` fill (4% black alpha), `secondary-foreground` ink. Quiet alternative to outline.
 - **Link:** No padding, `text-primary`, underline on hover. Reserved for inline destinations inside button-shaped slots.
 - **Destructive:** `destructive/10` fill, `destructive` text. Soft, never loud — destructive actions are explained, not screamed.
-- **Focus:** 3px ring at `ring/50` opacity, plus 1px border shift to `ring`. Visible on `:focus-visible` only.
+- **Focus:** 3px ring at `ring/50` opacity, plus 1px border shift to `ring`. `--ring` is the foreground ink, so even at 50% the ring clears 3:1 in both modes. Links and index rows, which are not primes, get the base `:focus-visible` style instead: a solid 2px `ring` outline, 2px offset. Visible on `:focus-visible` only.
 - **Press:** `active:scale-98`. Subtle scale, not bounce.
 
 ### Badges
@@ -354,7 +357,7 @@ This is what gives the inline intro badges their "Cute with Shiny" quality — a
 
 ### Index Rows
 
-The writing list (home, /post) and the projects list (home). `src/components/post/post-index-row.astro` for posts.
+The writing list (home, /post, 404, and the newer/older links at an article's end) and the projects list (home). `src/components/post/post-index-row.astro` for posts.
 
 - **Structure:** A `<ul>` with `divide-y border-y` hairlines. Each row is one link: a mono date column (`4.75rem`), the title in `text-sm font-medium`, an optional one-line muted summary.
 - **Interaction:** The title turns `highlight-strong` on hover; the whole row is the hit area and carries the focus ring. No row borders, no cards, no "Read more →".
@@ -390,7 +393,7 @@ A composed component that wraps the bejamas `Button` (variant `outline`) inside 
 
 - **Header:** One row. Inner pages put a "Go to home" `TextLink` on the left; the locale switcher and theme switcher sit together on the right. No global nav bar — this is a personal site, not an app.
 - **Footer:** Wanderer greeting + social links (`text-link`s) + repo and commit + ICP filing + view stats. The wanderer line is the only animated text.
-- **Locale switcher:** Three `text-link-muted` text buttons separated by small dot glyphs. Active locale is `text-highlight-strong`. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
+- **Locale switcher:** Three `text-link-muted` text buttons separated by small dot glyphs. The active locale is plain `text-foreground` with `aria-current`, not accent: accent means "link", and the active locale is not one. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
 - **Theme switcher:** A sun / moon icon button that opens a dropdown with Light / Dark / System.
 
 ### Reveal & Stagger (the entrance language)
@@ -406,11 +409,11 @@ Article bodies use a similar but separate `article-line-reveal` keyframe for par
 
 ### Wanderer Gradient Text (the system's one moving thing)
 
-Footer-only signature. A `background-clip: text` gradient that animates `background-position: 0% 50%` → `100% 50%` over 7.5s `cubic-bezier(0.45, 0, 0.2, 1)`, alternating. The gradient runs `highlight-text → mix(highlight-text, foreground) → cyan-600 → mix(foreground, highlight-text) → highlight-text` in light mode; brighter cyan-300 in dark. Reduced motion freezes it at 50%. This is the only animated text and the only gradient text in the entire system.
+Footer-only signature. A `background-clip: text` gradient that animates `background-position: 0% 50%` → `100% 50%` over 7.5s `cubic-bezier(0.45, 0, 0.2, 1)`, alternating. The gradient runs `highlight-brand → mix(highlight-brand, foreground) → cyan-600 → mix(foreground, highlight-brand) → highlight-brand` in light mode; brighter cyan-300 in dark. Reduced motion freezes it at 50%. This is the only animated text and the only gradient text in the entire system.
 
 ### /design (the living spec)
 
-/design renders this system from the running CSS instead of restating it. `src/client/design-specimens.ts` reads type specs from computed styles, font facts from `document.fonts`, colors (normalized to `oklch()`) with their WCAG contrast, and radii in px. Sections: Typography, Colors, Trilingual wrapping, Shape & shadow, Motion. Nothing on the page hand-writes a value, so it follows `globals.css` on its own; this file does not, and needs a manual update when tokens change.
+/design renders this system from the running CSS instead of restating it. `src/client/design-specimens.ts` (loaded on demand, only on /design) reads type specs from computed styles, font facts from `document.fonts`, colors (normalized to `oklch()`) with their WCAG contrast, and radii in px. Sections: Typography, Colors, Trilingual wrapping, Shape & shadow, Motion. Nothing on the page hand-writes a value, so it follows `globals.css` on its own; this file does not, and needs a manual update when tokens change.
 
 ## 6. Do's and Don'ts
 

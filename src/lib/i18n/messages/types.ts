@@ -45,6 +45,7 @@ export type ColorRoleKey
 		| 'code'
 		| 'codeForeground'
 		| 'foreground'
+		| 'highlightBrand'
 		| 'highlightIcon'
 		| 'highlightSoft'
 		| 'highlightText'
@@ -151,6 +152,7 @@ export interface Messages {
 			goHome: string
 			title: string
 		}
+		playName: string
 		projectsEyebrow: string
 		role: string
 		tagline: string
