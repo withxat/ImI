@@ -4,7 +4,6 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 
 const en: Messages = {
 	blog: {
-		archiveSubtitle: 'The archive, where some words take their time to glow.',
 		goHome: 'Go to home',
 		pageDescription: 'Notes on frontend, design, AI, and assorted bits from Xat.',
 		pageTitle: 'Xat\'s Archive',
@@ -17,12 +16,7 @@ const en: Messages = {
 	},
 	capabilities: [
 		{
-			emptyState: {
-				description: 'Only work I\'m actually happy with makes it here.',
-				title: 'No case studies yet',
-			},
 			items: [],
-			summary: 'Make AI useful, and make people actually want to use it.',
 			title: 'AI experience',
 		},
 		{
@@ -32,7 +26,6 @@ const en: Messages = {
 					title: 'Monorepo-Template',
 				},
 			],
-			summary: 'Get the architecture, performance, and long-term maintenance right.',
 			title: 'Frontend engineering',
 		},
 		{
@@ -46,7 +39,6 @@ const en: Messages = {
 					title: 'ESLint-Config',
 				},
 			],
-			summary: 'Tinkering with config and workflows so the same thing only trips us once.',
 			title: 'Developer toolchain',
 		},
 		{
@@ -64,21 +56,17 @@ const en: Messages = {
 					title: 'ImI',
 				},
 			],
-			summary: 'Tuning motion and interaction details until an interface feels smoother and looks better.',
 			title: 'Interface & interaction',
 		},
 	],
 	categories: {
 		design: {
-			description: 'Aesthetic obsessions, indulged',
 			name: 'Design',
 		},
 		life: {
-			description: 'Bubbles from everyday life',
 			name: 'Life',
 		},
 		tech: {
-			description: 'Notes from development',
 			name: 'Tech',
 		},
 	},
@@ -159,7 +147,6 @@ const en: Messages = {
 		},
 	},
 	footer: {
-		connect: 'Here\'s where you can catch me:',
 		moeIcp: 'Moe ICP Filing No. 20264698',
 		stats: {
 			afterOnline: ' wandering by',
@@ -179,11 +166,6 @@ const en: Messages = {
 	},
 	home: {
 		bioLead: 'I love polishing interfaces and exploring what AI can do.',
-		bioP1: 'I want to bring design and technology together to solve real problems.',
-		capabilitiesEyebrow: 'Capabilities',
-		capabilitiesIntro: 'The tiny but important details between product, design, and engineering always pull me in.',
-		emptyCapabilityDescription: 'When it\'s ready, it\'ll show up here.',
-		emptyCapabilityTitle: 'Work in progress',
 		introAfterProducts: '.',
 		introBeforeSystems: 'A ',
 		introBetweenBadges: ' taught me to balance design, engineering, and real needs while building ',
@@ -194,6 +176,7 @@ const en: Messages = {
 			goHome: 'Back to home',
 			title: 'Page not found',
 		},
+		projectsEyebrow: 'Projects',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',
 		title: 'Xat - Design Engineer',

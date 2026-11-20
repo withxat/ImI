@@ -4,7 +4,6 @@ import type { Locale } from '@/lib/i18n/constants'
 import { Image } from 'astro:assets'
 import ArrowUpRight from '~icons/local/arrow-up-right'
 
-import HomeCardLink from '@/components/home/home-card-link.astro'
 import IntroBadgePopover from '@/components/home/intro-badge-popover.astro'
 import NameAudioButton from '@/components/home/name-audio-button.astro'
 import Container from '@/components/layout/container.astro'
@@ -13,9 +12,10 @@ import SiteHeader from '@/components/layout/site-header.astro'
 import Seo from '@/components/meta/seo.astro'
 import Reveal from '@/components/motion/reveal.astro'
 import StaggerReveal from '@/components/motion/stagger-reveal.astro'
+import PostIndexRow from '@/components/post/post-index-row.astro'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import RootLayout from '@/layouts/root-layout.astro'
-import { getAllPosts } from '@/lib/blog'
+import { formatPostMonth, getAllPosts } from '@/lib/blog'
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getIntroBadgeLabel } from '@/lib/i18n/intro-badges'
 import { getMessages } from '@/lib/i18n/messages'
@@ -29,25 +29,18 @@ const productsLabel = getIntroBadgeLabel(locale, 'products')
 const allPosts = await getAllPosts(locale)
 const posts = allPosts.slice(0, 4)
 const baseCapabilities = await getCapabilities()
-const capabilities = baseCapabilities.map((cap, i) => {
-	const copy = m.capabilities[i]
-	if (!copy)
-		return cap
-	return {
-		...cap,
-		emptyState: copy.emptyState ?? cap.emptyState,
-		items: cap.items.map((item, j) => ({
+const projects = baseCapabilities
+	.flatMap((cap, i) => {
+		const copy = m.capabilities[i]
+		return cap.items.map((item, j) => ({
 			...item,
-			description: copy.items[j]?.description ?? item.description,
-			title: copy.items[j]?.title ?? item.title,
-		})),
-		summary: copy.summary,
-		title: copy.title,
-	}
-})
+			description: copy?.items[j]?.description ?? item.description,
+			title: copy?.items[j]?.title ?? item.title,
+		}))
+	})
+	.reverse()
 
-const proofLinkClass = 'group/proof flex min-w-0 items-end justify-between gap-3 text-left'
-const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 ease-out group-hover/proof:translate-x-0.5 group-hover/proof:-translate-y-0.5 group-hover/proof:text-highlight-strong'
+const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out group-hover/project:translate-x-0.5 group-hover/project:-translate-y-0.5 group-hover/project:text-highlight-strong'
 ---
 
 <RootLayout>
@@ -113,24 +106,18 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 					</p>
 				</div>
 
-				<section class="
-					mt-28
-					md:mt-32
-				"
-				>
-					<StaggerReveal class="space-y-1.5" delayChildren={0.03} staggerChildren={0.045}>
-						<p class="text-base/7 text-muted-foreground">{m.home.bioP1}</p>
-						<div class="text-base/7 text-muted-foreground">
+				<section class="mt-6">
+					<StaggerReveal delayChildren={0.03} staggerChildren={0.045}>
+						<div class="max-w-prose text-base/7 text-muted-foreground">
 							{m.home.introBeforeSystems}
 							<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
 							{m.home.introBetweenBadges}
-							<IntroBadgePopover kind="products" label={productsLabel} locale={locale} />
-							{m.home.introAfterProducts}
+							<span class="whitespace-nowrap"><IntroBadgePopover kind="products" label={productsLabel} locale={locale} />{m.home.introAfterProducts}</span>
 						</div>
 					</StaggerReveal>
 				</section>
 
-				<section class="mt-24 space-y-7">
+				<section class="mt-20 space-y-4">
 					<Reveal staggerIndex={0}>
 						<div class="flex items-baseline justify-between gap-6">
 							<Eyebrow as="h2" class="font-semibold">{m.home.writingEyebrow}</Eyebrow>
@@ -139,111 +126,74 @@ const proofIconClass = 'mb-[3px] size-3.5 shrink-0 text-muted-foreground transit
 							</a>
 						</div>
 					</Reveal>
-					<div class="space-y-3">
-						{posts.map((post, index) => (
-							<Reveal staggerIndex={index + 1}>
-								<HomeCardLink
-									description={post.summary}
+					<Reveal staggerIndex={1}>
+						<ul class="divide-y divide-border border-y border-border">
+							{posts.map(post => (
+								<PostIndexRow
+									dateLabel={formatPostMonth(post.date)}
 									href={`/post/${post.slug}`}
 									slug={post.slug}
+									summary={post.summary}
 									title={post.title}
 									prefetchOnView
 								/>
-							</Reveal>
-						))}
-					</div>
+							))}
+						</ul>
+					</Reveal>
 				</section>
 
-				<section class="mt-28 space-y-8">
+				<section class="mt-20 space-y-4">
 					<Reveal staggerIndex={0}>
-						<div class="
-							grid gap-3
-							sm:grid-cols-[10rem_1fr]
-						"
-						>
-							<Eyebrow as="h2" class="font-semibold">{m.home.capabilitiesEyebrow}</Eyebrow>
-							<p class="max-w-prose text-base/7 text-muted-foreground">{m.home.capabilitiesIntro}</p>
-						</div>
+						<Eyebrow as="h2" class="font-semibold">{m.home.projectsEyebrow}</Eyebrow>
 					</Reveal>
-					<div class="space-y-10">
-						{capabilities.map((cap, index) => (
-							<Reveal staggerIndex={index + 1}>
-								<article class="
-									grid gap-3
-									sm:grid-cols-[3.25rem_1fr_15rem] sm:gap-6
-								"
-								>
-									<p class="font-mono text-xs/6 text-muted-foreground">
-										{String(index + 1).padStart(2, '0')}
-									</p>
-									<div class="min-w-0">
-										<div class="max-w-prose">
-											<h3 class="text-lg/6 font-semibold tracking-tight text-foreground">{cap.title}</h3>
-											<p class="mt-1 text-base/7 text-muted-foreground">{cap.summary}</p>
-										</div>
-									</div>
-									<div class="
-										min-w-0 space-y-2
-										sm:pt-0.5
-									"
-									>
-										{cap.items.map(item => (
-											item.link
-												? (
-														<a class={proofLinkClass} href={item.link} rel="noreferrer" target="_blank">
-															<span class="min-w-0 space-y-1">
-																<span class="
-																	block text-sm/5 font-medium text-foreground transition-colors
-																	group-hover/proof:text-highlight-strong
-																"
-																>
-																	{item.title}
-																</span>
-																<span class="block truncate text-sm/5 text-muted-foreground" title={item.description}>
-																	{item.description}
-																</span>
-															</span>
-															<ArrowUpRight aria-hidden="true" class={proofIconClass} />
-														</a>
-													)
-												: (
-														<div class={proofLinkClass}>
-															<span class="min-w-0 space-y-1">
-																<span class="
-																	block text-sm/5 font-medium text-foreground transition-colors
-																	group-hover/proof:text-highlight-strong
-																"
-																>
-																	{item.title}
-																</span>
-																<span class="block truncate text-sm/5 text-muted-foreground" title={item.description}>
-																	{item.description}
-																</span>
-															</span>
-														</div>
-													)
-										))}
-										{cap.items.length === 0 && (
-											<div class={proofLinkClass}>
-												<span class="min-w-0 space-y-1">
+					<Reveal staggerIndex={1}>
+						<ul class="divide-y divide-border border-y border-border">
+							{projects.map(project => (
+								<li>
+									{project.link
+										? (
+												<a
+													class="
+														group/project flex flex-col gap-1 py-3.5 text-left transition-colors outline-none
+														focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring/50
+														@lg/page:grid @lg/page:grid-cols-[12rem_minmax(0,1fr)_auto] @lg/page:items-baseline @lg/page:gap-x-6
+													"
+													href={project.link}
+													rel="noreferrer"
+													target="_blank"
+												>
 													<span class="
-														block text-sm/5 font-medium text-foreground transition-colors
-														group-hover/proof:text-highlight-strong
+														text-sm font-medium text-foreground transition-colors duration-150
+														group-hover/project:text-highlight-strong
 													"
 													>
-														{cap.emptyState?.title ?? m.home.emptyCapabilityTitle}
+														{project.title}
 													</span>
-													<span class="block truncate text-sm/5 text-muted-foreground">
-														{cap.emptyState?.description ?? m.home.emptyCapabilityDescription}
-													</span>
-												</span>
-											</div>
-										)}
-									</div>
-								</article>
-							</Reveal>
-						))}
-					</div>
+													<span class="min-w-0 text-sm text-muted-foreground">{project.description}</span>
+													<ArrowUpRight
+														class={`
+															hidden
+															@lg/page:block
+															${projectIconClass}
+														`}
+														aria-hidden="true"
+													/>
+												</a>
+											)
+										: (
+												<div class="
+													flex flex-col gap-1 py-3.5 text-left
+													@lg/page:grid @lg/page:grid-cols-[12rem_minmax(0,1fr)] @lg/page:items-baseline @lg/page:gap-x-6
+												"
+												>
+													<span class="text-sm font-medium text-foreground">{project.title}</span>
+													<span class="min-w-0 text-sm text-muted-foreground">{project.description}</span>
+												</div>
+											)}
+								</li>
+							))}
+						</ul>
+					</Reveal>
 				</section>
 			</div>
 		</Container>

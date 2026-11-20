@@ -4,7 +4,6 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 
 const ja: Messages = {
 	blog: {
-		archiveSubtitle: 'アーカイブ置き場。ゆっくり光り出す言葉もあります。',
 		goHome: 'ホームへ',
 		pageDescription: 'フロントエンド、デザイン、AI、それから Xat のこまごました記録。',
 		pageTitle: 'Xat のアーカイブ置き場',
@@ -17,12 +16,7 @@ const ja: Messages = {
 	},
 	capabilities: [
 		{
-			emptyState: {
-				description: '自分で納得できたものだけ載せたい。',
-				title: '事例はまだ',
-			},
 			items: [],
-			summary: 'AI を使えるものにして、ちゃんと使いたくなるものにもする。',
 			title: 'AI 体験',
 		},
 		{
@@ -32,7 +26,6 @@ const ja: Messages = {
 					title: 'Monorepo-Template',
 				},
 			],
-			summary: 'アーキテクチャも性能も、長く面倒を見られる形にする。',
 			title: 'フロントエンドエンジニアリング',
 		},
 		{
@@ -46,7 +39,6 @@ const ja: Messages = {
 					title: 'ESLint-Config',
 				},
 			],
-			summary: '設定とワークフローをいじって、同じ穴には二度落ちない。',
 			title: '開発ツールチェーン',
 		},
 		{
@@ -64,21 +56,17 @@ const ja: Messages = {
 					title: 'ImI',
 				},
 			],
-			summary: 'モーションと操作の細部を詰めて、触りやすく、見た目も気持ちいい画面にする。',
 			title: 'インターフェースとインタラクション',
 		},
 	],
 	categories: {
 		design: {
-			description: '美意識を満たすためのこだわり',
 			name: 'デザイン',
 		},
 		life: {
-			description: '日常の泡みたいな話',
 			name: '生活',
 		},
 		tech: {
-			description: '開発まわりの雑感',
 			name: 'テック',
 		},
 	},
@@ -159,7 +147,6 @@ const ja: Messages = {
 		},
 	},
 	footer: {
-		connect: 'このへんなら捕まります：',
 		moeIcp: '萌えICP登録済み♡ 20264698号',
 		stats: {
 			afterOnline: '人が通りすがり',
@@ -179,11 +166,6 @@ const ja: Messages = {
 	},
 	home: {
 		bioLead: 'インターフェースを磨くのも、AI の可能性を探るのも好き。',
-		bioP1: 'デザインと技術を組み合わせて、現実の問題を解きたい。',
-		capabilitiesEyebrow: 'できること',
-		capabilitiesIntro: 'プロダクト、デザイン、エンジニアリングの間にある、小さいけれど大事な細部にいつも惹かれる。',
-		emptyCapabilityDescription: '準備ができたら、ここに現れます。',
-		emptyCapabilityTitle: '作業中',
 		introAfterProducts: 'を形にする。',
 		introBeforeSystems: '',
 		introBetweenBadges: 'のおかげで、デザイン・実装・本当のニーズの間でバランスを取りながら、',
@@ -194,6 +176,7 @@ const ja: Messages = {
 			goHome: 'ホームへ戻る',
 			title: 'ページが見つかりません',
 		},
+		projectsEyebrow: 'つくったもの',
 		role: 'デザインエンジニア',
 		tagline: 'Xat - デザインエンジニア',
 		title: 'Xat - デザインエンジニア',

@@ -4,7 +4,6 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 
 const zh: Messages = {
 	blog: {
-		archiveSubtitle: '归档处 — 有些文字会慢慢发光。',
 		goHome: '回到首页',
 		pageDescription: '关于前端、设计、AI，以及 Xat 的零碎记录。',
 		pageTitle: 'Xat 的归档处',
@@ -12,12 +11,7 @@ const zh: Messages = {
 	},
 	capabilities: [
 		{
-			emptyState: {
-				description: '只想展示让自己满意的作品。',
-				title: '暂无案例',
-			},
 			items: [],
-			summary: '让 AI 能用，还得让人乐意用。',
 			title: 'AI 体验',
 		},
 		{
@@ -27,7 +21,6 @@ const zh: Messages = {
 					title: 'Monorepo-Template',
 				},
 			],
-			summary: '把架构、性能和长期维护一起做好。',
 			title: '前端工程化',
 		},
 		{
@@ -41,7 +34,6 @@ const zh: Messages = {
 					title: 'ESLint-Config',
 				},
 			],
-			summary: '折腾配置与工作流，不在同一个坑摔两次。',
 			title: '开发工具链',
 		},
 		{
@@ -59,21 +51,17 @@ const zh: Messages = {
 					title: 'ImI',
 				},
 			],
-			summary: '琢磨动效与交互细节，让界面更顺手，也更耐看。',
 			title: '界面与交互',
 		},
 	],
 	categories: {
 		design: {
-			description: '满足审美的执念',
 			name: '设计',
 		},
 		life: {
-			description: '关于日常的气泡',
 			name: '生活',
 		},
 		tech: {
-			description: '开发相关的随想',
 			name: '技术',
 		},
 	},
@@ -154,7 +142,6 @@ const zh: Messages = {
 		},
 	},
 	footer: {
-		connect: '可以通过这些方式抓到我：',
 		moeIcp: '萌ICP备20264698号',
 		stats: {
 			afterOnline: '人路过',
@@ -174,11 +161,6 @@ const zh: Messages = {
 	},
 	home: {
 		bioLead: '爱打磨界面，也喜欢探索 AI 的可能性。',
-		bioP1: '我想把设计和技术放在一起，解决真实的问题。',
-		capabilitiesEyebrow: '能力',
-		capabilitiesIntro: '产品、设计和工程之间，那些微小但重要的细节总让我着迷。',
-		emptyCapabilityDescription: '等它准备好了，就会出现在这里。',
-		emptyCapabilityTitle: '进行中',
 		introAfterProducts: '。',
 		introBeforeSystems: '',
 		introBetweenBadges: '让我习惯在设计、工程与真实需求之间寻找平衡，去构建',
@@ -189,6 +171,7 @@ const zh: Messages = {
 			goHome: '回到首页',
 			title: '页面未找到',
 		},
+		projectsEyebrow: '项目',
 		role: '设计工程师',
 		tagline: 'Xat - 设计工程师',
 		title: 'Xat - 设计工程师',

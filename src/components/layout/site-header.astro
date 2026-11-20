@@ -15,12 +15,10 @@ interface Props {
 const { locale, messages, showBack = false } = Astro.props as Props
 ---
 
-<header class="space-y-4">
-	<div class="flex items-baseline justify-between gap-4">
-		{showBack ? <TextLink href="/">{messages.header.goHome}</TextLink> : <div />}
+<header class="flex items-center justify-between gap-4">
+	{showBack ? <TextLink href="/">{messages.header.goHome}</TextLink> : <div />}
+	<div class="flex items-center gap-3">
 		<LocaleSwitcher aria-label={messages.localeSwitcher.ariaLabel} currentLocale={locale} />
-	</div>
-	<div class="flex justify-end">
 		<ThemeSwitcher labels={messages.header.theme} />
 	</div>
 </header>

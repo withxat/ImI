@@ -1,7 +1,6 @@
 import type { CodeBlockCopy } from '@/lib/i18n/code-block-copy.ts'
 
 export interface CategoryCopy {
-	description: string
 	name: string
 }
 
@@ -11,9 +10,7 @@ export interface CapabilityItemCopy {
 }
 
 export interface CapabilityCopy {
-	emptyState?: { description: string, title: string }
 	items: CapabilityItemCopy[]
-	summary: string
 	title: string
 }
 
@@ -113,7 +110,6 @@ export interface DesignSystemCopy {
 
 export interface Messages {
 	blog: {
-		archiveSubtitle: string
 		goHome: string
 		pageDescription: string
 		pageTitle: string
@@ -126,7 +122,6 @@ export interface Messages {
 	codeBlock: CodeBlockCopy
 	design: DesignSystemCopy
 	footer: {
-		connect: string
 		moeIcp: string
 		stats: {
 			afterOnline: string
@@ -146,12 +141,6 @@ export interface Messages {
 	}
 	home: {
 		bioLead: string
-
-		bioP1: string
-		capabilitiesEyebrow: string
-		capabilitiesIntro: string
-		emptyCapabilityDescription: string
-		emptyCapabilityTitle: string
 		introAfterProducts: string
 		introBeforeSystems: string
 		introBetweenBadges: string
@@ -162,6 +151,7 @@ export interface Messages {
 			goHome: string
 			title: string
 		}
+		projectsEyebrow: string
 		role: string
 		tagline: string
 		title: string
