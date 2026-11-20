@@ -117,11 +117,11 @@
 			},
 			"headline": {
 				"displayName": "Headline",
-				"purpose": "Section H2s — Writing, Capabilities, Colors, Typography."
+				"purpose": "Section H2s on /design — Typography, Colors, Motion."
 			},
 			"title": {
 				"displayName": "Title",
-				"purpose": "Subsection H3s — capability items, color group titles."
+				"purpose": "Subsection H3s — article h3s, /design sub-sections."
 			},
 			"body": {
 				"displayName": "Body",
@@ -133,7 +133,7 @@
 			},
 			"mono": {
 				"displayName": "Mono",
-				"purpose": "Capability numbers, code references, color value readouts."
+				"purpose": "Post dates in index rows, /post year headings and count, code references, /design value readouts."
 			},
 			"bio-lead": {
 				"displayName": "Bio Lead",
@@ -148,7 +148,7 @@
 			{
 				"name": "shadow-halo",
 				"value": "0 1px 2px 0 var(--tw-shadow-color, color-mix(in srgb, var(--color-highlight-soft) 30%, transparent))",
-				"purpose": "The single signature shadow. Rose-tinted halo on highlight-surface (cards, intro badges, popovers) and surface-callout (asides). Color cascades through --tw-shadow-color so utility overrides recolor without redefining geometry."
+				"purpose": "The single signature shadow. Rose-tinted halo on highlight-surface (intro badges) and surface-callout (the translation note above translated posts). Color cascades through --tw-shadow-color so utility overrides recolor without redefining geometry."
 			},
 			{
 				"name": "shadow-image-edge",
@@ -241,20 +241,12 @@
 			"css": ".ds-badge-outline { display: inline-flex; align-items: center; justify-content: center; height: 1.25rem; padding: 0.125rem 0.5rem; font-family: 'Calling Code', ui-monospace, monospace; font-size: 0.75rem; font-weight: 500; color: oklch(0.17 0.003 260); background: transparent; border: 1px solid oklch(0 0 0 / 0.08); border-radius: 9999px; }"
 		},
 		{
-			"name": "Highlight Surface Card",
-			"kind": "card",
-			"refersTo": "card",
-			"description": "The signature interactive surface — rose halo on hover.",
-			"html": "<a class=\"ds-card\" href=\"#\"><span class=\"ds-card-title\">Building production-quality interfaces</span><span class=\"ds-card-desc\">Design systems, AI products, and frontend craft.</span></a>",
-			"css": ".ds-card { display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem 1rem; font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; text-decoration: none; color: oklch(0.17 0.003 260); background: oklch(1 0 0); border: 1px solid oklch(0.857 0.061 11 / 0.75); border-radius: 14px; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 0 0 0 oklch(0.857 0.061 11 / 0.3); transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background 150ms ease-out; } .ds-card:hover { border-color: oklch(0.857 0.061 11); box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 4px 16px -4px oklch(0.857 0.061 11 / 0.45); background: oklch(0 0 0 / 0.04); } .ds-card-title { display: block; font-size: 0.875rem; font-weight: 500; transition: color 150ms ease-out; } .ds-card:hover .ds-card-title { color: oklch(0.673 0.117 3); } .ds-card-desc { display: block; font-size: 0.875rem; color: oklch(0.45 0.004 260); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }"
-		},
-		{
 			"name": "Pill Underline Link",
 			"kind": "custom",
 			"refersTo": "button-ghost",
 			"description": "The signature link affordance — rounded pill underline per line.",
 			"html": "<a class=\"ds-text-link\" href=\"#\">View all posts</a>",
-			"css": ".ds-text-link { color: oklch(0.673 0.117 3); font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; text-decoration: none; padding: 0 0.02em 0.2em; margin: 0 -0.02em; background-image: radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11 / 0.75) 99%, transparent), radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11 / 0.75) 99%, transparent), linear-gradient(oklch(0.857 0.061 11 / 0.75), oklch(0.857 0.061 11 / 0.75)); background-size: 0.1em 0.1em, 0.1em 0.1em, calc(100% - 0.1em) 0.1em; background-position: 0 calc(100% - 0.1em), 100% calc(100% - 0.1em), 0.05em calc(100% - 0.1em); background-repeat: no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: color 150ms ease-out; } .ds-text-link:hover { color: oklch(0.673 0.117 3); background-image: radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11) 99%, transparent), radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11) 99%, transparent), linear-gradient(oklch(0.857 0.061 11), oklch(0.857 0.061 11)); }"
+			"css": ".ds-text-link { color: oklch(0.673 0.117 3); font-family: 'Hanken Grotesk', ui-sans-serif, sans-serif; font-size: 0.875rem; font-weight: 500; text-decoration: none; padding: 0 0.02em calc(2px + 0.1em); margin: 0 -0.02em; background-image: radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11 / 0.75) calc(100% - 0.5px), transparent), radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11 / 0.75) calc(100% - 0.5px), transparent), linear-gradient(oklch(0.857 0.061 11 / 0.75), oklch(0.857 0.061 11 / 0.75)); background-size: 2px 2px, 2px 2px, calc(100% - 2px) 2px; background-position: 0 calc(100% - 2px), 100% calc(100% - 2px), 1px calc(100% - 2px); background-repeat: no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: color 150ms ease-out; } .ds-text-link:hover { color: oklch(0.673 0.117 3); background-image: radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11) calc(100% - 0.5px), transparent), radial-gradient(circle closest-side at 50% 50%, oklch(0.857 0.061 11) calc(100% - 0.5px), transparent), linear-gradient(oklch(0.857 0.061 11), oklch(0.857 0.061 11)); }"
 		},
 		{
 			"name": "Intro Badge",

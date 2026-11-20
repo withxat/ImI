@@ -1,7 +1,6 @@
 import type { CodeBlockCopy } from '@/lib/i18n/code-block-copy.ts'
 
 export interface CategoryCopy {
-	description: string
 	name: string
 }
 
@@ -11,9 +10,7 @@ export interface CapabilityItemCopy {
 }
 
 export interface CapabilityCopy {
-	emptyState?: { description: string, title: string }
 	items: CapabilityItemCopy[]
-	summary: string
 	title: string
 }
 
@@ -43,30 +40,23 @@ export interface PostTranslatedNoticeCopy {
 export type { CodeBlockCopy }
 
 export type ColorRoleKey
-	= | 'accent'
-		| 'background'
+	= | 'background'
 		| 'border'
-		| 'card'
-		| 'destructive'
+		| 'code'
+		| 'codeForeground'
 		| 'foreground'
 		| 'highlightIcon'
 		| 'highlightSoft'
 		| 'highlightText'
-		| 'info'
 		| 'muted'
 		| 'mutedForeground'
-		| 'popover'
-		| 'primary'
-		| 'success'
+		| 'selection'
+		| 'status'
 		| 'surface'
-		| 'warning'
 
-export type ColorGroupKey = 'content' | 'highlight' | 'status' | 'surface' | 'washEdges'
+export type ColorGroupKey = 'code' | 'content' | 'highlight' | 'status' | 'surface' | 'washEdges'
 
-export interface ColorGroupCopy {
-	description: string
-	title: string
-}
+export type TypefaceKey = 'callingCode' | 'fugazOne' | 'hankenGrotesk' | 'miSans' | 'sourceHanSerif'
 
 export type TypographyScaleRoleKey
 	= | 'bioLead'
@@ -80,67 +70,46 @@ export type TypographyScaleRoleKey
 
 export interface DesignSystemCopy {
 	colors: {
-		groups: Record<ColorGroupKey, ColorGroupCopy>
+		groups: Record<ColorGroupKey, string>
 		modeLabel: {
 			dark: string
 			light: string
 		}
 		roles: Record<ColorRoleKey, string>
-		tablistLabel: string
-		title: string
-	}
-	components: {
-		cardDescription: string
-		cardTitle: string
-		intro: string
-		particlesIntro: string
-		particlesTitle: string
-		primeIntro: string
-		primeTitle: string
-		statDigitsDescriptor: string
-		textLinkDescriptor: string
-		title: string
-		wandererDescriptor: string
-	}
-	elevation: {
-		haloDescription: string
-		haloLabel: string
-		imageEdgeDescription: string
-		imageEdgeLabel: string
-		intro: string
 		title: string
 	}
 	eyebrow: string
 	flipMascot: string
-	northStar: {
-		tagline: string
+	geometry: {
+		haloLabel: string
+		imageEdgeLabel: string
+		radiiTitle: string
+		shadowsTitle: string
+		title: string
+	}
+	motion: {
+		replay: string
+		slow: string
 		title: string
 	}
 	pageDescription: string
 	pageTitle: string
-	principles: {
-		rules: Array<{ body: string, name: string }>
+	typography: {
+		families: Record<TypefaceKey, string>
+		scale: Record<TypographyScaleRoleKey, string>
+		scaleTitle: string
 		title: string
 	}
-	typography: {
-		intro: string
-		sampleDescriptors: {
-			accent: string
-			cjk: string
-			display: string
-			mono: string
-			serif: string
-		}
-		scale: Record<TypographyScaleRoleKey, { role: string, spec: string }>
-		scaleTitle: string
-		specimensTitle: string
+	wrapping: {
+		rulesOff: string
+		rulesOn: string
 		title: string
+		widthLabel: string
 	}
 }
 
 export interface Messages {
 	blog: {
-		archiveSubtitle: string
 		goHome: string
 		pageDescription: string
 		pageTitle: string
@@ -153,7 +122,6 @@ export interface Messages {
 	codeBlock: CodeBlockCopy
 	design: DesignSystemCopy
 	footer: {
-		connect: string
 		moeIcp: string
 		stats: {
 			afterOnline: string
@@ -173,12 +141,6 @@ export interface Messages {
 	}
 	home: {
 		bioLead: string
-
-		bioP1: string
-		capabilitiesEyebrow: string
-		capabilitiesIntro: string
-		emptyCapabilityDescription: string
-		emptyCapabilityTitle: string
 		introAfterProducts: string
 		introBeforeSystems: string
 		introBetweenBadges: string
@@ -189,6 +151,7 @@ export interface Messages {
 			goHome: string
 			title: string
 		}
+		projectsEyebrow: string
 		role: string
 		tagline: string
 		title: string

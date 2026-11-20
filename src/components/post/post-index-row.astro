@@ -1,0 +1,54 @@
+---
+import { postCardTransitionName } from '@/lib/view-transition'
+
+interface Props {
+	dateLabel: string
+	href: string
+	meta?: string
+	prefetchOnView?: boolean
+	slug: string
+	summary?: string
+	title: string
+}
+
+const {
+	dateLabel,
+	href,
+	meta,
+	prefetchOnView = false,
+	slug,
+	summary,
+	title,
+} = Astro.props as Props
+
+const transitionName = postCardTransitionName(slug)
+---
+
+<li>
+	<a
+		class="
+			group flex flex-col gap-1 py-3.5 text-left transition-colors outline-none
+			focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-ring/50
+			@lg/page:grid @lg/page:grid-cols-[4.75rem_minmax(0,1fr)] @lg/page:items-baseline @lg/page:gap-x-6
+		"
+		data-astro-prefetch={prefetchOnView ? 'viewport' : undefined}
+		data-post-card-vt="source"
+		href={href}
+		transition:name={transitionName}
+	>
+		<span class="font-mono text-xs text-muted-foreground tabular-nums">{dateLabel}</span>
+		<span class="min-w-0 space-y-1">
+			<span class="flex items-baseline justify-between gap-4">
+				<span class="
+					text-sm font-medium text-foreground transition-colors duration-150
+					group-hover:text-highlight-strong
+				"
+				>
+					{title}
+				</span>
+				{meta && <span class="shrink-0 text-xs text-muted-foreground">{meta}</span>}
+			</span>
+			{summary && <span class="block text-sm text-muted-foreground">{summary}</span>}
+		</span>
+	</a>
+</li>

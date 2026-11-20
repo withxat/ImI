@@ -193,7 +193,7 @@ motion, component HTML/CSS, narrative).
 
 **Creative North Star: "Cute with Shiny Elegance."**
 
-The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — whose page structure comes from spacing, rhythm, and typographic alignment. Hairlines appear only where a bounded surface needs an edge. The accent is **Quiet Rose** in light mode and **Warm Apricot** in dark, used on no more than ~10% of any screen: the wordmark, link affordances, an icon tint, a hover halo around a card. The accent is the brand's voice; its rarity is what makes it land.
+The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — whose page structure comes from spacing, rhythm, and typographic alignment. Hairlines appear only where a bounded surface needs an edge. The accent is **Quiet Rose** in light mode and **Warm Apricot** in dark, used on no more than ~10% of any screen: the wordmark, link affordances, an icon tint, a hover halo around an intro badge. The accent is the brand's voice; its rarity is what makes it land.
 
 The "Cute" lives in specific, named places — never as ambient decoration. A `Fugaz One` wordmark used only for the three letters "Xat". A coin-flip mascot on the design page. A `wanderer` gradient text in the footer that animates rose to cyan as a metaphor for the visitor's geographic journey to this site. The "Shiny" is the soft pink halo (`highlight-soft`) that appears under interactive surfaces on hover. The "Elegance" is the trilingual typography stack — Hanken Grotesk for Latin, MiSans for CJK content, a tiny `vite-plugin-font` Source Han Serif subset for the bio lead — tuned with per-locale `text-wrap`, `line-break`, and `hyphens` rules so Chinese, Japanese, and English each break the way their typography traditions expect.
 
@@ -261,12 +261,12 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 ### Hierarchy
 
-- **Display** (Hanken Grotesk, 500, 30px / 1.1, `text-3xl`): Page H1s. The home page name "Xat", the design page eyebrow, the post title.
-- **Headline** (Hanken Grotesk, 500, 24px / 1.25, `text-2xl`): Section H2s. "Writing", "Capabilities", "Colors", "Typography".
-- **Title** (Hanken Grotesk, 600, 18px / 1.4, `text-lg/6`): Subsection H3s. Capability item titles, color group titles.
+- **Display** (Hanken Grotesk, 500, 30px / 1.1, `text-3xl`): Page H1s. The home page name "Xat", the /design and /post titles, the post title.
+- **Headline** (Hanken Grotesk, 500, 24px / 1.25, `text-2xl`): Section H2s on /design: "Typography", "Colors", "Motion". Home sections use the smaller Eyebrow instead.
+- **Title** (Hanken Grotesk, 600, 18px / 1.4, `text-lg/6`): Subsection H3s: article h3s and /design sub-sections.
 - **Body** (Hanken Grotesk + MiSans, 400, 16px / 28px, `text-base/7`): Paragraphs, bio copy, descriptions. Max ~65ch via `max-w-prose`.
 - **Label** (Hanken Grotesk, 500, 14px / 1.25, `text-sm font-medium`): Eyebrow labels, button text, badge text.
-- **Mono** (Calling Code, 400, 12px / 1.5, `text-xs font-mono`): Capability numbers (`01`, `02`), code references inline, color value readouts, theme-class names on the design page.
+- **Mono** (Calling Code, 400, 12px / 1.5, `text-xs font-mono`): Post dates in index rows (`2026·06`, `06·12`), year headings and the post count on /post, code references inline, and the computed values on /design.
 - **Bio-Lead** (Source Han Serif SC via `vite-plugin-font`, 600, 16px / 28px): The home page lead line `Building production-quality interfaces and AI-native products` / `打造生产级界面与 AI 原生产品` / `本番品質の UI と AI ネイティブなプロダクトをつくる`. The only place the system uses serif.
 - **Wordmark** (Fugaz One, 400, 24–30px / 1): The string "Xat", colored `text-highlight-strong`. The system's single brand mark.
 
@@ -288,7 +288,7 @@ Shadows exist, but they are **whispers** — pink/rose-tinted at low opacity, su
 
 ### Shadow Vocabulary
 
-- **shadow-halo** (`0 1px 2px 0 var(--tw-shadow-color, color-mix(in srgb, var(--color-highlight-soft) 30%, transparent))`): The single signature shadow. 1–2px geometry, rose-tinted by default, used by `highlight-surface` (cards, intro badges, popovers) and `.surface-callout` (asides). Color is intentionally indirected through `--tw-shadow-color` so utility overrides (`dark:shadow-black/35`, `hover:shadow-highlight-soft/45`) recolor the same geometry without redefining it.
+- **shadow-halo** (`0 1px 2px 0 var(--tw-shadow-color, color-mix(in srgb, var(--color-highlight-soft) 30%, transparent))`): The single signature shadow. 1–2px geometry, rose-tinted by default, used by `highlight-surface` (intro badges) and `.surface-callout` (the translation note above translated posts). Color is intentionally indirected through `--tw-shadow-color` so utility overrides (`dark:shadow-black/35`, `hover:shadow-highlight-soft/45`) recolor the same geometry without redefining it.
 - **shadow-image-edge** (`0 0 0 1px color-mix(in oklab, var(--foreground) 10%, transparent), var(--shadow-halo)`): Article media edge. The first layer draws a 1px ink-tinted edge without consuming layout space; the second layer reuses `shadow-halo` so screenshots and illustrations feel held by the page without becoming card-like.
 
 Hover state shadows are recolored, not enlarged. `highlight-surface-hover` shifts the `box-shadow` color from `highlight-soft/30` to `highlight-soft/45` without changing the geometry — the surface "warms up" rather than "lifts up".
@@ -326,6 +326,7 @@ Every component starts as a bejamas prime (`src/components/ui/<name>/`); custom 
 
 ### Cards
 
+- **Usage:** Not used for lists. Writing and projects are index rows (below); keep cards for a genuinely bounded object.
 - **Corner Style:** `rounded-xl` (14px).
 - **Background:** `card` (= `background` in light, `surface` in dark).
 - **Border:** 1px `border` ALWAYS. Never borderless.
@@ -341,13 +342,25 @@ A custom utility set, `.highlight-surface` / `.highlight-surface-hover` / `.high
 - **Hover:** `border-highlight-soft shadow-highlight-soft/45` in light; `border-foreground/22` in dark.
 - **Active/open:** `border-highlight-soft bg-accent/50 shadow-highlight-soft/45`.
 
-This is what gives the inline intro badges, the home-page entry cards, and the popovers their "Cute with Shiny" quality — a pink halo that brightens on interaction. It is the single most reused signature pattern; use it any time an interactive surface needs to feel touchable.
+This is what gives the inline intro badges their "Cute with Shiny" quality — a pink halo that brightens on interaction. It is the single most reused signature pattern; use it any time an interactive surface needs to feel touchable.
 
 ### Pill Underline Links
 
 - **Style:** Not a `text-decoration: underline`. Two radial-gradient circles at the line endpoints plus a horizontal bar between them, drawn via `background-image` and clipped per-line with `box-decoration-break: clone`. Result: a soft pill underline at line-ends that survives line-wrapping cleanly.
+- **Thickness:** `max(2px, round(0.1em, 1px))`, and the caps fade out over their last 0.5px. Whole pixels keep the caps and the bar on the same device pixels; at a fractional ~1.5px the caps rasterize square.
+- **Box:** The link must stay `display: inline`. An `inline-flex` or `inline-block` link collapses the per-line clone into one underline under the whole box. A `::after` underline cannot replace this either: on a wrapped link it spans from the first line's start to the last line's end.
 - **Color:** `--text-link-underline` defaults to a mix of `highlight-soft 75%` + `background`. On hover, lifts to full `highlight-soft`.
 - **Three variants:** `.text-link` (default, accent text + underline), `.text-link-muted` (muted text, accent on hover — used for locale switcher), `.article-body a` (same as `.text-link` but scoped to MDX content).
+
+### Index Rows
+
+The writing list (home, /post) and the projects list (home). `src/components/post/post-index-row.astro` for posts.
+
+- **Structure:** A `<ul>` with `divide-y border-y` hairlines. Each row is one link: a mono date column (`4.75rem`), the title in `text-sm font-medium`, an optional one-line muted summary.
+- **Interaction:** The title turns `highlight-strong` on hover; the whole row is the hit area and carries the focus ring. No row borders, no cards, no "Read more →".
+- **/post:** Rows group under a mono year heading; the category sits at the row's right edge.
+- **Projects:** The title takes the first column (`12rem`) and a small ↗ nudges up-right on hover.
+- **Narrow:** Below the full page-column width (`@lg/page`) the columns stack.
 
 ### Article Images
 
@@ -371,18 +384,18 @@ A composed component that wraps the bejamas `Button` (variant `outline`) inside 
 ### Eyebrow
 
 - **Style:** Section label component (`Eyebrow as="h2"`). `font-ui text-base font-medium text-foreground`. No uppercase, no tracking, no decoration — just a small bold sans label.
-- **Pairing:** Often appears as the left column of a 2-column `sm:grid-cols-[10rem_1fr]` layout next to a `text-muted-foreground` description.
+- **Pairing:** Heads a home-page list ("Writing", "Projects") with `font-semibold`. When the list continues elsewhere, a `text-link` such as "View all" sits at the right of the same row.
 
 ### Navigation
 
-- **Header:** Locale switcher + theme switcher, baseline-aligned, justified across the page top. No global nav bar — this is a personal site, not an app.
-- **Footer:** Wanderer gradient text + footer nav + version + ICP filing. The wanderer line is the only animated element.
+- **Header:** One row. Inner pages put a "Go to home" `TextLink` on the left; the locale switcher and theme switcher sit together on the right. No global nav bar — this is a personal site, not an app.
+- **Footer:** Wanderer greeting + social links (`text-link`s) + repo and commit + ICP filing + view stats. The wanderer line is the only animated text.
 - **Locale switcher:** Three `text-link-muted` text buttons separated by small dot glyphs. Active locale is `text-highlight-strong`. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
-- **Theme switcher:** Three buttons (Light / Dark / System) in a pill row.
+- **Theme switcher:** A sun / moon icon button that opens a dropdown with Light / Dark / System.
 
 ### Reveal & Stagger (the entrance language)
 
-Animations live in `src/lib/reveal-engine.ts`. Two primitives:
+Animations live in `src/client/reveal-engine.ts`. Two primitives:
 
 - **`<Reveal>`**: A single element rises from `opacity: 0, filter: blur(10px), translateY(10px)` to `opacity: 1, filter: none, translateY(0)` over 420ms `cubic-bezier(0.22, 1, 0.36, 1)`. Scroll-triggered for below-fold content via `IntersectionObserver`.
 - **`<StaggerReveal>`**: Same rise-and-soften animation applied to children with a 48ms stagger (with a 60ms base delay).
@@ -394,6 +407,10 @@ Article bodies use a similar but separate `article-line-reveal` keyframe for par
 ### Wanderer Gradient Text (the system's one moving thing)
 
 Footer-only signature. A `background-clip: text` gradient that animates `background-position: 0% 50%` → `100% 50%` over 7.5s `cubic-bezier(0.45, 0, 0.2, 1)`, alternating. The gradient runs `highlight-text → mix(highlight-text, foreground) → cyan-600 → mix(foreground, highlight-text) → highlight-text` in light mode; brighter cyan-300 in dark. Reduced motion freezes it at 50%. This is the only animated text and the only gradient text in the entire system.
+
+### /design (the living spec)
+
+/design renders this system from the running CSS instead of restating it. `src/client/design-specimens.ts` reads type specs from computed styles, font facts from `document.fonts`, colors (normalized to `oklch()`) with their WCAG contrast, and radii in px. Sections: Typography, Colors, Trilingual wrapping, Shape & shadow, Motion. Nothing on the page hand-writes a value, so it follows `globals.css` on its own; this file does not, and needs a manual update when tokens change.
 
 ## 6. Do's and Don'ts
 
@@ -407,7 +424,7 @@ Footer-only signature. A `background-clip: text` gradient that animates `backgro
 - **Do** wrap any new prime-component customization in `src/components/`, not by editing files in `src/components/ui/`. The prime directory is a mirror of the bejamas registry.
 - **Do** use `transition-colors duration-150 ease-out` as the default transition. The whole system breathes at the same tempo.
 - **Do** start every motion with `cubic-bezier(0.22, 1, 0.36, 1)` (ease-out-quart). It's the system's canonical curve.
-- **Do** scope new client JS to `<script>` tags or imports from `src/lib/*-client.ts`. Astro islands are the only model.
+- **Do** put new browser code in a `src/client/` module registered in `src/scripts/site-client.ts`, or in a page-local `<script>` when only one page needs it. Astro islands are the only model.
 
 ### Don't:
 
@@ -418,7 +435,7 @@ Footer-only signature. A `background-clip: text` gradient that animates `backgro
 - **Don't** use `#000` or `#fff` in implementation. Stay in OKLCH. The one existing exception — `oklch(1 0 0)` as light-mode background — is grandfathered; new tokens should add a whisper of chroma toward 260°.
 - **Don't** use Fraunces, Cormorant, Playfair, Newsreader, Crimson, Inter, DM Sans, IBM Plex, Space Grotesk, Outfit, Plus Jakarta, or Instrument Sans/Serif. They are training-data defaults. The site uses Hanken Grotesk for sans and Source Han Serif SC (subset) for the one serif use; do not add a second display family without strong reason.
 - **Don't** build a "hero metric" template (big number + small label + supporting stats + gradient accent). The site is editorial, not SaaS dashboard.
-- **Don't** lay out the home page or any landing page as a centered-stack hero with three identical icon-title-text cards. The site uses asymmetric layouts with leading mono numbers (`01`, `02`, `03`) on the side.
+- **Don't** lay out the home page or any landing page as a centered-stack hero with three identical icon-title-text cards. Lists are hairline-divided index rows led by a mono date column.
 - **Don't** reach for a modal as the first thought for any flow. The site has no modals; popovers and hover cards are the affordance for inline context.
 - **Don't** use uppercase letter-spaced labels as section eyebrows ("FEATURES" / "TESTIMONIALS"). The `Eyebrow` component is sentence-case, no tracking, no caps. Repeated tiny tracked-caps labels read as AI scaffolding.
 - **Don't** introduce a new color scale (no `blue-50..blue-900` ramps in source). Status colors are imported from Tailwind as needed; the brand palette is the 6–8 tokens above.

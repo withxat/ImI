@@ -3,16 +3,10 @@
 		"capabilities": [
 			{
 				"title": "AI Product Experiences",
-				"summary": "Chat surfaces, agents, orchestration, and treating intelligence as UX—not a bolt-on.",
-				"items": [],
-				"emptyState": {
-					"title": "No public case yet",
-					"description": "Only work with clear ownership goes here."
-				}
+				"items": []
 			},
 			{
 				"title": "Frontend Systems",
-				"summary": "Architecture, performance budgets, and component systems that scale with the product.",
 				"items": [
 					{
 						"title": "Monorepo-Template",
@@ -23,7 +17,6 @@
 			},
 			{
 				"title": "Developer Experience",
-				"summary": "Strict defaults, lint rules, and workflows that keep teams shipping safely.",
 				"items": [
 					{
 						"title": "TSConfig",
@@ -39,7 +32,6 @@
 			},
 			{
 				"title": "Interface Craft",
-				"summary": "Motion, micro-interactions, and the invisible details that make dense tools feel humane.",
 				"items": [
 					{
 						"title": "Rehype-Fluent-Emoji",
@@ -56,28 +48,21 @@
 						"description": "🫧 My personal website and digital garden",
 						"link": "https://github.com/withxat/ImI"
 					}
-				],
-				"emptyState": {
-					"title": "Work in progress",
-					"description": "Quiet motion R&D—links when it's showtime."
-				}
+				]
 			}
 		],
 		"categories": [
 			{
 				"name": "Life",
-				"slug": "life",
-				"description": "Bubbles of simple life"
+				"slug": "life"
 			},
 			{
 				"name": "Tech",
-				"slug": "tech",
-				"description": "Thoughts on technology"
+				"slug": "tech"
 			},
 			{
 				"name": "Design",
-				"slug": "design",
-				"description": "Satisfying my aesthetic"
+				"slug": "design"
 			}
 		]
 	}

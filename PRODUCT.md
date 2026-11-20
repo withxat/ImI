@@ -55,7 +55,7 @@ These are the things the site must never be confused with.
 
 Five principles. Strategic, not visual. (Visual rules live in `DESIGN.md`.)
 
-1. **Implementation IS the portfolio.** The site is not a window onto the work — it IS the work. Every architectural decision is itself a portfolio artifact: the choice of Astro 6 SSR on Cloudflare Workers, the cookie-based i18n with no URL prefix, the reveal engine, the trilingual breaking rules, the hand-subsetted serif font. A visitor who reads the source is reading another piece of writing. Optimize for that visitor too.
+1. **Implementation IS the portfolio.** The site is not a window onto the work — it IS the work. Every architectural decision is itself a portfolio artifact: the choice of Astro 7 SSR on Cloudflare Workers, the cookie-based i18n with no URL prefix, the reveal engine, the trilingual breaking rules, the hand-subsetted serif font. A visitor who reads the source is reading another piece of writing. Optimize for that visitor too.
 
 2. **For myself first.** Build at the threshold of personal expression. Visitors are kin, not customers. No conversion funnels. No "Want to work together?" CTAs. No newsletter signup modals. The site is allowed to be inefficient at converting because converting is not the job. The job is being honest about how Xat works and what Xat finds interesting.
 
@@ -80,6 +80,7 @@ Implemented today:
 
 Known gaps to monitor:
 
+- Link text contrast: light-mode `highlight-text` measures 3.1:1 on the white background, under AA's 4.5:1 for the text of `.text-link` and article links. Not yet decided: darken the rose, or give link text its own darker step.
 - Custom scrollbar is keyboard-operable via arrow keys but has not been tested with all screen readers; the native scrollbar is preserved as a fallback affordance via `scrollbar-width: none` + visible custom strip, not by hijacking the system scrollbar entirely.
 - PhotoSwipe gallery uses its built-in keyboard handling; verify before adding more gallery uses.
 - Theme switcher and locale switcher are keyboard-focusable but the visual focus indicator on the active state has not been audited across all three locales for contrast.

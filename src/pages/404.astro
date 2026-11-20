@@ -1,11 +1,11 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
-import HomeCardLink from '@/components/home/home-card-link.astro'
 import Container from '@/components/layout/container.astro'
 import SiteHeader from '@/components/layout/site-header.astro'
 import Seo from '@/components/meta/seo.astro'
 import StaggerReveal from '@/components/motion/stagger-reveal.astro'
+import { Button } from '@/components/ui/button'
 import RootLayout from '@/layouts/root-layout.astro'
 import { getMessages } from '@/lib/i18n/messages'
 import { pageOgImageUrl } from '@/lib/seo-data'
@@ -47,11 +47,9 @@ const { notFound } = m.home
 						<p class="max-w-prose text-base/7 text-muted-foreground">{notFound.description}</p>
 					</div>
 
-					<HomeCardLink
-						description=""
-						href="/"
-						title={notFound.goHome}
-					/>
+					<Button as="a" href="/" variant="outline">
+						{notFound.goHome}
+					</Button>
 				</div>
 			</StaggerReveal>
 		</Container>

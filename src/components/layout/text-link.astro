@@ -10,7 +10,9 @@ type Props = {
 
 const { class: className, decorative = false, href } = Astro.props as Props
 
-const linkClass = cn('text-link inline-flex items-center gap-2 font-ui text-sm', className)
+// Stay inline: the pill underline relies on `box-decoration-break: clone` to draw per line,
+// which an inline-flex box would collapse into one underline under the whole block.
+const linkClass = cn('text-link font-ui text-sm', className)
 ---
 
 {decorative

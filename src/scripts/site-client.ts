@@ -1,8 +1,7 @@
 import { initArticleBodies } from '@/client/article-reveal'
 import { disposeAll, registerModule, runAll } from '@/client/client-registry'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/client/custom-scrollbar'
-import { disposeDesignStatDigitsPreview, initDesignStatDigitsPreview } from '@/client/design-stat-digits-preview'
-import { disposeDesignWandererPreview, initDesignWandererPreview } from '@/client/design-wanderer-preview'
+import { disposeDesignSpecimens, initDesignSpecimens } from '@/client/design-specimens'
 import { initIntroBadges } from '@/client/intro-badge'
 import { initLinkedPageFontPrefetch } from '@/client/linked-page-font-prefetch'
 import { initMdxCopyButtons } from '@/client/mdx-copy'
@@ -66,14 +65,9 @@ registerModule('custom-scrollbar', {
 	init: () => initCustomScrollbar(),
 })
 
-registerModule('design-wanderer-preview', {
-	dispose: () => disposeDesignWandererPreview(),
-	init: () => initDesignWandererPreview(),
-})
-
-registerModule('design-stat-digits-preview', {
-	dispose: () => disposeDesignStatDigitsPreview(),
-	init: () => initDesignStatDigitsPreview(),
+registerModule('design-specimens', {
+	dispose: () => disposeDesignSpecimens(),
+	init: () => initDesignSpecimens(),
 })
 
 registerModule('site-stats', {

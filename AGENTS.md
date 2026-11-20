@@ -75,7 +75,7 @@ Icons:
 Animation:
 
 - `motion` (Framer Motion)
-- Custom reveal engine (`src/lib/reveal-engine.ts`)
+- Custom reveal engine (`src/client/reveal-engine.ts`)
 - Stagger reveals, article line reveals, page transitions
 
 Content:
@@ -147,7 +147,7 @@ Current pages:
 | `/` (home) | SSR | locale-dependent |
 | `/post` (list) | SSR | locale-dependent |
 | `/post/[slug]` | SSR | locale-dependent, 404 if missing |
-| `/design` | SSR | design system reference |
+| `/design` | SSR | living design spec, values read from running CSS |
 | `/404` | static | fallback |
 | `feed.xml`, `feed.en.xml`, `feed.ja.xml` | SSR | RSS feeds |
 | `/api/stats.json` (GET), `/api/presence.json` (POST) | SSR | site stats, `no-store` |
@@ -208,10 +208,10 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 ### Core Pages
 
-- Home (`/`) — profile, bio, recent posts, capabilities grid
-- Blog list (`/post`) — grouped by category
+- Home (`/`) — profile, bio, recent posts, projects list
+- Blog list (`/post`) — grouped by year, with dates
 - Blog detail (`/post/[slug]`) — MDX with TOC, reading time, tags, prev/next nav, translator info
-- Design system (`/design`) — color tokens, typography showcase
+- Design system (`/design`) — typography, colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
 - 404
 
 ---
@@ -242,8 +242,8 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Name with audio pronunciation button
 - Bio lead in serif font (CJK-subset Source Han Serif)
 - Intro badges with popover descriptions (systems / products)
-- Recent posts (4 latest)
-- Capabilities section with proof links
+- Recent posts (4 latest) as date-led index rows
+- Projects list, flattened from the `capabilities` groups in `content/config.json`
 
 ---
 
@@ -251,8 +251,8 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - Wanderer gradient text animation (CSS-only, respects `prefers-reduced-motion`)
 - Visitor country detection (Cloudflare `cf.country`) with localized country name
-- Locale switcher
-- RSS links
+- Social links (GitHub, Twitter, Telegram, Email)
+- Repo link with commit SHA, ICP filing
 - Site stats: total views + online now, animated with `number-flow` (no digit grouping)
 
 ---
@@ -336,9 +336,13 @@ Micro interactions: encouraged.
   /client        # browser-only modules registered by src/scripts/site-client.ts
   /components
     /fonts       # font loading / subset side-effect components
+    /home        # intro badges, name pronunciation button
+    /layout      # header, footer, container, text-link, locale/theme switchers
     /mdx         # MDX element overrides (a, h1-h6, img, table, etc.)
-    /ui          # reusable UI primitives (button, badge, container, popover, etc.)
-    *.astro      # page-level components (header, footer, seo, reveal, etc.)
+    /meta        # seo
+    /motion      # reveal, stagger-reveal
+    /post        # post index row, article body, translation notice
+    /ui          # bejamas prime components (button, badge, popover, etc.)
   /layouts
     root-layout.astro
   /lib
@@ -393,7 +397,7 @@ Micro interactions: encouraged.
 - Path alias `@/` maps to `./src/` (configured in `tsconfig.json` and `astro.config.ts` via `jiti`).
 - In `astro.config.ts`, use relative imports for `./src/...` because `@/` is not resolved during config loading.
 - Components are `.astro` files (not `.tsx`) — zero client JS by default.
-- Client-side JS is loaded via Astro islands or `<script>` tags that import from `/src/scripts/` or `/src/lib/*-client.ts`.
+- Client-side JS lives in `src/client/` modules registered in `src/scripts/site-client.ts`; a page-local `<script>` is fine when only one page needs it.
 - `data-astro-prefetch` on links for prefetch-on-hover.
 - `transition:animate` and `transition:persist` for Astro view transitions.
 - Content collections are typed via `src/content.config.ts` using Zod schemas.

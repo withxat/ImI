@@ -50,7 +50,6 @@ export const BLOG_PRIMARY_LOCALE: Locale = 'zh'
 /** Cached post index per locale. Built once, reused for all lookups. */
 const postIndexCache = new Map<Locale, {
 	all: PostWithMeta[]
-	byCategory: Map<string, PostWithMeta[]>
 	bySlug: Map<string, PostWithMeta>
 	slugs: string[]
 }>()
@@ -65,7 +64,6 @@ async function buildPostIndex(locale: Locale) {
 
 	const all: PostWithMeta[] = []
 	const bySlug = new Map<string, PostWithMeta>()
-	const byCategory = new Map<string, PostWithMeta[]>()
 	const allSlugs = new Set<string>()
 
 	for (const entry of sorted) {
@@ -87,15 +85,10 @@ async function buildPostIndex(locale: Locale) {
 
 		all.push(post)
 		bySlug.set(parsed.slug, post)
-
-		const categoryPosts = byCategory.get(post.category) ?? []
-		categoryPosts.push(post)
-		byCategory.set(post.category, categoryPosts)
 	}
 
 	const index = {
 		all,
-		byCategory,
 		bySlug,
 		slugs: [...allSlugs],
 	}
@@ -131,18 +124,20 @@ export async function getCategoryBySlug(slug: string): Promise<BlogCategory | un
 	return categories.find(category => category.slug === slug)
 }
 
-export async function getPostsByCategory(locale: Locale) {
-	const [index, categories] = await Promise.all([
-		buildPostIndex(locale),
-		getBlogCategories(),
-	])
+export async function getPostsByYear(locale: Locale) {
+	const index = await buildPostIndex(locale)
+	const groups = new Map<number, PostWithMeta[]>()
 
-	return categories
-		.map(category => ({
-			category,
-			posts: index.byCategory.get(category.slug) ?? [],
-		}))
-		.filter(group => group.posts.length > 0)
+	for (const post of index.all) {
+		const { year } = utcCalendarParts(post.date)
+		const list = groups.get(year) ?? []
+		list.push(post)
+		groups.set(year, list)
+	}
+
+	return [...groups.entries()]
+		.sort(([a], [b]) => b - a)
+		.map(([year, posts]) => ({ posts, year }))
 }
 
 function utcCalendarParts(date: Date) {
@@ -151,6 +146,18 @@ function utcCalendarParts(date: Date) {
 		month: date.getUTCMonth() + 1,
 		year: date.getUTCFullYear(),
 	}
+}
+
+/** Compact `YYYY·MM` label for the home writing index. */
+export function formatPostMonth(date: Date): string {
+	const { month, year } = utcCalendarParts(date)
+	return `${year}·${String(month).padStart(2, '0')}`
+}
+
+/** Compact `MM·DD` label inside year-grouped archive sections. */
+export function formatPostMonthDay(date: Date): string {
+	const { day, month } = utcCalendarParts(date)
+	return `${String(month).padStart(2, '0')}·${String(day).padStart(2, '0')}`
 }
 
 /** Formats the post's calendar date (YAML `date` is treated as UTC midnight). */
