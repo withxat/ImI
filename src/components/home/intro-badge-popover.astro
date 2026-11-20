@@ -17,6 +17,8 @@ interface Props {
 
 const { kind, label, locale } = Astro.props as Props
 const Icon = kind === 'products' ? Suitcase : GraduationCap
+// The systems badge comes first in every locale; opening its card upward keeps it off the products badge that follows.
+const side = kind === 'systems' ? 'top' : 'bottom'
 ---
 
 <HoverCard
@@ -49,10 +51,8 @@ const Icon = kind === 'products' ? Suitcase : GraduationCap
 		align="start"
 		alignOffset={-4}
 		class="max-w-72 gap-0 text-sm/6 text-muted-foreground"
-		side="bottom"
+		side={side}
 		sideOffset={8}
-		data-intro-badge-popup
-		inert
 	>
 		<IntroBadgeDescription kind={kind} locale={locale} />
 	</HoverCardContent>
