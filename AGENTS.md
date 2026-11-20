@@ -146,9 +146,9 @@ Current pages:
 |---|---|---|
 | `/` (home) | SSR | locale-dependent |
 | `/post` (list) | SSR | locale-dependent |
-| `/post/[slug]` | SSR | locale-dependent, 404 if missing |
+| `/post/[slug]` | SSR | locale-dependent; unknown slugs rewrite to `/404` |
 | `/design` | SSR | living design spec, values read from running CSS |
-| `/404` | static | fallback |
+| `/404` | SSR | locale-dependent: copy and latest posts follow the visitor's locale |
 | `feed.xml`, `feed.en.xml`, `feed.ja.xml` | SSR | RSS feeds |
 | `/api/stats.json` (GET), `/api/presence.json` (POST) | SSR | site stats, `no-store` |
 | `/sitemap-index.xml`, `/sitemap-0.xml` | static (build) | `@astrojs/sitemap`, zh canonical URLs |
@@ -212,7 +212,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Blog list (`/post`) — grouped by year, with dates
 - Blog detail (`/post/[slug]`) — MDX with TOC, reading time, tags, prev/next nav, translator info
 - Design system (`/design`) — typography, colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
-- 404
+- 404 — styled page with the latest posts, also used for unknown post slugs
 
 ---
 

@@ -169,7 +169,6 @@ const zh: Messages = {
 			'设计工程师，专注 AI 与前端，写些关于前端、设计、AI 的文章。',
 		notFound: {
 			description: '这里好像什么也没有，页面可能已经搬家了。',
-			goHome: '回到首页',
 			title: '页面未找到',
 		},
 		playName: '播放名字读音',

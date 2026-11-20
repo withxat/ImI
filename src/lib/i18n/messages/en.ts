@@ -174,7 +174,6 @@ const en: Messages = {
 			'Design Engineer focused on AI and frontend, writing about code, design, and AI.',
 		notFound: {
 			description: 'Looks like there\'s nothing here. The page may have moved.',
-			goHome: 'Back to home',
 			title: 'Page not found',
 		},
 		playName: 'Play name pronunciation',

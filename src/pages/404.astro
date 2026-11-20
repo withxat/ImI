@@ -2,21 +2,25 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import Container from '@/components/layout/container.astro'
+import Eyebrow from '@/components/layout/eyebrow.astro'
 import SiteHeader from '@/components/layout/site-header.astro'
 import Seo from '@/components/meta/seo.astro'
 import StaggerReveal from '@/components/motion/stagger-reveal.astro'
-import { Button } from '@/components/ui/button'
+import PostIndexRow from '@/components/post/post-index-row.astro'
 import RootLayout from '@/layouts/root-layout.astro'
+import { formatPostMonthDay, getAllPosts } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { pageOgImageUrl } from '@/lib/seo-data'
 
-export const prerender = true
+// On demand, so the copy and the post list follow the visitor's locale.
+export const prerender = false
 
 Astro.response.status = 404
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
 const { notFound } = m.home
+const posts = (await getAllPosts(locale)).slice(0, 3)
 ---
 
 <RootLayout>
@@ -36,21 +40,31 @@ const { notFound } = m.home
 					<SiteHeader locale={locale} messages={m} showBack />
 				</div>
 
-				<div class="
-					mt-28 space-y-6
-					md:mt-32
-				"
-				>
-					<div class="space-y-3">
-						<p class="font-mono text-xs/6 text-muted-foreground">404</p>
-						<h1 class="text-3xl font-medium tracking-tight text-foreground">{notFound.title}</h1>
-						<p class="max-w-prose text-base/7 text-muted-foreground">{notFound.description}</p>
-					</div>
-
-					<Button as="a" href="/" variant="outline">
-						{notFound.goHome}
-					</Button>
+				<div class="mt-20 space-y-3">
+					<p class="font-mono text-xs/6 text-muted-foreground">404</p>
+					<h1 class="text-3xl font-medium tracking-tight text-foreground">{notFound.title}</h1>
+					<p class="max-w-prose text-base/7 text-muted-foreground">{notFound.description}</p>
 				</div>
+
+				<section class="mt-16 space-y-4">
+					<div class="flex items-baseline justify-between gap-6">
+						<Eyebrow as="h2" class="font-semibold">{m.home.writingEyebrow}</Eyebrow>
+						<a class="text-link font-ui text-sm" href="/post" data-astro-prefetch>
+							{m.home.viewAllPosts}
+						</a>
+					</div>
+					<ul class="divide-y divide-border border-y border-border">
+						{posts.map(post => (
+							<PostIndexRow
+								dateLabel={formatPostMonthDay(post.date)}
+								href={`/post/${post.slug}`}
+								slug={post.slug}
+								summary={post.summary}
+								title={post.title}
+							/>
+						))}
+					</ul>
+				</section>
 			</StaggerReveal>
 		</Container>
 	</section>

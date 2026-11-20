@@ -149,7 +149,6 @@ export interface Messages {
 		metaDescription: string
 		notFound: {
 			description: string
-			goHome: string
 			title: string
 		}
 		playName: string

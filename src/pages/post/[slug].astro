@@ -27,7 +27,7 @@ const m = getMessages(locale)
 const post = await getPostBySlug(slug, locale)
 
 if (!post) {
-	return new Response('Not found', { status: 404 })
+	return Astro.rewrite('/404')
 }
 
 const category = await getCategoryBySlug(post.category)
