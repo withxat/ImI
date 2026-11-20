@@ -10,6 +10,7 @@ const en: Messages = {
 		older: 'Older',
 		pageDescription: 'Notes on frontend, design, AI, and assorted bits from Xat.',
 		pageTitle: 'Xat\'s Archive',
+		postCountSuffix: ' posts',
 		postTranslatedNotice: {
 			afterLink: ' to read the author-written source text.',
 			beforeLink: 'This article is an AI translation from the Chinese original. Switch the site language to ',
@@ -35,7 +36,7 @@ const en: Messages = {
 		{
 			items: [
 				{
-					description: '📒 A strict TypeScript configuration for modern project',
+					description: '📒 A strict TypeScript configuration for modern projects',
 					title: 'TSConfig',
 				},
 				{
@@ -171,6 +172,7 @@ const en: Messages = {
 	},
 	home: {
 		bioLead: 'I love polishing interfaces and exploring what AI can do.',
+		designProject: '📐 The spec for this site, every value read from the live CSS',
 		introAfterProducts: '.',
 		introBeforeSystems: 'A ',
 		introBetweenBadges: ' taught me to balance design, engineering, and real needs while building ',

@@ -10,6 +10,7 @@ const ja: Messages = {
 		older: '前の記事',
 		pageDescription: 'フロントエンド、デザイン、AI、それから Xat のこまごました記録。',
 		pageTitle: 'Xat のアーカイブ置き場',
+		postCountSuffix: ' 本',
 		postTranslatedNotice: {
 			afterLink: 'に切り替えると著者による原文を読めます。',
 			beforeLink: 'この記事は中国語の原文をAIが翻訳したものです。サイトの言語を',
@@ -171,6 +172,7 @@ const ja: Messages = {
 	},
 	home: {
 		bioLead: 'インターフェースを磨くのも、AI の可能性を探るのも好き。',
+		designProject: '📐 このサイトのデザイン仕様。数値はすべて実際の CSS から読んでいます',
 		introAfterProducts: 'を形にする。',
 		introBeforeSystems: '',
 		introBetweenBadges: 'のおかげで、デザイン・実装・本当のニーズの間でバランスを取りながら、',
@@ -186,7 +188,7 @@ const ja: Messages = {
 		tagline: 'Xat - デザインエンジニア',
 		title: 'Xat - デザインエンジニア',
 		viewAllPosts: 'すべて見る',
-		writingEyebrow: 'ライティング',
+		writingEyebrow: '書いたもの',
 	},
 	localeSwitcher: {
 		ariaLabel: '言語',

@@ -4,7 +4,7 @@ export type IntroBadgeKind = 'products' | 'systems'
 
 const labels: Record<Locale, Record<IntroBadgeKind, string>> = {
 	en: { products: 'intelligent products', systems: 'systems background' },
-	ja: { products: 'インテリジェントプロダクト', systems: 'システムのバックグラウンド' },
+	ja: { products: 'インテリジェントプロダクト', systems: 'システム工学の素養' },
 	zh: { products: '智能产品', systems: '系统工程背景' },
 }
 

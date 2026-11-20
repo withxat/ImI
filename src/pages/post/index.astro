@@ -37,7 +37,7 @@ const totalPosts = yearGroups.reduce((sum, group) => sum + group.posts.length, 0
 					<SiteHeader locale={locale} messages={m} showBack />
 					<div class="flex items-baseline justify-between gap-4">
 						<h1 class="text-3xl font-medium text-foreground">{m.blog.title}</h1>
-						<span class="font-mono text-xs text-muted-foreground tabular-nums">{totalPosts}</span>
+						<span class="font-ui text-sm text-muted-foreground"><span class="font-mono text-xs tabular-nums">{totalPosts}</span>{m.blog.postCountSuffix}</span>
 					</div>
 				</div>
 

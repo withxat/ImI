@@ -117,6 +117,7 @@ export interface Messages {
 		older: string
 		pageDescription: string
 		pageTitle: string
+		postCountSuffix: string
 		/** Shown above translated article bodies when UI locale is not Chinese. */
 		postTranslatedNotice?: PostTranslatedNoticeCopy
 		title: string
@@ -146,6 +147,7 @@ export interface Messages {
 	}
 	home: {
 		bioLead: string
+		designProject: string
 		introAfterProducts: string
 		introBeforeSystems: string
 		introBetweenBadges: string

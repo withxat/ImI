@@ -242,7 +242,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Bio lead in serif font (CJK-subset Source Han Serif)
 - Intro badges with popover descriptions (systems / products)
 - Recent posts (4 latest) as date-led index rows
-- Projects list, flattened from the `capabilities` groups in `content/config.json`
+- Projects list, flattened from the `capabilities` groups in `content/config.json`, with a Design System row (links to `/design`) after ImI
 
 ---
 

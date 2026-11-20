@@ -10,6 +10,7 @@ const zh: Messages = {
 		older: '较早',
 		pageDescription: '关于前端、设计、AI，以及 Xat 的零碎记录。',
 		pageTitle: 'Xat 的归档处',
+		postCountSuffix: ' 篇',
 		title: '全部文章',
 		toc: '目录',
 	},
@@ -166,6 +167,7 @@ const zh: Messages = {
 	},
 	home: {
 		bioLead: '爱打磨界面，也喜欢探索 AI 的可能性。',
+		designProject: '📐 本站的设计规范，数值全部读自线上 CSS',
 		introAfterProducts: '。',
 		introBeforeSystems: '',
 		introBetweenBadges: '让我习惯在设计、工程与真实需求之间寻找平衡，去构建',

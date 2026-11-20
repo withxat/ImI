@@ -15,7 +15,7 @@ import StaggerReveal from '@/components/motion/stagger-reveal.astro'
 import PostIndexRow from '@/components/post/post-index-row.astro'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import RootLayout from '@/layouts/root-layout.astro'
-import { formatPostMonth, getAllPosts } from '@/lib/blog'
+import { formatPostMonthDay, getAllPosts } from '@/lib/blog'
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getIntroBadgeLabel } from '@/lib/i18n/intro-badges'
 import { getMessages } from '@/lib/i18n/messages'
@@ -39,6 +39,12 @@ const projects = baseCapabilities
 		}))
 	})
 	.reverse()
+// The design spec sits right after ImI, the site it documents.
+projects.splice(projects.findIndex(project => project.title === 'ImI') + 1, 0, {
+	description: m.home.designProject,
+	link: '/design',
+	title: m.design.eyebrow,
+})
 
 const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out group-hover/project:translate-x-0.5 group-hover/project:-translate-y-0.5 group-hover/project:text-highlight-strong'
 ---
@@ -130,7 +136,7 @@ const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-
 						<ul class="divide-y divide-border border-y border-border">
 							{posts.map(post => (
 								<PostIndexRow
-									dateLabel={formatPostMonth(post.date)}
+									dateLabel={formatPostMonthDay(post.date)}
 									href={`/post/${post.slug}`}
 									slug={post.slug}
 									summary={post.summary}
@@ -159,8 +165,8 @@ const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-
 														@lg/page:grid @lg/page:grid-cols-[12rem_minmax(0,1fr)_auto] @lg/page:items-baseline @lg/page:gap-x-6
 													"
 													href={project.link}
-													rel="noreferrer"
-													target="_blank"
+													rel={project.link.startsWith('/') ? undefined : 'noreferrer'}
+													target={project.link.startsWith('/') ? undefined : '_blank'}
 												>
 													<span class="
 														text-sm font-medium text-foreground transition-colors duration-150
