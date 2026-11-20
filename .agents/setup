@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Prepares an Amp orb for this repository by installing its pnpm dependencies.
+# Amp also reruns it on a restored snapshot, so it must stay idempotent and fast when warm.
+set -euo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+
+step() {
+	local name=$1 start=$SECONDS
+	shift
+	echo "==> $name"
+	"$@"
+	echo "<== $name ($((SECONDS - start))s)"
+}
+
+# The orb image ships Node and pnpm; pnpm switches to the version pinned in
+# package.json#packageManager by itself. Install scripts generate
+# worker-configuration.d.ts (`wrangler types`) and install the lefthook git hooks.
+step "pnpm install" pnpm install --frozen-lockfile

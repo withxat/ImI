@@ -17,3 +17,6 @@ worker-configuration.d.ts
 
 # Astro
 .astro
+
+# Amp orb portals
+.amp/portals/*
