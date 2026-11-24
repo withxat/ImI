@@ -1,0 +1,118 @@
+role: Design Engineer · Frontend & AI products
+summary: >-
+  I build the frontend of AI-native products, plus the server code they need.
+  I like to own the whole stretch, from interaction and components to design tools and the engineering underneath:
+  streaming chat and agent configuration, a theme editor and its Figma plugin.
+  Outside work I contribute to open source and make small tools; this site is part of the portfolio too.
+contact:
+  - label: xat.sh
+    href: https://xat.sh
+  - label: github.com/withxat
+    href: https://github.com/withxat
+  - label: i@xat.sh
+    href: mailto:i@xat.sh
+
+experience:
+  - organization: Central China Normal University
+    role: Design Engineer
+    start: 2024-05
+    summary: Frontend and design on the university's education AI product team. I built several products from scratch and carried them through launch and later releases. 460+ merged pull requests and 150+ reviews of teammates' pull requests; I also review interns' code and have given internal talks on getting started with frontend.
+    projects:
+      - name: Education AI agent platform
+        start: 2025-09
+        summary: Teachers and institutions configure AI agents here (experts, skills, MCP tools, knowledge bases) and embed them in teaching apps through an SDK. One of the main frontend engineers with 170+ merged pull requests; I own the theme system.
+        highlights:
+          - Built the theme system from scratch. A theme workbench with drafts, versions, publishing, and rollback, distributed per authorized app; a Figma-style canvas editor with a layer tree and 100-step undo; a Figma plugin that keeps mockups and code in sync both ways through DTCG design tokens. Another platform already uses it for its skins.
+          - Real-time voice input. An AudioWorklet captures 16 kHz PCM and a WebSocket relay streams it to speech recognition, with authentication and cross-site protection.
+          - Agent configuration. JSON Schema based business variables, multi-question follow-up cards, parallel sub-agents, and prompt version history; fixed virtualized rendering for 1,400-block document previews and added regression tests.
+          - The earlier workflow editor. A React Flow canvas with state rebuilt on Zustand, code nodes, variable references, dry runs, and undo and redo.
+        stack: [React 19, TanStack Router/Query, tRPC, Drizzle, AI SDK, MCP, Plate.js, Figma Plugin API, Vitest, Playwright]
+      - name: AI assistant for teacher education
+        start: 2025-02
+        end: 2026-06
+        summary: After launch it branched into editions for several clients.
+        highlights:
+          - Wrote most of the first client (75% of its commits), live two weeks after the Lunar New Year. Streaming chat, D3 radar charts and Markdown inside messages, a WebRTC video avatar, and multiple languages.
+          - The Next version moved to an agent architecture. I wrote its chat client and split the Module Federation loader into its own package, so the model can call remote chart components mid-conversation; fully rolled out in May 2025.
+          - Led the front and back end of a vocational college edition. A step-by-step AI lesson-plan pipeline with partial regeneration, run on the server so it keeps going after the page closes, with illustrations and export to Word and Feishu docs; role-based permissions checked in tRPC; on-premises deployment. V2.0 shipped in February 2026.
+        stack: [React 19, React Router 7, tRPC, TanStack Query, AI SDK, Drizzle, Module Federation, D3, WebRTC]
+      - name: ReplayKit interaction replay library
+        start: 2026-05
+        end: 2026-05
+        summary: Records what happens in a browser or an editor as structured events and plays it back, instead of recording video. Designed and built alone.
+        highlights:
+          - Split into seven packages (core, recorder, player, cursor, annotations, audio, platejs) plus one umbrella package.
+          - Masks sensitive input while recording; the player can seek and step; replayable blocks and a hand-drawn layer live inside Plate documents.
+        stack: [TypeScript, Turborepo, tsdown, Vitest, happy-dom, Plate.js]
+      - name: Feature flag and config platform
+        start: 2024-05
+        end: 2025-05
+        summary: The team's in-house platform for switching product features per tenant, environment, and role. I built the frontend and the second-generation server from scratch.
+        highlights:
+          - The frontend started in an internal monorepo and moved to its own repository (96% of its commits). Multi-tenancy, role permissions, audit logs, and generating, deploying, and rolling back frontend versions; the app reads its own flags to switch routes, menus, and roles.
+          - The second-generation server. NestJS and Prisma services for products, environments, flags, and audit logs, with soft delete, Docker, and CI; tests moved from Jest to Vitest.
+        stack: [React, Ant Design, SWR, openapi-typescript, NestJS, Prisma, Vitest, Docker]
+      - name: Other projects
+        start: 2024-10
+        end: 2026-07
+        highlights:
+          - A national annual student survey. A CLI that batch-renders the charts for provincial and county reports, which shipped two days early, plus school data work during the survey.
+          - Video analysis. Wrapped a research partner's classroom video analysis algorithms as a deployable service (Flask, a SQLite job queue, subprocess isolation, swappable speech recognition backends, Docker); cut OCR calls in an esports match review pipeline from about 2,400 to about 75.
+          - A collaborative teaching workspace. Feishu Bitable sync, scheduled jobs, radar charts, and a view of sub-agents working together.
+        stack: [Python, Flask, OpenCV, Bun, Chart.js, Plate.js]
+
+openSource:
+  - project: npmx-dev/vscode-npmx
+    date: 2026-06
+    href: https://github.com/npmx-dev/vscode-npmx/pull/125
+    summary: Added a Zed extension (Rust compiled to WASM) to the npm dependency hints extension and made its language server editor-agnostic.
+  - project: wakujs/waku
+    date: 2026-05
+    href: https://github.com/wakujs/waku/pull/2074
+    summary: Added charset=utf-8 to server-rendered HTML, fixing garbled Chinese after a reload, with a unit test.
+  - project: lovasoa/jsonjoy-builder
+    date: 2025-12
+    href: https://github.com/lovasoa/jsonjoy-builder/pull/20
+    summary: Fixed a toggle that flipped back because of a stale React closure, and added a Chinese translation.
+  - project: walinejs/waline
+    date: 2025-04
+    href: https://github.com/walinejs/waline/pull/3044
+    summary: Fixed a null check that broke the comment box image upload setting.
+  - project: waylybaye/opencat.app
+    date: 2023-10
+    href: https://github.com/waylybaye/opencat.app/pull/29
+    summary: Redesigned and rebuilt the OpenCat website, bilingual in Chinese and English, with download links that follow the OS version.
+
+projects:
+  - name: Mikan
+    date: 2026-10
+    href: https://github.com/withxat/mikan
+    summary: A warm, minimal Astro blog template distilled from this site.
+  - name: Dash
+    date: 2026-07
+    href: https://github.com/withxat/Dash
+    summary: A SwiftUI Cloudflare client for iPhone. OAuth PKCE sign-in, Workers, Pages, R2, KV, and DNS, with widgets and Live Activities.
+  - name: Rehype-Fluent-Emoji
+    date: 2026-06
+    href: https://github.com/withxat/Rehype-Fluent-Emoji
+    summary: A rehype plugin that renders Unicode emoji as Fluent Emoji and still copies as the original characters.
+  - name: ImI
+    date: 2026-04
+    href: https://github.com/withxat/ImI
+    summary: This site. Astro 7 SSR on Cloudflare Workers, trilingual i18n without URL prefixes, CJK fonts subset to the glyphs in use, and edge HTML caching.
+
+skills:
+  - group: Frontend
+    items: [TypeScript, React, TanStack, Astro, Tailwind CSS, Vite, Module Federation]
+  - group: Interaction & design
+    items: [Figma and plugin development, Design tokens, Rich text editors (Plate.js), 'Data visualization (D3, ECharts)', Motion, Accessibility]
+  - group: AI products
+    items: [AI SDK, MCP, Agent workflows, Streaming speech recognition, WebRTC]
+  - group: Server & tooling
+    items: [tRPC, NestJS, Prisma, Drizzle, PostgreSQL, Cloudflare Workers, Turborepo, Vitest, Playwright, Docker]
+  - group: Other languages
+    items: [Python, Swift (SwiftUI)]
+
+education:
+  - degree: Bachelor's
+    major: Intelligent Transportation Systems

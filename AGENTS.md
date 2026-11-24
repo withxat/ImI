@@ -69,6 +69,7 @@ Styling:
 Icons:
 
 - `@iconify-json/lucide` via `unplugin-icons`
+- `@iconify-json/simple-icons` for brand marks (resume tech lists, `src/components/resume/tech-list.astro`)
 - Local SVG icons via `FileSystemIconLoader` from `./src/assets/icons`
 - Usage: `import Icon from '~icons/local/arrow-up-right'`
 
@@ -148,6 +149,7 @@ Current pages:
 | `/post` (list) | SSR | locale-dependent |
 | `/post/[slug]` | SSR | locale-dependent; unknown slugs rewrite to `/404` |
 | `/design` | SSR | living design spec, values read from running CSS |
+| `/resume` | SSR | locale-dependent; content from `content/resume/{locale}.yaml`; A4 print stylesheet |
 | `/404` | SSR | locale-dependent: copy and latest posts follow the visitor's locale |
 | `feed.xml`, `feed.en.xml`, `feed.ja.xml` | SSR | RSS feeds |
 | `/api/stats.json` (GET), `/api/presence.json` (POST) | SSR | site stats, `no-store` |
@@ -212,6 +214,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Blog list (`/post`) — grouped by year, with dates
 - Blog detail (`/post/[slug]`) — MDX with a section TOC (3+ h2s), newer/older links and a link to the archive at the end, translator info
 - Design system (`/design`) — typography, colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
+- Resume (`/resume`) — experience, open source, side projects, skills, education from `content/resume/{en,zh,ja}.yaml` (the `resume` collection); prints on A4 with light colors and no site chrome; linked from the footer nav
 - 404 — styled page with the latest posts, also used for unknown post slugs
 
 ---
@@ -250,7 +253,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - Wanderer gradient text animation (CSS-only, respects `prefers-reduced-motion`)
 - Visitor country detection (Cloudflare `cf.country`) with localized country name
-- Social links (GitHub, Twitter, Telegram, Email)
+- Social links (GitHub, Twitter, Telegram, Email) and the localized resume link
 - Repo link with commit SHA, ICP filing
 - Site stats: total views + online now, animated with `number-flow` (no digit grouping)
 
@@ -323,6 +326,7 @@ Micro interactions: encouraged.
     /en          # English MDX posts
     /zh          # Chinese MDX posts (primary)
     /ja          # Japanese MDX posts
+  /resume        # {en,zh,ja}.yaml, rendered at /resume
   config.json    # capabilities, categories
 
 /public
@@ -357,6 +361,7 @@ Micro interactions: encouraged.
     index.astro
     404.astro
     design.astro
+    resume.astro
     /api
       stats.json.ts
       presence.json.ts

@@ -1,0 +1,115 @@
+role: 设计工程师 · 前端与 AI 产品
+# One line: a folded scalar would join CJK lines with a space.
+summary: 做 AI 原生产品的前端，也写其中需要的那部分服务端。习惯把交互、组件、设计工具和工程化一起做完：从流式对话和 Agent 配置界面，到主题编辑器和 Figma 插件。业余写开源和自己的小工具，这个网站本身也是作品的一部分。
+contact:
+  - label: xat.sh
+    href: https://xat.sh
+  - label: github.com/withxat
+    href: https://github.com/withxat
+  - label: i@xat.sh
+    href: mailto:i@xat.sh
+
+experience:
+  - organization: 华中师范大学
+    role: 设计工程师
+    start: 2024-05
+    summary: 在学校的教育 AI 产品团队负责前端与设计实现，多个产品从零搭起，一路做到上线和迭代。合并 PR 460 余个，评审同事 PR 150 余个；也给实习生做代码评审，做过前端入门的内部分享。
+    projects:
+      - name: 教育 AI 智能体平台
+        start: 2025-09
+        summary: 教师和机构在这里配置 AI 智能体（专家、技能、MCP 工具、知识库），再通过嵌入 SDK 接入各个教学应用。我是前端主力之一，合并 PR 170 余个，主题系统由我负责。
+        highlights:
+          - 从零搭建主题系统：主题工作台支持草稿、版本、发布与回滚，按授权应用分发；Figma 式画布编辑器带图层树和 100 步撤销；Figma 插件用 DTCG 设计令牌让设计稿与代码双向同步。已用来给另一个平台换肤。
+          - 实时语音输入：AudioWorklet 采集 16 kHz PCM，经 WebSocket 中转到流式语音识别，补上鉴权与跨站防护。
+          - Agent 配置体验：基于 JSON Schema 的业务变量、多题追问卡片、子代理并行运行、提示词版本历史；修好 1400 多块的大文档预览虚拟渲染，并补回归测试。
+          - 早期的工作流编辑器：React Flow 画布，用 Zustand 重构状态，实现代码节点、变量引用、试运行与撤销重做。
+        stack: [React 19, TanStack Router/Query, tRPC, Drizzle, AI SDK, MCP, Plate.js, Figma Plugin API, Vitest, Playwright]
+      - name: 教师教育 AI 助手
+        start: 2025-02
+        end: 2026-06
+        summary: 面向教师教育的 AI 助手，上线后衍生出多个面向不同客户的版本。
+        highlights:
+          - 第一版客户端主要由我开发（提交占比 75%），春节后两周上线：流式对话、对话里的 D3 雷达图与 Markdown 渲染、WebRTC 数字人视频、多语言。
+          - Next 版改为 Agent 架构：我写了对话客户端，并把模块联邦加载器拆成独立包，让模型在对话中按需调用远程图表组件；2025 年 5 月全量上线。
+          - 主导一所职业院校定制版的前后端：分步生成、可局部重生成的 AI 教案流水线，放在服务端执行，关掉页面也会继续，带配图并导出 Word 与飞书文档；基于角色的权限与 tRPC 权限校验；支持本地化部署。V2.0 于 2026 年 2 月交付。
+        stack: [React 19, React Router 7, tRPC, TanStack Query, AI SDK, Drizzle, Module Federation, D3, WebRTC]
+      - name: ReplayKit 交互录制回放库
+        start: 2026-05
+        end: 2026-05
+        summary: 把浏览器和编辑器里的操作录成结构化事件再回放，而不是录屏。独立设计与实现。
+        highlights:
+          - 拆成 core、recorder、player、cursor、annotations、audio、platejs 七个包，再发布一个聚合包。
+          - 录制时给敏感输入脱敏；播放器支持跳转与逐步回放；在 Plate 文档里嵌入可回放的块和手绘层。
+        stack: [TypeScript, Turborepo, tsdown, Vitest, happy-dom, Plate.js]
+      - name: 功能开关与配置平台
+        start: 2024-05
+        end: 2025-05
+        summary: 团队自研的功能开关与配置平台，按租户、环境和角色控制各个产品的功能。前端和第二代服务端由我从零搭建。
+        highlights:
+          - 前端先在内部 monorepo 里起步，后拆成独立仓库（提交占比 96%）：多租户、角色权限、操作日志，以及前端版本的生成、部署与回溯；应用读取自己的开关来切换路由、菜单和角色。
+          - 第二代服务端：NestJS 加 Prisma 的产品、环境、开关与操作日志服务，软删除、Docker 与 CI；测试从 Jest 迁到 Vitest。
+        stack: [React, Ant Design, SWR, openapi-typescript, NestJS, Prisma, Vitest, Docker]
+      - name: 其他项目
+        start: 2024-10
+        end: 2026-07
+        highlights:
+          - 全国性的年度学生调查：为省、县级报告批量生成图表的命令行工具，报告比计划提前两天交付；调查期间还支援学校数据处理。
+          - 视频分析：把合作研究团队的课堂视频分析算法封装成可部署服务（Flask、SQLite 任务队列、子进程隔离、可切换的语音识别后端、Docker）；电竞比赛复盘流水线的 OCR 调用从约 2400 次降到约 75 次。
+          - 协作教研空间：飞书多维表格同步、定时任务、数据雷达图，以及子代理协作过程的展示。
+        stack: [Python, Flask, OpenCV, Bun, Chart.js, Plate.js]
+
+openSource:
+  - project: npmx-dev/vscode-npmx
+    date: 2026-06
+    href: https://github.com/npmx-dev/vscode-npmx/pull/125
+    summary: 为 npm 依赖提示插件新增 Zed 扩展（Rust 编译到 WASM），并把语言服务器改成与编辑器无关。
+  - project: wakujs/waku
+    date: 2026-05
+    href: https://github.com/wakujs/waku/pull/2074
+    summary: 给服务端渲染的 HTML 补上 charset=utf-8，修复刷新后中文乱码，附单元测试。
+  - project: lovasoa/jsonjoy-builder
+    date: 2025-12
+    href: https://github.com/lovasoa/jsonjoy-builder/pull/20
+    summary: 修复 React 闭包过期导致的开关状态反转，并补充中文翻译。
+  - project: walinejs/waline
+    date: 2025-04
+    href: https://github.com/walinejs/waline/pull/3044
+    summary: 修复评论框图片上传配置的判空错误。
+  - project: waylybaye/opencat.app
+    date: 2023-10
+    href: https://github.com/waylybaye/opencat.app/pull/29
+    summary: 重新设计并重写 OpenCat 官网，支持中英双语，下载链接按系统版本跳转。
+
+projects:
+  - name: Mikan
+    date: 2026-10
+    href: https://github.com/withxat/mikan
+    summary: 从本站提炼出来的 Astro 博客模板，温暖、简洁。
+  - name: Dash
+    date: 2026-07
+    href: https://github.com/withxat/Dash
+    summary: SwiftUI 写的 iPhone 端 Cloudflare 客户端：OAuth PKCE 登录，管理 Workers、Pages、R2、KV 和 DNS，带桌面小组件和实时活动。
+  - name: Rehype-Fluent-Emoji
+    date: 2026-06
+    href: https://github.com/withxat/Rehype-Fluent-Emoji
+    summary: 把 Unicode emoji 渲染成 Fluent Emoji 的 rehype 插件，复制出来仍是原字符。
+  - name: ImI
+    date: 2026-04
+    href: https://github.com/withxat/ImI
+    summary: 本站。Astro 7 SSR 跑在 Cloudflare Workers 上：无 URL 前缀的三语 i18n、按字形子集化的中日文字体、边缘 HTML 缓存。
+
+skills:
+  - group: 前端
+    items: [TypeScript, React, TanStack, Astro, Tailwind CSS, Vite, Module Federation]
+  - group: 交互与设计
+    items: [Figma 与插件开发, 设计令牌, 富文本编辑器（Plate.js）, 数据可视化（D3、ECharts）, 动效, 无障碍]
+  - group: AI 应用
+    items: [AI SDK, MCP, Agent 工作流, 流式语音识别, WebRTC]
+  - group: 服务端与工程化
+    items: [tRPC, NestJS, Prisma, Drizzle, PostgreSQL, Cloudflare Workers, Turborepo, Vitest, Playwright, Docker]
+  - group: 其他语言
+    items: [Python, Swift（SwiftUI）]
+
+education:
+  - degree: 本科
+    major: 智能交通系统

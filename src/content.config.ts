@@ -33,4 +33,56 @@ const config = defineCollection({
 	}),
 })
 
-export const collections = { config, posts }
+/** `YYYY-MM`; an omitted end means the role is current. */
+const month = z.string().regex(/^\d{4}-\d{2}$/)
+
+/** One file per locale (`content/resume/{en,zh,ja}.yaml`), rendered at /resume. */
+const resume = defineCollection({
+	loader: glob({ base: './content/resume', pattern: '*.yaml' }),
+	schema: z.object({
+		contact: z.array(z.object({
+			href: z.string(),
+			label: z.string(),
+		})),
+		education: z.array(z.object({
+			degree: z.string(),
+			major: z.string(),
+			school: z.string().optional(),
+		})),
+		experience: z.array(z.object({
+			end: month.optional(),
+			organization: z.string(),
+			projects: z.array(z.object({
+				end: month.optional(),
+				highlights: z.array(z.string()),
+				name: z.string(),
+				stack: z.array(z.string()),
+				start: month,
+				summary: z.string().optional(),
+			})),
+			role: z.string(),
+			start: month,
+			summary: z.string(),
+		})),
+		openSource: z.array(z.object({
+			date: month,
+			href: z.url(),
+			project: z.string(),
+			summary: z.string(),
+		})),
+		projects: z.array(z.object({
+			date: month,
+			href: z.url(),
+			name: z.string(),
+			summary: z.string(),
+		})),
+		role: z.string(),
+		skills: z.array(z.object({
+			group: z.string(),
+			items: z.array(z.string()),
+		})),
+		summary: z.string(),
+	}),
+})
+
+export const collections = { config, posts, resume }

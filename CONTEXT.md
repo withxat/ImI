@@ -17,6 +17,7 @@
 - **Home** — the landing page with bio, intro badges, the four latest posts, and the Projects list.
 - **Post List** — `/post` — grouped by year, newest first.
 - **Design** — `/design` — the living design spec; every value on it is read from the running CSS.
+- **Resume** — `/resume` — experience, open source, side projects, skills, and education, one YAML file per locale in `/content/resume`. Prints on A4.
 - **Post Detail** — `/post/[slug]` — rendered MDX with SEO metadata.
 - **Root Layout** — the shell wrapping all pages: head, theme bootstrap, footer.
 

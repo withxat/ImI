@@ -188,6 +188,20 @@ const zh: Messages = {
 	localeSwitcher: {
 		ariaLabel: '语言',
 	},
+	resume: {
+		pageDescription: '设计工程师 Xat 的简历：AI 原生产品、前端工程与界面打磨。',
+		pageTitle: '简历 - Xat',
+		present: '至今',
+		print: '打印或存为 PDF',
+		sections: {
+			education: '教育',
+			experience: '经历',
+			openSource: '开源贡献',
+			projects: '个人项目',
+			skills: '技能',
+		},
+		title: '简历',
+	},
 	wanderer: {
 		wanderer: '旅人',
 		withCountry: {

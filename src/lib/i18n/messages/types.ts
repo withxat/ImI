@@ -168,5 +168,22 @@ export interface Messages {
 	localeSwitcher: {
 		ariaLabel: string
 	}
+	/** Chrome around `content/resume/{locale}.yaml`; the resume text itself lives there. */
+	resume: {
+		pageDescription: string
+		pageTitle: string
+		/** End label of a current role. */
+		present: string
+		print: string
+		sections: {
+			education: string
+			experience: string
+			openSource: string
+			projects: string
+			skills: string
+		}
+		/** Footer link label. */
+		title: string
+	}
 	wanderer: FooterWandererCopy
 }

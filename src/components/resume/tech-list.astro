@@ -1,0 +1,101 @@
+---
+import SiAntdesign from '~icons/simple-icons/antdesign'
+import SiAstro from '~icons/simple-icons/astro'
+import SiBun from '~icons/simple-icons/bun'
+import SiChartdotjs from '~icons/simple-icons/chartdotjs'
+import SiCloudflareworkers from '~icons/simple-icons/cloudflareworkers'
+import SiD3 from '~icons/simple-icons/d3'
+import SiDocker from '~icons/simple-icons/docker'
+import SiDrizzle from '~icons/simple-icons/drizzle'
+import SiFigma from '~icons/simple-icons/figma'
+import SiFlask from '~icons/simple-icons/flask'
+import SiModelcontextprotocol from '~icons/simple-icons/modelcontextprotocol'
+import SiNestjs from '~icons/simple-icons/nestjs'
+import SiOpencv from '~icons/simple-icons/opencv'
+import SiPlaywright from '~icons/simple-icons/playwright'
+import SiPostgresql from '~icons/simple-icons/postgresql'
+import SiPrisma from '~icons/simple-icons/prisma'
+import SiPython from '~icons/simple-icons/python'
+import SiReact from '~icons/simple-icons/react'
+import SiReactrouter from '~icons/simple-icons/reactrouter'
+import SiSwift from '~icons/simple-icons/swift'
+import SiSwr from '~icons/simple-icons/swr'
+import SiTailwindcss from '~icons/simple-icons/tailwindcss'
+import SiTanstack from '~icons/simple-icons/tanstack'
+import SiTrpc from '~icons/simple-icons/trpc'
+import SiTurborepo from '~icons/simple-icons/turborepo'
+import SiTypescript from '~icons/simple-icons/typescript'
+import SiVercel from '~icons/simple-icons/vercel'
+import SiVite from '~icons/simple-icons/vite'
+import SiVitest from '~icons/simple-icons/vitest'
+import SiWebrtc from '~icons/simple-icons/webrtc'
+
+interface Props {
+	class?: string
+	items: string[]
+}
+
+const { class: className, items } = Astro.props as Props
+
+// Monochrome Simple Icons marks for tools that have one; concepts and tools without a mark stay plain text.
+// Each mark is imported statically so the Worker bundles only these, not the whole collection.
+const MARKS: [name: string, mark: typeof SiReact][] = [
+	['AI SDK', SiVercel],
+	['Ant Design', SiAntdesign],
+	['Astro', SiAstro],
+	['Bun', SiBun],
+	['Chart.js', SiChartdotjs],
+	['Cloudflare Workers', SiCloudflareworkers],
+	['D3', SiD3],
+	['Docker', SiDocker],
+	['Drizzle', SiDrizzle],
+	['Figma', SiFigma],
+	['Flask', SiFlask],
+	['MCP', SiModelcontextprotocol],
+	['NestJS', SiNestjs],
+	['OpenCV', SiOpencv],
+	['Playwright', SiPlaywright],
+	['PostgreSQL', SiPostgresql],
+	['Prisma', SiPrisma],
+	['Python', SiPython],
+	['React', SiReact],
+	['React Router', SiReactrouter],
+	['SWR', SiSwr],
+	['Swift', SiSwift],
+	['Tailwind CSS', SiTailwindcss],
+	['TanStack', SiTanstack],
+	['tRPC', SiTrpc],
+	['Turborepo', SiTurborepo],
+	['TypeScript', SiTypescript],
+	['Vite', SiVite],
+	['Vitest', SiVitest],
+	['WebRTC', SiWebrtc],
+]
+
+// An item finds its mark by leading name, so the YAML stays plain text in every locale:
+// "React 19", "TanStack Router/Query", "Figma 与插件开发", and "Swift（SwiftUI）" all match.
+// The name must end at a word boundary ("Vite" misses "Vitest"), and the longest name wins ("React Router" over "React").
+function markFor(item: string) {
+	let best: (typeof MARKS)[number] | undefined
+	for (const entry of MARKS) {
+		const [name] = entry
+		const rest = item.slice(name.length)
+		if (item.startsWith(name) && (rest === '' || /^[\s/(（]/.test(rest)) && name.length > (best?.[0].length ?? 0))
+			best = entry
+	}
+	return best?.[1]
+}
+---
+
+<ul class={className}>
+	{items.map((item, index) => {
+		const Mark = markFor(item)
+		return (
+			<li class="inline">
+				<span class="whitespace-nowrap">{Mark && <Mark aria-hidden="true" class="mr-[0.3em] inline-block size-[0.95em] align-[-0.1em] text-muted-foreground" />}{item}</span>
+				{/* No-break space before the dot, so a wrapped line never starts with one. */}
+				{index < items.length - 1 && <span aria-hidden="true">{'\u00A0· '}</span>}
+			</li>
+		)
+	})}
+</ul>

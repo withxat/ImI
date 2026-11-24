@@ -193,6 +193,20 @@ const ja: Messages = {
 	localeSwitcher: {
 		ariaLabel: '言語',
 	},
+	resume: {
+		pageDescription: 'デザインエンジニア Xat のレジュメ。AI ネイティブなプロダクト、フロントエンド開発、UI の作り込み。',
+		pageTitle: 'レジュメ - Xat',
+		present: '現在',
+		print: '印刷・PDF 保存',
+		sections: {
+			education: '学歴',
+			experience: '職歴',
+			openSource: 'オープンソース',
+			projects: '個人プロジェクト',
+			skills: 'スキル',
+		},
+		title: 'レジュメ',
+	},
 	wanderer: {
 		wanderer: '旅人',
 		withCountry: {

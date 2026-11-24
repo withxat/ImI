@@ -17,6 +17,11 @@ export const OG_STATIC_PAGES = {
 		summary: zh.blog.pageDescription,
 		title: zh.blog.title,
 	},
+	resume: {
+		header: zh.resume.title,
+		summary: zh.resume.pageDescription,
+		title: 'Xat',
+	},
 } as const
 
 export type OgStaticPage = keyof typeof OG_STATIC_PAGES
@@ -26,4 +31,5 @@ export const OG_STATIC_PAGE_FILES: Record<OgStaticPage, string> = {
 	design: 'design',
 	notFound: '404',
 	post: 'post',
+	resume: 'resume',
 }

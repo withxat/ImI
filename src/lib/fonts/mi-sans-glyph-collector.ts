@@ -30,6 +30,8 @@ const CONTENT_CONFIG_FILES = [
 ]
 
 const POSTS_DIR = 'content/posts'
+// /resume renders its YAML in the UI stack, so its glyphs belong to the UI subset.
+const RESUME_DIR = 'content/resume'
 const FLAGS_DIR = 'src/assets/flags'
 const UI_LOCALES = ['en', 'zh', 'ja'] as const
 
@@ -221,10 +223,11 @@ async function writeGlyphFile(filePath: string, content: string): Promise<void> 
 }
 
 async function generateMisansGlyphs(): Promise<void> {
-	const [uiSources, sourceFiles, configSources, posts, regionDisplayNames] = await Promise.all([
+	const [uiSources, sourceFiles, configSources, resumeSources, posts, regionDisplayNames] = await Promise.all([
 		readExistingFiles(UI_SOURCE_FILES),
 		listFiles(UI_SOURCE_DIR, UI_SOURCE_EXTENSIONS).then(readExistingFiles),
 		readExistingFiles(CONTENT_CONFIG_FILES),
+		listFiles(RESUME_DIR, new Set(['.yaml'])).then(readExistingFiles),
 		collectPostSources(),
 		collectRegionDisplayNameSources(),
 	])
@@ -233,6 +236,7 @@ async function generateMisansGlyphs(): Promise<void> {
 		...uiSources.map(stripSourceComments),
 		...sourceFiles.map(stripSourceComments),
 		...configSources,
+		...resumeSources,
 		...posts.frontmatter,
 		...regionDisplayNames,
 	])
@@ -256,6 +260,7 @@ function shouldRegenerate(file: string): boolean {
 		UI_SOURCE_FILES.includes(relative)
 		|| (relative.startsWith(`${UI_SOURCE_DIR}/`) && UI_SOURCE_EXTENSIONS.has(path.extname(relative)))
 		|| CONTENT_CONFIG_FILES.includes(relative)
+		|| relative.startsWith(`${RESUME_DIR}/`)
 		|| relative.startsWith(`${FLAGS_DIR}/`)
 		|| relative.startsWith(`${POSTS_DIR}/`)
 	)

@@ -1,0 +1,115 @@
+role: デザインエンジニア · フロントエンドと AI プロダクト
+# One line: a folded scalar would join CJK lines with a space.
+summary: AI ネイティブなプロダクトのフロントエンドと、それに必要なサーバー側を作っています。インタラクション、コンポーネント、デザインツール、開発基盤までまとめて手がけるのが好きで、ストリーミングチャットやエージェント設定画面から、テーマエディタとその Figma プラグインまで作ってきました。仕事の外ではオープンソースへの貢献や小さなツールづくりをしていて、このサイト自体も作品のひとつです。
+contact:
+  - label: xat.sh
+    href: https://xat.sh
+  - label: github.com/withxat
+    href: https://github.com/withxat
+  - label: i@xat.sh
+    href: mailto:i@xat.sh
+
+experience:
+  - organization: 華中師範大学
+    role: デザインエンジニア
+    start: 2024-05
+    summary: 大学の教育 AI プロダクトチームで、フロントエンドとデザインの実装を担当。複数のプロダクトをゼロから立ち上げ、リリース後の改善まで続けてきました。マージされた PR は 460 件以上、同僚の PR レビューは 150 件以上。インターンのコードレビューや、フロントエンド入門の社内勉強会も担当しました。
+    projects:
+      - name: 教育 AI エージェントプラットフォーム
+        start: 2025-09
+        summary: 教員や教育機関が AI エージェント（エキスパート、スキル、MCP ツール、ナレッジベース）を設定し、SDK で各教育アプリに組み込むためのプラットフォーム。フロントエンドの主力の一人として 170 件以上の PR をマージし、テーマシステムを担当。
+        highlights:
+          - テーマシステムをゼロから構築。下書き・バージョン・公開・ロールバックに対応し、認可済みアプリごとに配信するテーマワークベンチ、レイヤーツリーと 100 段階の取り消しを備えた Figma 風キャンバスエディタ、DTCG デザイントークンでデザインとコードを双方向に同期する Figma プラグイン。すでに別のプラットフォームのスキン変更にも使われている。
+          - リアルタイム音声入力。AudioWorklet で 16 kHz PCM を取り込み、WebSocket 中継でストリーミング音声認識に送る。認証とクロスサイト対策も実装。
+          - エージェント設定の体験。JSON Schema ベースの業務変数、複数質問のフォローアップカード、サブエージェントの並列実行、プロンプトのバージョン履歴。1,400 ブロックを超えるドキュメントプレビューの仮想レンダリングを直し、回帰テストを追加。
+          - 初期のワークフローエディタ。React Flow のキャンバスで状態管理を Zustand に作り直し、コードノード、変数参照、試行実行、元に戻す・やり直しを実装。
+        stack: [React 19, TanStack Router/Query, tRPC, Drizzle, AI SDK, MCP, Plate.js, Figma Plugin API, Vitest, Playwright]
+      - name: 教師教育 AI アシスタント
+        start: 2025-02
+        end: 2026-06
+        summary: 教師教育のための AI アシスタント。リリース後、いくつかの顧客向けエディションに広がりました。
+        highlights:
+          - 最初のクライアントの大部分を開発（コミットの 75%）し、春節明けの 2 週間でリリース。ストリーミングチャット、メッセージ内の D3 レーダーチャートと Markdown、WebRTC のビデオアバター、多言語対応。
+          - Next 版ではエージェント型のアーキテクチャに移行。チャットクライアントを書き、Module Federation のローダーを独立パッケージに切り出して、モデルが会話の中でリモートのチャートコンポーネントを呼び出せるようにした。2025 年 5 月に全面リリース。
+          - ある職業大学向けエディションのフロントエンドとバックエンドを主導。段階的に生成し部分的に作り直せる AI 教案パイプライン（サーバー側で実行するのでページを閉じても続き、挿絵付きで Word と Feishu ドキュメントへ書き出せる）、ロールベースの権限と tRPC での権限チェック、オンプレミス配備。V2.0 を 2026 年 2 月に納品。
+        stack: [React 19, React Router 7, tRPC, TanStack Query, AI SDK, Drizzle, Module Federation, D3, WebRTC]
+      - name: ReplayKit インタラクション記録・再生ライブラリ
+        start: 2026-05
+        end: 2026-05
+        summary: ブラウザやエディタでの操作を、録画ではなく構造化されたイベントとして記録し再生する。設計から実装まで一人で担当。
+        highlights:
+          - core、recorder、player、cursor、annotations、audio、platejs の 7 パッケージと、まとめて使える統合パッケージに分割。
+          - 記録時に機密入力をマスク。プレーヤーはシークとステップ再生に対応し、Plate ドキュメントの中に再生できるブロックと手描きレイヤーを埋め込める。
+        stack: [TypeScript, Turborepo, tsdown, Vitest, happy-dom, Plate.js]
+      - name: フィーチャーフラグ・設定プラットフォーム
+        start: 2024-05
+        end: 2025-05
+        summary: テナント、環境、ロールごとに各プロダクトの機能を切り替える社内プラットフォーム。フロントエンドと第 2 世代のサーバーをゼロから構築。
+        highlights:
+          - フロントエンドは社内の monorepo で始め、のちに独立したリポジトリへ分離（コミットの 96%）。マルチテナント、ロール権限、操作ログ、フロントエンドのバージョン生成・デプロイ・ロールバック。アプリ自身がフラグを読んでルート、メニュー、ロールを切り替える。
+          - 第 2 世代のサーバー。NestJS と Prisma によるプロダクト、環境、フラグ、操作ログのサービス、論理削除、Docker と CI。テストを Jest から Vitest へ移行。
+        stack: [React, Ant Design, SWR, openapi-typescript, NestJS, Prisma, Vitest, Docker]
+      - name: その他のプロジェクト
+        start: 2024-10
+        end: 2026-07
+        highlights:
+          - 全国の児童・生徒を対象にした年次調査。省・県レベルのレポートに載せるグラフを一括生成する CLI を作り（レポートは予定より 2 日早く納品）、調査期間中は学校データの処理も支援。
+          - 動画解析。共同研究チームの授業動画解析アルゴリズムを、デプロイできるサービスにまとめた（Flask、SQLite のジョブキュー、サブプロセスでの分離、切り替え可能な音声認識バックエンド、Docker）。e スポーツの試合振り返りパイプラインでは OCR の呼び出しを約 2,400 回から約 75 回に削減。
+          - 共同教研スペース。Feishu Bitable との同期、定期実行タスク、レーダーチャート、サブエージェント同士の協調の可視化。
+        stack: [Python, Flask, OpenCV, Bun, Chart.js, Plate.js]
+
+openSource:
+  - project: npmx-dev/vscode-npmx
+    date: 2026-06
+    href: https://github.com/npmx-dev/vscode-npmx/pull/125
+    summary: npm の依存関係ヒント拡張に Zed 拡張（Rust を WASM にコンパイル）を追加し、言語サーバーをエディタに依存しない形にした。
+  - project: wakujs/waku
+    date: 2026-05
+    href: https://github.com/wakujs/waku/pull/2074
+    summary: サーバーでレンダリングした HTML に charset=utf-8 を付け、リロード後に中国語が文字化けする問題を修正。ユニットテスト付き。
+  - project: lovasoa/jsonjoy-builder
+    date: 2025-12
+    href: https://github.com/lovasoa/jsonjoy-builder/pull/20
+    summary: React の古いクロージャが原因でトグルが元に戻る不具合を修正し、中国語訳を追加。
+  - project: walinejs/waline
+    date: 2025-04
+    href: https://github.com/walinejs/waline/pull/3044
+    summary: コメント欄の画像アップロード設定を壊していた null チェックを修正。
+  - project: waylybaye/opencat.app
+    date: 2023-10
+    href: https://github.com/waylybaye/opencat.app/pull/29
+    summary: OpenCat の公式サイトをデザインから作り直し、中国語と英語に対応。ダウンロードリンクは OS のバージョンに合わせて切り替わる。
+
+projects:
+  - name: Mikan
+    date: 2026-10
+    href: https://github.com/withxat/mikan
+    summary: このサイトから切り出した、あたたかくシンプルな Astro ブログテンプレート。
+  - name: Dash
+    date: 2026-07
+    href: https://github.com/withxat/Dash
+    summary: SwiftUI で作った iPhone 向けの Cloudflare クライアント。OAuth PKCE でサインインし、Workers、Pages、R2、KV、DNS を管理。ウィジェットとライブアクティビティにも対応。
+  - name: Rehype-Fluent-Emoji
+    date: 2026-06
+    href: https://github.com/withxat/Rehype-Fluent-Emoji
+    summary: Unicode の絵文字を Fluent Emoji で表示する rehype プラグイン。コピーすると元の文字のまま。
+  - name: ImI
+    date: 2026-04
+    href: https://github.com/withxat/ImI
+    summary: このサイト。Cloudflare Workers 上の Astro 7 SSR、URL プレフィックスなしの三言語 i18n、使う字形だけにサブセット化した CJK フォント、エッジでの HTML キャッシュ。
+
+skills:
+  - group: フロントエンド
+    items: [TypeScript, React, TanStack, Astro, Tailwind CSS, Vite, Module Federation]
+  - group: インタラクションとデザイン
+    items: [Figma とプラグイン開発, デザイントークン, リッチテキストエディタ（Plate.js）, データ可視化（D3、ECharts）, モーション, アクセシビリティ]
+  - group: AI プロダクト
+    items: [AI SDK, MCP, エージェントワークフロー, ストリーミング音声認識, WebRTC]
+  - group: サーバーと開発基盤
+    items: [tRPC, NestJS, Prisma, Drizzle, PostgreSQL, Cloudflare Workers, Turborepo, Vitest, Playwright, Docker]
+  - group: その他の言語
+    items: [Python, Swift（SwiftUI）]
+
+education:
+  - degree: 学士
+    major: 高度交通システム

@@ -193,6 +193,20 @@ const en: Messages = {
 	localeSwitcher: {
 		ariaLabel: 'Language',
 	},
+	resume: {
+		pageDescription: 'Résumé of Xat, a design engineer working on AI-native products, frontend engineering, and interface craft.',
+		pageTitle: 'Résumé - Xat',
+		present: 'Present',
+		print: 'Print or save as PDF',
+		sections: {
+			education: 'Education',
+			experience: 'Experience',
+			openSource: 'Open source',
+			projects: 'Side projects',
+			skills: 'Skills',
+		},
+		title: 'Résumé',
+	},
 	wanderer: {
 		wanderer: 'wanderer',
 		withCountry: {

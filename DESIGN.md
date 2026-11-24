@@ -392,7 +392,9 @@ A composed component that wraps the bejamas `Button` (variant `outline`) inside 
 ### Navigation
 
 - **Header:** One row. Inner pages put a "Go to home" `TextLink` on the left; the locale switcher and theme switcher sit together on the right. No global nav bar — this is a personal site, not an app.
-- **Footer:** Wanderer greeting + social links (`text-link`s) + repo and commit + ICP filing + view stats. The wanderer line is the only animated text.
+- **Footer:** Wanderer greeting + social links and the resume link (`text-link`s) + repo and commit + ICP filing + view stats. The wanderer line is the only animated text.
+- **Print:** Only /resume has a print stylesheet: A4, light tokens whatever the screen theme, no header, footer, or reveals, and rows that do not split across pages.
+- **Tech marks:** Resume stack and skills lists put a monochrome Simple Icons mark before each technology that has one, in muted ink (`text-muted-foreground`) at about 1em, so marks never add a brand color. Items without a mark stay plain text.
 - **Locale switcher:** Three `text-link-muted` text buttons separated by small dot glyphs. The active locale is plain `text-foreground` with `aria-current`, not accent: accent means "link", and the active locale is not one. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
 - **Theme switcher:** A sun / moon icon button that opens a dropdown with Light / Dark / System.
 
