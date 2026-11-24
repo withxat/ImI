@@ -977,8 +977,34 @@
 		@apply cursor-pointer font-medium;
 	}
 
+	/* The clip-path cuts the heading rule (below) at the column edge and leaves room for focus rings
+	 * elsewhere. It only cuts what is painted, so overflow: clip, half an em out, also keeps the rule
+	 * from widening the page. */
 	.article-body h2 {
 		@apply mt-14 text-2xl font-medium text-foreground;
+		overflow: clip;
+		overflow-clip-margin: 0.5em;
+		clip-path: inset(-0.5em 0 -0.5em -0.5em);
+	}
+
+	/*
+	 * A hairline from the end of the heading's last line to the column edge. The zero-width anchor sits
+	 * right after the last glyph, wherever the title wraps (mdx-h2 renders it).
+	 */
+	.heading-rule {
+		position: relative;
+		display: inline-block;
+		width: 0;
+	}
+
+	.heading-rule::after {
+		content: '';
+		position: absolute;
+		bottom: 0.35em;
+		left: 0.75rem;
+		width: 100vw;
+		height: 1px;
+		background-color: var(--color-border);
 	}
 
 	.article-body h3 {
