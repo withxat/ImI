@@ -1,13 +1,20 @@
 import { animate } from 'motion'
 
+import { jumpToSection } from '@/client/section-jump'
+
 type AnimationControls = ReturnType<typeof animate>
 
 interface SectionMarker {
 	button: HTMLButtonElement
 	element: HTMLElement
+	/** The section title beside the marker, shown while the outline is open. */
+	label: HTMLButtonElement
 	title: string
 	y: number
 }
+
+/** `peek` follows a hover and closes with it; `pinned` stays until a jump, a scroll, Esc, or a click elsewhere. */
+export type SectionOutlineMode = 'peek' | 'pinned'
 
 const HOTZONE_WIDTH = 24
 const MIN_TRACK_WIDTH = 768
@@ -19,6 +26,16 @@ const MIN_THUMB_HEIGHT = 44
 const HIDE_DELAY = 1600
 const MARKER_HIT_RADIUS = 9
 const DRAG_TOOLTIP_OFFSET_MAX = 18
+/** Narrower than this, or without a fine pointer, outline labels would cover the text: they become chips over a scrim. */
+const OUTLINE_INLINE_MIN_WIDTH = 1240
+/** Scrolling this far closes an open outline. */
+const OUTLINE_CLOSE_SCROLL = 40
+
+/** Marks the control that opens the outline, so a click on it is not a click outside. */
+export const SECTION_OUTLINE_TRIGGER = 'data-section-outline-trigger'
+/** Fired on `document` with the new mode (or null) as `detail`. */
+export const SECTION_OUTLINE_CHANGE = 'section-outline:change'
+export const SECTION_OUTLINE_ID = 'section-outline'
 
 const SCROLLBAR_NAV_LABEL: { en: string } & Record<string, string> = {
 	en: 'Page sections',
@@ -28,9 +45,31 @@ const SCROLLBAR_NAV_LABEL: { en: string } & Record<string, string> = {
 
 let cleanup: (() => void) | null = null
 let refreshLayout: (() => void) | null = null
+let outline: null | {
+	close: () => void
+	mode: () => null | SectionOutlineMode
+	open: (mode: SectionOutlineMode, focus: boolean) => boolean
+} = null
 
 export function refreshCustomScrollbarLayout() {
 	refreshLayout?.()
+}
+
+/**
+ * Shows the scrollbar with each section's title beside its marker. `focus` moves keyboard focus to
+ * the current section's title. Returns false when there is nothing to show: the custom scrollbar is
+ * off (reduced motion), or the page has no sections or does not scroll.
+ */
+export function openSectionOutline(mode: SectionOutlineMode, focus = false) {
+	return outline?.open(mode, focus) ?? false
+}
+
+export function closeSectionOutline() {
+	outline?.close()
+}
+
+export function sectionOutlineMode() {
+	return outline?.mode() ?? null
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -67,19 +106,27 @@ function scrollToTopSmooth(top: number) {
 	window.scrollTo({ behavior: 'smooth', top })
 }
 
-function collectSectionMarkers(markersHost: HTMLElement): SectionMarker[] {
-	return Array.from(document.querySelectorAll<HTMLElement>('main h2'))
-		.map((element) => {
-			const title = element.textContent?.trim() ?? ''
+function collectSectionMarkers(markersHost: HTMLElement, outlineHost: HTMLElement): SectionMarker[] {
+	// A heading inside a nav, such as the links to more writing after a post, is not a section of the page.
+	return Array.from(document.querySelectorAll<HTMLElement>('main h2:not(nav h2)'))
+		.filter(element => (element.textContent?.trim() ?? '').length > 0)
+		.map((element, index) => {
+			const title = element.textContent!.trim()
 			const button = document.createElement('button')
 			button.type = 'button'
 			button.className = 'custom-scrollbar-marker'
 			button.setAttribute('aria-label', title)
 			button.dataset.title = title
 			markersHost.appendChild(button)
-			return { button, element, title, y: 0 }
+
+			const label = document.createElement('button')
+			label.type = 'button'
+			label.className = 'custom-scrollbar-outline-label'
+			label.textContent = title
+			label.style.setProperty('--outline-index', String(index))
+			outlineHost.appendChild(label)
+			return { button, element, label, title, y: 0 }
 		})
-		.filter(marker => marker.title.length > 0)
 }
 
 function supportsCustomScrollbar() {
@@ -135,9 +182,21 @@ function createScrollbarShell() {
 	for (const node of [trackShadow, track, thumb, markersHost])
 		surface.appendChild(node)
 	shell.appendChild(surface)
+
+	// Outside the surface, so the labels run their own entrance instead of the shell's slide.
+	const outlineHost = document.createElement('div')
+	outlineHost.className = 'custom-scrollbar-outline'
+	outlineHost.id = SECTION_OUTLINE_ID
+	outlineHost.inert = true
+	shell.appendChild(outlineHost)
 	document.body.appendChild(shell)
 
-	return { markersHost, shell, surface, thumb, track, trackShadow }
+	const scrim = document.createElement('div')
+	scrim.className = 'custom-scrollbar-scrim'
+	scrim.setAttribute('aria-hidden', 'true')
+	document.body.appendChild(scrim)
+
+	return { markersHost, outlineHost, scrim, shell, surface, thumb, track, trackShadow }
 }
 
 export function destroyCustomScrollbar() {
@@ -155,7 +214,7 @@ export function initCustomScrollbar() {
 		return
 	}
 
-	const { markersHost, shell, surface, thumb } = createScrollbarShell()
+	const { markersHost, outlineHost, scrim, shell, surface, thumb } = createScrollbarShell()
 	const tooltip = createTooltip()
 	const abortController = new AbortController()
 	const { signal } = abortController
@@ -185,6 +244,8 @@ export function initCustomScrollbar() {
 	let leaveFallbackTimer = 0
 	let suppressShowUntil = 0
 	let visible = false
+	let outlineMode: null | SectionOutlineMode = null
+	let outlineScrollY = 0
 
 	function springTo(
 		current: number,
@@ -203,7 +264,7 @@ export function initCustomScrollbar() {
 		})
 	}
 
-	const markers = collectSectionMarkers(markersHost)
+	const markers = collectSectionMarkers(markersHost, outlineHost)
 	const resizeObserver = new ResizeObserver(() => {
 		measure()
 		if (visible || hover || dragging) {
@@ -414,6 +475,7 @@ export function initCustomScrollbar() {
 			|| shell.classList.contains('is-dragging')
 			|| dragging
 			|| hover
+			|| outlineMode !== null
 		)
 
 		if (isInteractive)
@@ -469,6 +531,7 @@ export function initCustomScrollbar() {
 
 		syncThumbFromScroll()
 		updateMarkerStates()
+		layoutOutline()
 		syncShellAccessibility()
 	}
 
@@ -529,10 +592,10 @@ export function initCustomScrollbar() {
 		}
 
 		showShell()
-		setInteracting(options.active || hover || dragging)
+		setInteracting(options.active || hover || dragging || outlineMode !== null)
 
 		hideTimer = window.setTimeout(() => {
-			if (!dragging && !hover) {
+			if (!dragging && !hover && !outlineMode) {
 				setVisible(false)
 				setInteracting(false)
 			}
@@ -619,7 +682,146 @@ export function initCustomScrollbar() {
 		for (const marker of markers) {
 			const isInside = marker.y >= thumbTop - 4 && marker.y <= thumbBottom + 4
 			marker.button.classList.toggle('is-inside-thumb', isInside)
+			marker.label.classList.toggle('is-current', isInside)
 		}
+	}
+
+	/**
+	 * Stacks the labels beside their markers: each starts centered on its marker, is pushed down
+	 * past the one above, then pushed back up from the bottom edge if the stack overflows.
+	 */
+	function layoutOutline() {
+		if (!outlineMode) {
+			return
+		}
+
+		const overlay = !canHover.matches || window.innerWidth < OUTLINE_INLINE_MIN_WIDTH
+		outlineHost.classList.toggle('is-overlay', overlay)
+		scrim.classList.toggle('is-visible', overlay && outlineMode === 'pinned')
+
+		const gap = overlay ? 8 : 4
+		const heights = markers.map(marker => marker.label.offsetHeight)
+		const tops: number[] = []
+		let floor = TRACK_TOP - gap
+		markers.forEach((marker, index) => {
+			const top = Math.max(marker.y - heights[index]! / 2, floor + gap)
+			tops.push(top)
+			floor = top + heights[index]!
+		})
+		let ceiling = window.innerHeight - TRACK_TOP + gap
+		for (let index = markers.length - 1; index >= 0; index--) {
+			tops[index] = Math.min(tops[index]!, ceiling - gap - heights[index]!)
+			ceiling = tops[index]!
+		}
+		markers.forEach((marker, index) => {
+			marker.label.style.top = `${Math.max(TRACK_TOP, tops[index]!)}px`
+		})
+	}
+
+	function setHoveredSection(hovered: null | SectionMarker) {
+		for (const item of markers) {
+			item.button.classList.toggle('is-hovered', item === hovered)
+			item.label.classList.toggle('is-hovered', item === hovered)
+		}
+	}
+
+	function notifyOutline() {
+		document.dispatchEvent(new CustomEvent(SECTION_OUTLINE_CHANGE, { detail: outlineMode }))
+	}
+
+	function openOutline(mode: SectionOutlineMode, focus: boolean) {
+		if (markers.length === 0 || !shell.classList.contains('has-scroll')) {
+			return false
+		}
+
+		// A hover never downgrades an outline the reader pinned.
+		if (outlineMode === 'pinned' && mode === 'peek') {
+			return true
+		}
+
+		const changed = outlineMode !== mode
+		outlineMode = mode
+		outlineScrollY = window.scrollY
+		shell.classList.add('is-outline')
+		outlineHost.inert = false
+		markersHost.setAttribute('aria-hidden', 'true')
+		updateTooltip(null)
+		updateMarkerStates()
+		layoutOutline()
+		showTemporarily({ active: true })
+
+		if (focus) {
+			const current = markers.find(marker => marker.label.classList.contains('is-current')) ?? markers[0]!
+			current.label.focus({ preventScroll: true })
+		}
+		if (changed) {
+			notifyOutline()
+		}
+		return true
+	}
+
+	function closeOutline() {
+		if (!outlineMode) {
+			return
+		}
+
+		outlineMode = null
+		shell.classList.remove('is-outline')
+		outlineHost.inert = true
+		markersHost.removeAttribute('aria-hidden')
+		scrim.classList.remove('is-visible')
+		setHoveredSection(null)
+		showTemporarily()
+		notifyOutline()
+	}
+
+	function focusOutlineTrigger() {
+		document.querySelector<HTMLElement>(`[${SECTION_OUTLINE_TRIGGER}]`)?.focus()
+	}
+
+	function handleOutlineKeydown(event: KeyboardEvent) {
+		if (!outlineMode) {
+			return
+		}
+
+		const labels = markers.map(marker => marker.label)
+		const index = labels.indexOf(document.activeElement as HTMLButtonElement)
+		if (event.key === 'Escape') {
+			closeOutline()
+			if (index >= 0) {
+				focusOutlineTrigger()
+			}
+			return
+		}
+		if (index < 0) {
+			return
+		}
+
+		// Tab leaves the outline from its trigger, so focus moves on as if the outline were not there.
+		if (event.key === 'Tab') {
+			closeOutline()
+			focusOutlineTrigger()
+			return
+		}
+
+		const next = {
+			ArrowDown: Math.min(index + 1, labels.length - 1),
+			ArrowUp: Math.max(index - 1, 0),
+			End: labels.length - 1,
+			Home: 0,
+		}[event.key]
+		if (next !== undefined) {
+			event.preventDefault()
+			labels[next]!.focus({ preventScroll: true })
+		}
+	}
+
+	function handleOutsidePointerDown(event: PointerEvent) {
+		const target = event.target as Element
+		if (!outlineMode || shell.contains(target) || target.closest(`[${SECTION_OUTLINE_TRIGGER}]`)) {
+			return
+		}
+		closeOutline()
 	}
 
 	function updateDragTooltip() {
@@ -628,6 +830,9 @@ export function initCustomScrollbar() {
 	}
 
 	function handleScroll() {
+		if (outlineMode && Math.abs(window.scrollY - outlineScrollY) > OUTLINE_CLOSE_SCROLL) {
+			closeOutline()
+		}
 		showTemporarily({ fromScroll: true })
 		if (!scrollDriven) {
 			syncThumbFromScroll()
@@ -648,6 +853,12 @@ export function initCustomScrollbar() {
 		setInteracting(true)
 		document.body.classList.toggle('custom-scrollbar-dragging', dragging)
 
+		const label = (event.target as Element).closest('.custom-scrollbar-outline-label')
+		if (label) {
+			setHoveredSection(markers.find(marker => marker.label === label) ?? null)
+			return
+		}
+
 		if (dragging) {
 			event.preventDefault()
 			scrollToClientY(event.clientY)
@@ -657,18 +868,15 @@ export function initCustomScrollbar() {
 		}
 		else {
 			const marker = findMarkerAt(event.clientY)
-			for (const item of markers) {
-				item.button.classList.toggle('is-hovered', item === marker)
-			}
-			updateTooltip(marker, event.clientY)
+			setHoveredSection(marker)
+			// With the outline open the title is already beside the marker.
+			updateTooltip(outlineMode ? null : marker, event.clientY)
 		}
 	}
 
 	function handlePointerLeave() {
 		hover = false
-		for (const item of markers) {
-			item.button.classList.remove('is-hovered')
-		}
+		setHoveredSection(null)
 		updateTooltip(null)
 		document.body.classList.remove('custom-scrollbar-dragging')
 		setInteracting(false)
@@ -716,7 +924,8 @@ export function initCustomScrollbar() {
 	}
 
 	function handlePointerDown(event: PointerEvent) {
-		if (event.button !== 0) {
+		// Labels are plain buttons; their clicks must not become thumb drags or track jumps.
+		if (event.button !== 0 || (event.target as Element).closest('.custom-scrollbar-outline')) {
 			return
 		}
 
@@ -735,7 +944,8 @@ export function initCustomScrollbar() {
 			activePointerId = event.pointerId
 			updateTooltip(null)
 			dragging = false
-			scrollToTopSmooth(marker.element.getBoundingClientRect().top + window.scrollY)
+			closeOutline()
+			jumpToSection(marker.element)
 		}
 		else if (isThumbPress) {
 			event.preventDefault()
@@ -801,11 +1011,30 @@ export function initCustomScrollbar() {
 	}
 
 	for (const marker of markers) {
+		// Pointer presses jump in handlePointerDown; this covers keyboard activation.
 		marker.button.addEventListener('click', (event) => {
 			event.preventDefault()
-			scrollToTopSmooth(marker.element.getBoundingClientRect().top + window.scrollY)
+			if (event.detail !== 0) {
+				return
+			}
+			jumpToSection(marker.element)
 			showTemporarily()
 		}, { signal })
+
+		marker.label.addEventListener('click', (event) => {
+			closeOutline()
+			jumpToSection(marker.element)
+			// Keyboard focus follows the jump, so the next Tab continues inside that section.
+			if (event.detail === 0) {
+				marker.element.querySelector<HTMLElement>('a[href]')?.focus({ preventScroll: true })
+			}
+		}, { signal })
+	}
+
+	outline = {
+		close: closeOutline,
+		mode: () => outlineMode,
+		open: openOutline,
 	}
 
 	refreshLayout = syncLayout
@@ -833,8 +1062,15 @@ export function initCustomScrollbar() {
 	shell.addEventListener('pointerup', handlePointerUp, { signal })
 	shell.addEventListener('pointercancel', handlePointerUp, { signal })
 	shell.addEventListener('touchmove', preventTouchScroll, { passive: false, signal })
+	document.addEventListener('keydown', handleOutlineKeydown, { signal })
+	document.addEventListener('pointerdown', handleOutsidePointerDown, { capture: true, signal })
 
 	cleanup = () => {
+		if (outlineMode) {
+			outlineMode = null
+			notifyOutline()
+		}
+		outline = null
 		refreshLayout = null
 		touchDragCleanup?.()
 		abortController.abort()
@@ -850,6 +1086,7 @@ export function initCustomScrollbar() {
 			window.clearTimeout(hideTimer)
 		}
 		shell.remove()
+		scrim.remove()
 		tooltip.remove()
 		document.body.classList.remove('custom-scrollbar-dragging')
 		root.classList.remove('custom-scrollbar-ready', 'custom-scrollbar-scroll-driven', 'custom-scrollbar-js-driven', 'custom-scrollbar-native')

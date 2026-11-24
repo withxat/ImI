@@ -2,6 +2,7 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { render } from 'astro:content'
+import CodeXml from '~icons/lucide/code-xml'
 
 import MiSansContentFont from '@/components/fonts/mi-sans-content-font.astro'
 import Container from '@/components/layout/container.astro'
@@ -14,9 +15,10 @@ import ArticleBody from '@/components/post/article-body.astro'
 import PostIndexRow from '@/components/post/post-index-row.astro'
 import PostTranslatedNoticeAside from '@/components/post/post-translated-notice-aside.astro'
 import RootLayout from '@/layouts/root-layout.astro'
-import { formatPostDate, formatPostMonth, formatPostMonthDay, getAllPosts, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
+import { formatPostDate, formatPostMonth, formatPostMonthDay, getAllPosts, getCategoryBySlug, getPostBySlug, readingMinutes } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { mdxComponents } from '@/lib/mdx-components'
+import { REPO_URL } from '@/lib/repo'
 import { articleBreadcrumbJsonLd, blogPostingJsonLd, postOgImageUrl, SITE_NAME } from '@/lib/seo-data'
 import { postCardTransitionName } from '@/lib/view-transition'
 import { toTranslator } from '@/types/translator'
@@ -42,16 +44,24 @@ const articleSection = localizedCategory?.name
 const seoDescription = post.seoDescription ?? post.summary
 const translator = toTranslator(post.translator)
 
+const isoDate = post.date.toISOString().slice(0, 10)
+const sourceUrl = `${REPO_URL}/blob/main/content/posts/${post.locale}/${post.slug}.mdx`
+
 const { Content, headings } = await render(post.entry)
 const sections = headings.filter(heading => heading.depth === 2)
+// The scrollbar already marks every section; three or more make the outline worth a button.
+const hasOutline = sections.length >= 3
 
-// Posts are newest first, so the newer neighbor sits before this one.
+// Posts are newest first, so the newer neighbor sits before this one. An unlisted post has no place
+// in that order, so it gets no neighbors.
 const allPosts = await getAllPosts(locale)
 const index = allPosts.findIndex(entry => entry.slug === post.slug)
-const neighbors = [
-	{ label: m.blog.newer, post: allPosts[index - 1] },
-	{ label: m.blog.older, post: allPosts[index + 1] },
-].flatMap(({ label, post: entry }) => (entry ? [{ label, post: entry }] : []))
+const neighbors = index < 0
+	? []
+	: [
+			{ label: m.blog.newer, post: allPosts[index - 1] },
+			{ label: m.blog.older, post: allPosts[index + 1] },
+		].flatMap(({ label, post: entry }) => (entry ? [{ label, post: entry }] : []))
 ---
 
 <RootLayout>
@@ -94,29 +104,63 @@ const neighbors = [
 						<h1 class="text-3xl font-medium text-foreground">{post.title}</h1>
 						<p class="text-base/7 text-muted-foreground">{post.summary}</p>
 					</div>
-					<div class="font-ui text-sm text-muted-foreground">
-						<span>{formatPostDate(post.date, locale)}</span>
-					</div>
-					{sections.length >= 3 && (
-						<nav aria-label={m.blog.toc} class="font-ui text-sm">
-							<ol class="space-y-1.5">
-								{sections.map((section, i) => (
-									<li class="flex items-baseline gap-3">
-										<span class="font-mono text-xs text-muted-foreground/70 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-										<a
+					{/* One block, so the hidden fallback list adds no gap below the date. */}
+					<div>
+						<div class="flex items-center justify-between gap-4 font-ui text-sm text-muted-foreground">
+							<p class="flex flex-wrap items-baseline gap-x-2">
+								<time datetime={isoDate}>{formatPostDate(post.date, locale)}</time>
+								<span aria-hidden="true">·</span>
+								<span>{m.blog.readingTime(readingMinutes(post))}</span>
+								{hasOutline && (
+									<>
+										<span aria-hidden="true">·</span>
+										<button
 											class="
-												text-muted-foreground transition-colors duration-150
-												hover:text-foreground
+												text-link-muted cursor-pointer
+												aria-expanded:text-foreground
 											"
-											href={`#${section.slug}`}
+											aria-controls="post-sections"
+											aria-expanded="false"
+											type="button"
+											data-section-outline-trigger
 										>
-											{section.text}
-										</a>
-									</li>
-								))}
-							</ol>
-						</nav>
-					)}
+											{m.blog.sectionCount(sections.length)}
+										</button>
+									</>
+								)}
+							</p>
+							<a
+								class="
+									-m-1.5 shrink-0 rounded-md p-1.5 transition-colors duration-150
+									hover:text-foreground
+								"
+								aria-label={m.blog.viewSource}
+								href={sourceUrl}
+								title={m.blog.viewSource}
+							>
+								<CodeXml aria-hidden="true" class="size-4" />
+							</a>
+						</div>
+						{hasOutline && (
+							<nav aria-label={m.blog.toc} class="mt-4 font-ui text-sm" id="post-sections" hidden>
+								<ol class="space-y-1.5">
+									{sections.map(section => (
+										<li>
+											<a
+												class="
+													text-muted-foreground transition-colors duration-150
+													hover:text-foreground
+												"
+												href={`#${section.slug}`}
+											>
+												{section.text}
+											</a>
+										</li>
+									))}
+								</ol>
+							</nav>
+						)}
+					</div>
 					{m.blog.postTranslatedNotice && (
 						<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} translator={translator} />
 					)}
@@ -129,7 +173,7 @@ const neighbors = [
 				<!-- Sign-off, like the name and date at the foot of a letter. -->
 				<div class="flex flex-col items-end gap-0.5">
 					<Wordmark class="text-2xl" />
-					<time class="font-mono text-xs text-muted-foreground tabular-nums" datetime={post.date.toISOString().slice(0, 10)}>
+					<time class="font-mono text-xs text-muted-foreground tabular-nums" datetime={isoDate}>
 						{post.date.getUTCFullYear()}·{formatPostMonthDay(post.date)}
 					</time>
 				</div>
@@ -141,18 +185,20 @@ const neighbors = [
 							{m.home.viewAllPosts}
 						</a>
 					</div>
-					<ul class="divide-y divide-border border-y border-border">
-						{neighbors.map(({ label, post: neighbor }) => (
-							<PostIndexRow
-								dateLabel={formatPostMonth(neighbor.date)}
-								href={`/post/${neighbor.slug}`}
-								meta={label}
-								slug={neighbor.slug}
-								summary={neighbor.summary}
-								title={neighbor.title}
-							/>
-						))}
-					</ul>
+					{neighbors.length > 0 && (
+						<ul class="divide-y divide-border border-y border-border">
+							{neighbors.map(({ label, post: neighbor }) => (
+								<PostIndexRow
+									dateLabel={formatPostMonth(neighbor.date)}
+									href={`/post/${neighbor.slug}`}
+									meta={label}
+									slug={neighbor.slug}
+									summary={neighbor.summary}
+									title={neighbor.title}
+								/>
+							))}
+						</ul>
+					)}
 				</nav>
 			</StaggerReveal>
 		</Container>

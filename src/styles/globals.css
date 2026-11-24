@@ -683,9 +683,134 @@
 		text-wrap: balance;
 	}
 
+	/* Section outline: every marker's title at once, opened from a post's "N sections" button. */
+	.custom-scrollbar-outline {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.custom-scrollbar-outline-label {
+		position: absolute;
+		right: calc(var(--cs-center-right) + 14px);
+		width: max-content;
+		max-width: 15rem;
+		padding: 0.125rem 0.375rem;
+		border: 0;
+		border-radius: var(--radius-sm);
+		background: var(--background);
+		color: var(--muted-foreground);
+		font-family: var(--font-ui);
+		font-size: 0.8125rem;
+		font-weight: 500;
+		line-height: 1.35;
+		text-align: right;
+		text-wrap: balance;
+		cursor: pointer;
+		opacity: 0;
+		transform: translate3d(8px, 0, 0);
+		transition:
+			opacity 160ms cubic-bezier(0.22, 1, 0.36, 1),
+			transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+			color 150ms ease-out;
+		pointer-events: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.custom-scrollbar.is-outline .custom-scrollbar-outline-label {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+		transition-delay: calc(var(--outline-index, 0) * 24ms), calc(var(--outline-index, 0) * 24ms), 0ms;
+		pointer-events: auto;
+	}
+
+	.custom-scrollbar-outline-label.is-current {
+		color: var(--foreground);
+	}
+
+	.custom-scrollbar-outline-label.is-hovered {
+		color: var(--color-highlight-text);
+	}
+
+	.custom-scrollbar-outline-label:focus-visible {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+
+	/* Over the text: touchable chips above a scrim. */
+	.custom-scrollbar-outline.is-overlay .custom-scrollbar-outline-label {
+		right: calc(var(--cs-center-right) + 16px);
+		max-width: min(18rem, calc(100vw - 4rem));
+		padding: 0.375rem 0.625rem;
+		border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+		border-radius: var(--radius-md);
+		background: var(--popover);
+		box-shadow: 0 14px 36px -24px color-mix(in oklab, var(--foreground) 42%, transparent);
+		font-size: 0.875rem;
+	}
+
+	.custom-scrollbar-scrim {
+		position: fixed;
+		inset: 0;
+		z-index: 59;
+		background: color-mix(in oklab, var(--background) 72%, transparent);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.custom-scrollbar-scrim.is-visible {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.custom-scrollbar-outline-label,
+		.custom-scrollbar-scrim {
+			transition: none;
+		}
+	}
+
 	.custom-scrollbar,
-	.custom-scrollbar-tooltip {
+	.custom-scrollbar-tooltip,
+	.custom-scrollbar-scrim {
 		view-transition-name: none;
+	}
+
+	/*
+	 * A jump to a section tints its heading in the link color for a moment (src/client/section-jump.ts).
+	 * Article blocks already use their own animation for the reveal, so the tint runs on the heading's
+	 * link and rule; other headings take it directly. Reduced motion holds the tint, then drops it.
+	 */
+	.section-flash:not(.article-body > *),
+	.section-flash a {
+		animation: section-flash 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.section-flash .heading-rule::after {
+		animation: section-flash-rule 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.section-flash:not(.article-body > *),
+		.section-flash a,
+		.section-flash .heading-rule::after {
+			animation-timing-function: step-end;
+		}
+	}
+
+	@keyframes section-flash {
+		from,
+		30% {
+			color: var(--color-highlight-text);
+		}
+	}
+
+	@keyframes section-flash-rule {
+		from,
+		30% {
+			background-color: var(--color-highlight-soft);
+		}
 	}
 
 	body.custom-scrollbar-dragging,
@@ -900,6 +1025,209 @@
 		}
 	}
 
+	/* Speech bubble: the home avatar's replies and the footer's "copied" note. Scripts set `data-shown`;
+	 * `.bubble-right` / `.bubble-top` place it and its tail. It pops in with a little overshoot. */
+	.bubble {
+		position: absolute;
+		z-index: 30;
+		width: max-content;
+		padding: 0.3125rem 0.625rem;
+		border: 1px solid var(--bubble-edge);
+		border-radius: var(--radius-lg);
+		background: var(--popover);
+		box-shadow: 0 14px 36px -24px color-mix(in oklab, var(--foreground) 42%, transparent);
+		color: var(--popover-foreground);
+		font-size: 0.8125rem;
+		font-weight: 500;
+		line-height: 1.35;
+		white-space: nowrap;
+		opacity: 0;
+		pointer-events: none;
+		transform: var(--bubble-at) scale(0.9);
+		transition:
+			opacity 120ms ease-out,
+			transform 120ms ease-out;
+		--bubble-edge: color-mix(in oklab, var(--foreground) 12%, transparent);
+	}
+
+	.bubble[data-shown] {
+		opacity: 1;
+		transform: var(--bubble-at) scale(1);
+		transition:
+			opacity 140ms ease-out,
+			transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	.bubble::after {
+		position: absolute;
+		width: 8px;
+		height: 8px;
+		background: var(--popover);
+		content: '';
+		transform: rotate(45deg);
+	}
+
+	.bubble-right {
+		top: 50%;
+		left: calc(100% + 0.75rem);
+		transform-origin: 0 50%;
+		--bubble-at: translateY(-50%);
+	}
+
+	.bubble-right::after {
+		top: calc(50% - 4px);
+		left: -4.5px;
+		border-bottom: 1px solid var(--bubble-edge);
+		border-left: 1px solid var(--bubble-edge);
+	}
+
+	.bubble-top {
+		bottom: calc(100% + 0.5rem);
+		left: 50%;
+		transform-origin: 50% 100%;
+		--bubble-at: translateX(-50%);
+	}
+
+	.bubble-top::after {
+		bottom: -4.5px;
+		left: calc(50% - 4px);
+		border-right: 1px solid var(--bubble-edge);
+		border-bottom: 1px solid var(--bubble-edge);
+	}
+
+	/* Footer Email (src/client/email-copy.ts): with a mouse, a copy button grows after the link while
+	 * it is hovered or focused, and stays out while its "copied" bubble shows. Touch keeps the plain link. */
+	.email-copy-slot {
+		position: relative;
+		display: flex;
+		width: 0;
+		transition:
+			width 240ms cubic-bezier(0.22, 1, 0.36, 1),
+			margin 240ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.email-copy-button {
+		display: grid;
+		flex-shrink: 0;
+		place-items: center;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: var(--radius-sm);
+		color: var(--muted-foreground);
+		cursor: pointer;
+		opacity: 0;
+		pointer-events: none;
+		transform: scale(0.5) rotate(-12deg);
+		transition:
+			opacity 160ms ease-out,
+			transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+			color 150ms ease-out;
+	}
+
+	.email-copy-button:hover {
+		color: var(--color-highlight-text);
+	}
+
+	/* Inside the button: it sits flush against the link, so an outer ring would cover the last letter. */
+	.email-copy-button:focus-visible {
+		outline-offset: -2px;
+	}
+
+	/* The icon is centered in a 24px hit area. Pulling the next item back by the 5px of padding after
+	 * the icon keeps the usual link-to-dot gap; the button's tail overlaps that gap instead. */
+	.email-copy:is(:hover, :focus-within, [data-copied]) .email-copy-slot {
+		width: 1.5rem;
+		margin-right: -0.3125rem;
+	}
+
+	.email-copy:is(:hover, :focus-within, [data-copied]) .email-copy-button {
+		opacity: 1;
+		pointer-events: auto;
+		transform: none;
+	}
+
+	@media (hover: none), (pointer: coarse) {
+		.email-copy-slot {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.email-copy-slot,
+		.email-copy-button {
+			transition-property: opacity, color;
+		}
+
+		.email-copy-button {
+			transform: none;
+		}
+	}
+
+	/* Home avatar (src/client/avatar-poke.ts): it leans in under a hovering mouse, squishes when
+	 * poked, and turns away, greyed, while it sulks. */
+	.avatar-poke-body {
+		transform-origin: 50% 100%;
+		transition:
+			transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+			filter 320ms ease-out;
+	}
+
+	.avatar-poke[data-sulking] .avatar-poke-body {
+		filter: saturate(0.4);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		@media (hover: hover) {
+			.avatar-poke:has(> [data-avatar-poke-button]:hover) .avatar-poke-body {
+				transform: rotate(-3deg) scale(1.03);
+			}
+		}
+
+		.avatar-poke[data-poke]:not([data-sulking]) .avatar-poke-body {
+			animation: avatar-poke-squish 520ms cubic-bezier(0.33, 1, 0.68, 1);
+		}
+
+		.avatar-poke[data-sulking] .avatar-poke-body {
+			transform: rotate(-12deg) translateX(-3px) scale(0.94);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.bubble,
+		.bubble[data-shown] {
+			transform: var(--bubble-at);
+		}
+	}
+
+	@keyframes avatar-poke-squish {
+		0% {
+			transform: scale(1, 1);
+		}
+
+		18% {
+			transform: scale(1.1, 0.86);
+		}
+
+		46% {
+			transform: translateY(-8%) scale(0.95, 1.07);
+		}
+
+		72% {
+			transform: translateY(0) scale(1.03, 0.97);
+		}
+
+		100% {
+			transform: scale(1, 1);
+		}
+	}
+
+	/* Home intro (ja): it holds the badges, so it is a div rather than a p. Give it the body copy's
+	 * strict breaks, and break between phrases so a narrow screen never splits a word. */
+	.home-intro:lang(ja) {
+		line-break: strict;
+		word-break: auto-phrase;
+	}
+
 	/* Hero intro: English serif line only — global html rules cover CJK breaking. */
 	.home-bio-lead:lang(en) {
 		text-wrap: pretty;
@@ -977,8 +1305,34 @@
 		@apply cursor-pointer font-medium;
 	}
 
+	/* The clip-path cuts the heading rule (below) at the column edge and leaves room for focus rings
+	 * elsewhere. It only cuts what is painted, so overflow: clip, half an em out, also keeps the rule
+	 * from widening the page. */
 	.article-body h2 {
 		@apply mt-14 text-2xl font-medium text-foreground;
+		overflow: clip;
+		overflow-clip-margin: 0.5em;
+		clip-path: inset(-0.5em 0 -0.5em -0.5em);
+	}
+
+	/*
+	 * A hairline from the end of the heading's last line to the column edge. The zero-width anchor sits
+	 * right after the last glyph, wherever the title wraps (mdx-h2 renders it).
+	 */
+	.heading-rule {
+		position: relative;
+		display: inline-block;
+		width: 0;
+	}
+
+	.heading-rule::after {
+		content: '';
+		position: absolute;
+		bottom: 0.35em;
+		left: 0.75rem;
+		width: 100vw;
+		height: 1px;
+		background-color: var(--color-border);
 	}
 
 	.article-body h3 {

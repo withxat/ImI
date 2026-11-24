@@ -16,8 +16,11 @@ const en: Messages = {
 			beforeLink: 'This article is an AI translation from the Chinese original. Switch the site language to ',
 			switchToChineseAriaLabel: 'Switch site language to Chinese for the original article',
 		},
+		readingTime: (minutes: number) => `${minutes} min read`,
+		sectionCount: (count: number) => `${count} sections`,
 		title: 'All writing',
 		toc: 'Contents',
+		viewSource: 'View source',
 	},
 	capabilities: [
 		{
@@ -157,6 +160,8 @@ const en: Messages = {
 		},
 	},
 	footer: {
+		copyEmail: 'Copy email address',
+		emailCopied: 'Copied!',
 		moeIcp: 'Moe ICP Filing No. 20264698',
 		stats: {
 			afterOnline: ' wandering by',
@@ -185,9 +190,18 @@ const en: Messages = {
 			'Design Engineer focused on AI and frontend, writing about code, design, and AI.',
 		notFound: {
 			description: 'Maybe it moved, maybe it was never here. Here\'s some recent writing instead.',
+			didYouMean: {
+				after: '”?',
+				before: 'Maybe you meant “',
+			},
 			title: 'This page wandered off',
 		},
 		playName: 'Play name pronunciation',
+		poke: {
+			label: 'Poke Xat',
+			lines: ['Hey!', 'Yes?', 'That tickles', 'Okay, okay'],
+			sulk: 'Hmph. Not talking to you.',
+		},
 		projectsEyebrow: 'Projects',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',

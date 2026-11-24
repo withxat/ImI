@@ -4,6 +4,8 @@ import { readdir, readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { parse as parseYaml } from 'yaml'
+
 import { SITE_URL } from '@/lib/seo-data'
 
 /** Matches RSS/sitemap canonical locale in `blog.ts` (zh posts only). */
@@ -38,12 +40,16 @@ export function normalizeSitemapPathname(url: string): string {
 	return pathname.replace(/\/$/, '')
 }
 
+function parseFrontmatter(content: string): string | undefined {
+	return content.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1]
+}
+
 function parseFrontmatterDate(content: string): Date | undefined {
-	const frontmatter = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)
+	const frontmatter = parseFrontmatter(content)
 	if (!frontmatter)
 		return undefined
 
-	const dateLine = frontmatter[1]!.match(/^date:\s*(\S+)/m)
+	const dateLine = frontmatter.match(/^date:\s*(\S+)/m)
 	if (!dateLine)
 		return undefined
 
@@ -66,6 +72,12 @@ async function loadZhPostsForSitemap(): Promise<ZhPostSitemapEntry[]> {
 
 		const slug = entry.name.replace(/\.mdx$/, '')
 		const raw = await readFile(join(postsDir, entry.name), 'utf8')
+		// Mirrors the `unlisted` filter in `blog.ts`. Parsed as YAML, like the content loader does, so
+		// `unlisted: true # note` counts too.
+		const data = parseYaml(parseFrontmatter(raw) ?? '') as null | { unlisted?: unknown }
+		if (data?.unlisted === true)
+			continue
+
 		const date = parseFrontmatterDate(raw)
 		if (!date)
 			throw new Error(`Missing or invalid date in ${entry.name}`)

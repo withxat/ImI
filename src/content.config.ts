@@ -12,6 +12,8 @@ const posts = defineCollection({
 		tags: z.array(z.string()),
 		title: z.string(),
 		translator: z.tuple([z.enum(['openai', 'claude', 'gemini', 'qwen']), z.string()]).optional(),
+		/** Reachable by direct link only: left out of post lists, RSS, and the sitemap. */
+		unlisted: z.boolean().optional(),
 	}),
 })
 

@@ -1,6 +1,8 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
+import Dot from '~icons/lucide/dot'
+
 import MiSansContentFont from '@/components/fonts/mi-sans-content-font.astro'
 import Container from '@/components/layout/container.astro'
 import SiteHeader from '@/components/layout/site-header.astro'
@@ -11,12 +13,14 @@ import PostIndexRow from '@/components/post/post-index-row.astro'
 import RootLayout from '@/layouts/root-layout.astro'
 import { formatPostMonthDay, getPostsByYear } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
+import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/rss'
 import { pageOgImageUrl } from '@/lib/seo-data'
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
 const yearGroups = await getPostsByYear(locale)
 const totalPosts = yearGroups.reduce((sum, group) => sum + group.posts.length, 0)
+const feedUrl = { en: RSS_FEED_URL_EN, ja: RSS_FEED_URL_JA, zh: RSS_FEED_URL }[locale]
 ---
 
 <RootLayout>
@@ -37,7 +41,11 @@ const totalPosts = yearGroups.reduce((sum, group) => sum + group.posts.length, 0
 					<SiteHeader locale={locale} messages={m} showBack />
 					<div class="flex items-baseline justify-between gap-4">
 						<h1 class="text-3xl font-medium text-foreground">{m.blog.title}</h1>
-						<span class="font-ui text-sm text-muted-foreground"><span class="font-mono text-xs tabular-nums">{totalPosts}</span>{m.blog.postCountSuffix}</span>
+						<span class="flex items-baseline gap-2 font-ui text-sm text-muted-foreground">
+							<span><span class="font-mono text-xs tabular-nums">{totalPosts}</span>{m.blog.postCountSuffix}</span>
+							<Dot aria-hidden="true" class="size-3 shrink-0 self-center opacity-70" />
+							<a class="text-link-muted" href={feedUrl} type="application/rss+xml">RSS</a>
+						</span>
 					</div>
 				</div>
 

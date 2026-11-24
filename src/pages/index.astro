@@ -1,9 +1,9 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
-import { Image } from 'astro:assets'
 import ArrowUpRight from '~icons/local/arrow-up-right'
 
+import AvatarPoke from '@/components/home/avatar-poke.astro'
 import IntroBadgePopover from '@/components/home/intro-badge-popover.astro'
 import NameAudioButton from '@/components/home/name-audio-button.astro'
 import Container from '@/components/layout/container.astro'
@@ -14,7 +14,6 @@ import Seo from '@/components/meta/seo.astro'
 import Reveal from '@/components/motion/reveal.astro'
 import StaggerReveal from '@/components/motion/stagger-reveal.astro'
 import PostIndexRow from '@/components/post/post-index-row.astro'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import RootLayout from '@/layouts/root-layout.astro'
 import { formatPostMonthDay, getAllPosts } from '@/lib/blog'
 import { htmlLangFor } from '@/lib/i18n/constants'
@@ -27,6 +26,9 @@ const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
 const systemsLabel = getIntroBadgeLabel(locale, 'systems')
 const productsLabel = getIntroBadgeLabel(locale, 'products')
+// Only the first character after the badge sticks to it (a period, or ja's を), so the rest of the
+// sentence can still wrap on a narrow screen.
+const introAfterProducts = [...m.home.introAfterProducts]
 const allPosts = await getAllPosts(locale)
 const posts = allPosts.slice(0, 4)
 const baseCapabilities = await getCapabilities()
@@ -74,25 +76,7 @@ const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-
 				<div class="flex flex-col gap-4">
 					<SiteHeader locale={locale} messages={m} />
 					<div class="flex min-w-0 flex-col gap-4">
-						<Avatar class="
-							size-14 rounded-xl border border-border
-							after:rounded-xl
-							sm:size-16
-						"
-						>
-							<AvatarImage class="rounded-xl">
-								<Image
-									alt="Xat"
-									class="size-full object-cover"
-									fetchpriority="high"
-									loading="eager"
-									referrerpolicy="no-referrer"
-									src={PROFILE_AVATAR_SRC}
-									inferSize
-								/>
-							</AvatarImage>
-							<AvatarFallback class="rounded-xl">X</AvatarFallback>
-						</Avatar>
+						<AvatarPoke copy={m.home.poke} />
 						<div class="space-y-0">
 							<div class="
 								inline-flex items-baseline gap-2 text-2xl tracking-tight text-foreground
@@ -115,11 +99,11 @@ const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-
 
 				<section class="mt-6">
 					<StaggerReveal delayChildren={0.03} staggerChildren={0.045}>
-						<div class="max-w-prose text-base/7 text-muted-foreground">
+						<div class="home-intro max-w-prose text-base/7 text-muted-foreground">
 							{m.home.introBeforeSystems}
 							<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
 							{m.home.introBetweenBadges}
-							<span class="whitespace-nowrap"><IntroBadgePopover kind="products" label={productsLabel} locale={locale} />{m.home.introAfterProducts}</span>
+							<span class="whitespace-nowrap"><IntroBadgePopover kind="products" label={productsLabel} locale={locale} />{introAfterProducts[0]}</span>{introAfterProducts.slice(1).join('')}
 						</div>
 					</StaggerReveal>
 				</section>

@@ -197,7 +197,7 @@ motion, component HTML/CSS, narrative).
 
 The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — whose page structure comes from spacing, rhythm, and typographic alignment. Hairlines appear only where a bounded surface needs an edge. The accent is **Quiet Rose** in light mode and **Warm Apricot** in dark, used on no more than ~10% of any screen: the wordmark, link affordances, an icon tint, a hover halo around an intro badge. The accent is the brand's voice; its rarity is what makes it land.
 
-The "Cute" lives in specific, named places — never as ambient decoration. A `Fugaz One` wordmark used only for the three letters "Xat", which hop one after another when a mouse arrives or the name plays; the same wordmark signs off each post, with the post date under it. A coin-flip mascot on the design page, and a small balance in its weight section that tips toward 字 when the CJK weight matching is switched off. A `wanderer` gradient text in the footer that animates rose to cyan as a metaphor for the visitor's geographic journey to this site, and a stats line that says it is just you when nobody else is online. The "Shiny" is the soft pink halo (`highlight-soft`) that appears under interactive surfaces on hover. The "Elegance" is the trilingual typography stack — Hanken Grotesk for Latin, MiSans for CJK content, a tiny `vite-plugin-font` Source Han Serif subset for the bio lead — tuned with per-locale `text-wrap`, `line-break`, and `hyphens` rules so Chinese, Japanese, and English each break the way their typography traditions expect.
+The "Cute" lives in specific, named places — never as ambient decoration. A `Fugaz One` wordmark used only for the three letters "Xat", which hop one after another when a mouse arrives or the name plays; the same wordmark signs off each post, with the post date under it. A coin-flip mascot on the design page, and a small balance in its weight section that tips toward 字 when the CJK weight matching is switched off. The home avatar, which leans toward a hovering mouse, squishes and answers when poked, and turns away, greyed, when poked too many times. A `wanderer` gradient text in the footer that animates rose to cyan as a metaphor for the visitor's geographic journey to this site, and a stats line that says it is just you when nobody else is online. The "Shiny" is the soft pink halo (`highlight-soft`) that appears under interactive surfaces on hover. The "Elegance" is the trilingual typography stack — Hanken Grotesk for Latin, MiSans for CJK content, a tiny `vite-plugin-font` Source Han Serif subset for the bio lead — tuned with per-locale `text-wrap`, `line-break`, and `hyphens` rules so Chinese, Japanese, and English each break the way their typography traditions expect.
 
 The system explicitly rejects: corporate SaaS chrome, brutalist heaviness, templated icon-title-card grids, neon-on-black AI tooling tropes, and editorial-magazine pastiche (no Fraunces, no italic drop caps, no broadsheet columns). It is **not** "premium-minimal" in the lazy lifestyle-brand sense — it earns minimalism through restraint plus one or two committed, named decisions per surface.
 
@@ -353,7 +353,13 @@ This is what gives the inline intro badges their "Cute with Shiny" quality — a
 - **Thickness:** `max(2px, round(0.1em, 1px))`, and the caps fade out over their last 0.5px. Whole pixels keep the caps and the bar on the same device pixels; at a fractional ~1.5px the caps rasterize square.
 - **Box:** The link must stay `display: inline`. An `inline-flex` or `inline-block` link collapses the per-line clone into one underline under the whole box. A `::after` underline cannot replace this either: on a wrapped link it spans from the first line's start to the last line's end.
 - **Color:** `--text-link-underline` defaults to a mix of `highlight-soft 75%` + `background`. On hover, lifts to full `highlight-soft`.
-- **Three variants:** `.text-link` (default, accent text + underline), `.text-link-muted` (muted text, accent on hover — used for locale switcher), `.article-body a` (same as `.text-link` but scoped to MDX content).
+- **Three variants:** `.text-link` (default, accent text + underline), `.text-link-muted` (muted text, accent on hover — used for the locale switcher and a post's "N sections" button), `.article-body a` (same as `.text-link` but scoped to MDX content).
+- **External:** An article link to another site ends with a small ↗ (`arrow-up-right`, 0.72em, 60% opacity) joined to the last word by U+2060 so it never wraps alone; it nudges up-right on hover, like the project rows.
+
+### Article Headings
+
+- **Rule:** Each article h2 ends in a 1px `border` hairline that runs from the last glyph of its last line to the column edge (`.heading-rule`, a zero-width inline anchor; the h2's `clip-path` cuts the line at the edge). It belongs to the heading, so it does not count as a divider between sections. When the title fills the line, the rule disappears.
+- **Arrival:** A jump from the section outline or a scrollbar marker scrolls the heading to its scroll margin, then tints its link `highlight-text` and its rule `highlight-soft`, fading back over 1.4s. Under reduced motion the tint holds and switches off without fading.
 
 ### Index Rows
 
@@ -361,7 +367,7 @@ The writing list (home, /post, 404, and the newer/older links at an article's en
 
 - **Structure:** A `<ul>` with `divide-y border-y` hairlines. Each row is one link: a mono date column (`4.75rem`), the title in `text-sm font-medium`, an optional one-line muted summary.
 - **Interaction:** The title turns `highlight-strong` on hover; the whole row is the hit area and carries the focus ring. No row borders, no cards, no "Read more →".
-- **/post:** Rows group under a mono year heading; the category sits at the row's right edge.
+- **/post:** Rows group under a mono year heading; the category sits at the row's right edge. The page title's row ends in the post count and a `text-link-muted` RSS link to the reader's locale feed, on one baseline.
 - **Projects:** The title takes the first column (`12rem`) and a small ↗ nudges up-right on hover.
 - **Narrow:** Below the full page-column width (`@lg/page`) the columns stack.
 
@@ -378,7 +384,8 @@ The writing list (home, /post, 404, and the newer/older links at an article's en
 - **Border:** 1px `border` (8% black alpha).
 - **Shadow:** `0 14px 36px -24px` rose-tinted.
 - **Typography:** 14px / 1.35, `font-ui` (Hanken Grotesk).
-- **Usage:** Site uses one custom-scrollbar tooltip and a HoverCard-backed "intro badge" popover that fires on hover/focus over inline tokens like "design engineer" and "product designer".
+- **Usage:** Site uses one custom-scrollbar tooltip, the section outline's chips on narrow screens, and a HoverCard-backed "intro badge" popover that fires on hover/focus over inline tokens like "design engineer" and "product designer".
+- **Speech bubble** (`.bubble`): the same surface with a rotated-square tail, 13px, one line. It pops in with a slight overshoot and leaves after a moment. Only two things speak: the home avatar when poked, and the footer's copy button once it has copied the email address. Under reduced motion it fades without the pop.
 
 ### Intro Badge (signature inline component)
 
@@ -392,11 +399,13 @@ A composed component that wraps the bejamas `Button` (variant `outline`) inside 
 ### Navigation
 
 - **Header:** One row. Inner pages put a "Go to home" `TextLink` on the left; the locale switcher and theme switcher sit together on the right. No global nav bar — this is a personal site, not an app.
-- **Footer:** Wanderer greeting + social links and the resume link (`text-link`s) + repo and commit + ICP filing + view stats (the online count turns into "just you" when the reader is alone). The wanderer line is the only text that animates on its own.
+- **Footer:** Wanderer greeting + social links and the resume link (`text-link`s) + repo and commit + ICP filing + view stats (the online count turns into "just you" when the reader is alone). Email stays a plain `mailto:`; with a mouse, hovering or focusing it grows a muted copy button after it (24px, `copy` icon, width eased open), and a click copies the address and says so in a bubble. Touch never shows the button. The wanderer line is the only text that animates on its own.
 - **Print:** Only /resume has a print stylesheet: A4, light tokens whatever the screen theme, no header, footer, or reveals, and rows that do not split across pages.
 - **Tech marks:** Resume stack and skills lists put a monochrome Simple Icons mark before each technology that has one, in muted ink (`text-muted-foreground`) at about 1em, so marks never add a brand color. Items without a mark stay plain text.
 - **Locale switcher:** Three `text-link-muted` text buttons separated by small dot glyphs. The active locale is plain `text-foreground` with `aria-current`, not accent: accent means "link", and the active locale is not one. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
 - **Theme switcher:** A sun / moon icon button that opens a dropdown with Light / Dark / System.
+- **Custom scrollbar:** A rose thumb with one dot per section (`main h2`, minus headings inside a nav), shown while scrolling or hovered. It replaces the native scrollbar except under reduced motion.
+- **Section outline:** A post's meta line reads date · reading time · "N sections" (`text-link-muted`), with a muted `</>` link to the post's MDX at the right. The button puts every section title beside its scrollbar dot: hovering previews it, a click or Enter pins it, and a jump, a scroll, Esc, or a click elsewhere closes it. With a fine pointer and at least 1240px, titles are plain muted text in the right margin (the current section in `foreground`); otherwise they are popover chips over a 72% `background` scrim. Under reduced motion the button shows a plain list under the date instead.
 
 ### Reveal & Stagger (the entrance language)
 

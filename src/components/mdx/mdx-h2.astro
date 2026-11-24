@@ -6,6 +6,5 @@ const { class: className, id, ...rest } = Astro.props as { [k: string]: unknown,
 const baseClasses = 'mt-12 scroll-m-20 font-heading text-2xl font-semibold first:mt-0 lg:mt-16 [&+p]:mt-4! *:[code]:text-2xl'
 ---
 
-<h2 class={cn(baseClasses, className)} id={id} {...rest}>
-	{id ? <a href={`#${id}`}><slot /></a> : <slot />}
-</h2>
+{/* `.heading-rule` follows the last glyph with no whitespace between, so it never starts a line of its own. */}
+<h2 class={cn(baseClasses, className)} id={id} {...rest}>{id ? <a href={`#${id}`}><slot /></a> : <slot />}<span aria-hidden="true" class="heading-rule" /></h2>

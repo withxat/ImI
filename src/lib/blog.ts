@@ -83,7 +83,9 @@ async function buildPostIndex(locale: Locale) {
 			slug: parsed.slug,
 		}
 
-		all.push(post)
+		// Unlisted posts open by direct link but stay out of every list, feed, and the sitemap.
+		if (!post.unlisted)
+			all.push(post)
 		bySlug.set(parsed.slug, post)
 	}
 
@@ -158,6 +160,25 @@ export function formatPostMonth(date: Date): string {
 export function formatPostMonthDay(date: Date): string {
 	const { day, month } = utcCalendarParts(date)
 	return `${String(month).padStart(2, '0')}·${String(day).padStart(2, '0')}`
+}
+
+/** Characters (zh, ja) or words (en) read per minute; Japanese runs longer in characters for the same text. */
+const READING_RATE: Record<Locale, number> = { en: 230, ja: 600, zh: 400 }
+
+/** Estimated reading time in whole minutes, from the MDX body without code blocks, imports, tags, or URLs. */
+export function readingMinutes(post: PostWithMeta): number {
+	const text = (post.entry.body ?? '')
+		.replace(/```[\s\S]*?```/g, '')
+		.replace(/^(?:import|export) .*$/gm, '')
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+		.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+		.replace(/<[^>]+>/g, '')
+	const characters = text.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu)?.length ?? 0
+	const words = text.match(/[\p{Script=Latin}\d]+(?:['’.-][\p{Script=Latin}\d]+)*/gu)?.length ?? 0
+	const minutes = post.locale === 'en'
+		? words / READING_RATE.en
+		: characters / READING_RATE[post.locale] + words / READING_RATE.en
+	return Math.max(1, Math.round(minutes))
 }
 
 /** Formats the post's calendar date (YAML `date` is treated as UTC midnight). */

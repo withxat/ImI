@@ -16,8 +16,11 @@ const ja: Messages = {
 			beforeLink: 'この記事は中国語の原文をAIが翻訳したものです。サイトの言語を',
 			switchToChineseAriaLabel: 'サイトの表示言語を中文に切り替えて原文を表示する',
 		},
+		readingTime: (minutes: number) => `約 ${minutes} 分`,
+		sectionCount: (count: number) => `全 ${count} 節`,
 		title: 'すべての記事',
 		toc: '目次',
+		viewSource: 'ソースを見る',
 	},
 	capabilities: [
 		{
@@ -157,6 +160,8 @@ const ja: Messages = {
 		},
 	},
 	footer: {
+		copyEmail: 'メールアドレスをコピー',
+		emailCopied: 'コピーしたよ',
 		moeIcp: '萌えICP登録済み♡ 20264698号',
 		stats: {
 			afterOnline: '人が通りすがり',
@@ -185,9 +190,18 @@ const ja: Messages = {
 			'AI とフロントエンドを軸に活動するデザインエンジニア。コード、デザイン、AI について書いています。',
 		notFound: {
 			description: '引っ越したのか、最初からなかったのか。かわりに最近書いたものをどうぞ。',
+			didYouMean: {
+				after: '」？',
+				before: 'もしかして「',
+			},
 			title: 'このページは迷子みたい',
 		},
 		playName: '名前の発音を再生',
+		poke: {
+			label: 'Xat をつつく',
+			lines: ['やあ', 'なに？', 'くすぐったいよ', 'もう、やめてってば'],
+			sulk: 'ふーんだ、もう知らない',
+		},
 		projectsEyebrow: 'つくったもの',
 		role: 'デザインエンジニア',
 		tagline: 'Xat - デザインエンジニア',

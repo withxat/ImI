@@ -1,7 +1,26 @@
 ---
+import ArrowUpRight from '~icons/local/arrow-up-right'
+
 import { cn } from '@/lib/cn'
+import { SITE_URL } from '@/lib/seo-data'
 
 const { class: className, href, ...rest } = Astro.props as { [k: string]: unknown, class?: string, href?: string }
+
+function isExternal(value: string | undefined) {
+	if (!value)
+		return false
+	try {
+		const url = new URL(value, SITE_URL)
+		return (url.protocol === 'http:' || url.protocol === 'https:') && url.origin !== new URL(SITE_URL).origin
+	}
+	catch {
+		return false
+	}
+}
+
+const external = isExternal(href)
+const arrowClass = 'ml-[0.08em] inline-block size-[0.72em] align-[0.04em] opacity-60 transition-transform duration-150 ease-out group-hover/link:translate-x-px group-hover/link:-translate-y-px'
 ---
 
-<a class={cn('text-link font-medium', className)} href={href} {...rest}><slot /></a>
+{/* U+2060 (word joiner) keeps the arrow on the line of the word before it. */}
+<a class={cn('text-link font-medium', external && 'group/link', className)} href={href} {...rest}><slot />{external && <Fragment>&#x2060;<ArrowUpRight aria-hidden="true" class={arrowClass} /></Fragment>}</a>

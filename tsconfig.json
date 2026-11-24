@@ -17,6 +17,8 @@
 		"src/worker.ts",
 		"astro.config.ts",
 		"scripts",
+		"e2e",
+		"playwright.config.ts",
 		"src/**/*.astro"
 	]
 }

@@ -28,6 +28,7 @@ pnpm dev
 | `pnpm build` | Sync emoji, render OG images, build for Workers |
 | `pnpm lint` / `pnpm lint:fix` | ESLint |
 | `pnpm typecheck` | `astro check` |
+| `pnpm e2e:docker` | Playwright layout, error, and screenshot checks in the CI image; add `--update-snapshots` after an intended visual change |
 | `pnpm typegen` | Regenerate Worker binding types after editing `wrangler.jsonc` |
 
 See [`AGENTS.md`](AGENTS.md), [`PRODUCT.md`](PRODUCT.md) and [`DESIGN.md`](DESIGN.md) for architecture, product and design notes.

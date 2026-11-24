@@ -1,12 +1,16 @@
 import { initArticleBodies } from '@/client/article-reveal'
+import { initAvatarPokes } from '@/client/avatar-poke'
 import { disposeAll, registerModule, runAll } from '@/client/client-registry'
+import { greetConsole } from '@/client/console-greeting'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/client/custom-scrollbar'
+import { initEmailCopy } from '@/client/email-copy'
 import { initIntroBadges } from '@/client/intro-badge'
 import { initLinkedPageFontPrefetch } from '@/client/linked-page-font-prefetch'
 import { initMdxCopyButtons } from '@/client/mdx-copy'
 import { initNameAudioButtons } from '@/client/name-audio'
 import { initPageReveals } from '@/client/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/client/photoswipe-gallery'
+import { disposePostOutline, initPostOutline } from '@/client/post-outline'
 import { disposePrimeBindings, initPrimeBindings } from '@/client/prime-bindings'
 import { disposeSiteStatsModule, runSiteStatsModule } from '@/client/site-stats'
 import { initThemeSwitcher } from '@/client/theme-switcher'
@@ -56,6 +60,14 @@ registerModule('wordmark-hop', {
 	init: () => initWordmarkHops(),
 })
 
+registerModule('avatar-poke', {
+	init: () => initAvatarPokes(),
+})
+
+registerModule('email-copy', {
+	init: () => initEmailCopy(),
+})
+
 registerModule('mdx-copy', {
 	init: () => initMdxCopyButtons(),
 })
@@ -67,6 +79,12 @@ registerModule('font-prefetch', {
 registerModule('custom-scrollbar', {
 	dispose: () => destroyCustomScrollbar(),
 	init: () => initCustomScrollbar(),
+})
+
+// After custom-scrollbar: the post's section button opens the scrollbar's outline.
+registerModule('post-outline', {
+	dispose: () => disposePostOutline(),
+	init: () => initPostOutline(),
 })
 
 // Only /design has specimens, so its code loads there instead of shipping on every page.
@@ -100,3 +118,5 @@ document.addEventListener('astro:page-load', () => {
 	runAll(animate)
 	refreshCustomScrollbarLayout()
 })
+
+greetConsole()

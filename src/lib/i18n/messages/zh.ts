@@ -11,8 +11,11 @@ const zh: Messages = {
 		pageDescription: '关于前端、设计、AI，以及 Xat 的零碎记录。',
 		pageTitle: 'Xat 的归档处',
 		postCountSuffix: ' 篇',
+		readingTime: (minutes: number) => `约 ${minutes} 分钟`,
+		sectionCount: (count: number) => `${count} 节`,
 		title: '全部文章',
 		toc: '目录',
+		viewSource: '查看源码',
 	},
 	capabilities: [
 		{
@@ -152,6 +155,8 @@ const zh: Messages = {
 		},
 	},
 	footer: {
+		copyEmail: '复制邮箱地址',
+		emailCopied: '复制好啦',
 		moeIcp: '萌ICP备20264698号',
 		stats: {
 			afterOnline: '人路过',
@@ -180,9 +185,18 @@ const zh: Messages = {
 			'Design Engineer，专注 AI 与前端，写些关于前端、设计、AI 的文章。',
 		notFound: {
 			description: '可能搬家了，也可能从来没来过。先看看最近写的吧。',
+			didYouMean: {
+				after: '》？',
+				before: '是不是在找《',
+			},
 			title: '这一页走丢了',
 		},
 		playName: '播放名字读音',
+		poke: {
+			label: '戳一下 Xat',
+			lines: ['嗨～', '在呢', '有点痒', '别戳啦'],
+			sulk: '哼，不理你了',
+		},
 		projectsEyebrow: '项目',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',

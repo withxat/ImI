@@ -124,14 +124,25 @@ export interface Messages {
 		postCountSuffix: string
 		/** Shown above translated article bodies when UI locale is not Chinese. */
 		postTranslatedNotice?: PostTranslatedNoticeCopy
+		/** Estimated reading time beside the post date. */
+		readingTime: (minutes: number) => string
+		/** Opens the section outline: the scrollbar markers with their titles. */
+		sectionCount: (count: number) => string
 		title: string
+		/** Label of the section list; also the outline's landmark name. */
 		toc: string
+		/** Links to the post's MDX file on GitHub. */
+		viewSource: string
 	}
 	capabilities: CapabilityCopy[]
 	categories: Record<'design' | 'life' | 'tech', CategoryCopy>
 	codeBlock: CodeBlockCopy
 	design: DesignSystemCopy
 	footer: {
+		/** The copy button that grows after the footer's Email link on hover or focus. */
+		copyEmail: string
+		/** Shown over that button once the address is copied. */
+		emailCopied: string
 		moeIcp: string
 		stats: {
 			afterOnline: string
@@ -161,9 +172,20 @@ export interface Messages {
 		metaDescription: string
 		notFound: {
 			description: string
+			/** Around a link to the post whose slug is closest to the missing path. */
+			didYouMean: {
+				after: string
+				before: string
+			}
 			title: string
 		}
 		playName: string
+		/** The home avatar answers a poke with `lines` in turn; poked past them, it sulks for a moment. */
+		poke: {
+			label: string
+			lines: string[]
+			sulk: string
+		}
 		projectsEyebrow: string
 		role: string
 		tagline: string
