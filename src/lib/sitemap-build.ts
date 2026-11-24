@@ -43,11 +43,11 @@ function parseFrontmatterDate(content: string): Date | undefined {
 	if (!frontmatter)
 		return undefined
 
-	const dateLine = frontmatter[1].match(/^date:\s*(\S+)/m)
+	const dateLine = frontmatter[1]!.match(/^date:\s*(\S+)/m)
 	if (!dateLine)
 		return undefined
 
-	const parsed = new Date(dateLine[1])
+	const parsed = new Date(dateLine[1]!)
 	return Number.isNaN(parsed.getTime()) ? undefined : parsed
 }
 

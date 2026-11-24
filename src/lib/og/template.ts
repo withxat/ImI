@@ -41,6 +41,8 @@ const shellStyle = {
 	display: 'flex',
 	flexDirection: 'column',
 	fontFamily: OG_BODY_FONT_STACK,
+	// Each weight maps to a tuned static face (MiSans 600 is the wght-500 instance); synthetic bold on top would break that curve.
+	fontSynthesis: 'none',
 	height: '100%',
 	padding: '72px 80px',
 	width: '100%',

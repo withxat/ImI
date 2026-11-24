@@ -20,7 +20,7 @@ const HIDE_DELAY = 1600
 const MARKER_HIT_RADIUS = 9
 const DRAG_TOOLTIP_OFFSET_MAX = 18
 
-const SCROLLBAR_NAV_LABEL: Record<string, string> = {
+const SCROLLBAR_NAV_LABEL: { en: string } & Record<string, string> = {
 	en: 'Page sections',
 	ja: 'ページのセクション',
 	zh: '页面章节',
@@ -681,7 +681,7 @@ export function initCustomScrollbar() {
 				return
 			}
 			event.preventDefault()
-			scrollToClientY(event.touches[0].clientY)
+			scrollToClientY(event.touches[0]!.clientY)
 			syncThumbFromScroll()
 			updateMarkerStates()
 			updateDragTooltip()

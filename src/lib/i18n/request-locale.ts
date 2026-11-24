@@ -36,7 +36,7 @@ function localeFromAcceptLanguage(header: string | undefined): Locale | null {
 	}
 
 	const entries = header.split(',').map((raw) => {
-		const [langPart, ...params] = raw.trim().split(';')
+		const [langPart = '', ...params] = raw.trim().split(';')
 		const lang = langPart.trim().toLowerCase()
 		let q = 1
 		for (const p of params) {

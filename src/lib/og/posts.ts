@@ -28,7 +28,7 @@ function parseFrontmatter(filePath: string, slug: string): ZhPostFrontmatter {
 	if (!match)
 		throw new Error(`Missing frontmatter in ${filePath}`)
 
-	const data = parseYaml(match[1]) as Record<string, unknown>
+	const data = parseYaml(match[1]!) as Record<string, unknown>
 	const title = String(data.title ?? '').trim()
 	const summary = String(data.summary ?? '').trim()
 	const category = String(data.category ?? '').trim()

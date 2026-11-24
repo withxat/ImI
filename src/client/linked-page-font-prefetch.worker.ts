@@ -51,7 +51,7 @@ function unicodeTokenToRange(token: string): null | readonly [number, number] {
 		return Number.isFinite(start) && Number.isFinite(end) ? [start, end] : null
 	}
 
-	const [startRaw, endRaw = startRaw] = body.split('-')
+	const [startRaw = '', endRaw = startRaw] = body.split('-')
 	const start = Number.parseInt(startRaw, 16)
 	const end = Number.parseInt(endRaw, 16)
 	return Number.isFinite(start) && Number.isFinite(end) ? [start, end] : null
