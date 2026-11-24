@@ -1095,6 +1095,74 @@
 		border-bottom: 1px solid var(--bubble-edge);
 	}
 
+	/* Footer Email (src/client/email-copy.ts): with a mouse, a copy button grows after the link while
+	 * it is hovered or focused, and stays out while its "copied" bubble shows. Touch keeps the plain link. */
+	.email-copy-slot {
+		position: relative;
+		display: flex;
+		width: 0;
+		transition:
+			width 240ms cubic-bezier(0.22, 1, 0.36, 1),
+			margin 240ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.email-copy-button {
+		display: grid;
+		flex-shrink: 0;
+		place-items: center;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: var(--radius-sm);
+		color: var(--muted-foreground);
+		cursor: pointer;
+		opacity: 0;
+		pointer-events: none;
+		transform: scale(0.5) rotate(-12deg);
+		transition:
+			opacity 160ms ease-out,
+			transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+			color 150ms ease-out;
+	}
+
+	.email-copy-button:hover {
+		color: var(--color-highlight-text);
+	}
+
+	/* Inside the button: it sits flush against the link, so an outer ring would cover the last letter. */
+	.email-copy-button:focus-visible {
+		outline-offset: -2px;
+	}
+
+	/* The icon is centered in a 24px hit area. Pulling the next item back by the 5px of padding after
+	 * the icon keeps the usual link-to-dot gap; the button's tail overlaps that gap instead. */
+	.email-copy:is(:hover, :focus-within, [data-copied]) .email-copy-slot {
+		width: 1.5rem;
+		margin-right: -0.3125rem;
+	}
+
+	.email-copy:is(:hover, :focus-within, [data-copied]) .email-copy-button {
+		opacity: 1;
+		pointer-events: auto;
+		transform: none;
+	}
+
+	@media (hover: none), (pointer: coarse) {
+		.email-copy-slot {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.email-copy-slot,
+		.email-copy-button {
+			transition-property: opacity, color;
+		}
+
+		.email-copy-button {
+			transform: none;
+		}
+	}
+
 	/* Home avatar (src/client/avatar-poke.ts): it leans in under a hovering mouse, squishes when
 	 * poked, and turns away, greyed, while it sulks. */
 	.avatar-poke-body {

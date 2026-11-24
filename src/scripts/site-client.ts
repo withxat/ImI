@@ -3,6 +3,7 @@ import { initAvatarPokes } from '@/client/avatar-poke'
 import { disposeAll, registerModule, runAll } from '@/client/client-registry'
 import { greetConsole } from '@/client/console-greeting'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/client/custom-scrollbar'
+import { initEmailCopy } from '@/client/email-copy'
 import { initIntroBadges } from '@/client/intro-badge'
 import { initLinkedPageFontPrefetch } from '@/client/linked-page-font-prefetch'
 import { initMdxCopyButtons } from '@/client/mdx-copy'
@@ -61,6 +62,10 @@ registerModule('wordmark-hop', {
 
 registerModule('avatar-poke', {
 	init: () => initAvatarPokes(),
+})
+
+registerModule('email-copy', {
+	init: () => initEmailCopy(),
 })
 
 registerModule('mdx-copy', {

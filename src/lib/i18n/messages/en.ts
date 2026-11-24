@@ -160,6 +160,8 @@ const en: Messages = {
 		},
 	},
 	footer: {
+		copyEmail: 'Copy email address',
+		emailCopied: 'Copied!',
 		moeIcp: 'Moe ICP Filing No. 20264698',
 		stats: {
 			afterOnline: ' wandering by',

@@ -139,6 +139,10 @@ export interface Messages {
 	codeBlock: CodeBlockCopy
 	design: DesignSystemCopy
 	footer: {
+		/** The copy button that grows after the footer's Email link on hover or focus. */
+		copyEmail: string
+		/** Shown over that button once the address is copied. */
+		emailCopied: string
 		moeIcp: string
 		stats: {
 			afterOnline: string
