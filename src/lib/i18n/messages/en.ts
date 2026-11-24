@@ -184,8 +184,8 @@ const en: Messages = {
 		metaDescription:
 			'Design Engineer focused on AI and frontend, writing about code, design, and AI.',
 		notFound: {
-			description: 'Looks like there\'s nothing here. The page may have moved.',
-			title: 'Page not found',
+			description: 'Maybe it moved, maybe it was never here. Here\'s some recent writing instead.',
+			title: 'This page wandered off',
 		},
 		playName: 'Play name pronunciation',
 		projectsEyebrow: 'Projects',

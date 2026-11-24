@@ -184,8 +184,8 @@ const ja: Messages = {
 		metaDescription:
 			'AI とフロントエンドを軸に活動するデザインエンジニア。コード、デザイン、AI について書いています。',
 		notFound: {
-			description: 'ここには何もないみたい。ページは引っ越したのかもしれません。',
-			title: 'ページが見つかりません',
+			description: '引っ越したのか、最初からなかったのか。かわりに最近書いたものをどうぞ。',
+			title: 'このページは迷子みたい',
 		},
 		playName: '名前の発音を再生',
 		projectsEyebrow: 'つくったもの',

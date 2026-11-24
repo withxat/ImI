@@ -179,8 +179,8 @@ const zh: Messages = {
 		metaDescription:
 			'Design Engineer，专注 AI 与前端，写些关于前端、设计、AI 的文章。',
 		notFound: {
-			description: '这里好像什么也没有，页面可能已经搬家了。',
-			title: '页面未找到',
+			description: '可能搬家了，也可能从来没来过。先看看最近写的吧。',
+			title: '这一页走丢了',
 		},
 		playName: '播放名字读音',
 		projectsEyebrow: '项目',
