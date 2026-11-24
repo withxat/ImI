@@ -4,6 +4,8 @@ import { readdir, readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { parse as parseYaml } from 'yaml'
+
 import { SITE_URL } from '@/lib/seo-data'
 
 /** Matches RSS/sitemap canonical locale in `blog.ts` (zh posts only). */
@@ -70,8 +72,10 @@ async function loadZhPostsForSitemap(): Promise<ZhPostSitemapEntry[]> {
 
 		const slug = entry.name.replace(/\.mdx$/, '')
 		const raw = await readFile(join(postsDir, entry.name), 'utf8')
-		// Mirrors the `unlisted` filter in `blog.ts`.
-		if (/^unlisted:\s*true\s*$/m.test(parseFrontmatter(raw) ?? ''))
+		// Mirrors the `unlisted` filter in `blog.ts`. Parsed as YAML, like the content loader does, so
+		// `unlisted: true # note` counts too.
+		const data = parseYaml(parseFrontmatter(raw) ?? '') as null | { unlisted?: unknown }
+		if (data?.unlisted === true)
 			continue
 
 		const date = parseFrontmatterDate(raw)
