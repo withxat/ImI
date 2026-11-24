@@ -1,0 +1,38 @@
+name: E2E
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A newer push to the same branch makes the older run pointless.
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    # Keep the tag equal to @playwright/test in package.json. Screenshots are compared pixel for
+    # pixel with baselines made in this image by `pnpm e2e:docker --update-snapshots`.
+    container:
+      image: mcr.microsoft.com/playwright:v1.65.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v7
+      # The checkout belongs to the runner user, not the container's root, so git refuses it. The
+      # build reads the commit for the footer; without it the footer shows "dev" and shifts.
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm e2e
+      # The report and the expected, actual, and diff images of every failed screenshot.
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
