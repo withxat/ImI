@@ -38,12 +38,16 @@ export function normalizeSitemapPathname(url: string): string {
 	return pathname.replace(/\/$/, '')
 }
 
+function parseFrontmatter(content: string): string | undefined {
+	return content.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1]
+}
+
 function parseFrontmatterDate(content: string): Date | undefined {
-	const frontmatter = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)
+	const frontmatter = parseFrontmatter(content)
 	if (!frontmatter)
 		return undefined
 
-	const dateLine = frontmatter[1]!.match(/^date:\s*(\S+)/m)
+	const dateLine = frontmatter.match(/^date:\s*(\S+)/m)
 	if (!dateLine)
 		return undefined
 
@@ -66,6 +70,10 @@ async function loadZhPostsForSitemap(): Promise<ZhPostSitemapEntry[]> {
 
 		const slug = entry.name.replace(/\.mdx$/, '')
 		const raw = await readFile(join(postsDir, entry.name), 'utf8')
+		// Mirrors the `unlisted` filter in `blog.ts`.
+		if (/^unlisted:\s*true\s*$/m.test(parseFrontmatter(raw) ?? ''))
+			continue
+
 		const date = parseFrontmatterDate(raw)
 		if (!date)
 			throw new Error(`Missing or invalid date in ${entry.name}`)

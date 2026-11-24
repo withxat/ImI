@@ -83,7 +83,9 @@ async function buildPostIndex(locale: Locale) {
 			slug: parsed.slug,
 		}
 
-		all.push(post)
+		// Unlisted posts open by direct link but stay out of every list, feed, and the sitemap.
+		if (!post.unlisted)
+			all.push(post)
 		bySlug.set(parsed.slug, post)
 	}
 

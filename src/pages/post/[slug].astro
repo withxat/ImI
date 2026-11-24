@@ -45,13 +45,16 @@ const translator = toTranslator(post.translator)
 const { Content, headings } = await render(post.entry)
 const sections = headings.filter(heading => heading.depth === 2)
 
-// Posts are newest first, so the newer neighbor sits before this one.
+// Posts are newest first, so the newer neighbor sits before this one. An unlisted post has no place
+// in that order, so it gets no neighbors.
 const allPosts = await getAllPosts(locale)
 const index = allPosts.findIndex(entry => entry.slug === post.slug)
-const neighbors = [
-	{ label: m.blog.newer, post: allPosts[index - 1] },
-	{ label: m.blog.older, post: allPosts[index + 1] },
-].flatMap(({ label, post: entry }) => (entry ? [{ label, post: entry }] : []))
+const neighbors = index < 0
+	? []
+	: [
+			{ label: m.blog.newer, post: allPosts[index - 1] },
+			{ label: m.blog.older, post: allPosts[index + 1] },
+		].flatMap(({ label, post: entry }) => (entry ? [{ label, post: entry }] : []))
 ---
 
 <RootLayout>
@@ -141,18 +144,20 @@ const neighbors = [
 							{m.home.viewAllPosts}
 						</a>
 					</div>
-					<ul class="divide-y divide-border border-y border-border">
-						{neighbors.map(({ label, post: neighbor }) => (
-							<PostIndexRow
-								dateLabel={formatPostMonth(neighbor.date)}
-								href={`/post/${neighbor.slug}`}
-								meta={label}
-								slug={neighbor.slug}
-								summary={neighbor.summary}
-								title={neighbor.title}
-							/>
-						))}
-					</ul>
+					{neighbors.length > 0 && (
+						<ul class="divide-y divide-border border-y border-border">
+							{neighbors.map(({ label, post: neighbor }) => (
+								<PostIndexRow
+									dateLabel={formatPostMonth(neighbor.date)}
+									href={`/post/${neighbor.slug}`}
+									meta={label}
+									slug={neighbor.slug}
+									summary={neighbor.summary}
+									title={neighbor.title}
+								/>
+							))}
+						</ul>
+					)}
 				</nav>
 			</StaggerReveal>
 		</Container>
