@@ -1,7 +1,7 @@
 role: Design Engineer · Frontend & AI products
 summary: >-
-  I build the frontend of AI-native products, plus the server code they need.
-  I like to own the whole stretch, from interaction and components to design tools and the engineering underneath:
+  I build the frontend of AI-native products, along with the server-side code they depend on.
+  My work spans the full path from interaction and components to design tools and engineering infrastructure:
   streaming chat and agent configuration, a theme editor and its Figma plugin.
   Outside work I contribute to open source and make small tools; this site is part of the portfolio too.
 contact:
@@ -16,16 +16,16 @@ experience:
   - organization: Central China Normal University
     role: Design Engineer
     start: 2024-05
-    summary: Frontend and design on the university's education AI product team. I built several products from scratch and carried them through launch and later releases. 460+ merged pull requests and 150+ reviews of teammates' pull requests; I also review interns' code and have given internal talks on getting started with frontend.
+    summary: Frontend and design on the university's education AI product team. I led several products from zero to one, through launch and continuous iteration. 460+ merged pull requests and 150+ code reviews of teammates' pull requests; I also do code reviews for interns and have given internal talks on getting started with frontend.
     projects:
       - name: Education AI agent platform
         start: 2025-09
-        summary: Teachers and institutions configure AI agents here (experts, skills, MCP tools, knowledge bases) and embed them in teaching apps through an SDK. One of the main frontend engineers with 170+ merged pull requests; I own the theme system.
+        summary: Teachers and institutions configure AI agents here (experts, skills, MCP tools, knowledge bases) and embed them in teaching apps through an Embed SDK. One of the core frontend engineers with 170+ merged pull requests; I own the theme system.
         highlights:
           - Built the theme system from scratch. A theme workbench with drafts, versions, publishing, and rollback, distributed per authorized app; a Figma-style canvas editor with a layer tree and 100-step undo; a Figma plugin that keeps mockups and code in sync both ways through DTCG design tokens. Another platform already uses it for its skins.
-          - Real-time voice input. An AudioWorklet captures 16 kHz PCM and a WebSocket relay streams it to speech recognition, with authentication and cross-site protection.
-          - Agent configuration. JSON Schema based business variables, multi-question follow-up cards, parallel sub-agents, and prompt version history; fixed virtualized rendering for 1,400-block document previews and added regression tests.
-          - The earlier workflow editor. A React Flow canvas with state rebuilt on Zustand, code nodes, variable references, dry runs, and undo and redo.
+          - Real-time voice input. An AudioWorklet captures 16 kHz PCM and a WebSocket relay streams it to streaming ASR, with authentication and cross-site WebSocket hijacking (CSWSH) protection.
+          - Agent configuration. JSON Schema based business variables, multi-question follow-up cards, parallel sub-agents, and prompt versioning; fixed virtual scrolling in document previews of 1,400+ blocks and added regression tests.
+          - The earlier workflow editor. A React Flow canvas with state rebuilt on Zustand, code nodes, variable references, dry runs, and undo/redo.
         stack: [React 19, TanStack Router/Query, tRPC, Drizzle, AI SDK, MCP, Plate.js, Figma Plugin API, Vitest, Playwright]
       - name: AI assistant for teacher education
         start: 2025-02
@@ -34,7 +34,7 @@ experience:
         highlights:
           - Wrote most of the first client (75% of its commits), live two weeks after the Lunar New Year. Streaming chat, D3 radar charts and Markdown inside messages, a WebRTC video avatar, and multiple languages.
           - The Next version moved to an agent architecture. I wrote its chat client and split the Module Federation loader into its own package, so the model can call remote chart components mid-conversation; fully rolled out in May 2025.
-          - Led the front and back end of a vocational college edition. A step-by-step AI lesson-plan pipeline with partial regeneration, run on the server so it keeps going after the page closes, with illustrations and export to Word and Feishu docs; role-based permissions checked in tRPC; on-premises deployment. V2.0 shipped in February 2026.
+          - Led the front and back end of a vocational college edition. A step-by-step AI lesson-plan pipeline with partial regeneration, run on the server so jobs continue after the page is closed, with illustrations and export to Word and Feishu docs; role-based permissions checked in tRPC; on-premises deployment. V2.0 shipped in February 2026.
         stack: [React 19, React Router 7, tRPC, TanStack Query, AI SDK, Drizzle, Module Federation, D3, WebRTC]
       - name: ReplayKit interaction replay library
         start: 2026-05
@@ -57,7 +57,7 @@ experience:
         end: 2026-07
         highlights:
           - A national annual student survey. A CLI that batch-renders the charts for provincial and county reports, which shipped two days early, plus school data work during the survey.
-          - Video analysis. Wrapped a research partner's classroom video analysis algorithms as a deployable service (Flask, a SQLite job queue, subprocess isolation, swappable speech recognition backends, Docker); cut OCR calls in an esports match review pipeline from about 2,400 to about 75.
+          - Video analysis. Wrapped a research partner's classroom video analysis algorithms as a deployable service (Flask, a SQLite job queue, subprocess isolation, pluggable ASR backends, Docker); cut OCR calls in an esports match review pipeline from about 2,400 to about 75.
           - A collaborative teaching workspace. Feishu Bitable sync, scheduled jobs, radar charts, and a view of sub-agents working together.
         stack: [Python, Flask, OpenCV, Bun, Chart.js, Plate.js]
 
@@ -95,11 +95,11 @@ projects:
   - name: Rehype-Fluent-Emoji
     date: 2026-06
     href: https://github.com/withxat/Rehype-Fluent-Emoji
-    summary: A rehype plugin that renders Unicode emoji as Fluent Emoji and still copies as the original characters.
+    summary: A rehype plugin that renders Unicode emoji as Fluent Emoji and preserves the original Unicode characters when copied.
   - name: ImI
     date: 2026-04
     href: https://github.com/withxat/ImI
-    summary: This site. Astro 7 SSR on Cloudflare Workers, trilingual i18n without URL prefixes, CJK fonts subset to the glyphs in use, and edge HTML caching.
+    summary: This site, built with Astro 7 SSR and deployed on Cloudflare Workers. Trilingual i18n without URL prefixes, CJK fonts subset to the glyphs in use, and edge HTML caching.
 
 skills:
   - group: Frontend
@@ -107,7 +107,7 @@ skills:
   - group: Interaction & design
     items: [Figma and plugin development, Design tokens, Rich text editors (Plate.js), 'Data visualization (D3, ECharts)', Motion, Accessibility]
   - group: AI products
-    items: [AI SDK, MCP, Agent workflows, Streaming speech recognition, WebRTC]
+    items: [AI SDK, MCP, Agent workflows, Streaming ASR, WebRTC]
   - group: Server & tooling
     items: [tRPC, NestJS, Prisma, Drizzle, PostgreSQL, Cloudflare Workers, Turborepo, Vitest, Playwright, Docker]
   - group: Other languages
