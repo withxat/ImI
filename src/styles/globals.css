@@ -1221,6 +1221,13 @@
 		}
 	}
 
+	/* Home intro (ja): it holds the badges, so it is a div rather than a p. Give it the body copy's
+	 * strict breaks, and break between phrases so a narrow screen never splits a word. */
+	.home-intro:lang(ja) {
+		line-break: strict;
+		word-break: auto-phrase;
+	}
+
 	/* Hero intro: English serif line only — global html rules cover CJK breaking. */
 	.home-bio-lead:lang(en) {
 		text-wrap: pretty;

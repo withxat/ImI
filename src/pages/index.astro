@@ -26,6 +26,9 @@ const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
 const systemsLabel = getIntroBadgeLabel(locale, 'systems')
 const productsLabel = getIntroBadgeLabel(locale, 'products')
+// Only the first character after the badge sticks to it (a period, or ja's を), so the rest of the
+// sentence can still wrap on a narrow screen.
+const introAfterProducts = [...m.home.introAfterProducts]
 const allPosts = await getAllPosts(locale)
 const posts = allPosts.slice(0, 4)
 const baseCapabilities = await getCapabilities()
@@ -96,11 +99,11 @@ const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-
 
 				<section class="mt-6">
 					<StaggerReveal delayChildren={0.03} staggerChildren={0.045}>
-						<div class="max-w-prose text-base/7 text-muted-foreground">
+						<div class="home-intro max-w-prose text-base/7 text-muted-foreground">
 							{m.home.introBeforeSystems}
 							<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
 							{m.home.introBetweenBadges}
-							<span class="whitespace-nowrap"><IntroBadgePopover kind="products" label={productsLabel} locale={locale} />{m.home.introAfterProducts}</span>
+							<span class="whitespace-nowrap"><IntroBadgePopover kind="products" label={productsLabel} locale={locale} />{introAfterProducts[0]}</span>{introAfterProducts.slice(1).join('')}
 						</div>
 					</StaggerReveal>
 				</section>
