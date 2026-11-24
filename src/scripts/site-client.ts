@@ -1,5 +1,6 @@
 import { initArticleBodies } from '@/client/article-reveal'
 import { disposeAll, registerModule, runAll } from '@/client/client-registry'
+import { greetConsole } from '@/client/console-greeting'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/client/custom-scrollbar'
 import { initIntroBadges } from '@/client/intro-badge'
 import { initLinkedPageFontPrefetch } from '@/client/linked-page-font-prefetch'
@@ -107,3 +108,5 @@ document.addEventListener('astro:page-load', () => {
 	runAll(animate)
 	refreshCustomScrollbarLayout()
 })
+
+greetConsole()
