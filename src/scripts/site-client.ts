@@ -1,4 +1,5 @@
 import { initArticleBodies } from '@/client/article-reveal'
+import { initAvatarPokes } from '@/client/avatar-poke'
 import { disposeAll, registerModule, runAll } from '@/client/client-registry'
 import { greetConsole } from '@/client/console-greeting'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/client/custom-scrollbar'
@@ -56,6 +57,10 @@ registerModule('name-audio', {
 
 registerModule('wordmark-hop', {
 	init: () => initWordmarkHops(),
+})
+
+registerModule('avatar-poke', {
+	init: () => initAvatarPokes(),
 })
 
 registerModule('mdx-copy', {

@@ -191,6 +191,11 @@ const en: Messages = {
 			title: 'This page wandered off',
 		},
 		playName: 'Play name pronunciation',
+		poke: {
+			label: 'Poke Xat',
+			lines: ['Hey!', 'Yes?', 'That tickles', 'Okay, okay'],
+			sulk: 'Hmph. Not talking to you.',
+		},
 		projectsEyebrow: 'Projects',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',

@@ -1025,6 +1025,134 @@
 		}
 	}
 
+	/* Speech bubble: the home avatar's replies and the footer's "copied" note. Scripts set `data-shown`;
+	 * `.bubble-right` / `.bubble-top` place it and its tail. It pops in with a little overshoot. */
+	.bubble {
+		position: absolute;
+		z-index: 30;
+		width: max-content;
+		padding: 0.3125rem 0.625rem;
+		border: 1px solid var(--bubble-edge);
+		border-radius: var(--radius-lg);
+		background: var(--popover);
+		box-shadow: 0 14px 36px -24px color-mix(in oklab, var(--foreground) 42%, transparent);
+		color: var(--popover-foreground);
+		font-size: 0.8125rem;
+		font-weight: 500;
+		line-height: 1.35;
+		white-space: nowrap;
+		opacity: 0;
+		pointer-events: none;
+		transform: var(--bubble-at) scale(0.9);
+		transition:
+			opacity 120ms ease-out,
+			transform 120ms ease-out;
+		--bubble-edge: color-mix(in oklab, var(--foreground) 12%, transparent);
+	}
+
+	.bubble[data-shown] {
+		opacity: 1;
+		transform: var(--bubble-at) scale(1);
+		transition:
+			opacity 140ms ease-out,
+			transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	.bubble::after {
+		position: absolute;
+		width: 8px;
+		height: 8px;
+		background: var(--popover);
+		content: '';
+		transform: rotate(45deg);
+	}
+
+	.bubble-right {
+		top: 50%;
+		left: calc(100% + 0.75rem);
+		transform-origin: 0 50%;
+		--bubble-at: translateY(-50%);
+	}
+
+	.bubble-right::after {
+		top: calc(50% - 4px);
+		left: -4.5px;
+		border-bottom: 1px solid var(--bubble-edge);
+		border-left: 1px solid var(--bubble-edge);
+	}
+
+	.bubble-top {
+		bottom: calc(100% + 0.5rem);
+		left: 50%;
+		transform-origin: 50% 100%;
+		--bubble-at: translateX(-50%);
+	}
+
+	.bubble-top::after {
+		bottom: -4.5px;
+		left: calc(50% - 4px);
+		border-right: 1px solid var(--bubble-edge);
+		border-bottom: 1px solid var(--bubble-edge);
+	}
+
+	/* Home avatar (src/client/avatar-poke.ts): it leans in under a hovering mouse, squishes when
+	 * poked, and turns away, greyed, while it sulks. */
+	.avatar-poke-body {
+		transform-origin: 50% 100%;
+		transition:
+			transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+			filter 320ms ease-out;
+	}
+
+	.avatar-poke[data-sulking] .avatar-poke-body {
+		filter: saturate(0.4);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		@media (hover: hover) {
+			.avatar-poke:has(> [data-avatar-poke-button]:hover) .avatar-poke-body {
+				transform: rotate(-3deg) scale(1.03);
+			}
+		}
+
+		.avatar-poke[data-poke]:not([data-sulking]) .avatar-poke-body {
+			animation: avatar-poke-squish 520ms cubic-bezier(0.33, 1, 0.68, 1);
+		}
+
+		.avatar-poke[data-sulking] .avatar-poke-body {
+			transform: rotate(-12deg) translateX(-3px) scale(0.94);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.bubble,
+		.bubble[data-shown] {
+			transform: var(--bubble-at);
+		}
+	}
+
+	@keyframes avatar-poke-squish {
+		0% {
+			transform: scale(1, 1);
+		}
+
+		18% {
+			transform: scale(1.1, 0.86);
+		}
+
+		46% {
+			transform: translateY(-8%) scale(0.95, 1.07);
+		}
+
+		72% {
+			transform: translateY(0) scale(1.03, 0.97);
+		}
+
+		100% {
+			transform: scale(1, 1);
+		}
+	}
+
 	/* Hero intro: English serif line only — global html rules cover CJK breaking. */
 	.home-bio-lead:lang(en) {
 		text-wrap: pretty;

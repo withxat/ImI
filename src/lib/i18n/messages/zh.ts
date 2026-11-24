@@ -186,6 +186,11 @@ const zh: Messages = {
 			title: '这一页走丢了',
 		},
 		playName: '播放名字读音',
+		poke: {
+			label: '戳一下 Xat',
+			lines: ['嗨～', '在呢', '有点痒', '别戳啦'],
+			sulk: '哼，不理你了',
+		},
 		projectsEyebrow: '项目',
 		role: 'Design Engineer',
 		tagline: 'Xat - Design Engineer',

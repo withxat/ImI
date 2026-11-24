@@ -171,6 +171,12 @@ export interface Messages {
 			title: string
 		}
 		playName: string
+		/** The home avatar answers a poke with `lines` in turn; poked past them, it sulks for a moment. */
+		poke: {
+			label: string
+			lines: string[]
+			sulk: string
+		}
 		projectsEyebrow: string
 		role: string
 		tagline: string

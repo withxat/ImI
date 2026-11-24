@@ -1,0 +1,53 @@
+---
+// The home avatar. A poke squishes it and it answers in a small bubble; poke it past
+// its lines and it turns away for a moment (src/client/avatar-poke.ts).
+import type { Messages } from '@/lib/i18n/messages'
+
+import { Image } from 'astro:assets'
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { PROFILE_AVATAR_SRC } from '@/lib/seo-data'
+
+interface Props {
+	copy: Messages['home']['poke']
+}
+
+const { copy } = Astro.props as Props
+---
+
+<div
+	class="avatar-poke relative w-fit"
+	data-lines={JSON.stringify(copy.lines)}
+	data-sulk-line={copy.sulk}
+	data-avatar-poke
+>
+	<div class="avatar-poke-body">
+		<Avatar class="
+			size-14 rounded-xl border border-border
+			after:rounded-xl
+			sm:size-16
+		"
+		>
+			<AvatarImage class="rounded-xl">
+				<Image
+					alt="Xat"
+					class="size-full object-cover"
+					fetchpriority="high"
+					loading="eager"
+					referrerpolicy="no-referrer"
+					src={PROFILE_AVATAR_SRC}
+					inferSize
+				/>
+			</AvatarImage>
+			<AvatarFallback class="rounded-xl">X</AvatarFallback>
+		</Avatar>
+	</div>
+	<button
+		aria-label={copy.label}
+		class="absolute inset-0 z-2 cursor-pointer touch-manipulation rounded-xl"
+		type="button"
+		data-avatar-poke-button
+	>
+	</button>
+	<span aria-live="polite" class="bubble bubble-right" role="status" data-avatar-poke-bubble></span>
+</div>

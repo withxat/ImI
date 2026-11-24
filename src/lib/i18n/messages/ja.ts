@@ -191,6 +191,11 @@ const ja: Messages = {
 			title: 'このページは迷子みたい',
 		},
 		playName: '名前の発音を再生',
+		poke: {
+			label: 'Xat をつつく',
+			lines: ['やあ', 'なに？', 'くすぐったいよ', 'もう、やめてってば'],
+			sulk: 'ふーんだ、もう知らない',
+		},
 		projectsEyebrow: 'つくったもの',
 		role: 'デザインエンジニア',
 		tagline: 'Xat - デザインエンジニア',
