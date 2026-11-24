@@ -100,6 +100,10 @@ export interface DesignSystemCopy {
 		scale: Record<TypographyScaleRoleKey, string>
 		scaleTitle: string
 		title: string
+		weightsMatchOff: string
+		weightsMatchOn: string
+		weightsNote: string
+		weightsTitle: string
 	}
 	wrapping: {
 		rulesOff: string

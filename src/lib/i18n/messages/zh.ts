@@ -124,7 +124,7 @@ const zh: Messages = {
 				callingCode: '代码与等宽',
 				fugazOne: '仅「Xat」',
 				hankenGrotesk: '西文',
-				miSans: '中日文 · wght 330/415/500 对齐 Hanken',
+				miSans: '中日文',
 				sourceHanSerif: '首页导语',
 			},
 			scale: {
@@ -139,6 +139,10 @@ const zh: Messages = {
 			},
 			scaleTitle: '字号',
 			title: '字体',
+			weightsMatchOff: '对齐：关',
+			weightsMatchOn: '对齐：开',
+			weightsNote: '同一个 font-weight 下，MiSans 的笔画要比 Hanken 粗一圈，所以每一档的 wght 都是我对着 Hanken 手动对的。关掉对齐，天平就歪了。',
+			weightsTitle: '字重',
 		},
 		wrapping: {
 			rulesOff: ':lang() 规则：关',

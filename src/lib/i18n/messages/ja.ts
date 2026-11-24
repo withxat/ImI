@@ -129,7 +129,7 @@ const ja: Messages = {
 				callingCode: 'コード・等幅',
 				fugazOne: '「Xat」のみ',
 				hankenGrotesk: '欧文',
-				miSans: '日中文字 · wght 330/415/500 を Hanken に調整',
+				miSans: '日中文字',
 				sourceHanSerif: 'ホームのリード文',
 			},
 			scale: {
@@ -144,6 +144,10 @@ const ja: Messages = {
 			},
 			scaleTitle: 'スケール',
 			title: 'タイポグラフィ',
+			weightsMatchOff: '調整：オフ',
+			weightsMatchOn: '調整：オン',
+			weightsNote: '同じ font-weight でも MiSans は Hanken より線がひと回り太くなるので、wght は一段ずつ Hanken に合わせて手で調整しています。調整をオフにすると、天秤が傾きます。',
+			weightsTitle: 'ウェイト',
 		},
 		wrapping: {
 			rulesOff: ':lang() ルール：オフ',

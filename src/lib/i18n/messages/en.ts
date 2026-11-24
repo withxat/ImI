@@ -129,7 +129,7 @@ const en: Messages = {
 				callingCode: 'Code & mono',
 				fugazOne: '“Xat” only',
 				hankenGrotesk: 'Latin',
-				miSans: 'CJK · wght 330/415/500 to match Hanken',
+				miSans: 'CJK',
 				sourceHanSerif: 'Home lead',
 			},
 			scale: {
@@ -144,6 +144,10 @@ const en: Messages = {
 			},
 			scaleTitle: 'Type scale',
 			title: 'Typography',
+			weightsMatchOff: 'Matching: off',
+			weightsMatchOn: 'Matching: on',
+			weightsNote: 'At the same font-weight, MiSans strokes come out thicker than Hanken’s, so I matched each MiSans wght to Hanken by hand. Turn matching off and the scale tips.',
+			weightsTitle: 'Weights',
 		},
 		wrapping: {
 			rulesOff: ':lang() rules: off',
