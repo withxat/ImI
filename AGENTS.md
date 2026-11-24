@@ -215,7 +215,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Blog detail (`/post/[slug]`) — MDX; under the title, the date, an estimated reading time, an "N sections" button (3+ h2s) that opens the custom scrollbar's section outline, and a link to the post's MDX on GitHub; a "Xat" sign-off with the post date, newer/older links and a link to the archive at the end, translator info
 - Design system (`/design`) — typography (including the Hanken ↔ MiSans weight pairing from `CJK_WEIGHTS`), colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
 - Resume (`/resume`) — experience, open source, side projects, skills, education from `content/resume/{en,zh,ja}.yaml` (the `resume` collection); prints on A4 with light colors and no site chrome; linked from the footer nav
-- 404 — styled page with the latest posts, also used for unknown post slugs
+- 404 — styled page with the latest posts, also used for unknown post slugs; when the requested path's last segment is close to a post slug, it asks whether that post was meant
 
 ---
 
@@ -243,7 +243,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 ### Home Page Features
 
-- Avatar with preload
+- Avatar with preload; poking it gets a reply in a speech bubble, and too many pokes make it sulk for a moment (`src/client/avatar-poke.ts`)
 - Name with audio pronunciation button; the "Xat" letters hop on mouse enter and on playback
 - Bio lead in serif font (CJK-subset Source Han Serif)
 - Intro badges with popover descriptions (systems / products)
@@ -256,7 +256,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - Wanderer gradient text animation (CSS-only, respects `prefers-reduced-motion`)
 - Visitor country detection (Cloudflare `cf.country`) with localized country name
-- Social links (GitHub, Twitter, Telegram, Email) and the localized resume link
+- Social links (GitHub, Twitter, Telegram, Email) and the localized resume link; Email stays a `mailto:` link, and with a mouse a copy button grows after it on hover or focus (`src/client/email-copy.ts`)
 - Repo link with commit SHA, ICP filing
 - Site stats: total views + online now, animated with `number-flow` (no digit grouping); when the reader is the only one online (count ≤ 1), the online count reads "just you" instead
 
