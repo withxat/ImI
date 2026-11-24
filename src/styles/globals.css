@@ -862,6 +862,44 @@
 		}
 	}
 
+	/* Home wordmark: the three letters hop in turn while `data-hop` is set (src/client/name-audio.ts). */
+	.wordmark-hop > span {
+		display: inline-block;
+		transform-origin: 50% 100%;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.wordmark-hop[data-hop] > span {
+			animation: wordmark-hop 620ms cubic-bezier(0.33, 1, 0.68, 1) calc(var(--i) * 70ms) both;
+		}
+	}
+
+	@keyframes wordmark-hop {
+		0% {
+			transform: translateY(0) scale(1, 1);
+		}
+
+		12% {
+			transform: translateY(0) scale(1.08, 0.9);
+		}
+
+		40% {
+			transform: translateY(-0.26em) scale(0.95, 1.06);
+		}
+
+		68% {
+			transform: translateY(0) scale(1.07, 0.92);
+		}
+
+		84% {
+			transform: translateY(-0.04em) scale(1, 1);
+		}
+
+		100% {
+			transform: translateY(0) scale(1, 1);
+		}
+	}
+
 	/* Hero intro: English serif line only — global html rules cover CJK breaking. */
 	.home-bio-lead:lang(en) {
 		text-wrap: pretty;

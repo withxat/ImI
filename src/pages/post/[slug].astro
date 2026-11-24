@@ -7,13 +7,14 @@ import MiSansContentFont from '@/components/fonts/mi-sans-content-font.astro'
 import Container from '@/components/layout/container.astro'
 import Eyebrow from '@/components/layout/eyebrow.astro'
 import SiteHeader from '@/components/layout/site-header.astro'
+import Wordmark from '@/components/layout/wordmark.astro'
 import Seo from '@/components/meta/seo.astro'
 import StaggerReveal from '@/components/motion/stagger-reveal.astro'
 import ArticleBody from '@/components/post/article-body.astro'
 import PostIndexRow from '@/components/post/post-index-row.astro'
 import PostTranslatedNoticeAside from '@/components/post/post-translated-notice-aside.astro'
 import RootLayout from '@/layouts/root-layout.astro'
-import { formatPostDate, formatPostMonth, getAllPosts, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
+import { formatPostDate, formatPostMonth, formatPostMonthDay, getAllPosts, getCategoryBySlug, getPostBySlug } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { mdxComponents } from '@/lib/mdx-components'
 import { articleBreadcrumbJsonLd, blogPostingJsonLd, postOgImageUrl, SITE_NAME } from '@/lib/seo-data'
@@ -124,6 +125,14 @@ const neighbors = [
 				<ArticleBody>
 					<Content components={mdxComponents} />
 				</ArticleBody>
+
+				<!-- Sign-off, like the name and date at the foot of a letter. -->
+				<div class="flex flex-col items-end gap-0.5">
+					<Wordmark class="text-2xl" />
+					<time class="font-mono text-xs text-muted-foreground tabular-nums" datetime={post.date.toISOString().slice(0, 10)}>
+						{post.date.getUTCFullYear()}·{formatPostMonthDay(post.date)}
+					</time>
+				</div>
 
 				<nav aria-label={m.blog.moreWriting} class="mt-8 space-y-4">
 					<div class="flex items-baseline justify-between gap-6">

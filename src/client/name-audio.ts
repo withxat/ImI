@@ -1,3 +1,5 @@
+import { hopWordmark } from '@/client/wordmark-hop'
+
 const CYCLE = 1.45
 const MID_T = [0, 0.1, 0.28, 0.48, 0.6, 1]
 const MID_V = [0, 1, 1, 1, 0, 0]
@@ -96,7 +98,12 @@ export function initNameAudioButtons() {
 			startLoop()
 		}, { signal })
 
+		// The wordmark next to the button hops along when the name plays.
+		const wordmark = root.parentElement?.querySelector<HTMLElement>('[data-wordmark]')
+
 		btn.addEventListener('click', () => {
+			if (wordmark)
+				hopWordmark(wordmark, true)
 			root.dataset.nameAudioState = 'open'
 			audio.currentTime = 0
 			void audio.play()
