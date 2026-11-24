@@ -367,7 +367,7 @@ The writing list (home, /post, 404, and the newer/older links at an article's en
 
 - **Structure:** A `<ul>` with `divide-y border-y` hairlines. Each row is one link: a mono date column (`4.75rem`), the title in `text-sm font-medium`, an optional one-line muted summary.
 - **Interaction:** The title turns `highlight-strong` on hover; the whole row is the hit area and carries the focus ring. No row borders, no cards, no "Read more →".
-- **/post:** Rows group under a mono year heading; the category sits at the row's right edge.
+- **/post:** Rows group under a mono year heading; the category sits at the row's right edge. The page title's row ends in the post count and a `text-link-muted` RSS link to the reader's locale feed, on one baseline.
 - **Projects:** The title takes the first column (`12rem`) and a small ↗ nudges up-right on hover.
 - **Narrow:** Below the full page-column width (`@lg/page`) the columns stack.
 
