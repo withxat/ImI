@@ -16,8 +16,11 @@ const en: Messages = {
 			beforeLink: 'This article is an AI translation from the Chinese original. Switch the site language to ',
 			switchToChineseAriaLabel: 'Switch site language to Chinese for the original article',
 		},
+		readingTime: (minutes: number) => `${minutes} min read`,
+		sectionCount: (count: number) => `${count} sections`,
 		title: 'All writing',
 		toc: 'Contents',
+		viewSource: 'View source',
 	},
 	capabilities: [
 		{

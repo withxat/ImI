@@ -11,8 +11,11 @@ const zh: Messages = {
 		pageDescription: '关于前端、设计、AI，以及 Xat 的零碎记录。',
 		pageTitle: 'Xat 的归档处',
 		postCountSuffix: ' 篇',
+		readingTime: (minutes: number) => `约 ${minutes} 分钟`,
+		sectionCount: (count: number) => `${count} 节`,
 		title: '全部文章',
 		toc: '目录',
+		viewSource: '查看源码',
 	},
 	capabilities: [
 		{

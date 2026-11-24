@@ -7,6 +7,7 @@ import { initMdxCopyButtons } from '@/client/mdx-copy'
 import { initNameAudioButtons } from '@/client/name-audio'
 import { initPageReveals } from '@/client/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/client/photoswipe-gallery'
+import { disposePostOutline, initPostOutline } from '@/client/post-outline'
 import { disposePrimeBindings, initPrimeBindings } from '@/client/prime-bindings'
 import { disposeSiteStatsModule, runSiteStatsModule } from '@/client/site-stats'
 import { initThemeSwitcher } from '@/client/theme-switcher'
@@ -67,6 +68,12 @@ registerModule('font-prefetch', {
 registerModule('custom-scrollbar', {
 	dispose: () => destroyCustomScrollbar(),
 	init: () => initCustomScrollbar(),
+})
+
+// After custom-scrollbar: the post's section button opens the scrollbar's outline.
+registerModule('post-outline', {
+	dispose: () => disposePostOutline(),
+	init: () => initPostOutline(),
 })
 
 // Only /design has specimens, so its code loads there instead of shipping on every page.

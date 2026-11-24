@@ -9,6 +9,7 @@ import FooterNav from '@/components/layout/footer-nav.astro'
 import FooterSiteStats from '@/components/layout/footer-site-stats.astro'
 import FooterWanderer from '@/components/layout/footer-wanderer.astro'
 import { getMessages } from '@/lib/i18n/messages'
+import { REPO_URL } from '@/lib/repo'
 
 interface Props {
 	locale: Locale
@@ -17,7 +18,6 @@ interface Props {
 const { locale } = Astro.props as Props
 const m = getMessages(locale)
 const commitSha = import.meta.env.PUBLIC_IMI_COMMIT_SHA
-const IMI_REPO_URL = 'https://github.com/withxat/ImI'
 
 const moeIcp = (await import('@/assets/icons/moe-icp.svg?raw')).default
 
@@ -46,7 +46,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 							transition-colors
 							hover:text-highlight-text
 						"
-						href={IMI_REPO_URL}
+						href={REPO_URL}
 						rel="noreferrer"
 						target="_blank"
 					>
@@ -59,7 +59,7 @@ const isOnDesignPage = Astro.url.pathname === '/design'
 										font-mono transition-colors
 										hover:text-highlight-text
 									"
-									href={`${IMI_REPO_URL}/commit/${commitSha}`}
+									href={`${REPO_URL}/commit/${commitSha}`}
 									rel="noreferrer"
 									target="_blank"
 								>

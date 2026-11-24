@@ -16,8 +16,11 @@ const ja: Messages = {
 			beforeLink: 'この記事は中国語の原文をAIが翻訳したものです。サイトの言語を',
 			switchToChineseAriaLabel: 'サイトの表示言語を中文に切り替えて原文を表示する',
 		},
+		readingTime: (minutes: number) => `約 ${minutes} 分`,
+		sectionCount: (count: number) => `全 ${count} 節`,
 		title: 'すべての記事',
 		toc: '目次',
+		viewSource: 'ソースを見る',
 	},
 	capabilities: [
 		{
