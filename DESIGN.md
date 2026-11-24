@@ -353,7 +353,13 @@ This is what gives the inline intro badges their "Cute with Shiny" quality — a
 - **Thickness:** `max(2px, round(0.1em, 1px))`, and the caps fade out over their last 0.5px. Whole pixels keep the caps and the bar on the same device pixels; at a fractional ~1.5px the caps rasterize square.
 - **Box:** The link must stay `display: inline`. An `inline-flex` or `inline-block` link collapses the per-line clone into one underline under the whole box. A `::after` underline cannot replace this either: on a wrapped link it spans from the first line's start to the last line's end.
 - **Color:** `--text-link-underline` defaults to a mix of `highlight-soft 75%` + `background`. On hover, lifts to full `highlight-soft`.
-- **Three variants:** `.text-link` (default, accent text + underline), `.text-link-muted` (muted text, accent on hover — used for locale switcher), `.article-body a` (same as `.text-link` but scoped to MDX content).
+- **Three variants:** `.text-link` (default, accent text + underline), `.text-link-muted` (muted text, accent on hover — used for the locale switcher and a post's "N sections" button), `.article-body a` (same as `.text-link` but scoped to MDX content).
+- **External:** An article link to another site ends with a small ↗ (`arrow-up-right`, 0.72em, 60% opacity) joined to the last word by U+2060 so it never wraps alone; it nudges up-right on hover, like the project rows.
+
+### Article Headings
+
+- **Rule:** Each article h2 ends in a 1px `border` hairline that runs from the last glyph of its last line to the column edge (`.heading-rule`, a zero-width inline anchor; the h2's `clip-path` cuts the line at the edge). It belongs to the heading, so it does not count as a divider between sections. When the title fills the line, the rule disappears.
+- **Arrival:** A jump from the section outline or a scrollbar marker scrolls the heading to its scroll margin, then tints its link `highlight-text` and its rule `highlight-soft`, fading back over 1.4s. Under reduced motion the tint holds and switches off without fading.
 
 ### Index Rows
 
@@ -378,7 +384,7 @@ The writing list (home, /post, 404, and the newer/older links at an article's en
 - **Border:** 1px `border` (8% black alpha).
 - **Shadow:** `0 14px 36px -24px` rose-tinted.
 - **Typography:** 14px / 1.35, `font-ui` (Hanken Grotesk).
-- **Usage:** Site uses one custom-scrollbar tooltip and a HoverCard-backed "intro badge" popover that fires on hover/focus over inline tokens like "design engineer" and "product designer".
+- **Usage:** Site uses one custom-scrollbar tooltip, the section outline's chips on narrow screens, and a HoverCard-backed "intro badge" popover that fires on hover/focus over inline tokens like "design engineer" and "product designer".
 
 ### Intro Badge (signature inline component)
 
@@ -397,6 +403,8 @@ A composed component that wraps the bejamas `Button` (variant `outline`) inside 
 - **Tech marks:** Resume stack and skills lists put a monochrome Simple Icons mark before each technology that has one, in muted ink (`text-muted-foreground`) at about 1em, so marks never add a brand color. Items without a mark stay plain text.
 - **Locale switcher:** Three `text-link-muted` text buttons separated by small dot glyphs. The active locale is plain `text-foreground` with `aria-current`, not accent: accent means "link", and the active locale is not one. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
 - **Theme switcher:** A sun / moon icon button that opens a dropdown with Light / Dark / System.
+- **Custom scrollbar:** A rose thumb with one dot per section (`main h2`, minus headings inside a nav), shown while scrolling or hovered. It replaces the native scrollbar except under reduced motion.
+- **Section outline:** A post's meta line reads date · reading time · "N sections" (`text-link-muted`), with a muted `</>` link to the post's MDX at the right. The button puts every section title beside its scrollbar dot: hovering previews it, a click or Enter pins it, and a jump, a scroll, Esc, or a click elsewhere closes it. With a fine pointer and at least 1240px, titles are plain muted text in the right margin (the current section in `foreground`); otherwise they are popover chips over a 72% `background` scrim. Under reduced motion the button shows a plain list under the date instead.
 
 ### Reveal & Stagger (the entrance language)
 

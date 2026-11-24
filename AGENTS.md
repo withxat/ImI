@@ -122,7 +122,7 @@ Code formatting:
 
 ### 1. Content-first, no database
 
-Blog posts live in `content/posts/{locale}/*.mdx`.
+Blog posts live in `content/posts/{locale}/*.mdx`. A post with `unlisted: true` in its frontmatter (the Fluent Emoji render test) opens by its URL but stays out of post lists, newer/older links, RSS, and the sitemap.
 
 No database, no D1, no comments system, no third-party analytics.
 
@@ -212,7 +212,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - Home (`/`) — profile, bio, recent posts, projects list
 - Blog list (`/post`) — grouped by year, with dates
-- Blog detail (`/post/[slug]`) — MDX with a section TOC (3+ h2s), a "Xat" sign-off with the post date, newer/older links and a link to the archive at the end, translator info
+- Blog detail (`/post/[slug]`) — MDX; under the title, the date, an estimated reading time, an "N sections" button (3+ h2s) that opens the custom scrollbar's section outline, and a link to the post's MDX on GitHub; a "Xat" sign-off with the post date, newer/older links and a link to the archive at the end, translator info
 - Design system (`/design`) — typography (including the Hanken ↔ MiSans weight pairing from `CJK_WEIGHTS`), colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
 - Resume (`/resume`) — experience, open source, side projects, skills, education from `content/resume/{en,zh,ja}.yaml` (the `resume` collection); prints on A4 with light colors and no site chrome; linked from the footer nav
 - 404 — styled page with the latest posts, also used for unknown post slugs
@@ -223,7 +223,10 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - MDX rendering with Astro content collections
 - Expressive Code syntax highlighting (Vesper theme)
-- Heading anchor links
+- Heading anchor links; each h2 ends in a hairline to the column edge
+- Reading time (characters per minute for zh/ja, words for en; `readingMinutes` in `src/lib/blog.ts`)
+- Section outline: the custom scrollbar's markers with their titles, opened from the "N sections" button; a jump tints the heading (`src/client/section-jump.ts`)
+- External links in posts end with ↗
 - Tags and categories
 - Previous / next navigation
 - Translator metadata (optional, for AI-translated posts)
