@@ -1,0 +1,16 @@
+---
+// The Fugaz One "Xat" wordmark: the home page name and the sign-off under each post.
+// Its letters hop when a mouse arrives (src/client/wordmark-hop.ts).
+import { cn } from '@/lib/cn'
+
+interface Props {
+	as?: 'h1' | 'p'
+	class?: string
+}
+
+const { as: Tag = 'p', class: className } = Astro.props as Props
+---
+
+<Tag class={cn('wordmark-hop font-fugaz-one font-normal text-highlight-brand', className)} data-wordmark>
+	{[...'Xat'].map((letter, i) => <span style={`--i: ${i}`}>{letter}</span>)}
+</Tag>

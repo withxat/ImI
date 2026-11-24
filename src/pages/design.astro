@@ -11,6 +11,7 @@ import SiteHeader from '@/components/layout/site-header.astro'
 import Seo from '@/components/meta/seo.astro'
 import { Button } from '@/components/ui/button'
 import RootLayout from '@/layouts/root-layout.astro'
+import { CJK_WEIGHTS } from '@/lib/fonts/cjk-font-polish'
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
 import { pageOgImageUrl } from '@/lib/seo-data'
@@ -67,6 +68,17 @@ const typeScale: { class: string, lang?: string, role: TypographyScaleRoleKey, s
 	{ class: 'home-bio-lead max-w-prose font-serif text-base/7 font-semibold text-foreground', lang: htmlLangFor(locale), role: 'bioLead', sample: m.home.bioLead },
 	{ class: 'font-fugaz-one text-3xl text-highlight-brand', role: 'wordmark', sample: 'Xat' },
 ]
+
+// The weight scale's CJK text is set in the 'MiSans Weight Demo' VF subset
+// (public/fonts/misans-vf-weight-demo-subset.woff2), which only carries these glyphs plus 字.
+const weightSampleCjk = '设计系统 デザインシステム'
+const weightSampleLatin = 'Design System'
+// Each step hands its pair to the CSS; matching off swaps MiSans to Hanken's number.
+// The balance shows the heaviest step, and its tilt grows with how far wght sits below that number.
+function weightStepStyle({ latin, wght }: { latin: number, wght: number }) {
+	return `--latin: ${latin}; --wght: ${wght}; --tilt: ${((latin - wght) / 12).toFixed(2)}deg`
+}
+const scaleStep = CJK_WEIGHTS[CJK_WEIGHTS.length - 1]!
 
 interface ColorToken {
 	/** Text roles show WCAG contrast against this token (the surface they sit on). */
@@ -208,6 +220,62 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 								</li>
 							))}
 						</ul>
+
+						<div class="space-y-3" data-weight-match="on" data-weight-demo>
+							<div class="flex flex-wrap items-center justify-between gap-3">
+								<h3 class="text-lg font-medium text-foreground">{m.design.typography.weightsTitle}</h3>
+								<div class="flex items-center gap-3">
+									<svg
+										aria-hidden="true"
+										class="h-12 w-[4.3rem] overflow-visible text-muted-foreground"
+										fill="none"
+										stroke="currentColor"
+										stroke-linecap="round"
+										stroke-width="1.5"
+										style={weightStepStyle(scaleStep)}
+										viewBox="0 0 80 56"
+										data-weight-step
+									>
+										<path d="M40 16V52M31 52H49" />
+										<path d="M12 14H68" data-scale-beam />
+										<circle class="fill-highlight-brand stroke-none" cx="40" cy="14" r="2.5" />
+										<g data-scale-pan="cjk">
+											<path d="M12 14V18M2 33Q12 40 22 33" />
+											<text class="fill-foreground stroke-none text-[13px]" text-anchor="middle" x="12" y="30.5" data-weight-cjk>字</text>
+										</g>
+										<g data-scale-pan="latin">
+											<path d="M68 14V18M58 33Q68 40 78 33" />
+											<text class="fill-foreground stroke-none text-[13px] font-(--latin)" text-anchor="middle" x="68" y="30.5">Aa</text>
+										</g>
+									</svg>
+									<Button
+										aria-pressed="true"
+										class="font-mono text-xs"
+										data-label-off={m.design.typography.weightsMatchOff}
+										data-label-on={m.design.typography.weightsMatchOn}
+										size="sm"
+										type="button"
+										variant="outline"
+										data-weight-toggle
+									>
+										{m.design.typography.weightsMatchOn}
+									</Button>
+								</div>
+							</div>
+							<p class="max-w-prose text-sm text-muted-foreground">{m.design.typography.weightsNote}</p>
+							<ul class="divide-y divide-border border-y border-border">
+								{CJK_WEIGHTS.map(step => (
+									<li class="space-y-2 py-4" style={weightStepStyle(step)} data-weight-step>
+										<p class="font-mono text-xs text-muted-foreground tabular-nums">
+											Hanken {step.latin} · MiSans wght <span data-weight-readout />
+										</p>
+										<p class="text-2xl font-(--latin) text-foreground">
+											<span data-weight-cjk>{weightSampleCjk}</span> {weightSampleLatin}
+										</p>
+									</li>
+								))}
+							</ul>
+						</div>
 
 						<div class="space-y-3">
 							<h3 class="text-lg font-medium text-foreground">{m.design.typography.scaleTitle}</h3>

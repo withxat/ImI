@@ -9,7 +9,7 @@
  * values, then rewrite the emitted faces into one family with Latin-aligned
  * `font-weight` descriptors.
  * Browsers per-glyph-select the closest weight face per family stack, so a
- * single `font-weight: 600` resolves to Hanken@600 + MiSans wght 500 on the same
+ * single `font-weight: 600` resolves to Hanken@600 + MiSans wght 445 on the same
  * line — no DOM wrapping needed.
  *
  * Safari does not need to understand `font-variation-settings` descriptors for
@@ -31,11 +31,19 @@ interface CjkFontPolishPlugin {
 
 export const CJK_FONT_FAMILY = 'MiSans'
 
-const CJK_FONT_IMPORTS: ReadonlyArray<readonly [pattern: RegExp, latinWeight: number]> = [
-	[/mi-sans-wght-330(?:\.ttf|_ttf)(?:[/?]|$)/, 400],
-	[/mi-sans-wght-415(?:\.ttf|_ttf)(?:[/?]|$)/, 500],
-	[/mi-sans-wght-500(?:\.ttf|_ttf)(?:[/?]|$)/, 600],
-]
+/**
+ * Latin `font-weight` → the MiSans VF `wght` its static instance is baked at
+ * (`src/assets/fonts/mi-sans-wght-<wght>.ttf`). Matched so CJK stems are as
+ * thick as Hanken's at each step; /design renders this table.
+ */
+export const CJK_WEIGHTS = [
+	{ latin: 400, wght: 330 },
+	{ latin: 500, wght: 390 },
+	{ latin: 600, wght: 445 },
+] as const
+
+const CJK_FONT_IMPORTS = CJK_WEIGHTS.map(({ latin, wght }) =>
+	[new RegExp(`mi-sans-wght-${wght}(?:\\.ttf|_ttf)(?:[/?]|$)`), latin] as const)
 
 const TARGET_ID_RE = /\/\.subsets\/.+\/result\.css(?:\?|$)/
 const RESULT_CSS_IMPORT_RE = /import\s+['"]([^'"]*\/result\.css(?:\?[^'"]*)?)['"]/g

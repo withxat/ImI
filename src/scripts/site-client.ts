@@ -10,6 +10,7 @@ import { destroyPhotoSwipe, initPhotoSwipe } from '@/client/photoswipe-gallery'
 import { disposePrimeBindings, initPrimeBindings } from '@/client/prime-bindings'
 import { disposeSiteStatsModule, runSiteStatsModule } from '@/client/site-stats'
 import { initThemeSwitcher } from '@/client/theme-switcher'
+import { initWordmarkHops } from '@/client/wordmark-hop'
 
 function shouldAnimatePageEntrance() {
 	return !matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -49,6 +50,10 @@ registerModule('intro-badges', {
 
 registerModule('name-audio', {
 	init: () => initNameAudioButtons(),
+})
+
+registerModule('wordmark-hop', {
+	init: () => initWordmarkHops(),
 })
 
 registerModule('mdx-copy', {

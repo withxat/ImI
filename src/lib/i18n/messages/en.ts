@@ -129,7 +129,7 @@ const en: Messages = {
 				callingCode: 'Code & mono',
 				fugazOne: '“Xat” only',
 				hankenGrotesk: 'Latin',
-				miSans: 'CJK · wght 330/415/500 to match Hanken',
+				miSans: 'CJK',
 				sourceHanSerif: 'Home lead',
 			},
 			scale: {
@@ -144,6 +144,10 @@ const en: Messages = {
 			},
 			scaleTitle: 'Type scale',
 			title: 'Typography',
+			weightsMatchOff: 'Matching: off',
+			weightsMatchOn: 'Matching: on',
+			weightsNote: 'At the same font-weight, MiSans strokes come out thicker than Hanken’s, so I matched each MiSans wght to Hanken by hand. Turn matching off and the scale tips.',
+			weightsTitle: 'Weights',
 		},
 		wrapping: {
 			rulesOff: ':lang() rules: off',
@@ -157,6 +161,7 @@ const en: Messages = {
 		stats: {
 			afterOnline: ' wandering by',
 			afterTotal: ' times',
+			alone: 'Right now, it\'s just you wandering by',
 			beforeOnline: 'Right now, ',
 			beforeTotal: 'Spotted ',
 		},
@@ -179,8 +184,8 @@ const en: Messages = {
 		metaDescription:
 			'Design Engineer focused on AI and frontend, writing about code, design, and AI.',
 		notFound: {
-			description: 'Looks like there\'s nothing here. The page may have moved.',
-			title: 'Page not found',
+			description: 'Maybe it moved, maybe it was never here. Here\'s some recent writing instead.',
+			title: 'This page wandered off',
 		},
 		playName: 'Play name pronunciation',
 		projectsEyebrow: 'Projects',

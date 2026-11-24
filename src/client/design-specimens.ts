@@ -254,10 +254,14 @@ function initWrapDemo(signal: AbortSignal) {
 
 	applyWidth()
 	slider?.addEventListener('input', applyWidth, { signal })
+	bindOnOffToggle(demo, 'wrapRules', toggle, signal)
+}
 
+/** Flips `root.dataset[key]` between `on` and `off`; the button's pressed state and label follow. */
+function bindOnOffToggle(root: HTMLElement, key: string, toggle: HTMLButtonElement | null, signal: AbortSignal) {
 	toggle?.addEventListener('click', () => {
-		const next = demo.dataset.wrapRules === 'on' ? 'off' : 'on'
-		demo.dataset.wrapRules = next
+		const next = root.dataset[key] === 'on' ? 'off' : 'on'
+		root.dataset[key] = next
 		toggle.setAttribute('aria-pressed', String(next === 'on'))
 		toggle.textContent = next === 'on' ? (toggle.dataset.labelOn ?? 'On') : (toggle.dataset.labelOff ?? 'Off')
 	}, { signal })
@@ -350,6 +354,9 @@ export function initDesignSpecimens() {
 		fillColorCell(cell)
 
 	initRadii()
+	const weightDemo = document.querySelector<HTMLElement>('[data-weight-demo]')
+	if (weightDemo)
+		bindOnOffToggle(weightDemo, 'weightMatch', weightDemo.querySelector('[data-weight-toggle]'), signal)
 	initWrapDemo(signal)
 	initMotionDemo(signal)
 }

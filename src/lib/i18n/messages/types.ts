@@ -100,6 +100,10 @@ export interface DesignSystemCopy {
 		scale: Record<TypographyScaleRoleKey, string>
 		scaleTitle: string
 		title: string
+		weightsMatchOff: string
+		weightsMatchOn: string
+		weightsNote: string
+		weightsTitle: string
 	}
 	wrapping: {
 		rulesOff: string
@@ -132,6 +136,8 @@ export interface Messages {
 		stats: {
 			afterOnline: string
 			afterTotal: string
+			/** Replaces the online count when the reader is the only one here. */
+			alone: string
 			beforeOnline: string
 			beforeTotal: string
 		}

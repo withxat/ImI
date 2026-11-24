@@ -8,8 +8,8 @@ export const OG_FONT_FILES = {
 	},
 	/** No @fontsource/misans — project static instances from the MiSans pipeline. */
 	miSans: {
-		400: './src/assets/fonts/mi-sans-wght-415.ttf',
-		500: './src/assets/fonts/mi-sans-wght-415.ttf',
-		600: './src/assets/fonts/mi-sans-wght-500.ttf',
+		400: './src/assets/fonts/mi-sans-wght-390.ttf',
+		500: './src/assets/fonts/mi-sans-wght-390.ttf',
+		600: './src/assets/fonts/mi-sans-wght-445.ttf',
 	},
 } as const

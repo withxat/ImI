@@ -58,6 +58,19 @@
 	src: url('/fonts/fugaz-one-regular-subset.woff2') format('woff2');
 }
 
+/*
+ * MiSans VF cut down to the /design weight-scale glyphs (设计系统デザインシステム字).
+ * Only that demo uses it: there `font-weight` drives `wght` directly, so it can
+ * show MiSans both at Hanken's raw numbers and at the matched CJK_WEIGHTS.
+ */
+@font-face {
+	font-family: 'MiSans Weight Demo';
+	font-style: normal;
+	font-weight: 150 700;
+	font-display: swap;
+	src: url('/fonts/misans-vf-weight-demo-subset.woff2') format('woff2');
+}
+
 @font-face {
 	font-family: 'Calling Code';
 	font-style: normal;
@@ -220,6 +233,112 @@
 	hyphens: none;
 	line-break: loose;
 	text-wrap: wrap;
+}
+
+/*
+ * /design weight demo. Each [data-weight-step] (the rows and the balance) sets
+ * --latin and --wght from CJK_WEIGHTS. --cjk-wght is registered so it animates:
+ * with matching off it moves to Hanken's raw number, and the MiSans text and the
+ * wght readout both follow it. The balance tips toward 字 by --tilt; its pans hang
+ * 28 units from the pivot, so they drop by 28 · sin(tilt) to stay on the beam.
+ */
+@property --cjk-wght {
+	syntax: '<integer>';
+	inherits: true;
+	initial-value: 400;
+}
+
+[data-weight-demo] [data-weight-step] {
+	--cjk-wght: var(--wght);
+	transition: --cjk-wght 900ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+[data-weight-demo][data-weight-match='off'] [data-weight-step] {
+	--cjk-wght: var(--latin);
+}
+
+[data-weight-demo] [data-weight-cjk] {
+	font-family: 'MiSans Weight Demo', var(--font-ui);
+	font-weight: var(--cjk-wght);
+}
+
+/* The readout counts along with the weight. */
+[data-weight-demo] [data-weight-readout]::after {
+	counter-reset: wght var(--cjk-wght);
+	content: counter(wght);
+}
+
+[data-weight-demo] [data-scale-beam],
+[data-weight-demo] [data-scale-pan] {
+	transform-box: view-box;
+	transition: transform 1100ms 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+	transition-timing-function: linear(
+		0,
+		0.045,
+		0.161,
+		0.324,
+		0.509,
+		0.695,
+		0.866,
+		1.01,
+		1.122,
+		1.199,
+		1.241,
+		1.254,
+		1.242,
+		1.212,
+		1.17,
+		1.123,
+		1.076,
+		1.033,
+		0.996,
+		0.968,
+		0.949,
+		0.939,
+		0.936,
+		0.939,
+		0.947,
+		0.957,
+		0.969,
+		0.981,
+		0.992,
+		1.001,
+		1.008,
+		1.013,
+		1.016,
+		1.016,
+		1.015,
+		1.013,
+		1.011,
+		1.008,
+		1.005,
+		1.002,
+		1
+	);
+}
+
+[data-weight-demo] [data-scale-beam] {
+	transform-origin: 40px 14px;
+}
+
+[data-weight-demo][data-weight-match='off'] [data-scale-beam] {
+	transform: rotate(calc(var(--tilt) * -1));
+}
+
+[data-weight-demo][data-weight-match='off'] [data-scale-pan='cjk'] {
+	transform: translateY(calc(28px * sin(var(--tilt))));
+}
+
+[data-weight-demo][data-weight-match='off'] [data-scale-pan='latin'] {
+	transform: translateY(calc(-28px * sin(var(--tilt))));
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-weight-demo] [data-weight-step],
+	[data-weight-demo] [data-scale-beam],
+	[data-weight-demo] [data-scale-pan] {
+		transition: none;
+	}
 }
 
 @layer base {
@@ -740,6 +859,44 @@
 		.wanderer-gradient-text {
 			animation: none;
 			background-position: 50% 50%;
+		}
+	}
+
+	/* Home wordmark: the three letters hop in turn while `data-hop` is set (src/client/name-audio.ts). */
+	.wordmark-hop > span {
+		display: inline-block;
+		transform-origin: 50% 100%;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.wordmark-hop[data-hop] > span {
+			animation: wordmark-hop 620ms cubic-bezier(0.33, 1, 0.68, 1) calc(var(--i) * 70ms) both;
+		}
+	}
+
+	@keyframes wordmark-hop {
+		0% {
+			transform: translateY(0) scale(1, 1);
+		}
+
+		12% {
+			transform: translateY(0) scale(1.08, 0.9);
+		}
+
+		40% {
+			transform: translateY(-0.26em) scale(0.95, 1.06);
+		}
+
+		68% {
+			transform: translateY(0) scale(1.07, 0.92);
+		}
+
+		84% {
+			transform: translateY(-0.04em) scale(1, 1);
+		}
+
+		100% {
+			transform: translateY(0) scale(1, 1);
 		}
 	}
 

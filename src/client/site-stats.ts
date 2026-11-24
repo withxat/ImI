@@ -22,7 +22,10 @@ function numberFlows(root: Element) {
 	return [...root.querySelectorAll<NumberFlowElement>('number-flow[data-site-stats-flow]')]
 }
 
-function applyStats(root: Element, stats: SiteStatsPayload) {
+function applyStats(root: HTMLElement, stats: SiteStatsPayload) {
+	// The reader is always online, so 0 or 1 means it is just them. Only fresh stats
+	// set this: the server render is edge-cached and cannot know who is reading now.
+	root.dataset.siteStatsAlone = String(stats.onlineNow <= 1)
 	for (const flow of numberFlows(root)) {
 		const key = flow.dataset.siteStatsFlow
 		const value = key === 'online' ? stats.onlineNow : stats.totalViews
