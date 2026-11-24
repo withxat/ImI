@@ -212,8 +212,8 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - Home (`/`) — profile, bio, recent posts, projects list
 - Blog list (`/post`) — grouped by year, with dates
-- Blog detail (`/post/[slug]`) — MDX with a section TOC (3+ h2s), newer/older links and a link to the archive at the end, translator info
-- Design system (`/design`) — typography, colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
+- Blog detail (`/post/[slug]`) — MDX with a section TOC (3+ h2s), a "Xat" sign-off with the post date, newer/older links and a link to the archive at the end, translator info
+- Design system (`/design`) — typography (including the Hanken ↔ MiSans weight pairing from `CJK_WEIGHTS`), colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
 - Resume (`/resume`) — experience, open source, side projects, skills, education from `content/resume/{en,zh,ja}.yaml` (the `resume` collection); prints on A4 with light colors and no site chrome; linked from the footer nav
 - 404 — styled page with the latest posts, also used for unknown post slugs
 
@@ -241,7 +241,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 ### Home Page Features
 
 - Avatar with preload
-- Name with audio pronunciation button
+- Name with audio pronunciation button; the "Xat" letters hop on mouse enter and on playback
 - Bio lead in serif font (CJK-subset Source Han Serif)
 - Intro badges with popover descriptions (systems / products)
 - Recent posts (4 latest) as date-led index rows
@@ -255,7 +255,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Visitor country detection (Cloudflare `cf.country`) with localized country name
 - Social links (GitHub, Twitter, Telegram, Email) and the localized resume link
 - Repo link with commit SHA, ICP filing
-- Site stats: total views + online now, animated with `number-flow` (no digit grouping)
+- Site stats: total views + online now, animated with `number-flow` (no digit grouping); when the reader is the only one online (count ≤ 1), the online count reads "just you" instead
 
 ---
 

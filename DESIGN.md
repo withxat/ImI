@@ -197,7 +197,7 @@ motion, component HTML/CSS, narrative).
 
 The system is engineering precision wearing a soft glow. The bones are an austere mono-ink grid — paper-white in light, deep blue-tinted ink in dark — whose page structure comes from spacing, rhythm, and typographic alignment. Hairlines appear only where a bounded surface needs an edge. The accent is **Quiet Rose** in light mode and **Warm Apricot** in dark, used on no more than ~10% of any screen: the wordmark, link affordances, an icon tint, a hover halo around an intro badge. The accent is the brand's voice; its rarity is what makes it land.
 
-The "Cute" lives in specific, named places — never as ambient decoration. A `Fugaz One` wordmark used only for the three letters "Xat". A coin-flip mascot on the design page. A `wanderer` gradient text in the footer that animates rose to cyan as a metaphor for the visitor's geographic journey to this site. The "Shiny" is the soft pink halo (`highlight-soft`) that appears under interactive surfaces on hover. The "Elegance" is the trilingual typography stack — Hanken Grotesk for Latin, MiSans for CJK content, a tiny `vite-plugin-font` Source Han Serif subset for the bio lead — tuned with per-locale `text-wrap`, `line-break`, and `hyphens` rules so Chinese, Japanese, and English each break the way their typography traditions expect.
+The "Cute" lives in specific, named places — never as ambient decoration. A `Fugaz One` wordmark used only for the three letters "Xat", which hop one after another when a mouse arrives or the name plays; the same wordmark signs off each post, with the post date under it. A coin-flip mascot on the design page, and a small balance in its weight section that tips toward 字 when the CJK weight matching is switched off. A `wanderer` gradient text in the footer that animates rose to cyan as a metaphor for the visitor's geographic journey to this site, and a stats line that says it is just you when nobody else is online. The "Shiny" is the soft pink halo (`highlight-soft`) that appears under interactive surfaces on hover. The "Elegance" is the trilingual typography stack — Hanken Grotesk for Latin, MiSans for CJK content, a tiny `vite-plugin-font` Source Han Serif subset for the bio lead — tuned with per-locale `text-wrap`, `line-break`, and `hyphens` rules so Chinese, Japanese, and English each break the way their typography traditions expect.
 
 The system explicitly rejects: corporate SaaS chrome, brutalist heaviness, templated icon-title-card grids, neon-on-black AI tooling tropes, and editorial-magazine pastiche (no Fraunces, no italic drop caps, no broadsheet columns). It is **not** "premium-minimal" in the lazy lifestyle-brand sense — it earns minimalism through restraint plus one or two committed, named decisions per surface.
 
@@ -252,7 +252,7 @@ A near-monochromatic ink palette held warm by a single rose-family accent. Light
 
 **Display Font:** Hanken Grotesk (variable, 100–900, roman + italic). Self-hosted; matched with a Latin-only fallback (`Hanken Grotesk Fallback`) that retunes `.AppleSystemUIFont` metrics so `font-display: swap` never resizes UI strings before the real face arrives.
 
-**Body Font:** Hanken Grotesk for Latin / **MiSans** static instances generated from MiSans VF for CJK content (auto-fallback via `vite-plugin-font`).
+**Body Font:** Hanken Grotesk for Latin / **MiSans** static instances generated from MiSans VF for CJK content (auto-fallback via `vite-plugin-font`). The same `font-weight` number draws thicker strokes in MiSans than in Hanken, so each step uses a MiSans `wght` matched to Hanken's stem width: 400 → wght 330, 500 → wght 390, 600 → wght 445 (`CJK_WEIGHTS` in `src/lib/fonts/cjk-font-polish.ts`).
 
 **Wordmark Font:** Fugaz One (subset). Used **only** for the three letters "Xat" — wordmark identity, never anywhere else.
 
@@ -392,7 +392,7 @@ A composed component that wraps the bejamas `Button` (variant `outline`) inside 
 ### Navigation
 
 - **Header:** One row. Inner pages put a "Go to home" `TextLink` on the left; the locale switcher and theme switcher sit together on the right. No global nav bar — this is a personal site, not an app.
-- **Footer:** Wanderer greeting + social links and the resume link (`text-link`s) + repo and commit + ICP filing + view stats. The wanderer line is the only animated text.
+- **Footer:** Wanderer greeting + social links and the resume link (`text-link`s) + repo and commit + ICP filing + view stats (the online count turns into "just you" when the reader is alone). The wanderer line is the only text that animates on its own.
 - **Print:** Only /resume has a print stylesheet: A4, light tokens whatever the screen theme, no header, footer, or reveals, and rows that do not split across pages.
 - **Tech marks:** Resume stack and skills lists put a monochrome Simple Icons mark before each technology that has one, in muted ink (`text-muted-foreground`) at about 1em, so marks never add a brand color. Items without a mark stay plain text.
 - **Locale switcher:** Three `text-link-muted` text buttons separated by small dot glyphs. The active locale is plain `text-foreground` with `aria-current`, not accent: accent means "link", and the active locale is not one. No flags inside the switcher (flags belong to the visitor-geo line in the footer).
@@ -411,11 +411,11 @@ Article bodies use a similar but separate `article-line-reveal` keyframe for par
 
 ### Wanderer Gradient Text (the system's one moving thing)
 
-Footer-only signature. A `background-clip: text` gradient that animates `background-position: 0% 50%` → `100% 50%` over 7.5s `cubic-bezier(0.45, 0, 0.2, 1)`, alternating. The gradient runs `highlight-brand → mix(highlight-brand, foreground) → cyan-600 → mix(foreground, highlight-brand) → highlight-brand` in light mode; brighter cyan-300 in dark. Reduced motion freezes it at 50%. This is the only animated text and the only gradient text in the entire system.
+Footer-only signature. A `background-clip: text` gradient that animates `background-position: 0% 50%` → `100% 50%` over 7.5s `cubic-bezier(0.45, 0, 0.2, 1)`, alternating. The gradient runs `highlight-brand → mix(highlight-brand, foreground) → cyan-600 → mix(foreground, highlight-brand) → highlight-brand` in light mode; brighter cyan-300 in dark. Reduced motion freezes it at 50%. This is the only gradient text in the system, and the only text that animates without being touched; the home wordmark hops only when hovered or played.
 
 ### /design (the living spec)
 
-/design renders this system from the running CSS instead of restating it. `src/client/design-specimens.ts` (loaded on demand, only on /design) reads type specs from computed styles, font facts from `document.fonts`, colors (normalized to `oklch()`) with their WCAG contrast, and radii in px. Sections: Typography, Colors, Trilingual wrapping, Shape & shadow, Motion. Nothing on the page hand-writes a value, so it follows `globals.css` on its own; this file does not, and needs a manual update when tokens change.
+/design renders this system from the running CSS instead of restating it. `src/client/design-specimens.ts` (loaded on demand, only on /design) reads type specs from computed styles, font facts from `document.fonts`, the Hanken ↔ MiSans weight steps from `CJK_WEIGHTS` (a toggle sets MiSans at Hanken's raw numbers through a tiny MiSans VF subset, `public/fonts/misans-vf-weight-demo-subset.woff2`, so the mismatch is visible: the text and its wght readout animate through the registered `--cjk-wght` property, and one small balance tips toward 字), colors (normalized to `oklch()`) with their WCAG contrast, and radii in px. Sections: Typography, Colors, Trilingual wrapping, Shape & shadow, Motion. Nothing on the page hand-writes a value, so it follows `globals.css` on its own; this file does not, and needs a manual update when tokens change.
 
 ## 6. Do's and Don'ts
 
