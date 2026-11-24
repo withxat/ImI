@@ -161,6 +161,7 @@ const ja: Messages = {
 		stats: {
 			afterOnline: '人が通りすがり',
 			afterTotal: '回のぞかれました',
+			alone: 'いま通りすがっているのは、あなただけ',
 			beforeOnline: 'いま',
 			beforeTotal: 'これまで',
 		},

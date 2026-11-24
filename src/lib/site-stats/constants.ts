@@ -2,3 +2,8 @@ export const VISITOR_SESSION_COOKIE = 'imi_visitor'
 export const VISITOR_VIEWED_COOKIE = 'imi_viewed'
 
 export const SITE_STATS_DO_NAME = 'global'
+
+/** The reader is always online, so a count of 0 or 1 means it is just them. */
+export function isAlone(onlineNow: number) {
+	return onlineNow <= 1
+}

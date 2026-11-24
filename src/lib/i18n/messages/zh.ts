@@ -156,6 +156,7 @@ const zh: Messages = {
 		stats: {
 			afterOnline: '人路过',
 			afterTotal: '次',
+			alone: '此刻只有你在闲逛',
 			beforeOnline: '此刻',
 			beforeTotal: '被围观',
 		},

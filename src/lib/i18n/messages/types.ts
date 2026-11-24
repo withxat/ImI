@@ -136,6 +136,8 @@ export interface Messages {
 		stats: {
 			afterOnline: string
 			afterTotal: string
+			/** Replaces the online count when the reader is the only one here. */
+			alone: string
 			beforeOnline: string
 			beforeTotal: string
 		}

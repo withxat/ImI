@@ -1,3 +1,5 @@
+import { isAlone } from '@/lib/site-stats/constants.ts'
+
 import 'number-flow'
 import 'number-flow/group'
 
@@ -22,7 +24,8 @@ function numberFlows(root: Element) {
 	return [...root.querySelectorAll<NumberFlowElement>('number-flow[data-site-stats-flow]')]
 }
 
-function applyStats(root: Element, stats: SiteStatsPayload) {
+function applyStats(root: HTMLElement, stats: SiteStatsPayload) {
+	root.dataset.siteStatsAlone = String(isAlone(stats.onlineNow))
 	for (const flow of numberFlows(root)) {
 		const key = flow.dataset.siteStatsFlow
 		const value = key === 'online' ? stats.onlineNow : stats.totalViews

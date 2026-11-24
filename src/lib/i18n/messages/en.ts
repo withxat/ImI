@@ -161,6 +161,7 @@ const en: Messages = {
 		stats: {
 			afterOnline: ' wandering by',
 			afterTotal: ' times',
+			alone: 'Right now, it\'s just you wandering by',
 			beforeOnline: 'Right now, ',
 			beforeTotal: 'Spotted ',
 		},
