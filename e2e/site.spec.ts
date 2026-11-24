@@ -28,13 +28,6 @@ const SHOTS = [
 	{ colorScheme: 'dark', device: DESKTOP, locales: ['zh'], name: 'desktop-dark' },
 ] as const
 
-// Footer parts that change with the visitor, the time, or the commit: the greeting names the
-// visitor's country, the stats count views and readers, and the commit link changes every push.
-const HIDE_CHANGING_PARTS = `
-	footer p:has(.wanderer-gradient-text), [data-site-stats] { display: none !important; }
-	footer a[href*="/commit/"] { visibility: hidden !important; }
-`
-
 async function open(page: Page, path: string, locale: Locale, status = 200) {
 	await page.context().addCookies([{ domain: 'localhost', name: 'imi_locale', path: '/', value: locale }])
 	const response = await page.goto(path)
@@ -124,7 +117,6 @@ for (const shot of SHOTS) {
 						// Article photos are content, not layout, and would make up most of the bytes.
 						mask: [page.locator('.article-body img')],
 						maskColor: '#9ca3af',
-						style: HIDE_CHANGING_PARTS,
 					})
 				})
 			}

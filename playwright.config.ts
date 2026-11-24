@@ -8,7 +8,7 @@ const PORT = 4329
 // matches @playwright/test: in CI (.github/workflows/e2e.yml) and locally through `pnpm e2e:docker`.
 export default defineConfig({
 	expect: {
-		toHaveScreenshot: { animations: 'disabled', caret: 'hide' },
+		toHaveScreenshot: { animations: 'disabled', caret: 'hide', stylePath: './e2e/screenshot.css' },
 	},
 	forbidOnly: !!process.env.CI,
 	fullyParallel: true,

@@ -1,0 +1,11 @@
+/* Applied to every screenshot (playwright.config.ts): footer parts that change with the visitor, the
+ * time, or the commit. The greeting names the visitor's country, the stats count views and readers,
+ * and the commit link changes on every push, so it keeps its width but not its text. */
+footer p:has(.wanderer-gradient-text),
+[data-site-stats] {
+	display: none !important;
+}
+
+footer a[href*='/commit/'] {
+	visibility: hidden !important;
+}
