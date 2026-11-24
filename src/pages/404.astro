@@ -20,7 +20,32 @@ Astro.response.status = 404
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
 const { notFound } = m.home
-const posts = (await getAllPosts(locale)).slice(0, 3)
+const allPosts = await getAllPosts(locale)
+const posts = allPosts.slice(0, 3)
+
+// Edit distance between two strings (insertions, deletions, substitutions).
+function editDistance(a: string, b: string) {
+	let row = Array.from({ length: b.length + 1 }, (_, j) => j)
+	for (let i = 1; i <= a.length; i++) {
+		const next = [i]
+		for (let j = 1; j <= b.length; j++)
+			next[j] = Math.min(row[j]! + 1, next[j - 1]! + 1, row[j - 1]! + (a[i - 1] === b[j - 1] ? 0 : 1))
+		row = next
+	}
+	return row[b.length]!
+}
+
+// A mistyped or stale post link usually ends in something close to a real slug. `originPathname`
+// is the path the visitor asked for, also when /post/[slug] rewrote to this page.
+const lastSegment = Astro.originPathname.split('/').findLast(Boolean)?.toLowerCase() ?? ''
+const closest = lastSegment
+	? allPosts
+		.map(post => ({ distance: editDistance(lastSegment, post.slug), post }))
+		.sort((a, b) => a.distance - b.distance)[0]
+	: undefined
+const suggestion = closest && closest.distance <= Math.max(1, Math.floor(closest.post.slug.length / 3))
+	? closest.post
+	: undefined
 ---
 
 <RootLayout>
@@ -44,6 +69,11 @@ const posts = (await getAllPosts(locale)).slice(0, 3)
 					<p class="font-mono text-xs/6 text-muted-foreground">404</p>
 					<h1 class="text-3xl font-medium tracking-tight text-foreground">{notFound.title}</h1>
 					<p class="max-w-prose text-base/7 text-muted-foreground">{notFound.description}</p>
+					{suggestion && (
+						<p class="max-w-prose text-base/7 text-foreground">
+							{notFound.didYouMean.before}<a class="text-link" href={`/post/${suggestion.slug}`} data-astro-prefetch>{suggestion.title}</a>{notFound.didYouMean.after}
+						</p>
+					)}
 				</div>
 
 				<section class="mt-16 space-y-4">

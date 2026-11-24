@@ -188,6 +188,10 @@ const ja: Messages = {
 			'AI とフロントエンドを軸に活動するデザインエンジニア。コード、デザイン、AI について書いています。',
 		notFound: {
 			description: '引っ越したのか、最初からなかったのか。かわりに最近書いたものをどうぞ。',
+			didYouMean: {
+				after: '」？',
+				before: 'もしかして「',
+			},
 			title: 'このページは迷子みたい',
 		},
 		playName: '名前の発音を再生',

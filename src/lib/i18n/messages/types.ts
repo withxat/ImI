@@ -168,6 +168,11 @@ export interface Messages {
 		metaDescription: string
 		notFound: {
 			description: string
+			/** Around a link to the post whose slug is closest to the missing path. */
+			didYouMean: {
+				after: string
+				before: string
+			}
 			title: string
 		}
 		playName: string

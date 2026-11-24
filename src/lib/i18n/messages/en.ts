@@ -188,6 +188,10 @@ const en: Messages = {
 			'Design Engineer focused on AI and frontend, writing about code, design, and AI.',
 		notFound: {
 			description: 'Maybe it moved, maybe it was never here. Here\'s some recent writing instead.',
+			didYouMean: {
+				after: '”?',
+				before: 'Maybe you meant “',
+			},
 			title: 'This page wandered off',
 		},
 		playName: 'Play name pronunciation',

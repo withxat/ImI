@@ -183,6 +183,10 @@ const zh: Messages = {
 			'Design Engineer，专注 AI 与前端，写些关于前端、设计、AI 的文章。',
 		notFound: {
 			description: '可能搬家了，也可能从来没来过。先看看最近写的吧。',
+			didYouMean: {
+				after: '》？',
+				before: '是不是在找《',
+			},
 			title: '这一页走丢了',
 		},
 		playName: '播放名字读音',
