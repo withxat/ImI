@@ -6,7 +6,6 @@ import Dot from '~icons/lucide/dot'
 
 import { intlLocaleFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
-import { isAlone } from '@/lib/site-stats/constants.ts'
 import { fetchSiteStats } from '@/lib/site-stats/server.ts'
 
 interface Props {
@@ -62,7 +61,6 @@ function statNumberParts(value: number) {
 		${rowClass}
 	`}
 	aria-live="polite"
-	data-site-stats-alone={String(isAlone(stats.onlineNow))}
 	data-site-stats-locale={intlLocale}
 	data-site-stats
 >
