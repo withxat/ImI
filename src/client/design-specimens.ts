@@ -19,9 +19,12 @@ const REVEAL_DURATION_MS = 420
 const REVEAL_STAGGER_MS = 48
 const REVEAL_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
 const SLOW_MULTIPLIER = 4
+const COPIED_MS = 1800
 
 let activeController: AbortController | null = null
 const activeTimers: number[] = []
+let copyBubble: HTMLSpanElement | null = null
+let copyBubbleTimer = 0
 
 function clearTimers() {
 	while (activeTimers.length > 0)
@@ -184,6 +187,13 @@ function formatOklch({ alpha, c, h, l }: Oklch): string {
 	return alpha < 1 ? `${base} /\u00A0${trimNumber(alpha, 2)}` : base
 }
 
+/** Valid CSS `oklch(L C H / α)` string copied to the clipboard on click. */
+function formatOklchCss({ alpha, c, h, l }: Oklch): string {
+	const hue = c < ACHROMATIC_CHROMA ? '0' : String(Math.round(h) % 360)
+	const base = [trimNumber(l, 3), trimNumber(c, 3), hue].join(' ')
+	return alpha < 1 ? `oklch(${base} / ${trimNumber(alpha, 2)})` : `oklch(${base})`
+}
+
 function relativeLuminance(rgb: Rgb): number {
 	const [r, g, b] = rgb.map(srgbToLinear) as Rgb
 	return 0.2126 * r + 0.7152 * g + 0.0722 * b
@@ -211,8 +221,10 @@ function fillColorCell(cell: HTMLElement) {
 		return
 
 	const { color, raw } = resolveToken(scope, token)
+	const cssValue = color ? formatOklchCss(color) : raw
 	valueTarget.textContent = color ? formatOklch(color) : raw
-	valueTarget.title = raw
+	valueTarget.title = cssValue
+	cell.dataset.copyValue = cssValue
 
 	const contrastTarget = cell.querySelector<HTMLElement>('[data-color-contrast]')
 	const against = cell.dataset.colorAgainst
@@ -326,8 +338,64 @@ function initMotionDemo(signal: AbortSignal) {
 	}, { signal })
 }
 
+function showCopyBubble(anchor: HTMLElement, text: string) {
+	if (!copyBubble) {
+		copyBubble = document.createElement('span')
+		copyBubble.className = 'bubble bubble-top bubble-floating'
+		copyBubble.setAttribute('role', 'status')
+		copyBubble.setAttribute('aria-live', 'polite')
+		document.body.appendChild(copyBubble)
+	}
+
+	copyBubble.textContent = text
+	const rect = anchor.getBoundingClientRect()
+	const halfW = Math.ceil(copyBubble.offsetWidth / 2)
+	const margin = 12
+	const minX = halfW + margin
+	const maxX = Math.max(minX, document.documentElement.clientWidth - halfW - margin)
+	const centerX = Math.min(maxX, Math.max(minX, rect.left + rect.width / 2))
+	copyBubble.style.top = `${rect.top + window.scrollY}px`
+	copyBubble.style.left = `${centerX}px`
+
+	delete copyBubble.dataset.shown
+	void copyBubble.offsetWidth
+	copyBubble.dataset.shown = ''
+
+	clearTimeout(copyBubbleTimer)
+	copyBubbleTimer = window.setTimeout(() => {
+		if (copyBubble)
+			delete copyBubble.dataset.shown
+	}, COPIED_MS)
+}
+
+function initColorCopy(signal: AbortSignal) {
+	const section = document.querySelector<HTMLElement>('[data-color-copied]')
+	const copiedLabel = section?.dataset.colorCopied
+	if (!section || !copiedLabel)
+		return
+
+	section.addEventListener('click', (event) => {
+		if (!(event.target instanceof Element) || !navigator.clipboard)
+			return
+		const button = event.target.closest<HTMLButtonElement>('[data-copy-token], [data-color-token]')
+		if (!button)
+			return
+		const value = button.dataset.copyToken ?? button.dataset.copyValue
+		if (!value)
+			return
+
+		navigator.clipboard.writeText(value).then(() => {
+			showCopyBubble(button, `${copiedLabel} · ${value}`)
+		}, () => {})
+	}, { signal })
+}
+
 export function disposeDesignSpecimens() {
 	clearTimers()
+	clearTimeout(copyBubbleTimer)
+	copyBubbleTimer = 0
+	copyBubble?.remove()
+	copyBubble = null
 	activeController?.abort()
 	activeController = null
 }
@@ -353,6 +421,7 @@ export function initDesignSpecimens() {
 	for (const cell of document.querySelectorAll<HTMLElement>('[data-color-token]'))
 		fillColorCell(cell)
 
+	initColorCopy(signal)
 	initRadii()
 	const weightDemo = document.querySelector<HTMLElement>('[data-weight-demo]')
 	if (weightDemo)

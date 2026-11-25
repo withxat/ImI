@@ -1093,6 +1093,9 @@
 	.bubble-top.bubble-floating {
 		bottom: auto;
 		z-index: 60;
+		max-width: calc(100vw - 1.5rem);
+		white-space: normal;
+		text-align: center;
 		--bubble-at: translate(-50%, calc(-100% - 0.5rem));
 	}
 

@@ -92,6 +92,9 @@ const ja: Messages = {
 	codeBlock: codeBlockByLocale.ja,
 	design: {
 		colors: {
+			copied: 'コピー済み',
+			copyToken: (name: string) => `CSS 変数 ${name} をコピー`,
+			copyValue: (name: string, mode: string) => `${name}（${mode}）の OKLCH 値をコピー`,
 			groups: {
 				code: 'コード',
 				content: '文字',
