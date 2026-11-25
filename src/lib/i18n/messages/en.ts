@@ -166,6 +166,7 @@ const en: Messages = {
 	footer: {
 		copyEmail: 'Copy email address',
 		emailCopied: 'Copied!',
+		linksAriaLabel: 'Links',
 		moeIcp: 'Moe ICP Filing No. 20264698',
 		stats: {
 			afterOnline: 'here right now',

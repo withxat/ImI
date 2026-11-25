@@ -4,12 +4,13 @@ import Dot from '~icons/lucide/dot'
 import EmailCopyLink from '@/components/layout/email-copy-link.astro'
 
 interface Props {
+	ariaLabel: string
 	copyEmailLabel: string
 	emailCopiedLabel: string
 	resumeLabel: string
 }
 
-const { copyEmailLabel, emailCopiedLabel, resumeLabel } = Astro.props as Props
+const { ariaLabel, copyEmailLabel, emailCopiedLabel, resumeLabel } = Astro.props as Props
 const EMAIL = 'i@xat.sh'
 
 const LINKS = [
@@ -21,7 +22,7 @@ const LINKS = [
 ]
 ---
 
-<nav class="flex flex-wrap items-center gap-2 font-ui text-sm">
+<nav aria-label={ariaLabel} class="flex flex-wrap items-center gap-2 font-ui text-sm">
 	{LINKS.map((item, index) => {
 		const external = item.href.startsWith('https:')
 		return (
