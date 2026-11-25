@@ -6,17 +6,47 @@ import LocaleSwitcher from '@/components/layout/locale-switcher.astro'
 import TextLink from '@/components/layout/text-link.astro'
 import ThemeSwitcher from '@/components/layout/theme-switcher.astro'
 
+export interface HeaderBreadcrumb {
+	href: string
+	label: string
+	muted?: boolean
+}
+
 interface Props {
+	breadcrumbs?: HeaderBreadcrumb[]
 	locale: Locale
 	messages: Pick<Messages, 'header' | 'localeSwitcher'>
 	showBack?: boolean
 }
 
-const { locale, messages, showBack = false } = Astro.props as Props
+const { breadcrumbs, locale, messages, showBack = false } = Astro.props as Props
 ---
 
-<header class="flex items-center justify-between gap-4">
-	{showBack ? <TextLink href="/">{messages.header.goHome}</TextLink> : <div />}
+<header class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+	{breadcrumbs && breadcrumbs.length > 0
+		? (
+				<nav aria-label={messages.header.breadcrumbAriaLabel} class="min-w-0 font-ui text-sm">
+					<ol class="flex items-center gap-1.5">
+						{breadcrumbs.map((item, index) => (
+							<li class="inline-flex items-center gap-1.5">
+								{index > 0 && (
+									<span aria-hidden="true" class="text-muted-foreground/50 select-none">/</span>
+								)}
+								<a
+									class={item.muted ? 'text-link-muted whitespace-nowrap' : 'text-link whitespace-nowrap'}
+									href={item.href}
+									data-astro-prefetch
+								>
+									{item.label}
+								</a>
+							</li>
+						))}
+					</ol>
+				</nav>
+			)
+		: showBack
+			? <TextLink href="/">{messages.header.goHome}</TextLink>
+			: <div />}
 	<div class="flex items-center gap-3">
 		<LocaleSwitcher aria-label={messages.localeSwitcher.ariaLabel} currentLocale={locale} />
 		<ThemeSwitcher labels={messages.header.theme} />

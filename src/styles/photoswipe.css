@@ -1,12 +1,115 @@
 @import 'photoswipe/style.css';
 
-/* Minimal article lightbox: no control chrome, no preloader dots */
-.pswp--article-minimal .pswp__top-bar,
+/* Ensure PhotoSwipe portals above everything (including custom scrollbar z-60 and skip link z-70) */
+.pswp {
+	--pswp-bg: oklch(0.11 0.004 260);
+	--pswp-icon-color: oklch(0.965 0.006 260);
+	z-index: 99999;
+}
+
+/* Minimal article lightbox: no preloader dots, quiet close & desktop-only arrows, bottom caption */
 .pswp--article-minimal .pswp__preloader {
 	display: none !important;
 }
 
-/* Ensure PhotoSwipe portals above everything */
-.pswp {
-	z-index: 99999;
+.pswp--article-minimal .pswp__top-bar {
+	height: auto;
+	padding: max(0.75rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) 0 0;
+}
+
+.pswp--article-minimal .pswp__button {
+	display: grid;
+	place-items: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	margin: 0;
+	border-radius: var(--radius-md);
+	color: oklch(0.965 0.006 260);
+	opacity: 0.68;
+	transition:
+		opacity 150ms ease-out,
+		background-color 150ms ease-out;
+}
+
+.pswp--article-minimal .pswp__button:hover,
+.pswp--article-minimal .pswp__button:focus-visible {
+	background-color: oklch(1 0 0 / 0.1);
+	opacity: 1;
+}
+
+.pswp--article-minimal .pswp__button:focus-visible {
+	outline: 2px solid oklch(0.965 0.006 260);
+	outline-offset: 2px;
+}
+
+.pswp--article-minimal .pswp__button:disabled {
+	opacity: 0.18;
+	cursor: default;
+	background-color: transparent;
+}
+
+.pswp--article-minimal .pswp__icn {
+	position: static;
+	width: 1.125rem;
+	height: 1.125rem;
+	fill: none;
+	stroke: currentColor;
+}
+
+/* Touch devices swipe between slides; keep arrow chrome for fine-pointer desktop only. */
+.pswp--article-minimal .pswp__button--arrow {
+	display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.pswp--article-minimal .pswp__button--arrow {
+		position: absolute;
+		top: 50%;
+		display: grid;
+		width: 2.5rem;
+		height: 2.5rem;
+		margin-top: 0;
+		transform: translateY(-50%);
+	}
+
+	.pswp--article-minimal .pswp__button--arrow--prev {
+		left: 1rem;
+	}
+
+	.pswp--article-minimal .pswp__button--arrow--next {
+		right: 1rem;
+	}
+}
+
+.pswp--article-minimal .pswp__article-caption {
+	position: absolute;
+	inset-inline: 1rem;
+	bottom: max(1rem, env(safe-area-inset-bottom));
+	z-index: 10;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: center;
+	gap: 0.25rem 0.625rem;
+	max-width: 40rem;
+	margin-inline: auto;
+	color: oklch(0.965 0.006 260 / 0.88);
+	font-family: var(--font-ui);
+	font-size: 0.875rem;
+	line-height: 1.45;
+	text-align: center;
+	text-wrap: balance;
+	pointer-events: none;
+}
+
+.pswp--article-minimal .pswp__article-caption[hidden] {
+	display: none;
+}
+
+.pswp--article-minimal .pswp__article-counter {
+	color: oklch(0.965 0.006 260 / 0.62);
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
 }

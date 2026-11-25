@@ -83,10 +83,76 @@ function bindCopyTrigger(trigger: HTMLButtonElement, signal: AbortSignal) {
 	}, { signal })
 }
 
-export function initMdxCopyButtons() {
+function bindHeadingAnchorCopy(signal: AbortSignal, cleanups: Array<() => void>) {
+	const links = document.querySelectorAll<HTMLAnchorElement>('.article-body :is(h2, h3)[id] > a[href^="#"]')
+	if (links.length === 0)
+		return
+
+	let bubble: HTMLSpanElement | null = null
+	let timer: ReturnType<typeof setTimeout> | undefined
+
+	const ensureBubble = () => {
+		if (bubble && document.contains(bubble))
+			return bubble
+		bubble = document.createElement('span')
+		bubble.className = 'bubble bubble-top bubble-floating'
+		bubble.setAttribute('role', 'status')
+		bubble.setAttribute('aria-live', 'polite')
+		document.body.appendChild(bubble)
+		return bubble
+	}
+
+	cleanups.push(() => {
+		clearTimeout(timer)
+		bubble?.remove()
+		bubble = null
+	})
+
+	for (const link of links) {
+		link.addEventListener('click', (event) => {
+			if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+				return
+
+			// The link still jumps to its heading as before; copying its URL rides along.
+			const copiedText = link.closest<HTMLElement>('[data-link-copied]')?.dataset.linkCopied
+			if (!copiedText || !navigator.clipboard)
+				return
+
+			navigator.clipboard.writeText(link.href).then(() => {
+				const el = ensureBubble()
+				el.textContent = copiedText
+				const rect = link.getBoundingClientRect()
+				const halfW = Math.ceil(el.offsetWidth / 2)
+				const margin = 12
+				const minX = halfW + margin
+				const maxX = Math.max(minX, document.documentElement.clientWidth - halfW - margin)
+				const centerX = Math.min(maxX, Math.max(minX, rect.left + rect.width / 2))
+				el.style.top = `${rect.top + window.scrollY}px`
+				el.style.left = `${centerX}px`
+				// Restart pop-in when clicking a second heading while the first bubble is still visible.
+				delete el.dataset.shown
+				void el.offsetWidth
+				el.dataset.shown = ''
+
+				clearTimeout(timer)
+				timer = setTimeout(() => {
+					delete el.dataset.shown
+				}, COPIED_MS)
+			}, () => {})
+		}, { signal })
+	}
+}
+
+export function disposeMdxCopyButtons() {
 	dispose?.()
+	dispose = null
+}
+
+export function initMdxCopyButtons() {
+	disposeMdxCopyButtons()
 	const ac = new AbortController()
 	const { signal } = ac
+	const cleanups: Array<() => void> = []
 	const locale = getPageLocale()
 
 	for (const trigger of document.querySelectorAll<HTMLButtonElement>('[data-mdx-pre-copy]')) {
@@ -105,5 +171,11 @@ export function initMdxCopyButtons() {
 		trigger.addEventListener('click', () => showCopiedCheck(trigger), { signal })
 	}
 
-	dispose = () => ac.abort()
+	bindHeadingAnchorCopy(signal, cleanups)
+
+	dispose = () => {
+		ac.abort()
+		for (const cleanup of cleanups)
+			cleanup()
+	}
 }
