@@ -172,7 +172,7 @@ const zh: Messages = {
 		copyEmail: '复制邮箱地址',
 		emailCopied: '复制好啦',
 		linksAriaLabel: '外部链接',
-		moeIcp: '萌ICP备20264698号',
+		moeIcp: '萌 ICP 备 20264698 号',
 		stats: {
 			afterOnline: '人路过',
 			afterTotal: '次',
