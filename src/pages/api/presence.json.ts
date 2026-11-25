@@ -18,10 +18,18 @@ export const POST: APIRoute = async ({ cookies, request }) => {
 	if (!sessionId)
 		return new Response('session required', { status: 401 })
 
-	await heartbeatSitePresence(env, sessionId)
+	const stats = await heartbeatSitePresence(env, sessionId)
+	if (!stats) {
+		return new Response(null, {
+			headers: { 'Cache-Control': 'no-store' },
+			status: 204,
+		})
+	}
 
-	return new Response(null, {
-		headers: { 'Cache-Control': 'no-store' },
-		status: 204,
+	return new Response(JSON.stringify(stats), {
+		headers: {
+			'Cache-Control': 'no-store',
+			'Content-Type': 'application/json',
+		},
 	})
 }

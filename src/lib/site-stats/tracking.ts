@@ -8,7 +8,7 @@ import {
 const ONE_DAY_SECONDS = 60 * 60 * 24
 const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365
 
-const TRACKED_PATH_PREFIXES = ['/', '/post', '/design'] as const
+const TRACKED_PATH_PREFIXES = ['/', '/post', '/design', '/resume'] as const
 
 // Crawlers, link unfurlers, monitors and headless/CLI clients. Bots rarely keep
 // cookies, so each request would otherwise mint a fresh session and count as a view.
@@ -48,8 +48,13 @@ export function shouldTrackSiteVisit(request: Request, pathname: string) {
 	if (!accept.includes('text/html') && !accept.includes('*/*'))
 		return false
 
-	if (request.headers.get('sec-purpose') === 'prefetch' || request.headers.get('purpose') === 'prefetch')
+	if (
+		request.headers.get('sec-purpose') === 'prefetch'
+		|| request.headers.get('purpose') === 'prefetch'
+		|| request.headers.get('x-imi-prefetch') === '1'
+	) {
 		return false
+	}
 
 	return true
 }

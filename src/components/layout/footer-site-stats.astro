@@ -16,7 +16,7 @@ const { locale } = Astro.props as Props
 const copy = getMessages(locale).footer.stats
 const intlLocale = intlLocaleFor(locale)
 
-const stats = await fetchSiteStats(env)
+const stats = await fetchSiteStats(env, { timeoutMs: 400 })
 
 const dotClass = 'size-3 shrink-0 text-muted-foreground opacity-70'
 const segmentClass = 'inline-flex flex-wrap items-center gap-x-[0.25em]'

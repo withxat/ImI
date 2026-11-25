@@ -55,7 +55,7 @@ export class SiteStats extends DurableObject {
 
 			if (url.pathname === '/heartbeat') {
 				await this.#heartbeat(sessionId)
-				return new Response(null, { status: 204 })
+				return Response.json(await this.#getStats())
 			}
 		}
 
