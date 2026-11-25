@@ -27,7 +27,8 @@ export function initPostOutline() {
 	disposePostOutline()
 
 	const trigger = document.querySelector<HTMLButtonElement>(`[${SECTION_OUTLINE_TRIGGER}]`)
-	const list = document.getElementById(FALLBACK_LIST_ID)
+	const fallbackId = trigger?.getAttribute('aria-controls') || FALLBACK_LIST_ID
+	const list = document.getElementById(fallbackId)
 	if (!trigger || !list) {
 		return
 	}
@@ -44,7 +45,7 @@ export function initPostOutline() {
 			trigger.setAttribute('aria-controls', SECTION_OUTLINE_ID)
 			return
 		}
-		trigger.setAttribute('aria-controls', FALLBACK_LIST_ID)
+		trigger.setAttribute('aria-controls', fallbackId)
 		list.hidden = !list.hidden
 		trigger.setAttribute('aria-expanded', String(!list.hidden))
 	}, { signal })
@@ -73,6 +74,7 @@ export function initPostOutline() {
 		}
 		event.preventDefault()
 		jumpToSection(heading)
-		heading.querySelector<HTMLElement>('a[href]')?.focus({ preventScroll: true })
+		const target = heading.querySelector<HTMLElement>('a[href]') ?? (heading.tabIndex >= 0 ? heading : null)
+		target?.focus({ preventScroll: true })
 	}, { signal })
 }

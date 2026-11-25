@@ -1,9 +1,8 @@
 role: Design Engineer · Frontend & AI products
 summary: >-
-  I build the frontend of AI-native products, along with the server-side code they depend on.
-  My work spans the full path from interaction and components to design tools and engineering infrastructure:
-  streaming chat and agent configuration, a theme editor and its Figma plugin.
-  Outside work I contribute to open source and make small tools; this site is part of the portfolio too.
+  I build the frontend for AI products along with the backend code they rely on,
+  from streaming chat and agent interfaces to a theme editor and its Figma plugin.
+  Outside work I contribute to open source and build small tools; this site is part of that work too.
 contact:
   - label: xat.sh
     href: https://xat.sh
@@ -16,7 +15,7 @@ experience:
   - organization: Central China Normal University
     role: Design Engineer
     start: 2024-05
-    summary: Frontend and design on the university's education AI product team. I led several products from zero to one, through launch and continuous iteration. 460+ merged pull requests and 150+ code reviews of teammates' pull requests; I also do code reviews for interns and have given internal talks on getting started with frontend.
+    summary: Frontend and design implementation on the university's education AI team. I took several products from initial setup through launch and ongoing maintenance, with 460+ merged PRs and 150+ teammate reviews, plus intern reviews and internal frontend intro talks.
     projects:
       - name: Education AI agent platform
         start: 2025-09

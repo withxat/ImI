@@ -49,6 +49,6 @@ export const ZH_CATEGORY_NAMES: Record<string, string> = {
 
 export const OG_SITE_DEFAULT = {
 	eyebrow: 'Design Engineer',
-	summary: '爱打磨界面，也喜欢探索 AI 的可能性。',
+	summary: '喜欢把界面磨顺手，也爱拿 AI 做些真正好用的东西。',
 	title: 'Xat',
 } as const

@@ -1,6 +1,7 @@
 ---
-import Copy from '~icons/lucide/copy'
 import Dot from '~icons/lucide/dot'
+
+import EmailCopyLink from '@/components/layout/email-copy-link.astro'
 
 interface Props {
 	copyEmailLabel: string
@@ -23,17 +24,6 @@ const LINKS = [
 <nav class="flex flex-wrap items-center gap-2 font-ui text-sm">
 	{LINKS.map((item, index) => {
 		const external = item.href.startsWith('https:')
-		const link = (
-			<a
-				class="text-link"
-				data-astro-prefetch={item.href.startsWith('/') ? '' : undefined}
-				href={item.href}
-				rel={external ? 'noreferrer' : undefined}
-				target={external ? '_blank' : undefined}
-			>
-				{item.label}
-			</a>
-		)
 		return (
 			<>
 				{index > 0 && (
@@ -41,24 +31,24 @@ const LINKS = [
 				)}
 				{item.href.startsWith('mailto:')
 					? (
-							<span class="email-copy flex items-center" data-email-copy={EMAIL}>
-								{link}
-								<span class="email-copy-slot" data-email-copy-slot>
-									<button aria-label={copyEmailLabel} class="email-copy-button" type="button" data-email-copy-button>
-										<Copy aria-hidden="true" class="size-3.5" />
-									</button>
-									<span
-										aria-live="polite"
-										class="bubble bubble-top"
-										data-copied-label={emailCopiedLabel}
-										role="status"
-										data-email-copy-bubble
-									>
-									</span>
-								</span>
-							</span>
+							<EmailCopyLink
+								address={EMAIL}
+								copiedLabel={emailCopiedLabel}
+								copyLabel={copyEmailLabel}
+								label={item.label}
+							/>
 						)
-					: link}
+					: (
+							<a
+								class="text-link"
+								data-astro-prefetch={item.href.startsWith('/') ? '' : undefined}
+								href={item.href}
+								rel={external ? 'noreferrer' : undefined}
+								target={external ? '_blank' : undefined}
+							>
+								{item.label}
+							</a>
+						)}
 			</>
 		)
 	})}

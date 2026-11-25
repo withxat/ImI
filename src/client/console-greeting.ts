@@ -1,9 +1,9 @@
 import { REPO_URL } from '@/lib/repo'
 
 const GREETING: { en: string } & Record<string, string> = {
-	en: 'Hi, you found the back door. The whole site is open source:',
-	ja: 'やあ、裏口を見つけたね。このサイトのソースはすべてここにあるよ：',
-	zh: '嗨，被你发现了。这个站点的源码都在这里：',
+	en: 'Inspecting the page? The whole site is open source here:',
+	ja: 'ソースをのぞいてる？このサイトはまるごとここで公開しています：',
+	zh: '在看源码吗？整个站点都开源在这里：',
 }
 
 /** One line for whoever opens the devtools, once per visit. */

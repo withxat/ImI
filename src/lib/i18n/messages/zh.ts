@@ -25,7 +25,7 @@ const zh: Messages = {
 		{
 			items: [
 				{
-					description: '🍤 TypeScript Monorepo 模板',
+					description: 'TypeScript Monorepo 脚手架模板',
 					title: 'Monorepo-Template',
 				},
 			],
@@ -34,11 +34,11 @@ const zh: Messages = {
 		{
 			items: [
 				{
-					description: '📒 面向现代项目的严格 TypeScript 配置',
+					description: '自用的严格 TypeScript 配置预设',
 					title: 'TSConfig',
 				},
 				{
-					description: '🧃 Xat 自用强迫症 ESLint 配置',
+					description: 'Xat 自用强迫症 ESLint 预设',
 					title: 'ESLint-Config',
 				},
 			],
@@ -47,15 +47,19 @@ const zh: Messages = {
 		{
 			items: [
 				{
-					description: '😀 将 Unicode Emoji 渲染为 Fluent Emoji 的 Rehype 插件',
+					description: '渲染为 Fluent Emoji，复制时仍保留原 Unicode',
 					title: 'Rehype-Fluent-Emoji',
 				},
 				{
-					description: '🍊 一个温暖、简洁的 Astro 博客模板',
+					description: '从本站拆出来的极简 Astro 博客模板',
 					title: 'Mikan',
 				},
 				{
-					description: '🫧 我的个人网站和数字花园',
+					description: 'SwiftUI 写的 iPhone 端 Cloudflare 客户端，带小组件和实时活动',
+					title: 'Dash',
+				},
+				{
+					description: '我的个人网站',
 					title: 'ImI',
 				},
 			],
@@ -120,7 +124,7 @@ const zh: Messages = {
 			slow: '0.25×',
 			title: '动效',
 		},
-		pageDescription: '驱动 xat.sh 的设计系统 —— 字体、色彩、三语排版、层次与动效。',
+		pageDescription: 'xat.sh 的设计系统：字体、配色、三语排版、圆角阴影与动效，数值全部读自线上 CSS。',
 		pageTitle: '设计系统 - Xat',
 		typography: {
 			families: {
@@ -176,20 +180,19 @@ const zh: Messages = {
 		},
 	},
 	home: {
-		bioLead: '爱打磨界面，也喜欢探索 AI 的可能性。',
-		designProject: '📐 本站的设计规范，数值全部读自线上 CSS',
+		bioLead: '喜欢把界面磨顺手，也爱拿 AI 做些真正好用的东西。',
 		introAfterProducts: '。',
 		introBeforeSystems: '',
-		introBetweenBadges: '让我习惯在设计、工程与真实需求之间寻找平衡，去构建',
+		introBetweenBadges: '让我习惯从结构看问题，现在主要做前端和',
 		metaDescription:
-			'Design Engineer，专注 AI 与前端，写些关于前端、设计、AI 的文章。',
+			'Xat，Design Engineer，做前端与 AI 产品，写些关于代码、设计与日常的笔记。',
 		notFound: {
-			description: '可能搬家了，也可能从来没来过。先看看最近写的吧。',
+			description: '链接可能过期了，或者字敲错了。不如先看看最近写的文章。',
 			didYouMean: {
 				after: '》？',
 				before: '是不是在找《',
 			},
-			title: '这一页走丢了',
+			title: '这里什么也没有',
 		},
 		playName: '播放名字读音',
 		poke: {
@@ -199,8 +202,14 @@ const zh: Messages = {
 		},
 		projectsEyebrow: '项目',
 		role: 'Design Engineer',
+		spotlight: {
+			description: '你正在看的这个站。用 Astro 7 搭在 Cloudflare Workers 上，做了三语、手调中英字重和按字形裁剪字体，/design 页里的数值全部读自线上样式。',
+			source: 'GitHub 源码',
+			title: '本站与设计系统',
+		},
 		tagline: 'Xat - Design Engineer',
 		title: 'Xat - Design Engineer',
+		toolsShelfLabel: '工具与配置',
 		viewAllPosts: '查看全部',
 		writingEyebrow: '写作',
 	},

@@ -10,7 +10,7 @@
 				"items": [
 					{
 						"title": "Monorepo-Template",
-						"description": "🍤 Just a template",
+						"description": "TypeScript monorepo starter template",
 						"link": "https://github.com/withxat/monorepo-template"
 					}
 				]
@@ -20,12 +20,12 @@
 				"items": [
 					{
 						"title": "TSConfig",
-						"description": "📒 A strict TypeScript configuration for modern projects",
+						"description": "My strict TypeScript config preset",
 						"link": "https://github.com/withxat/tsconfig"
 					},
 					{
 						"title": "ESLint-Config",
-						"description": "🧃 Xat's ESLint config preset",
+						"description": "Xat's slightly obsessive ESLint config preset",
 						"link": "https://github.com/withxat/eslint-config"
 					}
 				]
@@ -35,17 +35,22 @@
 				"items": [
 					{
 						"title": "Rehype-Fluent-Emoji",
-						"description": "🤗 Fluent emoji that still copies as Unicode",
+						"description": "Renders Unicode as Fluent Emoji while copying back as Unicode",
 						"link": "https://github.com/withxat/rehype-fluent-emoji"
 					},
 					{
 						"title": "Mikan",
-						"description": "🍊 A warm, minimal Astro blog template",
+						"description": "A minimal Astro blog template extracted from this site",
 						"link": "https://github.com/withxat/mikan"
 					},
 					{
+						"title": "Dash",
+						"description": "A SwiftUI Cloudflare client for iPhone, with widgets and Live Activities",
+						"link": "https://github.com/withxat/Dash"
+					},
+					{
 						"title": "ImI",
-						"description": "🫧 My personal website and digital garden",
+						"description": "My personal website",
 						"link": "https://github.com/withxat/ImI"
 					}
 				]

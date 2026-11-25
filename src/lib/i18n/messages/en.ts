@@ -12,8 +12,8 @@ const en: Messages = {
 		pageTitle: 'Xat\'s Archive',
 		postCountSuffix: ' posts',
 		postTranslatedNotice: {
-			afterLink: ' to read the author-written source text.',
-			beforeLink: 'This article is an AI translation from the Chinese original. Switch the site language to ',
+			afterLink: ' if you prefer reading the original.',
+			beforeLink: 'Translated by AI from the Chinese original. Switch to ',
 			switchToChineseAriaLabel: 'Switch site language to Chinese for the original article',
 		},
 		readingTime: (minutes: number) => `${minutes} min read`,
@@ -30,7 +30,7 @@ const en: Messages = {
 		{
 			items: [
 				{
-					description: '🍤 TypeScript monorepo template',
+					description: 'TypeScript monorepo starter template',
 					title: 'Monorepo-Template',
 				},
 			],
@@ -39,11 +39,11 @@ const en: Messages = {
 		{
 			items: [
 				{
-					description: '📒 A strict TypeScript configuration for modern projects',
+					description: 'My strict TypeScript config preset',
 					title: 'TSConfig',
 				},
 				{
-					description: '🧃 Xat\'s own slightly obsessive ESLint config',
+					description: 'Xat\'s own slightly obsessive ESLint config',
 					title: 'ESLint-Config',
 				},
 			],
@@ -52,15 +52,19 @@ const en: Messages = {
 		{
 			items: [
 				{
-					description: '😀 A Rehype plugin that renders Unicode Emoji as Fluent Emoji',
+					description: 'Renders Unicode as Fluent Emoji while copying back as Unicode',
 					title: 'Rehype-Fluent-Emoji',
 				},
 				{
-					description: '🍊 A warm, minimal Astro blog template',
+					description: 'A minimal Astro blog template extracted from this site',
 					title: 'Mikan',
 				},
 				{
-					description: '🫧 My personal website and digital garden',
+					description: 'A SwiftUI Cloudflare client for iPhone, with widgets and Live Activities',
+					title: 'Dash',
+				},
+				{
+					description: 'My personal website',
 					title: 'ImI',
 				},
 			],
@@ -125,7 +129,7 @@ const en: Messages = {
 			slow: '0.25×',
 			title: 'Motion',
 		},
-		pageDescription: 'The design system behind xat.sh: typography, color tokens, trilingual line breaking, layers, and motion.',
+		pageDescription: 'The design system for xat.sh: typography, color tokens, trilingual wrapping, shape, and motion, all read live from CSS.',
 		pageTitle: 'Design System - Xat',
 		typography: {
 			families: {
@@ -164,11 +168,11 @@ const en: Messages = {
 		emailCopied: 'Copied!',
 		moeIcp: 'Moe ICP Filing No. 20264698',
 		stats: {
-			afterOnline: ' wandering by',
-			afterTotal: ' times',
-			alone: 'Right now, it\'s just you wandering by',
-			beforeOnline: 'Right now, ',
-			beforeTotal: 'Spotted ',
+			afterOnline: 'here right now',
+			afterTotal: 'times',
+			alone: 'Just you here right now',
+			beforeOnline: '',
+			beforeTotal: 'Visited',
 		},
 	},
 	header: {
@@ -181,31 +185,36 @@ const en: Messages = {
 		},
 	},
 	home: {
-		bioLead: 'I love polishing interfaces and exploring what AI can do.',
-		designProject: '📐 The spec for this site, every value read from the live CSS',
+		bioLead: 'I like sweating the UI details and building AI tools that actually feel good to use.',
 		introAfterProducts: '.',
-		introBeforeSystems: 'A ',
-		introBetweenBadges: ' taught me to balance design, engineering, and real needs while building ',
+		introBeforeSystems: 'My ',
+		introBetweenBadges: ' shapes how I think about structure; these days I mostly build frontend and ',
 		metaDescription:
-			'Design Engineer focused on AI and frontend, writing about code, design, and AI.',
+			'Xat, a Design Engineer working on frontend and AI products, writing about code, interfaces, and everyday tools.',
 		notFound: {
-			description: 'Maybe it moved, maybe it was never here. Here\'s some recent writing instead.',
+			description: 'The link may have moved or had a typo. Here\'s some recent writing instead.',
 			didYouMean: {
 				after: '”?',
 				before: 'Maybe you meant “',
 			},
-			title: 'This page wandered off',
+			title: 'Nothing at this address',
 		},
 		playName: 'Play name pronunciation',
 		poke: {
 			label: 'Poke Xat',
-			lines: ['Hey!', 'Yes?', 'That tickles', 'Okay, okay'],
-			sulk: 'Hmph. Not talking to you.',
+			lines: ['Hey!', 'Yeah?', 'Easy there', 'Okay, okay'],
+			sulk: 'Alright, I\'m ignoring you now.',
 		},
 		projectsEyebrow: 'Projects',
 		role: 'Design Engineer',
+		spotlight: {
+			description: 'The site you\'re reading. Built with Astro 7 on Cloudflare Workers, with prefix-free trilingual copy, hand-matched CJK weights, subset fonts, and a live spec at /design.',
+			source: 'Source on GitHub',
+			title: 'This site & its design system',
+		},
 		tagline: 'Xat - Design Engineer',
 		title: 'Xat - Design Engineer',
+		toolsShelfLabel: 'Configs & templates',
 		viewAllPosts: 'View all',
 		writingEyebrow: 'Writing',
 	},
