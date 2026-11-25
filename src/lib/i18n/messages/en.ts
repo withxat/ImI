@@ -5,6 +5,13 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const en: Messages = {
 	blog: {
 		goHome: 'Go to home',
+		lightbox: {
+			close: 'Close image',
+			next: 'Next image',
+			prev: 'Previous image',
+			zoom: 'View larger image',
+		},
+		linkCopied: 'Link copied',
 		moreWriting: 'More writing',
 		newer: 'Newer',
 		older: 'Older',
@@ -177,13 +184,17 @@ const en: Messages = {
 		},
 	},
 	header: {
+		breadcrumbAriaLabel: 'Breadcrumb',
 		goHome: 'Go to home',
+		home: 'Home',
+		skipToContent: 'Skip to content',
 		theme: {
 			ariaLabel: 'Theme',
 			dark: 'Dark',
 			light: 'Light',
 			system: 'System',
 		},
+		writing: 'Writing',
 	},
 	home: {
 		bioLead: 'I like sweating the UI details and building AI tools that actually feel good to use.',
