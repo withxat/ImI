@@ -5,6 +5,13 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const zh: Messages = {
 	blog: {
 		goHome: '回到首页',
+		lightbox: {
+			close: '关闭图片',
+			next: '下一张',
+			prev: '上一张',
+			zoom: '放大查看图片',
+		},
+		linkCopied: '已复制链接',
 		moreWriting: '更多文章',
 		newer: '较新',
 		older: '较早',
@@ -172,13 +179,17 @@ const zh: Messages = {
 		},
 	},
 	header: {
+		breadcrumbAriaLabel: '页面路径',
 		goHome: '回到首页',
+		home: '首页',
+		skipToContent: '跳到正文',
 		theme: {
 			ariaLabel: '主题',
 			dark: '深色',
 			light: '浅色',
 			system: '跟随系统',
 		},
+		writing: '写作',
 	},
 	home: {
 		bioLead: '喜欢把界面磨顺手，也爱拿 AI 做些真正好用的东西。',

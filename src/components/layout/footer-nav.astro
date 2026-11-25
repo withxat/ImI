@@ -22,7 +22,14 @@ const LINKS = [
 ]
 ---
 
-<nav aria-label={ariaLabel} class="flex flex-wrap items-center gap-2 font-ui text-sm">
+{/* On a phone-width column the dots sit closer, so the row still fits with the Email copy button touch screens always show. */}
+<nav
+	class="
+		flex flex-wrap items-center gap-2 font-ui text-sm
+		@max-lg/page:gap-x-1
+	"
+	aria-label={ariaLabel}
+>
 	{LINKS.map((item, index) => {
 		const external = item.href.startsWith('https:')
 		return (

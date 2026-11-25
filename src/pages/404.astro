@@ -8,7 +8,7 @@ import Seo from '@/components/meta/seo.astro'
 import StaggerReveal from '@/components/motion/stagger-reveal.astro'
 import PostIndexRow from '@/components/post/post-index-row.astro'
 import RootLayout from '@/layouts/root-layout.astro'
-import { formatPostMonthDay, getAllPosts } from '@/lib/blog'
+import { formatPostMonth, formatPostMonthDay, getAllPosts } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
 import { pageOgImageUrl } from '@/lib/seo-data'
 
@@ -22,6 +22,7 @@ const m = getMessages(locale)
 const { notFound } = m.home
 const allPosts = await getAllPosts(locale)
 const posts = allPosts.slice(0, 3)
+const postsSpanMultipleYears = new Set(posts.map(post => post.date.getUTCFullYear())).size > 1
 
 // Edit distance between two strings (insertions, deletions, substitutions).
 function editDistance(a: string, b: string) {
@@ -88,7 +89,7 @@ const suggestion = closest && closest.distance <= Math.max(1, Math.floor(closest
 					<ul class="divide-y divide-border border-y border-border">
 						{posts.map(post => (
 							<PostIndexRow
-								dateLabel={formatPostMonthDay(post.date)}
+								dateLabel={postsSpanMultipleYears ? formatPostMonth(post.date) : formatPostMonthDay(post.date)}
 								href={`/post/${post.slug}`}
 								slug={post.slug}
 								summary={post.summary}

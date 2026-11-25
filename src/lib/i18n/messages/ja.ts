@@ -5,6 +5,13 @@ import { codeBlockByLocale } from '@/lib/i18n/code-block-copy.ts'
 const ja: Messages = {
 	blog: {
 		goHome: 'ホームへ',
+		lightbox: {
+			close: '画像を閉じる',
+			next: '次の画像',
+			prev: '前の画像',
+			zoom: '画像を拡大',
+		},
+		linkCopied: 'リンクをコピーしました',
 		moreWriting: 'ほかの記事',
 		newer: '次の記事',
 		older: '前の記事',
@@ -177,13 +184,17 @@ const ja: Messages = {
 		},
 	},
 	header: {
+		breadcrumbAriaLabel: 'パンくずリスト',
 		goHome: 'ホームへ',
+		home: 'ホーム',
+		skipToContent: '本文へ移動',
 		theme: {
 			ariaLabel: 'テーマ',
 			dark: 'ダーク',
 			light: 'ライト',
 			system: 'システム',
 		},
+		writing: '記事',
 	},
 	home: {
 		bioLead: 'UI の細部を磨くのも、ちゃんと使いやすい AI ツールを作るのも好き。',

@@ -6,7 +6,7 @@ import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayo
 import { initEmailCopy } from '@/client/email-copy'
 import { initIntroBadges } from '@/client/intro-badge'
 import { disposeLinkedPageFontPrefetch, initLinkedPageFontPrefetch } from '@/client/linked-page-font-prefetch'
-import { initMdxCopyButtons } from '@/client/mdx-copy'
+import { disposeMdxCopyButtons, initMdxCopyButtons } from '@/client/mdx-copy'
 import { disposeNameAudioButtons, initNameAudioButtons } from '@/client/name-audio'
 import { disposePageReveals, initPageReveals } from '@/client/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/client/photoswipe-gallery'
@@ -72,6 +72,7 @@ registerModule('email-copy', {
 })
 
 registerModule('mdx-copy', {
+	dispose: () => disposeMdxCopyButtons(),
 	init: () => initMdxCopyButtons(),
 })
 

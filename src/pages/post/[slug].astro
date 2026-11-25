@@ -96,111 +96,122 @@ const neighbors = index < 0
 	<section>
 		<MiSansContentFont />
 		<Container class="page-shell">
-			<StaggerReveal class="flex flex-col space-y-8">
-				<div class="space-y-8" data-post-card-vt="target" transition:name={postCardTransitionName(post.slug)}>
-					<SiteHeader locale={locale} messages={m} showBack />
-					<div class="space-y-3">
-						<Eyebrow>{categoryEyebrow}</Eyebrow>
-						<h1 class="text-3xl font-medium text-foreground">{post.title}</h1>
-						<p class="text-base/7 text-muted-foreground">{post.summary}</p>
-					</div>
-					{/* One block, so the hidden fallback list adds no gap below the date. */}
-					<div>
-						<div class="flex items-center justify-between gap-4 font-ui text-sm text-muted-foreground">
-							<p class="flex flex-wrap items-baseline gap-x-2">
-								<time datetime={isoDate}>{formatPostDate(post.date, locale)}</time>
-								<span aria-hidden="true">·</span>
-								<span>{m.blog.readingTime(readingMinutes(post))}</span>
-								{hasOutline && (
-									<>
-										<span aria-hidden="true">·</span>
-										<button
-											class="
-												text-link-muted cursor-pointer
-												aria-expanded:text-foreground
-											"
-											aria-controls="post-sections"
-											aria-expanded="false"
-											type="button"
-											data-section-outline-trigger
-										>
-											{m.blog.sectionCount(sections.length)}
-										</button>
-									</>
-								)}
-							</p>
-							<a
-								class="
-									-m-1.5 shrink-0 rounded-md p-1.5 transition-colors duration-150
-									hover:text-foreground
-								"
-								aria-label={m.blog.viewSource}
-								href={sourceUrl}
-								title={m.blog.viewSource}
-							>
-								<CodeXml aria-hidden="true" class="size-4" />
-							</a>
+			<div class="flex flex-col space-y-8">
+				<SiteHeader
+					breadcrumbs={[
+						{ href: '/', label: m.header.home, muted: true },
+						{ href: '/post', label: m.header.writing },
+					]}
+					locale={locale}
+					messages={m}
+				/>
+				<StaggerReveal class="flex flex-col space-y-8">
+					<div class="space-y-8" data-post-card-vt="target" transition:name={postCardTransitionName(post.slug)}>
+						<div class="space-y-3">
+							<Eyebrow>{categoryEyebrow}</Eyebrow>
+							<h1 class="text-3xl font-medium text-foreground">{post.title}</h1>
+							<p class="text-base/7 text-muted-foreground">{post.summary}</p>
 						</div>
-						{hasOutline && (
-							<nav aria-label={m.blog.toc} class="mt-4 font-ui text-sm" id="post-sections" hidden>
-								<ol class="space-y-1.5">
-									{sections.map(section => (
-										<li>
-											<a
+						{/* One block, so the hidden fallback list adds no gap below the date. */}
+						<div>
+							<div class="flex items-center justify-between gap-4 font-ui text-sm text-muted-foreground">
+								<p class="flex flex-wrap items-baseline gap-x-2">
+									<time datetime={isoDate}>{formatPostDate(post.date, locale)}</time>
+									<span aria-hidden="true">·</span>
+									<span>{m.blog.readingTime(readingMinutes(post))}</span>
+									{hasOutline && (
+										<>
+											<span aria-hidden="true">·</span>
+											<button
 												class="
-													text-muted-foreground transition-colors duration-150
-													hover:text-foreground
+													text-link-muted cursor-pointer
+													aria-expanded:text-foreground
 												"
-												href={`#${section.slug}`}
+												aria-controls="post-sections"
+												aria-expanded="false"
+												type="button"
+												data-section-outline-trigger
 											>
-												{section.text}
-											</a>
-										</li>
-									))}
-								</ol>
-							</nav>
+												{m.blog.sectionCount(sections.length)}
+											</button>
+										</>
+									)}
+								</p>
+								<a
+									class="
+										-m-1.5 shrink-0 rounded-md p-1.5 transition-colors duration-150
+										hover:text-foreground
+									"
+									aria-label={m.blog.viewSource}
+									href={sourceUrl}
+									rel="noreferrer"
+									target="_blank"
+									title={m.blog.viewSource}
+								>
+									<CodeXml aria-hidden="true" class="size-4" />
+								</a>
+							</div>
+							{hasOutline && (
+								<nav aria-label={m.blog.toc} class="mt-4 font-ui text-sm" id="post-sections" hidden>
+									<ol class="space-y-1.5">
+										{sections.map(section => (
+											<li>
+												<a
+													class="
+														text-muted-foreground transition-colors duration-150
+														hover:text-foreground
+													"
+													href={`#${section.slug}`}
+												>
+													{section.text}
+												</a>
+											</li>
+										))}
+									</ol>
+								</nav>
+							)}
+						</div>
+						{m.blog.postTranslatedNotice && (
+							<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} translator={translator} />
 						)}
 					</div>
-					{m.blog.postTranslatedNotice && (
-						<PostTranslatedNoticeAside notice={m.blog.postTranslatedNotice} translator={translator} />
-					)}
-				</div>
 
-				<ArticleBody>
-					<Content components={mdxComponents} />
-				</ArticleBody>
+					<ArticleBody lightbox={m.blog.lightbox} linkCopiedLabel={m.blog.linkCopied}>
+						<Content components={mdxComponents} />
+					</ArticleBody>
 
-				<!-- Sign-off, like the name and date at the foot of a letter. -->
-				<div class="flex flex-col items-end gap-0.5">
-					<Wordmark class="text-2xl" />
-					<time class="font-mono text-xs text-muted-foreground tabular-nums" datetime={isoDate}>
-						{post.date.getUTCFullYear()}·{formatPostMonthDay(post.date)}
-					</time>
-				</div>
-
-				<nav aria-label={m.blog.moreWriting} class="mt-8 space-y-4">
-					<div class="flex items-baseline justify-between gap-6">
-						<Eyebrow as="h2" class="font-semibold">{m.blog.moreWriting}</Eyebrow>
-						<a class="text-link font-ui text-sm" href="/post" data-astro-prefetch>
-							{m.home.viewAllPosts}
-						</a>
+					<!-- Sign-off, like the name and date at the foot of a letter. -->
+					<div class="flex flex-col items-end gap-0.5">
+						<Wordmark class="text-2xl" />
+						<time class="font-mono text-xs text-muted-foreground tabular-nums" datetime={isoDate}>
+							{post.date.getUTCFullYear()}·{formatPostMonthDay(post.date)}
+						</time>
 					</div>
-					{neighbors.length > 0 && (
-						<ul class="divide-y divide-border border-y border-border">
-							{neighbors.map(({ label, post: neighbor }) => (
-								<PostIndexRow
-									dateLabel={formatPostMonth(neighbor.date)}
-									href={`/post/${neighbor.slug}`}
-									meta={label}
-									slug={neighbor.slug}
-									summary={neighbor.summary}
-									title={neighbor.title}
-								/>
-							))}
-						</ul>
-					)}
-				</nav>
-			</StaggerReveal>
+
+					<nav aria-label={m.blog.moreWriting} class="mt-8 space-y-4">
+						<div class="flex items-baseline justify-between gap-6">
+							<Eyebrow as="h2" class="font-semibold">{m.blog.moreWriting}</Eyebrow>
+							<a class="text-link font-ui text-sm" href="/post" data-astro-prefetch>
+								{m.home.viewAllPosts}
+							</a>
+						</div>
+						{neighbors.length > 0 && (
+							<ul class="divide-y divide-border border-y border-border">
+								{neighbors.map(({ label, post: neighbor }) => (
+									<PostIndexRow
+										dateLabel={formatPostMonth(neighbor.date)}
+										href={`/post/${neighbor.slug}`}
+										meta={label}
+										slug={neighbor.slug}
+										summary={neighbor.summary}
+										title={neighbor.title}
+									/>
+								))}
+							</ul>
+						)}
+					</nav>
+				</StaggerReveal>
+			</div>
 		</Container>
 	</section>
 </RootLayout>

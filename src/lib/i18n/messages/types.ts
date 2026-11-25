@@ -116,6 +116,13 @@ export interface DesignSystemCopy {
 export interface Messages {
 	blog: {
 		goHome: string
+		lightbox: {
+			close: string
+			next: string
+			prev: string
+			zoom: string
+		}
+		linkCopied: string
 		moreWriting: string
 		newer: string
 		older: string
@@ -155,13 +162,17 @@ export interface Messages {
 		}
 	}
 	header: {
+		breadcrumbAriaLabel: string
 		goHome: string
+		home: string
+		skipToContent: string
 		theme: {
 			ariaLabel: string
 			dark: string
 			light: string
 			system: string
 		}
+		writing: string
 	}
 	home: {
 		bioLead: string
