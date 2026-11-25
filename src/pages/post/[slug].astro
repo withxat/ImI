@@ -3,6 +3,7 @@ import type { Locale } from '@/lib/i18n/constants'
 
 import { render } from 'astro:content'
 import CodeXml from '~icons/lucide/code-xml'
+import List from '~icons/lucide/list'
 
 import MiSansContentFont from '@/components/fonts/mi-sans-content-font.astro'
 import Container from '@/components/layout/container.astro'
@@ -115,7 +116,7 @@ const neighbors = index < 0
 						{/* One block, so the hidden fallback list adds no gap below the date. */}
 						<div>
 							<div class="flex items-center justify-between gap-4 font-ui text-sm text-muted-foreground">
-								<p class="flex flex-wrap items-baseline gap-x-2">
+								<p class="flex flex-wrap items-center gap-x-2 gap-y-1">
 									<time datetime={isoDate}>{formatPostDate(post.date, locale)}</time>
 									<span aria-hidden="true">·</span>
 									<span>{m.blog.readingTime(readingMinutes(post))}</span>
@@ -124,8 +125,12 @@ const neighbors = index < 0
 											<span aria-hidden="true" class="print:hidden">·</span>
 											<button
 												class="
-													text-link-muted cursor-pointer
-													aria-expanded:text-foreground
+													inline-flex cursor-pointer items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-muted-foreground transition-colors
+													duration-150
+													hover:bg-highlight-soft/25 hover:text-highlight-strong
+													aria-expanded:bg-highlight-soft/25 aria-expanded:text-foreground
+													dark:hover:bg-foreground/10
+													dark:aria-expanded:bg-foreground/10
 													print:hidden
 												"
 												aria-controls="post-sections"
@@ -133,7 +138,8 @@ const neighbors = index < 0
 												type="button"
 												data-section-outline-trigger
 											>
-												{m.blog.sectionCount(sections.length)}
+												<List aria-hidden="true" class="size-3.5 shrink-0 opacity-75" />
+												<span>{m.blog.sectionCount(sections.length)}</span>
 											</button>
 										</>
 									)}
