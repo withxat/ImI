@@ -12,8 +12,8 @@ const ja: Messages = {
 		pageTitle: 'Xat のアーカイブ置き場',
 		postCountSuffix: ' 本',
 		postTranslatedNotice: {
-			afterLink: 'に切り替えると著者による原文を読めます。',
-			beforeLink: 'この記事は中国語の原文をAIが翻訳したものです。サイトの言語を',
+			afterLink: 'に切り替えてください。',
+			beforeLink: 'この記事は中国語の原文をもとに AI が翻訳したものです。原文で読む場合は',
 			switchToChineseAriaLabel: 'サイトの表示言語を中文に切り替えて原文を表示する',
 		},
 		readingTime: (minutes: number) => `約 ${minutes} 分`,
@@ -129,7 +129,7 @@ const ja: Messages = {
 			slow: '0.25×',
 			title: 'モーション',
 		},
-		pageDescription: 'xat.sh を支えるデザインシステム。タイポグラフィ、カラートークン、三言語の組版、レイヤー、モーション。',
+		pageDescription: 'xat.sh のデザインシステム。タイポグラフィ、配色、三言語の組版、角丸と影、モーションまで、実行中の CSS からそのまま表示しています。',
 		pageTitle: 'Design System - Xat',
 		typography: {
 			families: {
@@ -185,19 +185,19 @@ const ja: Messages = {
 		},
 	},
 	home: {
-		bioLead: 'インターフェースを磨くのも、AI の可能性を探るのも好き。',
-		introAfterProducts: 'を形にする。',
+		bioLead: 'UI の細部を磨くのも、ちゃんと使いやすい AI ツールを作るのも好き。',
+		introAfterProducts: 'を作っています。',
 		introBeforeSystems: '',
-		introBetweenBadges: 'のおかげで、デザイン・実装・本当のニーズの間でバランスを取りながら、',
+		introBetweenBadges: 'から構造で考える癖がついていて、今はフロントエンドと',
 		metaDescription:
-			'AI とフロントエンドを軸に活動するデザインエンジニア。コード、デザイン、AI について書いています。',
+			'フロントエンドと AI プロダクトを作るデザインエンジニア、Xat の個人サイト。コードや UI、日々のメモを書いています。',
 		notFound: {
-			description: '引っ越したのか、最初からなかったのか。かわりに最近書いたものをどうぞ。',
+			description: 'リンクが変わったか、打ち間違いかもしれません。かわりに最近の記事をどうぞ。',
 			didYouMean: {
 				after: '」？',
 				before: 'もしかして「',
 			},
-			title: 'このページは迷子みたい',
+			title: 'ここには何もないみたい',
 		},
 		playName: '名前の発音を再生',
 		poke: {

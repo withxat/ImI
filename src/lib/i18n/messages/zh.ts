@@ -124,7 +124,7 @@ const zh: Messages = {
 			slow: '0.25×',
 			title: '动效',
 		},
-		pageDescription: '驱动 xat.sh 的设计系统 —— 字体、色彩、三语排版、层次与动效。',
+		pageDescription: 'xat.sh 的设计系统：字体、配色、三语排版、圆角阴影与动效，数值全部读自线上 CSS。',
 		pageTitle: '设计系统 - Xat',
 		typography: {
 			families: {
@@ -180,19 +180,19 @@ const zh: Messages = {
 		},
 	},
 	home: {
-		bioLead: '爱打磨界面，也喜欢探索 AI 的可能性。',
+		bioLead: '喜欢把界面磨顺手，也爱拿 AI 做些真正好用的东西。',
 		introAfterProducts: '。',
 		introBeforeSystems: '',
-		introBetweenBadges: '让我习惯在设计、工程与真实需求之间寻找平衡，去构建',
+		introBetweenBadges: '让我习惯从结构看问题，现在主要做前端和',
 		metaDescription:
-			'Design Engineer，专注 AI 与前端，写些关于前端、设计、AI 的文章。',
+			'Xat，Design Engineer，做前端与 AI 产品，写些关于代码、设计与日常的笔记。',
 		notFound: {
-			description: '可能搬家了，也可能从来没来过。先看看最近写的吧。',
+			description: '链接可能过期了，或者字敲错了。不如先看看最近写的文章。',
 			didYouMean: {
 				after: '》？',
 				before: '是不是在找《',
 			},
-			title: '这一页走丢了',
+			title: '这里什么也没有',
 		},
 		playName: '播放名字读音',
 		poke: {

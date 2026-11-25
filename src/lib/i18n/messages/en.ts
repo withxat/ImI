@@ -12,8 +12,8 @@ const en: Messages = {
 		pageTitle: 'Xat\'s Archive',
 		postCountSuffix: ' posts',
 		postTranslatedNotice: {
-			afterLink: ' to read the author-written source text.',
-			beforeLink: 'This article is an AI translation from the Chinese original. Switch the site language to ',
+			afterLink: ' if you prefer reading the original.',
+			beforeLink: 'Translated by AI from the Chinese original. Switch to ',
 			switchToChineseAriaLabel: 'Switch site language to Chinese for the original article',
 		},
 		readingTime: (minutes: number) => `${minutes} min read`,
@@ -129,7 +129,7 @@ const en: Messages = {
 			slow: '0.25×',
 			title: 'Motion',
 		},
-		pageDescription: 'The design system behind xat.sh: typography, color tokens, trilingual line breaking, layers, and motion.',
+		pageDescription: 'The design system for xat.sh: typography, color tokens, trilingual wrapping, shape, and motion, all read live from CSS.',
 		pageTitle: 'Design System - Xat',
 		typography: {
 			families: {
@@ -168,11 +168,11 @@ const en: Messages = {
 		emailCopied: 'Copied!',
 		moeIcp: 'Moe ICP Filing No. 20264698',
 		stats: {
-			afterOnline: ' wandering by',
-			afterTotal: ' times',
-			alone: 'Right now, it\'s just you wandering by',
-			beforeOnline: 'Right now, ',
-			beforeTotal: 'Spotted ',
+			afterOnline: 'here right now',
+			afterTotal: 'times',
+			alone: 'Just you here right now',
+			beforeOnline: '',
+			beforeTotal: 'Visited',
 		},
 	},
 	header: {
@@ -185,25 +185,25 @@ const en: Messages = {
 		},
 	},
 	home: {
-		bioLead: 'I love polishing interfaces and exploring what AI can do.',
+		bioLead: 'I like sweating the UI details and building AI tools that actually feel good to use.',
 		introAfterProducts: '.',
-		introBeforeSystems: 'A ',
-		introBetweenBadges: ' taught me to balance design, engineering, and real needs while building ',
+		introBeforeSystems: 'My ',
+		introBetweenBadges: ' shapes how I think about structure; these days I mostly build frontend and ',
 		metaDescription:
-			'Design Engineer focused on AI and frontend, writing about code, design, and AI.',
+			'Xat, a Design Engineer working on frontend and AI products, writing about code, interfaces, and everyday tools.',
 		notFound: {
-			description: 'Maybe it moved, maybe it was never here. Here\'s some recent writing instead.',
+			description: 'The link may have moved or had a typo. Here\'s some recent writing instead.',
 			didYouMean: {
 				after: '”?',
 				before: 'Maybe you meant “',
 			},
-			title: 'This page wandered off',
+			title: 'Nothing at this address',
 		},
 		playName: 'Play name pronunciation',
 		poke: {
 			label: 'Poke Xat',
-			lines: ['Hey!', 'Yes?', 'That tickles', 'Okay, okay'],
-			sulk: 'Hmph. Not talking to you.',
+			lines: ['Hey!', 'Yeah?', 'Easy there', 'Okay, okay'],
+			sulk: 'Alright, I\'m ignoring you now.',
 		},
 		projectsEyebrow: 'Projects',
 		role: 'Design Engineer',

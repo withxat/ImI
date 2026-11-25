@@ -1,6 +1,6 @@
 role: Design Engineer · 前端与 AI 产品
 # One line: a folded scalar would join CJK lines with a space.
-summary: 做 AI 原生产品的前端，并承担配套的服务端开发。工作覆盖交互、组件、设计工具到工程化的完整链路：从流式对话和 Agent 配置界面，到主题编辑器和 Figma 插件。业余写开源和自己的小工具，这个网站本身也是作品的一部分。
+summary: 做 AI 产品的前端，也写配套的服务端代码。平时既抠交互和组件，也做主题编辑器、Figma 插件这类设计工具。业余写开源和自己的小工具，这个网站也是作品的一部分。
 contact:
   - label: xat.sh
     href: https://xat.sh
@@ -13,7 +13,7 @@ experience:
   - organization: 华中师范大学
     role: Design Engineer
     start: 2024-05
-    summary: 在学校的教育 AI 产品团队负责前端与设计实现，主导多个产品完成从 0 到 1 搭建、上线与持续迭代。合并 PR 460 余个，Code Review 同事 PR 150 余个；也为实习生做 Code Review，做过前端入门的内部分享。
+    summary: 在学校的教育 AI 产品团队负责前端与设计实现，多个产品从立项起由我搭起前端并一路推到上线和维护。合并 PR 460 余个，Code Review 同事 PR 150 余个；也带实习生看代码，做过前端入门内部分享。
     projects:
       - name: 教育 AI 智能体平台
         start: 2025-09
