@@ -13,8 +13,7 @@ import PostIndexRow from '@/components/post/post-index-row.astro'
 import RootLayout from '@/layouts/root-layout.astro'
 import { formatPostMonthDay, getPostsByYear } from '@/lib/blog'
 import { getMessages } from '@/lib/i18n/messages'
-import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/rss'
-import { pageOgImageUrl } from '@/lib/seo-data'
+import { pageOgImageUrl, RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/seo-data'
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
