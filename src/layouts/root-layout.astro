@@ -10,12 +10,13 @@ import Footer from '@/components/layout/footer.astro'
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
 import { RSS_FEED_URL, RSS_FEED_URL_EN, RSS_FEED_URL_JA } from '@/lib/seo-data'
-import { getThemeBootstrapScript } from '@/lib/theme/constants'
+import { getThemeBootstrapScript, THEME_COLOR_DARK, THEME_COLOR_LIGHT } from '@/lib/theme/constants'
 import { pageTransition } from '@/lib/view-transition'
 
 import '@/styles/globals.css'
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
+const m = getMessages(locale)
 const rssZh = getMessages('zh').blog
 const rssEn = getMessages('en').blog
 const rssJa = getMessages('ja').blog
@@ -31,8 +32,8 @@ const designFavicon = isOnDesignPage
 	<head>
 		<meta charset="utf-8" />
 		<meta content="width=device-width, initial-scale=1" name="viewport" />
-		<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color" />
-		<meta content="#252529" media="(prefers-color-scheme: dark)" name="theme-color" />
+		<meta content={THEME_COLOR_LIGHT} media="(prefers-color-scheme: light)" name="theme-color" />
+		<meta content={THEME_COLOR_DARK} media="(prefers-color-scheme: dark)" name="theme-color" />
 
 		<link crossorigin="anonymous" href="https://avatars.githubusercontent.com" rel="preconnect" />
 		<link href="/site.webmanifest" rel="manifest" />
@@ -60,6 +61,17 @@ const designFavicon = isOnDesignPage
 		<slot name="head" />
 	</head>
 	<body class="relative isolate min-h-screen">
+		<a
+			class="
+				sr-only fixed top-3 left-3 z-70 rounded-md border border-border bg-popover font-ui
+				text-sm font-medium text-foreground shadow-halo
+				focus:not-sr-only focus:px-3 focus:py-1.5
+				print:hidden
+			"
+			href="#main-content"
+		>
+			{m.header.skipToContent}
+		</a>
 		<div
 			class="
 				min-h-screen pt-8
@@ -68,7 +80,14 @@ const designFavicon = isOnDesignPage
 			data-site-locale={locale}
 			transition:animate={pageTransition}
 		>
-			<main class="min-h-screen">
+			<main
+				class="
+					min-h-screen
+					focus:outline-none
+				"
+				id="main-content"
+				tabindex="-1"
+			>
 				<slot />
 			</main>
 		</div>

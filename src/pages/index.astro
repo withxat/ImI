@@ -19,7 +19,7 @@ import Reveal from '@/components/motion/reveal.astro'
 import StaggerReveal from '@/components/motion/stagger-reveal.astro'
 import PostIndexRow from '@/components/post/post-index-row.astro'
 import RootLayout from '@/layouts/root-layout.astro'
-import { formatPostMonthDay, getAllPosts } from '@/lib/blog'
+import { formatPostMonth, formatPostMonthDay, getAllPosts } from '@/lib/blog'
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getIntroBadgeLabel } from '@/lib/i18n/intro-badges'
 import { getMessages } from '@/lib/i18n/messages'
@@ -36,6 +36,7 @@ const productsLabel = getIntroBadgeLabel(locale, 'products')
 const introAfterProducts = [...m.home.introAfterProducts]
 const allPosts = await getAllPosts(locale)
 const posts = allPosts.slice(0, 4)
+const postsSpanMultipleYears = new Set(posts.map(post => post.date.getUTCFullYear())).size > 1
 const baseCapabilities = await getCapabilities()
 const allProjects = baseCapabilities
 	.flatMap((cap, i) => {
@@ -126,7 +127,7 @@ const avatarImage = await getImage({ height: 128, src: PROFILE_AVATAR_SRC, width
 						<ul class="divide-y divide-border border-y border-border">
 							{posts.map(post => (
 								<PostIndexRow
-									dateLabel={formatPostMonthDay(post.date)}
+									dateLabel={postsSpanMultipleYears ? formatPostMonth(post.date) : formatPostMonthDay(post.date)}
 									href={`/post/${post.slug}`}
 									slug={post.slug}
 									summary={post.summary}
@@ -146,8 +147,9 @@ const avatarImage = await getImage({ height: 128, src: PROFILE_AVATAR_SRC, width
 						<div class="space-y-3">
 							<article
 								class="
-									rounded-xl highlight-surface highlight-surface-hover bg-popover p-4 transition-[border-color,box-shadow] duration-150 ease-out
+									rounded-xl highlight-surface bg-popover p-4
 									sm:p-5
+									dark:border-highlight-brand/25
 								"
 							>
 								<div class="flex flex-wrap items-center gap-x-2 gap-y-1">

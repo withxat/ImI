@@ -1069,6 +1069,8 @@
 	.bubble-right {
 		top: 50%;
 		left: calc(100% + 0.75rem);
+		max-width: calc(100vw - 6.5rem);
+		white-space: normal;
 		transform-origin: 0 50%;
 		--bubble-at: translateY(-50%);
 	}
@@ -1087,6 +1089,13 @@
 		--bubble-at: translateX(-50%);
 	}
 
+	/* Body-mounted bubble positioned at an anchor's top center (avoids ancestor clip-path on h2). */
+	.bubble-top.bubble-floating {
+		bottom: auto;
+		z-index: 60;
+		--bubble-at: translate(-50%, calc(-100% - 0.5rem));
+	}
+
 	.bubble-top::after {
 		bottom: -4.5px;
 		left: calc(50% - 4px);
@@ -1094,8 +1103,9 @@
 		border-bottom: 1px solid var(--bubble-edge);
 	}
 
-	/* Footer Email (src/client/email-copy.ts): with a mouse, a copy button grows after the link while
-	 * it is hovered or focused, and stays out while its "copied" bubble shows. Touch keeps the plain link. */
+	/* Footer & resume Email (src/client/email-copy.ts): with a mouse, a copy button grows after
+	 * the link while hovered or focused, and stays out while its "copied" bubble shows. On touch
+	 * devices it stays quietly visible so visitors can copy the address without opening Mail. */
 	.email-copy-slot {
 		position: relative;
 		display: flex;
@@ -1147,7 +1157,19 @@
 
 	@media (hover: none), (pointer: coarse) {
 		.email-copy-slot {
-			display: none;
+			width: 1.5rem;
+			margin-right: -0.3125rem;
+		}
+
+		.email-copy-button {
+			opacity: 0.72;
+			pointer-events: auto;
+			transform: none;
+		}
+
+		.email-copy[data-copied] .email-copy-button {
+			color: var(--color-highlight-text);
+			opacity: 1;
 		}
 	}
 
@@ -1753,6 +1775,7 @@ html[data-astro-transition] .highlight-surface {
 		--highlight-soft: oklch(0.72 0.018 20);
 		--highlight-brand: oklch(0.84 0.08 58);
 		--highlight-text: oklch(0.84 0.08 58);
+		--highlight-icon: color-mix(in oklab, var(--foreground) 36%, var(--highlight-soft));
 		--selection: color-mix(in srgb, oklch(0.84 0.08 58) 20%, oklch(0.145 0.004 260));
 		--surface: oklch(0.19 0.005 260);
 		--surface-foreground: oklch(0.965 0.006 260);

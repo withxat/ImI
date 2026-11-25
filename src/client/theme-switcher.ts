@@ -1,20 +1,26 @@
 import type { Theme } from '@/lib/theme/read-stored-theme'
 
-import { THEME_STORAGE_KEY } from '@/lib/theme/constants'
+import { THEME_COLOR_DARK, THEME_COLOR_LIGHT, THEME_STORAGE_KEY } from '@/lib/theme/constants'
 import { readStoredTheme } from '@/lib/theme/read-stored-theme'
 
 let dispose: (() => void) | null = null
 
+function syncThemeColorMeta(isDark: boolean) {
+	const color = isDark ? THEME_COLOR_DARK : THEME_COLOR_LIGHT
+	document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+		meta.setAttribute('content', color)
+	})
+}
+
 function applyTheme(theme: Theme) {
 	const el = document.documentElement
-	if (theme === 'system') {
-		el.classList.toggle('dark', matchMedia('(prefers-color-scheme:dark)').matches)
-		el.classList.remove('light')
-	}
-	else {
-		el.classList.toggle('dark', theme === 'dark')
-		el.classList.toggle('light', theme === 'light')
-	}
+	const isDark = theme === 'system'
+		? matchMedia('(prefers-color-scheme:dark)').matches
+		: theme === 'dark'
+
+	el.classList.toggle('dark', isDark)
+	el.classList.toggle('light', theme === 'light')
+	syncThemeColorMeta(isDark)
 }
 
 function syncCurrentIcon(theme: Theme) {
