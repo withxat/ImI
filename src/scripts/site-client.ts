@@ -1,14 +1,14 @@
-import { initArticleBodies } from '@/client/article-reveal'
+import { disposeArticleBodies, initArticleBodies } from '@/client/article-reveal'
 import { initAvatarPokes } from '@/client/avatar-poke'
 import { disposeAll, registerModule, runAll } from '@/client/client-registry'
 import { greetConsole } from '@/client/console-greeting'
 import { destroyCustomScrollbar, initCustomScrollbar, refreshCustomScrollbarLayout } from '@/client/custom-scrollbar'
 import { initEmailCopy } from '@/client/email-copy'
 import { initIntroBadges } from '@/client/intro-badge'
-import { initLinkedPageFontPrefetch } from '@/client/linked-page-font-prefetch'
+import { disposeLinkedPageFontPrefetch, initLinkedPageFontPrefetch } from '@/client/linked-page-font-prefetch'
 import { initMdxCopyButtons } from '@/client/mdx-copy'
-import { initNameAudioButtons } from '@/client/name-audio'
-import { initPageReveals } from '@/client/page-reveal'
+import { disposeNameAudioButtons, initNameAudioButtons } from '@/client/name-audio'
+import { disposePageReveals, initPageReveals } from '@/client/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/client/photoswipe-gallery'
 import { disposePostOutline, initPostOutline } from '@/client/post-outline'
 import { disposePrimeBindings, initPrimeBindings } from '@/client/prime-bindings'
@@ -22,10 +22,12 @@ function shouldAnimatePageEntrance() {
 
 // Register all client modules
 registerModule('page-reveal', {
+	dispose: () => disposePageReveals(),
 	init: animate => initPageReveals({ animate }),
 })
 
 registerModule('article-reveal', {
+	dispose: () => disposeArticleBodies(),
 	init: animate => initArticleBodies(animate),
 })
 
@@ -53,6 +55,7 @@ registerModule('intro-badges', {
 })
 
 registerModule('name-audio', {
+	dispose: () => disposeNameAudioButtons(),
 	init: () => initNameAudioButtons(),
 })
 
@@ -73,6 +76,7 @@ registerModule('mdx-copy', {
 })
 
 registerModule('font-prefetch', {
+	dispose: () => disposeLinkedPageFontPrefetch(),
 	init: () => initLinkedPageFontPrefetch(),
 })
 

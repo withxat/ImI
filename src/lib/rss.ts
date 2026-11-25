@@ -12,8 +12,8 @@ import { unified } from 'unified'
 
 import { htmlLangFor } from '@/lib/i18n/constants'
 import { getMessages } from '@/lib/i18n/messages'
+import { SITE_URL } from '@/lib/seo-data'
 
-const SITE_URL = 'https://xat.sh'
 const RSS_CACHE_CONTROL = 'public, max-age=3600, s-maxage=86400'
 
 interface Post {
@@ -82,10 +82,3 @@ export async function generateRssFeed(posts: Post[], locale: Locale) {
 	response.headers.set('Content-Type', 'application/rss+xml; charset=utf-8')
 	return response
 }
-
-/** Default feed URL (Chinese); existing subscribers stay on this path. */
-export const RSS_FEED_URL = `${SITE_URL}/feed.xml`
-
-export const RSS_FEED_URL_EN = `${SITE_URL}/feed.en.xml`
-
-export const RSS_FEED_URL_JA = `${SITE_URL}/feed.ja.xml`

@@ -5,6 +5,10 @@ import { defaultOgImageUrl, pageOgImageUrl, postOgImageUrl } from '@/lib/og/path
 
 export const SITE_URL = 'https://xat.sh'
 export const SITE_NAME = 'Xat'
+/** Default feed URL (Chinese); existing subscribers stay on this path. */
+export const RSS_FEED_URL = `${SITE_URL}/feed.xml`
+export const RSS_FEED_URL_EN = `${SITE_URL}/feed.en.xml`
+export const RSS_FEED_URL_JA = `${SITE_URL}/feed.ja.xml`
 export const DEFAULT_DESCRIPTION
 	= 'Xat, a Design Engineer working on frontend and AI products.'
 /** Direct CDN URL avoids `github.com/...png` redirect and improves LCP discovery. */

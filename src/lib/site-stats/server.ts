@@ -31,16 +31,43 @@ async function siteStatsRequest(
 	return stub.fetch(`https://site-stats.internal${pathname}`, init)
 }
 
-export async function fetchSiteStats(env: Env): Promise<SiteStatsSnapshot> {
+const FALLBACK_STATS: SiteStatsSnapshot = {
+	onlineNow: 0,
+	totalViews: SITE_STATS_INITIAL_TOTAL,
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs?: number): Promise<null | T> {
+	if (!timeoutMs)
+		return promise
+
+	let timer: ReturnType<typeof setTimeout> | undefined
 	try {
-		const response = await siteStatsRequest(env, '/stats')
+		return await Promise.race([
+			promise,
+			new Promise<null>((resolve) => {
+				timer = setTimeout(resolve, timeoutMs, null)
+			}),
+		])
+	}
+	finally {
+		if (timer !== undefined)
+			clearTimeout(timer)
+	}
+}
+
+export async function fetchSiteStats(
+	env: Env,
+	options?: { timeoutMs?: number },
+): Promise<SiteStatsSnapshot> {
+	try {
+		const response = await withTimeout(siteStatsRequest(env, '/stats'), options?.timeoutMs)
 		if (!response?.ok)
-			return { onlineNow: 0, totalViews: SITE_STATS_INITIAL_TOTAL }
+			return FALLBACK_STATS
 
 		return await response.json() as SiteStatsSnapshot
 	}
 	catch {
-		return { onlineNow: 0, totalViews: SITE_STATS_INITIAL_TOTAL }
+		return FALLBACK_STATS
 	}
 }
 
@@ -57,15 +84,20 @@ export async function recordSiteView(env: Env, sessionId: string) {
 	}
 }
 
-export async function heartbeatSitePresence(env: Env, sessionId: string) {
+export async function heartbeatSitePresence(env: Env, sessionId: string): Promise<null | SiteStatsSnapshot> {
 	try {
-		await siteStatsRequest(env, '/heartbeat', {
+		const response = await siteStatsRequest(env, '/heartbeat', {
 			body: JSON.stringify({ sessionId }),
 			headers: { 'Content-Type': 'application/json' },
 			method: 'POST',
 		})
+		if (!response?.ok)
+			return null
+
+		return await response.json() as SiteStatsSnapshot
 	}
 	catch {
 		// Stats are best-effort; never block page rendering.
+		return null
 	}
 }

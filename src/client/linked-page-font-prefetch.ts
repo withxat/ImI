@@ -60,14 +60,22 @@ function seedExistingFontHints() {
 	}
 }
 
-export function initLinkedPageFontPrefetch() {
+export function disposeLinkedPageFontPrefetch() {
 	dispose?.()
+	dispose = null
+}
+
+export function initLinkedPageFontPrefetch() {
+	disposeLinkedPageFontPrefetch()
 	seedExistingFontHints()
 
-	if (!('IntersectionObserver' in window) || !('Worker' in window)) {
-		dispose = null
+	if (!('IntersectionObserver' in window) || !('Worker' in window))
 		return
-	}
+
+	const anchors = [...document.querySelectorAll<HTMLAnchorElement>('a[data-astro-prefetch="viewport"][href]')]
+		.filter(anchor => !observedAnchors.has(anchor))
+	if (anchors.length === 0)
+		return
 
 	const worker = createFontWorker()
 	worker.addEventListener('message', (event: MessageEvent<WorkerMessage>) => {
@@ -88,9 +96,7 @@ export function initLinkedPageFontPrefetch() {
 		}
 	}, { rootMargin: '320px 0px' })
 
-	for (const anchor of document.querySelectorAll<HTMLAnchorElement>('a[data-astro-prefetch="viewport"][href]')) {
-		if (observedAnchors.has(anchor))
-			continue
+	for (const anchor of anchors) {
 		observedAnchors.add(anchor)
 		observer.observe(anchor)
 	}

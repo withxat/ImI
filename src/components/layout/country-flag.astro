@@ -3,27 +3,42 @@ interface Props {
 	code: null | string
 }
 
+const FLAG_CODES = new Set(
+	[
+		'ad ae af ag ai al am an ao aq ar as at au aw ax az ba bb bd be bf bg bh',
+		'bi bj bl bm bn bo bq br bs bt bu bv bw by bz ca cc cd cf cg ch ci ck cl',
+		'cm cn co cp cr cs cu cv cw cy cz dd de dj dk dm do dy dz ec ee eg eh er',
+		'es et fi fj fk fm fo fr fx ga gb gd ge gf gg gh gi gl gm gn gp gq gr gs',
+		'gt gw gy hk hm hn hr ht hu hv ic id ie il im in io iq ir is it je jm jo',
+		'jp ke kg kh ki km kn kp kr kw ky kz la lb lc li lk lr ls lt lu lv ly ma',
+		'mc md me mf mg mh mk ml mm mn mo mq mr mt mu mv mw mx my na nc ne ng nh',
+		'ni nl no np nr nu nz om pa pe pf pg ph pk pl pm pn pr ps pt pw py qa rh',
+		'ro rs ru rw sa sb sc sd se sg sh si sj sk sl sm sn so sr ss st su sv sx',
+		'sy sz tc td tg th tj tl tm tn to tt tv tw tz ua ug uk um us uy uz va vc',
+		'vd ve vg vi vn vu ws xk yd ye yu za zm zw',
+	].join(' ').split(' '),
+)
+
 const { code } = Astro.props as Props
-
-const flagSvgs = import.meta.glob<string>('../../assets/flags/*.svg', {
-	eager: true,
-	import: 'default',
-	query: '?raw',
-})
-
-const iso = code?.trim().toUpperCase()
-const svg = iso ? flagSvgs[`../../assets/flags/${iso.toLowerCase()}.svg`] : null
+const iso = code?.trim().toLowerCase()
+const flagSrc = iso && FLAG_CODES.has(iso) ? `/flags/${iso}.svg` : null
 ---
 
-{svg
+{flagSrc
 	? (
 			<span
-				class="
-					inline-flex h-[1em] w-[1.33em] shrink-0 items-center leading-none
-					[&_svg]:block [&_svg]:size-full
-				"
 				aria-hidden="true"
-				set:html={svg}
-			/>
+				class="inline-flex h-[1em] w-[1.33em] shrink-0 items-center leading-none"
+			>
+				<img
+					alt=""
+					class="block size-full object-contain"
+					decoding="async"
+					height="32"
+					loading="lazy"
+					src={flagSrc}
+					width="32"
+				/>
+			</span>
 		)
 	: null}

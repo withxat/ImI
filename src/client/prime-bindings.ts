@@ -1,10 +1,5 @@
-import { createAccordion } from '@data-slot/accordion'
 import { getRootBinding } from '@data-slot/core'
-import { createDialog } from '@data-slot/dialog'
 import { createDropdownMenu } from '@data-slot/dropdown-menu'
-import { createHoverCard } from '@data-slot/hover-card'
-import { createPopover } from '@data-slot/popover'
-import { createTooltip } from '@data-slot/tooltip'
 
 // Each Prime UI component vendored under src/components/ui/<x>/<X>.astro ships an
 // `<script>` block that calls its create<X>(el) factory once on first paint. Astro
@@ -25,28 +20,63 @@ import { createTooltip } from '@data-slot/tooltip'
 //     controllers spawned by Prime's own inline scripts, so reuseRootBinding
 //     does not fire its "called more than once" console.warn), then freshly
 //     binds every root via createXxx(root).
+//
+// Only `dropdown-menu` (header theme switcher) is imported eagerly; page-specific
+// widgets (`hover-card` on `/`, `accordion` in MDX posts) load on demand when
+// matching DOM slots exist so other pages do not ship their code.
 
 interface PrimeController {
 	destroy?: () => void
 }
 
-interface Binding {
-	create: (root: Element) => unknown
+type PrimeFactory = (root: Element) => unknown
+
+interface SyncBinding {
+	create: PrimeFactory
 	key: string
 	slot: string
 }
 
-const BINDINGS: Binding[] = [
-	{ create: createAccordion, key: '@data-slot/accordion', slot: 'accordion' },
-	{ create: createDialog, key: '@data-slot/dialog', slot: 'dialog' },
+interface LazyBinding {
+	key: string
+	load: () => Promise<PrimeFactory>
+	slot: string
+}
+
+const SYNC_BINDINGS: SyncBinding[] = [
 	{ create: createDropdownMenu, key: '@data-slot/dropdown-menu', slot: 'dropdown-menu' },
-	{ create: createHoverCard, key: '@data-slot/hover-card', slot: 'hover-card' },
-	{ create: createPopover, key: '@data-slot/popover', slot: 'popover' },
-	{ create: createTooltip, key: '@data-slot/tooltip', slot: 'tooltip' },
 ]
 
+const LAZY_BINDINGS: LazyBinding[] = [
+	{
+		key: '@data-slot/accordion',
+		load: () => import('@data-slot/accordion').then(m => m.createAccordion),
+		slot: 'accordion',
+	},
+	{
+		key: '@data-slot/hover-card',
+		load: () => import('@data-slot/hover-card').then(m => m.createHoverCard),
+		slot: 'hover-card',
+	},
+]
+
+const ALL_SLOTS = [...SYNC_BINDINGS, ...LAZY_BINDINGS]
+
+let generation = 0
+
+function bindRoot(slot: string, create: PrimeFactory, root: Element) {
+	try {
+		create(root)
+	}
+	catch (error) {
+		console.error(`[prime] create ${slot} failed`, error)
+	}
+}
+
 export function disposePrimeBindings() {
-	for (const { key, slot } of BINDINGS) {
+	generation++
+
+	for (const { key, slot } of ALL_SLOTS) {
 		document.querySelectorAll(`[data-slot="${slot}"]`).forEach((root) => {
 			const controller = getRootBinding<PrimeController>(root, key)
 			if (!controller?.destroy)
@@ -64,14 +94,24 @@ export function disposePrimeBindings() {
 
 export function initPrimeBindings() {
 	disposePrimeBindings()
+	const currentGeneration = generation
 
-	for (const { create, slot } of BINDINGS) {
-		document.querySelectorAll(`[data-slot="${slot}"]`).forEach((root) => {
-			try {
-				create(root)
-			}
-			catch (error) {
-				console.error(`[prime] create ${slot} failed`, error)
+	for (const { create, slot } of SYNC_BINDINGS) {
+		document.querySelectorAll(`[data-slot="${slot}"]`).forEach(root => bindRoot(slot, create, root))
+	}
+
+	for (const { load, slot } of LAZY_BINDINGS) {
+		const roots = [...document.querySelectorAll(`[data-slot="${slot}"]`)]
+		if (roots.length === 0)
+			continue
+
+		void load().then((create) => {
+			if (generation !== currentGeneration)
+				return
+
+			for (const root of roots) {
+				if (root.isConnected)
+					bindRoot(slot, create, root)
 			}
 		})
 	}

@@ -71,7 +71,10 @@ async function openPhotoSwipe(el: HTMLImageElement) {
 		activePswp = null
 	}
 
-	const { default: PhotoSwipe } = await import('photoswipe')
+	const [{ default: PhotoSwipe }] = await Promise.all([
+		import('photoswipe'),
+		import('@/styles/photoswipe.css'),
+	])
 	const pswp = new PhotoSwipe({
 		allowPanToNext: false,
 		appendToEl: document.body,

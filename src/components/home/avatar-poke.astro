@@ -33,10 +33,11 @@ const { copy } = Astro.props as Props
 					alt="Xat"
 					class="size-full object-cover"
 					fetchpriority="high"
+					height={128}
 					loading="eager"
 					referrerpolicy="no-referrer"
 					src={PROFILE_AVATAR_SRC}
-					inferSize
+					width={128}
 				/>
 			</AvatarImage>
 			<AvatarFallback class="rounded-xl">X</AvatarFallback>

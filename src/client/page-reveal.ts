@@ -11,6 +11,23 @@ export interface PageRevealOptions {
 	animate?: boolean
 }
 
+let activeObserver: IntersectionObserver | null = null
+
+function getRevealObserver(): IntersectionObserver {
+	if (!activeObserver) {
+		activeObserver = createScrollObserver((observedEl) => {
+			revealElement(observedEl, { instant: false })
+			activeObserver?.unobserve(observedEl)
+		})
+	}
+	return activeObserver
+}
+
+export function disposePageReveals() {
+	activeObserver?.disconnect()
+	activeObserver = null
+}
+
 function initRevealElement(el: HTMLElement, animate: boolean) {
 	const baseDelay = Number(el.dataset.revealBaseDelay ?? 0.06)
 	const blur = Number(el.dataset.revealBlur ?? 10)
@@ -39,11 +56,7 @@ function initRevealElement(el: HTMLElement, animate: boolean) {
 
 		case 'observe': {
 			initRevealHidden(el, blur, y)
-			const io = createScrollObserver((observedEl) => {
-				revealElement(observedEl, { instant: false })
-				io.unobserve(observedEl)
-			})
-			io.observe(el)
+			getRevealObserver().observe(el)
 			break
 		}
 
@@ -97,11 +110,7 @@ export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 				child.style.opacity = '0'
 				child.style.filter = `blur(${blur}px)`
 				child.style.transform = `translate3d(0, ${y}px, 0)`
-				const io = createScrollObserver((observedEl) => {
-					revealElement(observedEl, { instant: false })
-					io.unobserve(observedEl)
-				})
-				io.observe(child)
+				getRevealObserver().observe(child)
 				break
 			}
 
@@ -117,6 +126,8 @@ export function initStaggerRoot(root: HTMLElement, animate: boolean) {
 }
 
 export function initPageReveals({ animate = true }: PageRevealOptions = {}) {
+	disposePageReveals()
+
 	for (const el of document.querySelectorAll<HTMLElement>('[data-reveal]'))
 		initRevealElement(el, animate)
 

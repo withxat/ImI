@@ -12,6 +12,23 @@
 /emoji/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Country flags served statically instead of inlined into the Worker bundle.
+/flags/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=31536000
+
+# Prerendered RSS feeds.
+/feed.xml
+  Content-Type: application/rss+xml; charset=utf-8
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/feed.en.xml
+  Content-Type: application/rss+xml; charset=utf-8
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/feed.ja.xml
+  Content-Type: application/rss+xml; charset=utf-8
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
 # Not content-hashed: rename the file when a font changes.
 /fonts/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=31536000

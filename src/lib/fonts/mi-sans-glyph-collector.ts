@@ -32,7 +32,7 @@ const CONTENT_CONFIG_FILES = [
 const POSTS_DIR = 'content/posts'
 // /resume renders its YAML in the UI stack, so its glyphs belong to the UI subset.
 const RESUME_DIR = 'content/resume'
-const FLAGS_DIR = 'src/assets/flags'
+const FLAGS_DIR = 'public/flags'
 const UI_LOCALES = ['en', 'zh', 'ja'] as const
 
 const STATIC_PUNCTUATION = '，。！？、；：「」『』（）《》—…·￥“”‘’～ー・'

@@ -143,6 +143,7 @@ export interface Messages {
 		copyEmail: string
 		/** Shown over that button once the address is copied. */
 		emailCopied: string
+		linksAriaLabel: string
 		moeIcp: string
 		stats: {
 			afterOnline: string

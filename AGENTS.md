@@ -126,7 +126,7 @@ Blog posts live in `content/posts/{locale}/*.mdx`. A post with `unlisted: true` 
 
 No database, no D1, no comments system, no third-party analytics.
 
-The one piece of server state is the footer view / presence counter: a single SQLite-backed Durable Object (`SiteStats`, `src/worker/site-stats.ts`) holding a total view count, a 24h per-session dedup table and in-memory online sessions. Middleware records views (bots filtered in `src/lib/site-stats/tracking.ts`); the client polls `/api/stats.json` and heartbeats `/api/presence.json`. Stats are best-effort and must never block rendering.
+The one piece of server state is the footer view / presence counter: a single SQLite-backed Durable Object (`SiteStats`, `src/worker/site-stats.ts`) holding a total view count, a 24h per-session dedup table and in-memory online sessions. Middleware records views (bots and font-prefetch requests filtered in `src/lib/site-stats/tracking.ts`); the client sends `POST /api/presence.json` (which returns updated stats in the same round-trip, falling back to `GET /api/stats.json` when needed) and pauses while the tab is hidden. Stats are best-effort (400ms SSR timeout) and must never block rendering.
 
 Site-level structured data (capabilities, categories) lives in `content/config.json`.
 
@@ -151,7 +151,7 @@ Current pages:
 | `/design` | SSR | living design spec, values read from running CSS |
 | `/resume` | SSR | locale-dependent; content from `content/resume/{locale}.yaml`; A4 print stylesheet |
 | `/404` | SSR | locale-dependent: copy and latest posts follow the visitor's locale |
-| `feed.xml`, `feed.en.xml`, `feed.ja.xml` | SSR | RSS feeds |
+| `feed.xml`, `feed.en.xml`, `feed.ja.xml` | static (build) | prerendered RSS feeds (`export const prerender = true`) |
 | `/api/stats.json` (GET), `/api/presence.json` (POST) | SSR | site stats, `no-store` |
 | `/sitemap-index.xml`, `/sitemap-0.xml` | static (build) | `@astrojs/sitemap`, zh canonical URLs |
 

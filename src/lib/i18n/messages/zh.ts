@@ -161,6 +161,7 @@ const zh: Messages = {
 	footer: {
 		copyEmail: '复制邮箱地址',
 		emailCopied: '复制好啦',
+		linksAriaLabel: '外部链接',
 		moeIcp: '萌ICP备20264698号',
 		stats: {
 			afterOnline: '人路过',

@@ -37,42 +37,63 @@ const isRemote = src.startsWith('http://') || src.startsWith('https://')
 const remoteFullSize = isRemote
 	? await getImage({ inferSize: true, src })
 	: null
+const remoteWidth = typeof remoteFullSize?.attributes.width === 'number' ? remoteFullSize.attributes.width : undefined
+const remoteHeight = typeof remoteFullSize?.attributes.height === 'number' ? remoteFullSize.attributes.height : undefined
 ---
 
 <figure class={cn('my-8', className)}>
-	{isRemote
+	{isRemote && remoteWidth && remoteHeight
 		? (
 				<Image
 					alt={alt}
 					class="rounded-lg"
 					data-pswp-fullsrc={src}
-					data-pswp-height={remoteFullSize?.attributes.height}
-					data-pswp-width={remoteFullSize?.attributes.width}
+					data-pswp-height={remoteHeight}
+					data-pswp-width={remoteWidth}
 					decoding={decoding}
 					fetchpriority={fetchpriority}
+					height={remoteHeight}
 					loading={loading}
 					sizes={sizes ?? ARTICLE_IMAGE_SIZES}
 					src={src}
+					width={remoteWidth}
 					widths={ARTICLE_IMAGE_WIDTHS}
-					inferSize
 					{...rest}
 				/>
 			)
-		: (
-				<Image
-					alt={alt}
-					class="rounded-lg"
-					decoding={decoding}
-					fetchpriority={fetchpriority}
-					height={height ?? 720}
-					loading={loading}
-					sizes={sizes ?? ARTICLE_IMAGE_SIZES}
-					src={src}
-					width={width ?? 1280}
-					widths={ARTICLE_IMAGE_WIDTHS}
-					{...rest}
-				/>
-			)}
+		: isRemote
+			? (
+					<Image
+						alt={alt}
+						class="rounded-lg"
+						data-pswp-fullsrc={src}
+						data-pswp-height={remoteFullSize?.attributes.height}
+						data-pswp-width={remoteFullSize?.attributes.width}
+						decoding={decoding}
+						fetchpriority={fetchpriority}
+						loading={loading}
+						sizes={sizes ?? ARTICLE_IMAGE_SIZES}
+						src={src}
+						widths={ARTICLE_IMAGE_WIDTHS}
+						inferSize
+						{...rest}
+					/>
+				)
+			: (
+					<Image
+						alt={alt}
+						class="rounded-lg"
+						decoding={decoding}
+						fetchpriority={fetchpriority}
+						height={height ?? 720}
+						loading={loading}
+						sizes={sizes ?? ARTICLE_IMAGE_SIZES}
+						src={src}
+						width={width ?? 1280}
+						widths={ARTICLE_IMAGE_WIDTHS}
+						{...rest}
+					/>
+				)}
 	{alt && (
 		<figcaption class="text-center text-sm text-muted-foreground">
 			{alt}

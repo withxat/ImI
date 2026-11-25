@@ -44,12 +44,16 @@ async function fetchStats() {
 	return response.json() as Promise<SiteStatsPayload>
 }
 
-async function sendPresence() {
-	await fetch('/api/presence.json', {
+async function sendPresence(): Promise<null | SiteStatsPayload> {
+	const response = await fetch('/api/presence.json', {
 		cache: 'no-store',
 		credentials: 'same-origin',
 		method: 'POST',
 	})
+	if (response.status !== 200)
+		return null
+
+	return response.json() as Promise<SiteStatsPayload>
 }
 
 function upgradeDigits(root: HTMLElement) {
@@ -93,20 +97,53 @@ export function initSiteStats() {
 
 	upgradeDigits(footer)
 
-	let pollTimer = 0
+	const ac = new AbortController()
+	let pollTimer: number | undefined
+	let inFlight = false
+	let disposed = false
 
 	const refresh = async () => {
-		await sendPresence()
-		const stats = await fetchStats()
-		if (stats)
-			applyStats(footer, stats)
+		if (inFlight || disposed || document.hidden)
+			return
+		inFlight = true
+		try {
+			const stats = (await sendPresence()) ?? (await fetchStats())
+			if (stats && !disposed)
+				applyStats(footer, stats)
+		}
+		catch {}
+		finally {
+			inFlight = false
+		}
 	}
 
-	void refresh()
-	pollTimer = window.setInterval(() => void refresh(), POLL_MS)
+	const stopPolling = () => {
+		if (pollTimer !== undefined) {
+			window.clearInterval(pollTimer)
+			pollTimer = undefined
+		}
+	}
+
+	const startPolling = () => {
+		stopPolling()
+		void refresh()
+		pollTimer = window.setInterval(() => void refresh(), POLL_MS)
+	}
+
+	if (!document.hidden)
+		startPolling()
+
+	document.addEventListener('visibilitychange', () => {
+		if (document.hidden)
+			stopPolling()
+		else
+			startPolling()
+	}, { signal: ac.signal })
 
 	return () => {
-		window.clearInterval(pollTimer)
+		disposed = true
+		stopPolling()
+		ac.abort()
 	}
 }
 
