@@ -136,6 +136,15 @@ const colorModes = [
 	{ key: 'dark', scope: 'theme-dark' },
 ] as const
 
+const designSections = [
+	{ id: 'typography', label: m.design.typography.title },
+	{ id: 'colors', label: m.design.colors.title },
+	{ id: 'wrapping', label: m.design.wrapping.title },
+	{ id: 'geometry', label: m.design.geometry.title },
+	{ id: 'motion', label: m.design.motion.title },
+]
+
+const sectionHeadingClass = 'scroll-mt-8 text-2xl font-medium text-foreground focus:outline-none'
 const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-cols-[minmax(0,1fr)_12rem_12rem]'
 ---
 
@@ -186,14 +195,54 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 								/>
 							</span>
 						</button>
-						<h1 class="inline-flex items-end text-3xl font-medium text-foreground">
-							{m.design.eyebrow}
-						</h1>
+						<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+							<h1 class="inline-flex items-end text-3xl font-medium text-foreground">
+								{m.design.eyebrow}
+							</h1>
+							<button
+								class="
+									text-link-muted cursor-pointer font-ui text-xs
+									aria-expanded:text-foreground
+									print:hidden
+								"
+								aria-controls="design-sections"
+								aria-expanded="false"
+								type="button"
+								data-section-outline-trigger
+							>
+								{m.blog.sectionCount(designSections.length)}
+							</button>
+						</div>
+						<nav
+							class="
+								mt-3 font-ui text-sm
+								print:hidden
+							"
+							aria-label={m.blog.toc}
+							id="design-sections"
+							hidden
+						>
+							<ol class="flex flex-wrap gap-x-4 gap-y-1.5">
+								{designSections.map(section => (
+									<li>
+										<a
+											class="
+												text-muted-foreground transition-colors duration-150
+												hover:text-foreground
+											"
+											href={`#${section.id}`}
+										>
+											{section.label}
+										</a>
+									</li>
+								))}
+							</ol>
+						</nav>
 					</div>
 
 					<!-- 1. Typography -->
 					<section class="space-y-10">
-						<h2 class="text-2xl font-medium text-foreground">{m.design.typography.title}</h2>
+						<h2 class={sectionHeadingClass} id="typography" tabindex="-1">{m.design.typography.title}</h2>
 
 						<ul class="divide-y divide-border border-y border-border">
 							{typefaces.map(face => (
@@ -298,9 +347,9 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 					</section>
 
 					<!-- 2. Colors -->
-					<section class="space-y-10">
+					<section class="space-y-10" data-color-copied={m.design.colors.copied}>
 						<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-							<h2 class="text-2xl font-medium text-foreground">{m.design.colors.title}</h2>
+							<h2 class={sectionHeadingClass} id="colors" tabindex="-1">{m.design.colors.title}</h2>
 							<p class="font-mono text-xs text-muted-foreground">OKLCH (L C H / α)</p>
 						</div>
 
@@ -335,19 +384,38 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 													@lg/page:col-span-1
 												"
 												>
-													<p class="font-mono text-xs text-foreground">{token.name}</p>
+													<button
+														class="
+															block cursor-pointer text-left font-mono text-xs text-foreground transition-colors duration-150
+															hover:text-highlight-strong
+															focus-visible:rounded-sm
+														"
+														aria-label={m.design.colors.copyToken(token.var)}
+														data-copy-token={token.var}
+														type="button"
+													>
+														{token.name}
+													</button>
 													<p class="mt-1 text-sm text-muted-foreground">{m.design.colors.roles[token.role]}</p>
 												</div>
 												{colorModes.map(mode => (
-													<div
-														class="flex min-w-0 items-center gap-3"
+													<button
+														class="
+															group/swatch flex min-w-0 cursor-pointer items-center gap-3 rounded-md text-left
+															focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring
+														"
+														aria-label={m.design.colors.copyValue(token.name, m.design.colors.modeLabel[mode.key])}
 														data-color-against={token.against}
 														data-color-token={token.var}
+														type="button"
 													>
 														<span
 															class={`
 																${mode.scope}
-																grid size-8 shrink-0 place-items-center rounded-md text-sm font-medium shadow-[inset_0_0_0_1px_var(--border)]
+																grid size-8 shrink-0 place-items-center rounded-md text-sm font-medium shadow-[inset_0_0_0_1px_var(--border)] transition-transform duration-150
+																group-hover/swatch:scale-105
+																group-active/swatch:scale-95
+																motion-reduce:transition-none
 															`}
 															style={token.against
 																? `background-color: var(${token.against}); color: var(${token.var})`
@@ -357,12 +425,18 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 														>
 															{token.against && 'Aa'}
 														</span>
-														<div class="min-w-0 font-mono text-xs tabular-nums">
+														<span class="min-w-0 font-mono text-xs tabular-nums">
 															<span class="sr-only">{m.design.colors.modeLabel[mode.key]}</span>
-															<p class="text-foreground" data-color-value>—</p>
-															{token.against && <p class="min-h-4 text-muted-foreground" data-color-contrast />}
-														</div>
-													</div>
+															<span
+																class="
+																	block text-foreground transition-colors duration-150
+																	group-hover/swatch:text-highlight-strong
+																"
+																data-color-value
+															>—</span>
+															{token.against && <span class="block min-h-4 text-muted-foreground" data-color-contrast />}
+														</span>
+													</button>
 												))}
 											</li>
 										))}
@@ -421,7 +495,7 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 					<!-- 3. Trilingual wrapping -->
 					<section class="space-y-6" data-wrap-rules="on" data-wrap-demo>
 						<div class="flex flex-wrap items-center justify-between gap-3">
-							<h2 class="text-2xl font-medium text-foreground">{m.design.wrapping.title}</h2>
+							<h2 class={sectionHeadingClass} id="wrapping" tabindex="-1">{m.design.wrapping.title}</h2>
 							<div class="flex flex-wrap items-center gap-3">
 								<label class="flex items-center gap-2 font-mono text-xs text-muted-foreground tabular-nums">
 									<span class="sr-only">{m.design.wrapping.widthLabel}</span>
@@ -468,7 +542,7 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 
 					<!-- 4. Shape & shadow -->
 					<section class="space-y-8">
-						<h2 class="text-2xl font-medium text-foreground">{m.design.geometry.title}</h2>
+						<h2 class={sectionHeadingClass} id="geometry" tabindex="-1">{m.design.geometry.title}</h2>
 
 						<div class="space-y-3">
 							<h3 class="text-sm font-medium text-foreground">{m.design.geometry.radiiTitle}</h3>
@@ -522,7 +596,7 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 					<!-- 5. Motion -->
 					<section class="space-y-6" data-motion-demo>
 						<div class="flex flex-wrap items-center justify-between gap-3">
-							<h2 class="text-2xl font-medium text-foreground">{m.design.motion.title}</h2>
+							<h2 class={sectionHeadingClass} id="motion" tabindex="-1">{m.design.motion.title}</h2>
 							<div class="flex items-center gap-2">
 								<Button
 									size="sm"

@@ -12,7 +12,7 @@ const { class: className, ...rest } = Astro.props as Props
 const dataLanguage = (rest as Record<string, unknown>)['data-language']
 const isBlock = typeof dataLanguage === 'string' && dataLanguage.length > 0
 
-const inlineClass = 'relative rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[.8125rem] text-muted-foreground outline-none'
+const inlineClass = 'relative rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[.8125rem] wrap-break-word text-muted-foreground outline-none'
 ---
 
 {isBlock

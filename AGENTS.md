@@ -213,7 +213,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Home (`/`) — profile, bio, recent posts, projects list
 - Blog list (`/post`) — grouped by year, with dates; the header shows the post count and links the reader's locale feed (RSS)
 - Blog detail (`/post/[slug]`) — MDX; a "Home / Writing" breadcrumb in the header; under the title, the date, an estimated reading time, an "N sections" button (3+ h2s) that opens the custom scrollbar's section outline, and a link to the post's MDX on GitHub (new tab); a "Xat" sign-off with the post date, newer/older links and a link to the archive at the end, translator info
-- Design system (`/design`) — typography (including the Hanken ↔ MiSans weight pairing from `CJK_WEIGHTS`), colors with contrast, trilingual wrapping, shape & shadow, motion; every value read from the running CSS (`src/client/design-specimens.ts`)
+- Design system (`/design`) — typography (including the Hanken ↔ MiSans weight pairing from `CJK_WEIGHTS`), colors with contrast and click-to-copy CSS variable / OKLCH values, trilingual wrapping, shape & shadow, motion, plus section anchors and the section-outline trigger; every value read from the running CSS (`src/client/design-specimens.ts`)
 - Resume (`/resume`) — experience, open source, side projects, skills, education from `content/resume/{en,zh,ja}.yaml` (the `resume` collection); full-width experience reading, chip tech lists, section-outline jump, and email copy (on hover, always shown on touch) on screen, reverting to the tight 7rem two-column A4 light print layout with no site chrome; linked from the footer nav
 - 404 — styled page with the latest posts, also used for unknown post slugs; when the requested path's last segment is close to a post slug, it asks whether that post was meant
 
@@ -223,7 +223,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 - MDX rendering with Astro content collections
 - Expressive Code syntax highlighting (Vesper theme)
-- Heading anchor links; clicking one still jumps to it and also copies its URL, with a "link copied" bubble (`src/client/mdx-copy.ts`); each h2 ends in a hairline to the column edge
+- Heading anchor links; hovering or focusing an h2/h3 on wide screens reveals a quiet `#` in the left gutter, and clicking one still jumps to it while copying its URL with a "link copied" bubble (`src/client/mdx-copy.ts`); each h2 ends in a hairline to the column edge
 - Reading time (characters per minute for zh/ja, words for en; `readingMinutes` in `src/lib/blog.ts`)
 - Section outline: the custom scrollbar's markers with their titles, opened from the "N sections" button; a jump tints the heading (`src/client/section-jump.ts`)
 - External links in posts end with ↗

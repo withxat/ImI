@@ -22,7 +22,12 @@ interface Props {
 const { breadcrumbs, locale, messages, showBack = false } = Astro.props as Props
 ---
 
-<header class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+<header
+	class="
+		flex flex-wrap items-center justify-between gap-x-4 gap-y-2
+		print:hidden
+	"
+>
 	{breadcrumbs && breadcrumbs.length > 0
 		? (
 				<nav aria-label={messages.header.breadcrumbAriaLabel} class="min-w-0 font-ui text-sm">

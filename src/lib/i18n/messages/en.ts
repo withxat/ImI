@@ -92,6 +92,9 @@ const en: Messages = {
 	codeBlock: codeBlockByLocale.en,
 	design: {
 		colors: {
+			copied: 'Copied',
+			copyToken: (name: string) => `Copy CSS variable ${name}`,
+			copyValue: (name: string, mode: string) => `Copy ${name} (${mode}) OKLCH value`,
 			groups: {
 				code: 'Code',
 				content: 'Text',

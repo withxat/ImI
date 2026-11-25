@@ -71,6 +71,9 @@ export type TypographyScaleRoleKey
 
 export interface DesignSystemCopy {
 	colors: {
+		copied: string
+		copyToken: (name: string) => string
+		copyValue: (name: string, mode: string) => string
 		groups: Record<ColorGroupKey, string>
 		modeLabel: {
 			dark: string

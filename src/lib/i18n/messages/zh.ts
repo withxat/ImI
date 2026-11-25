@@ -87,6 +87,9 @@ const zh: Messages = {
 	codeBlock: codeBlockByLocale.zh,
 	design: {
 		colors: {
+			copied: '已复制',
+			copyToken: (name: string) => `复制 CSS 变量 ${name}`,
+			copyValue: (name: string, mode: string) => `复制 ${name}（${mode}）OKLCH 色值`,
 			groups: {
 				code: '代码块',
 				content: '文字',
