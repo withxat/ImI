@@ -4,6 +4,7 @@ import type { Locale } from '@/lib/i18n/constants'
 import { getEntry } from 'astro:content'
 import ArrowUpRight from '~icons/local/arrow-up-right'
 import Dot from '~icons/lucide/dot'
+import List from '~icons/lucide/list'
 import Printer from '~icons/lucide/printer'
 
 import Container from '@/components/layout/container.astro'
@@ -145,21 +146,26 @@ const listClass = 'divide-y divide-border border-y border-border'
 							</div>
 							<div
 								class="
-									flex items-center gap-3 font-ui text-sm
+									flex items-center gap-2 font-ui text-sm
 									print:hidden
 								"
 							>
 								<button
 									class="
-										text-link-muted cursor-pointer text-xs
-										aria-expanded:text-foreground
+										inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-muted px-2.5 py-1.5 text-xs
+										text-muted-foreground transition-colors duration-150
+										hover:bg-highlight-soft/25 hover:text-highlight-strong
+										aria-expanded:bg-highlight-soft/25 aria-expanded:text-foreground
+										dark:hover:bg-foreground/10
+										dark:aria-expanded:bg-foreground/10
 									"
 									aria-controls="resume-sections"
 									aria-expanded="false"
 									type="button"
 									data-section-outline-trigger
 								>
-									{m.blog.sectionCount(resumeSections.length)}
+									<List aria-hidden="true" class="size-3.5 shrink-0 opacity-75" />
+									<span>{m.blog.sectionCount(resumeSections.length)}</span>
 								</button>
 								<button
 									class="

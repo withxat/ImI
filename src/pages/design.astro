@@ -3,6 +3,7 @@ import type { Locale } from '@/lib/i18n/constants'
 import type { ColorGroupKey, ColorRoleKey, TypefaceKey, TypographyScaleRoleKey } from '@/lib/i18n/messages/types'
 
 import { Image } from 'astro:assets'
+import List from '~icons/lucide/list'
 
 import shinyImi from '@/assets/shiny-imi.png'
 import shinyTf from '@/assets/shiny-tf.png'
@@ -195,14 +196,18 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 								/>
 							</span>
 						</button>
-						<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+						<div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
 							<h1 class="inline-flex items-end text-3xl font-medium text-foreground">
 								{m.design.eyebrow}
 							</h1>
 							<button
 								class="
-									text-link-muted cursor-pointer font-ui text-xs
-									aria-expanded:text-foreground
+									inline-flex cursor-pointer items-center gap-1 rounded-full bg-muted px-2.5 py-1 font-ui text-xs
+									text-muted-foreground transition-colors duration-150
+									hover:bg-highlight-soft/25 hover:text-highlight-strong
+									aria-expanded:bg-highlight-soft/25 aria-expanded:text-foreground
+									dark:hover:bg-foreground/10
+									dark:aria-expanded:bg-foreground/10
 									print:hidden
 								"
 								aria-controls="design-sections"
@@ -210,7 +215,8 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 								type="button"
 								data-section-outline-trigger
 							>
-								{m.blog.sectionCount(designSections.length)}
+								<List aria-hidden="true" class="size-3.5 shrink-0 opacity-75" />
+								<span>{m.blog.sectionCount(designSections.length)}</span>
 							</button>
 						</div>
 						<nav
