@@ -1314,8 +1314,8 @@
 		@apply max-w-full min-w-0 text-muted-foreground;
 	}
 
-	.article-body code {
-		@apply rounded-sm bg-accent px-1.5 py-0.5 font-mono text-[0.9em] break-all;
+	.article-body :not(pre) > code {
+		@apply rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[.8125rem] wrap-break-word text-muted-foreground;
 	}
 
 	.article-body details.accordion-item {
@@ -1326,9 +1326,13 @@
 		@apply cursor-pointer font-medium;
 	}
 
+	.article-body :is(h2, h3) {
+		position: relative;
+	}
+
 	/* The clip-path cuts the heading rule (below) at the column edge and leaves room for focus rings
 	 * elsewhere. It only cuts what is painted, so overflow: clip, half an em out, also keeps the rule
-	 * from widening the page. */
+	 * from widening the page on narrow screens. Wide screens widen the left clip for the `#` hint. */
 	.article-body h2 {
 		@apply mt-14 text-2xl font-medium text-foreground;
 		overflow: clip;
@@ -1358,6 +1362,48 @@
 
 	.article-body h3 {
 		@apply mt-10 text-xl font-medium text-foreground;
+	}
+
+	/* Quiet left-gutter `#` on wide screens to signal that clicking a heading copies its link.
+	 * Mounted on the heading (not `<a>`) so `<a>`'s hit box and accessible name stay untouched. */
+	@media (min-width: 48rem) {
+		.article-body h2 {
+			overflow-clip-margin: 1.5em;
+			clip-path: inset(-0.5em 0 -0.5em -1.5em);
+		}
+
+		.article-body :is(h2, h3):has(> a[href^='#'])::before {
+			content: '#';
+			content: '#' / '';
+			position: absolute;
+			top: 0.14em;
+			left: -1.1em;
+			width: 1em;
+			font-family: var(--font-mono);
+			font-size: 0.78em;
+			font-weight: 400;
+			line-height: inherit;
+			text-align: center;
+			color: var(--color-highlight-text);
+			opacity: 0;
+			transform: translateX(0.15em);
+			pointer-events: none;
+			transition:
+				opacity 150ms ease-out,
+				transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		.article-body :is(h2, h3):has(> a[href^='#']:is(:hover, :focus-visible))::before {
+			opacity: 0.72;
+			transform: translateX(0);
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.article-body :is(h2, h3):has(> a[href^='#'])::before {
+				transform: none;
+				transition: opacity 150ms ease-out;
+			}
+		}
 	}
 
 	.article-body hr {
@@ -1491,7 +1537,7 @@
 	}
 
 	.article-body table {
-		@apply block w-full max-w-full border-collapse overflow-x-auto;
+		@apply w-full border-collapse;
 	}
 
 	/* Article block reveals (driven by src/client/article-reveal.ts) */
