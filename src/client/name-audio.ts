@@ -36,8 +36,13 @@ function bothUp(mid: number, outer: number) {
 
 let dispose: (() => void) | null = null
 
-export function initNameAudioButtons() {
+export function disposeNameAudioButtons() {
 	dispose?.()
+	dispose = null
+}
+
+export function initNameAudioButtons() {
+	disposeNameAudioButtons()
 	const ac = new AbortController()
 	const { signal } = ac
 
@@ -108,6 +113,10 @@ export function initNameAudioButtons() {
 			audio.currentTime = 0
 			void audio.play()
 		}, { signal })
+
+		signal.addEventListener('abort', () => {
+			cancelAnimationFrame(raf)
+		}, { once: true })
 	}
 
 	dispose = () => {

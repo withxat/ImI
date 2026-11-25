@@ -4,6 +4,27 @@ import {
 	prefersReducedMotion,
 } from '@/client/reveal-engine'
 
+let activeObserver: IntersectionObserver | null = null
+
+function getArticleObserver(): IntersectionObserver {
+	if (!activeObserver) {
+		activeObserver = createScrollObserver(
+			(el) => {
+				el.classList.remove('article-reveal-pending')
+				el.classList.add('article-reveal-done')
+				activeObserver?.unobserve(el)
+			},
+			{ rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+		)
+	}
+	return activeObserver
+}
+
+export function disposeArticleBodies() {
+	activeObserver?.disconnect()
+	activeObserver = null
+}
+
 export function setupArticleReveal(root: HTMLElement, animate = true) {
 	const reduce = prefersReducedMotion()
 
@@ -20,15 +41,6 @@ export function setupArticleReveal(root: HTMLElement, animate = true) {
 		root.removeAttribute('data-article-pending')
 		return
 	}
-
-	const io = createScrollObserver(
-		(el) => {
-			el.classList.remove('article-reveal-pending')
-			el.classList.add('article-reveal-done')
-			io.unobserve(el)
-		},
-		{ rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
-	)
 
 	let topRank = 0
 	for (const child of [...root.children]) {
@@ -49,7 +61,7 @@ export function setupArticleReveal(root: HTMLElement, animate = true) {
 
 			case 'observe':
 				el.classList.add('article-reveal-pending')
-				io.observe(el)
+				getArticleObserver().observe(el)
 				break
 
 			case 'instant':
@@ -64,6 +76,8 @@ export function setupArticleReveal(root: HTMLElement, animate = true) {
 }
 
 export function initArticleBodies(animate = true) {
+	disposeArticleBodies()
+
 	for (const root of document.querySelectorAll<HTMLElement>('[data-article-reveal]'))
 		setupArticleReveal(root, animate)
 }

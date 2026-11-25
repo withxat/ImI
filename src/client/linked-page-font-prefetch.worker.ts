@@ -155,7 +155,11 @@ async function warmLinkedPageFonts(href: string) {
 	warmedPages.add(pageUrl.href)
 
 	try {
-		const response = await fetch(pageUrl.href, { credentials: 'same-origin', priority: 'low' })
+		const response = await fetch(pageUrl.href, {
+			credentials: 'same-origin',
+			headers: { 'X-Imi-Prefetch': '1' },
+			priority: 'low',
+		})
 		if (!response.ok)
 			return
 
