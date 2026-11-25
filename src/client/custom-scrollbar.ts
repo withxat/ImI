@@ -1026,7 +1026,9 @@ export function initCustomScrollbar() {
 			jumpToSection(marker.element)
 			// Keyboard focus follows the jump, so the next Tab continues inside that section.
 			if (event.detail === 0) {
-				marker.element.querySelector<HTMLElement>('a[href]')?.focus({ preventScroll: true })
+				const target = marker.element.querySelector<HTMLElement>('a[href]')
+					?? (marker.element.tabIndex >= 0 ? marker.element : null)
+				target?.focus({ preventScroll: true })
 			}
 		}, { signal })
 	}

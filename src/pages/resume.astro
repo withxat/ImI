@@ -2,9 +2,12 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { getEntry } from 'astro:content'
+import ArrowUpRight from '~icons/local/arrow-up-right'
 import Dot from '~icons/lucide/dot'
+import Printer from '~icons/lucide/printer'
 
 import Container from '@/components/layout/container.astro'
+import EmailCopyLink from '@/components/layout/email-copy-link.astro'
 import Eyebrow from '@/components/layout/eyebrow.astro'
 import SiteHeader from '@/components/layout/site-header.astro'
 import Seo from '@/components/meta/seo.astro'
@@ -21,6 +24,14 @@ if (!entry)
 	throw new Error(`Missing content/resume/${locale}.yaml`)
 const { contact, education, experience, openSource, projects, role, skills, summary } = entry.data
 
+const resumeSections = [
+	{ id: 'experience', label: m.resume.sections.experience },
+	{ id: 'open-source', label: m.resume.sections.openSource },
+	{ id: 'projects', label: m.resume.sections.projects },
+	{ id: 'skills', label: m.resume.sections.skills },
+	{ id: 'education', label: m.resume.sections.education },
+]
+
 /** `2024-05` → `2024·05`, the index-row date style. */
 const month = (value: string) => value.replace('-', '·')
 function period(start: string, end?: string) {
@@ -29,22 +40,49 @@ function period(start: string, end?: string) {
 	return `${month(start)} – ${end ? month(end) : m.resume.present}`
 }
 
-// Every row hangs off one rail (dates, or a label for skills and education); below the full column width it stacks.
-const rowLayout = `
-	flex flex-col gap-1 py-3.5
-	print:py-1.5
-	@lg/page:grid @lg/page:grid-cols-[7rem_minmax(0,1fr)] @lg/page:items-baseline @lg/page:gap-x-6
+/**
+ * Splits a concise topic lead from a highlight bullet for screen scanning, while print stays uniform ink.
+ * zh uses `：`, ja uses the first short `。`, and en uses the first short `. ` sentence.
+ */
+function splitHighlightLead(text: string, lang: Locale): { lead?: string, rest: string } {
+	if (lang === 'zh') {
+		const idx = text.indexOf('：')
+		if (idx > 0 && idx <= 18 && !/[，。（）()]/.test(text.slice(0, idx)))
+			return { lead: text.slice(0, idx + 1), rest: text.slice(idx + 1) }
+		return { rest: text }
+	}
+	if (lang === 'ja') {
+		const idx = text.indexOf('。')
+		if (idx > 0 && idx <= 20 && idx < text.length - 1 && !/[、（()）]/.test(text.slice(0, idx)))
+			return { lead: text.slice(0, idx + 1), rest: text.slice(idx + 1) }
+		return { rest: text }
+	}
+	const idx = text.indexOf('. ')
+	if (idx > 0 && idx <= 40 && idx < text.length - 2 && !/[,()]/.test(text.slice(0, idx)))
+		return { lead: text.slice(0, idx + 1), rest: text.slice(idx + 1) }
+	return { rest: text }
+}
+
+// Experience projects use full column width on screen for comfortable reading, and return to the
+// tight 7rem date-rail grid on paper so A4 fits cleanly.
+const projectRowClass = `
+	py-6 first:pt-5
+	print:grid print:grid-cols-[7rem_minmax(0,1fr)] print:items-baseline print:gap-x-6 print:py-1.5 print:first:pt-1.5
 `
-// `resume-row` keeps a row on one page; a project is too tall for that and breaks between its bullets instead.
-const rowClass = `resume-row ${rowLayout}`
 const linkRowClass = `
-	group/row transition-colors
+	resume-row group/row flex flex-col gap-1.5 py-4 transition-colors
 	focus-visible:rounded-sm
-	${rowClass}
+	@lg/page:grid @lg/page:grid-cols-[5.5rem_minmax(0,1fr)_auto] @lg/page:items-baseline @lg/page:gap-x-6
+	print:grid print:grid-cols-[7rem_minmax(0,1fr)] print:items-baseline print:gap-x-6 print:py-1.5
+`
+const labelRowClass = `
+	resume-row flex flex-col gap-2 py-4
+	@lg/page:grid @lg/page:grid-cols-[8.5rem_minmax(0,1fr)] @lg/page:items-baseline @lg/page:gap-x-6
+	print:grid print:grid-cols-[7rem_minmax(0,1fr)] print:items-baseline print:gap-x-6 print:gap-y-1 print:py-1.5
 `
 // Linked rows stack title over summary on screen; on paper they run inline to save a line each.
 const linkBodyClass = `
-	min-w-0 space-y-1
+	min-w-0 space-y-1.5
 	print:space-y-0
 `
 const linkTitleClass = `
@@ -56,9 +94,20 @@ const linkSummaryClass = `
 	block text-sm/6 text-muted-foreground
 	print:inline
 `
+const linkArrowClass = `
+	hidden size-3.5 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out
+	group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-highlight-strong
+	motion-reduce:transition-none
+	@lg/page:block
+	print:hidden
+`
 const sectionClass = `
-	mt-14 space-y-4
+	mt-16 space-y-5
 	print:mt-6 print:space-y-2.5
+`
+const headingClass = `
+	scroll-mt-8 font-semibold
+	focus:outline-none
 `
 const railClass = 'font-mono text-xs text-muted-foreground tabular-nums'
 const listClass = 'divide-y divide-border border-y border-border'
@@ -85,77 +134,213 @@ const listClass = 'divide-y divide-border border-y border-border'
 					<SiteHeader locale={locale} messages={m} showBack />
 				</div>
 
-				<header class="
-					mt-8 space-y-4
-					print:mt-0
-				"
+				<header
+					class="
+						mt-8 space-y-4
+						print:mt-0
+					"
 				>
-					<div class="flex items-end justify-between gap-6">
+					<div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
 						<div>
 							<h1 class="font-fugaz-one text-3xl font-normal text-highlight-brand">Xat</h1>
 							<p class="mt-1 text-muted-foreground">{role}</p>
 						</div>
-						<button
+						<div
 							class="
-								text-link shrink-0 font-ui text-sm whitespace-nowrap
+								flex items-center gap-3 font-ui text-sm
 								print:hidden
 							"
-							type="button"
-							data-resume-print
 						>
-							{m.resume.print}
-						</button>
+							<button
+								class="
+									text-link-muted cursor-pointer text-xs
+									aria-expanded:text-foreground
+								"
+								aria-controls="resume-sections"
+								aria-expanded="false"
+								type="button"
+								data-section-outline-trigger
+							>
+								{m.blog.sectionCount(resumeSections.length)}
+							</button>
+							<button
+								class="
+									inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full highlight-surface highlight-surface-hover bg-popover px-3
+									py-1.5 font-ui text-xs font-medium whitespace-nowrap text-foreground transition-[border-color,box-shadow,color] duration-150
+									hover:text-highlight-strong
+								"
+								type="button"
+								data-resume-print
+							>
+								<Printer aria-hidden="true" class="size-3.5 text-muted-foreground" />
+								<span>{m.resume.print}</span>
+							</button>
+						</div>
 					</div>
+					<nav
+						class="
+							font-ui text-sm
+							print:hidden
+						"
+						aria-label={m.blog.toc}
+						id="resume-sections"
+						hidden
+					>
+						<ol class="flex flex-wrap gap-x-4 gap-y-1.5">
+							{resumeSections.map(section => (
+								<li>
+									<a
+										class="
+											text-muted-foreground transition-colors duration-150
+											hover:text-foreground
+										"
+										href={`#${section.id}`}
+									>
+										{section.label}
+									</a>
+								</li>
+							))}
+						</ol>
+					</nav>
 					<ul class="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm">
 						{contact.map((item, index) => (
 							<li class="flex items-center gap-2">
 								{index > 0 && <Dot aria-hidden="true" class="size-3 shrink-0 text-muted-foreground opacity-70" />}
-								<a
-									class="text-link"
-									href={item.href}
-									rel={item.href.startsWith('mailto:') ? undefined : 'noreferrer'}
-									target={item.href.startsWith('mailto:') ? undefined : '_blank'}
-								>
-									{item.label}
-								</a>
+								{item.href.startsWith('mailto:')
+									? (
+											<EmailCopyLink
+												address={item.href.slice('mailto:'.length)}
+												copiedLabel={m.footer.emailCopied}
+												copyLabel={m.footer.copyEmail}
+												label={item.label}
+											/>
+										)
+									: (
+											<a
+												class="text-link"
+												href={item.href}
+												rel="noreferrer"
+												target="_blank"
+											>
+												{item.label}
+											</a>
+										)}
 							</li>
 						))}
 					</ul>
-					<p class="
-						max-w-prose text-base/7 text-foreground
-						print:max-w-none print:leading-6
-					"
+					<p
+						class="
+							max-w-prose text-base/7 text-foreground
+							print:max-w-none print:leading-6
+						"
 					>
 						{summary}
 					</p>
 				</header>
 
 				<section class={sectionClass}>
-					<Eyebrow as="h2" class="font-semibold">{m.resume.sections.experience}</Eyebrow>
+					<Eyebrow as="h2" class={headingClass} id="experience" tabindex="-1">{m.resume.sections.experience}</Eyebrow>
 					{experience.map(job => (
-						<div class="space-y-3">
+						<div
+							class="
+								space-y-4
+								print:space-y-3
+							"
+						>
 							<div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-								<h3 class="text-sm font-medium text-foreground">
-									{job.organization}<span class="text-muted-foreground"> · {job.role}</span>
+								<h3
+									class="
+										text-base font-medium text-foreground
+										print:text-sm
+									"
+								>
+									{job.organization}<span class="font-normal text-muted-foreground"> · {job.role}</span>
 								</h3>
 								<span class={railClass}>{period(job.start, job.end)}</span>
 							</div>
-							<p class="text-sm/6 text-muted-foreground">{job.summary}</p>
+							<p
+								class="
+									text-sm/6.5 text-muted-foreground
+									print:text-sm/6
+								"
+							>
+								{job.summary}
+							</p>
 							<ul class={listClass}>
 								{job.projects.map(project => (
-									<li class={rowLayout}>
-										<span class={railClass}>{period(project.start, project.end)}</span>
-										<div class="min-w-0 space-y-1.5">
-											<h4 class="text-sm font-medium text-foreground">{project.name}</h4>
-											{project.summary && <p class="text-sm/6 text-muted-foreground">{project.summary}</p>}
-											<ul class="
-												list-disc space-y-1 pl-4 text-sm/6 text-foreground
-												marker:text-muted-foreground
+									<li class={projectRowClass}>
+										<span class={`
+											hidden
+											print:block
+											${railClass}
+										`}
+										>{period(project.start, project.end)}</span>
+										<div
+											class="
+												min-w-0 space-y-2.5
+												print:space-y-1.5
 											"
+										>
+											<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+												<h4
+													class="
+														text-[15px] font-medium text-foreground
+														print:text-sm
+													"
+												>
+													{project.name}
+												</h4>
+												<span class={`
+													print:hidden
+													${railClass}
+												`}
+												>{period(project.start, project.end)}</span>
+											</div>
+											{project.summary && (
+												<p
+													class="
+														text-sm/6.5 text-muted-foreground
+														print:text-sm/6
+													"
+												>
+													{project.summary}
+												</p>
+											)}
+											<ul
+												class="
+													list-disc space-y-2 pl-4 text-sm/6.5 text-foreground/85
+													marker:text-muted-foreground/70
+													print:space-y-1 print:text-sm/6 print:text-foreground
+													print:marker:text-muted-foreground
+												"
 											>
-												{project.highlights.map(highlight => <li>{highlight}</li>)}
+												{project.highlights.map((highlight) => {
+													const { lead, rest } = splitHighlightLead(highlight, locale)
+													return (
+														<li>
+															{lead && (
+																<span
+																	class="
+																		font-medium text-foreground
+																		print:font-normal
+																	"
+																>
+																	{lead}
+																</span>
+															)}
+															{rest}
+														</li>
+													)
+												})}
 											</ul>
-											<TechList class="font-mono text-xs text-muted-foreground" items={project.stack} />
+											<TechList
+												class="
+													pt-1 font-mono text-xs text-muted-foreground
+													print:pt-0
+												"
+												items={project.stack}
+												variant="chips"
+											/>
 										</div>
 									</li>
 								))}
@@ -165,7 +350,7 @@ const listClass = 'divide-y divide-border border-y border-border'
 				</section>
 
 				<section class={sectionClass}>
-					<Eyebrow as="h2" class="font-semibold">{m.resume.sections.openSource}</Eyebrow>
+					<Eyebrow as="h2" class={headingClass} id="open-source" tabindex="-1">{m.resume.sections.openSource}</Eyebrow>
 					<ul class={listClass}>
 						{openSource.map(item => (
 							<li>
@@ -175,6 +360,7 @@ const listClass = 'divide-y divide-border border-y border-border'
 										<span class={linkTitleClass}>{item.project}</span>
 										<span class={linkSummaryClass}>{item.summary}</span>
 									</span>
+									<ArrowUpRight aria-hidden="true" class={linkArrowClass} />
 								</a>
 							</li>
 						))}
@@ -182,7 +368,7 @@ const listClass = 'divide-y divide-border border-y border-border'
 				</section>
 
 				<section class={sectionClass}>
-					<Eyebrow as="h2" class="font-semibold">{m.resume.sections.projects}</Eyebrow>
+					<Eyebrow as="h2" class={headingClass} id="projects" tabindex="-1">{m.resume.sections.projects}</Eyebrow>
 					<ul class={listClass}>
 						{projects.map(item => (
 							<li>
@@ -192,6 +378,7 @@ const listClass = 'divide-y divide-border border-y border-border'
 										<span class={linkTitleClass}>{item.name}</span>
 										<span class={linkSummaryClass}>{item.summary}</span>
 									</span>
+									<ArrowUpRight aria-hidden="true" class={linkArrowClass} />
 								</a>
 							</li>
 						))}
@@ -199,22 +386,30 @@ const listClass = 'divide-y divide-border border-y border-border'
 				</section>
 
 				<section class={sectionClass}>
-					<Eyebrow as="h2" class="font-semibold">{m.resume.sections.skills}</Eyebrow>
+					<Eyebrow as="h2" class={headingClass} id="skills" tabindex="-1">{m.resume.sections.skills}</Eyebrow>
 					<ul class={listClass}>
 						{skills.map(skill => (
-							<li class={rowClass}>
+							<li class={labelRowClass}>
 								<span class="text-xs text-muted-foreground">{skill.group}</span>
-								<TechList class="text-sm/6 text-foreground" items={skill.items} />
+								<TechList
+									class="
+										text-foreground
+										print:text-sm/6
+									"
+									chipClass="text-xs text-foreground print:text-sm/6"
+									items={skill.items}
+									variant="chips"
+								/>
 							</li>
 						))}
 					</ul>
 				</section>
 
 				<section class={sectionClass}>
-					<Eyebrow as="h2" class="font-semibold">{m.resume.sections.education}</Eyebrow>
+					<Eyebrow as="h2" class={headingClass} id="education" tabindex="-1">{m.resume.sections.education}</Eyebrow>
 					<ul class={listClass}>
 						{education.map(item => (
-							<li class={rowClass}>
+							<li class={labelRowClass}>
 								<span class="text-xs text-muted-foreground">{item.degree}</span>
 								<span class="text-sm/6 text-foreground">{item.school ? `${item.major} · ${item.school}` : item.major}</span>
 							</li>
