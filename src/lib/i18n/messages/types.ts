@@ -164,7 +164,6 @@ export interface Messages {
 	}
 	home: {
 		bioLead: string
-		designProject: string
 		introAfterProducts: string
 		introBeforeSystems: string
 		introBetweenBadges: string
@@ -188,8 +187,16 @@ export interface Messages {
 		}
 		projectsEyebrow: string
 		role: string
+		/** Featured card for ImI (this site + its living design spec). */
+		spotlight: {
+			description: string
+			source: string
+			title: string
+		}
 		tagline: string
 		title: string
+		/** Label for the compact bottom shelf of config presets and templates. */
+		toolsShelfLabel: string
 		viewAllPosts: string
 		writingEyebrow: string
 	}

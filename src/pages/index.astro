@@ -1,8 +1,12 @@
 ---
 import type { Locale } from '@/lib/i18n/constants'
 
+import { Image } from 'astro:assets'
+import ArrowRight from '~icons/local/arrow-right'
 import ArrowUpRight from '~icons/local/arrow-up-right'
+import SiSwift from '~icons/simple-icons/swift'
 
+import shinyImi from '@/assets/shiny-imi.png'
 import AvatarPoke from '@/components/home/avatar-poke.astro'
 import IntroBadgePopover from '@/components/home/intro-badge-popover.astro'
 import NameAudioButton from '@/components/home/name-audio-button.astro'
@@ -20,6 +24,7 @@ import { htmlLangFor } from '@/lib/i18n/constants'
 import { getIntroBadgeLabel } from '@/lib/i18n/intro-badges'
 import { getMessages } from '@/lib/i18n/messages'
 import { getCapabilities } from '@/lib/projects'
+import { REPO_URL } from '@/lib/repo'
 import { DEFAULT_OG_IMAGE, personJsonLd, PROFILE_AVATAR_SRC, websiteJsonLd } from '@/lib/seo-data'
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
@@ -32,7 +37,7 @@ const introAfterProducts = [...m.home.introAfterProducts]
 const allPosts = await getAllPosts(locale)
 const posts = allPosts.slice(0, 4)
 const baseCapabilities = await getCapabilities()
-const projects = baseCapabilities
+const allProjects = baseCapabilities
 	.flatMap((cap, i) => {
 		const copy = m.capabilities[i]
 		return cap.items.map((item, j) => ({
@@ -42,14 +47,13 @@ const projects = baseCapabilities
 		}))
 	})
 	.reverse()
-// The design spec sits right after ImI, the site it documents.
-projects.splice(projects.findIndex(project => project.title === 'ImI') + 1, 0, {
-	description: m.home.designProject,
-	link: '/design',
-	title: m.design.eyebrow,
-})
 
-const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out group-hover/project:translate-x-0.5 group-hover/project:-translate-y-0.5 group-hover/project:text-highlight-strong'
+const SELECTED_TITLES = new Set(['Dash', 'Mikan', 'Rehype-Fluent-Emoji'])
+const spotlightProject = allProjects.find(project => project.title === 'ImI')
+const selectedProjects = allProjects.filter(project => SELECTED_TITLES.has(project.title))
+const toolProjects = allProjects.filter(project => project.title !== 'ImI' && !SELECTED_TITLES.has(project.title))
+
+const cardArrowClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out group-hover/project:translate-x-0.5 group-hover/project:-translate-y-0.5 group-hover/project:text-highlight-strong motion-reduce:transition-none'
 ---
 
 <RootLayout>
@@ -138,52 +142,177 @@ const projectIconClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-
 						<Eyebrow as="h2" class="font-semibold">{m.home.projectsEyebrow}</Eyebrow>
 					</Reveal>
 					<Reveal staggerIndex={1}>
-						<ul class="divide-y divide-border border-y border-border">
-							{projects.map(project => (
-								<li>
-									{project.link
-										? (
+						<div class="space-y-3">
+							<article
+								class="
+									rounded-xl highlight-surface highlight-surface-hover bg-popover p-4 transition-[border-color,box-shadow] duration-150 ease-out
+									sm:p-5
+								"
+							>
+								<div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+									<span class="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
+										<Image
+											alt=""
+											class="size-4.5 shrink-0"
+											densities={[1, 2]}
+											height={20}
+											src={shinyImi}
+											width={20}
+										/>
+										<span>ImI</span>
+									</span>
+									<span aria-hidden="true" class="text-muted-foreground/50">·</span>
+									<span class="text-sm text-muted-foreground">{m.home.spotlight.title}</span>
+								</div>
+								<p class="mt-2.5 text-sm/6 text-muted-foreground">
+									{m.home.spotlight.description}
+								</p>
+								<div class="mt-4 flex flex-wrap items-center gap-2">
+									<a
+										class="
+											group/pill inline-flex items-center gap-2 rounded-full border border-border bg-muted/70 px-3 py-1.5
+											font-ui text-xs font-medium text-foreground transition-colors duration-150
+											hover:border-highlight-soft hover:text-highlight-strong
+										"
+										href="/design"
+										data-astro-prefetch
+									>
+										<span aria-hidden="true" class="inline-flex items-center gap-1">
+											<span class="size-2 rounded-full bg-foreground" />
+											<span class="size-2 rounded-full bg-highlight-brand" />
+											<span class="size-2 rounded-full bg-highlight-soft" />
+										</span>
+										<span>{m.design.eyebrow}</span>
+										<ArrowRight
+											class="
+												size-3 text-muted-foreground transition-transform duration-150 ease-out
+												group-hover/pill:translate-x-0.5 group-hover/pill:text-highlight-strong
+												motion-reduce:transition-none
+											"
+											aria-hidden="true"
+										/>
+									</a>
+									<a
+										class="
+											group/pill inline-flex items-center gap-1.5 rounded-full border border-border bg-background/60 px-3 py-1.5
+											font-ui text-xs text-muted-foreground transition-colors duration-150
+											hover:border-highlight-soft hover:text-highlight-strong
+										"
+										href={spotlightProject?.link ?? REPO_URL}
+										rel="noreferrer"
+										target="_blank"
+									>
+										<span>{m.home.spotlight.source}</span>
+										<ArrowUpRight
+											class="
+												size-3 transition-transform duration-150 ease-out
+												group-hover/pill:translate-x-0.5 group-hover/pill:-translate-y-0.5 group-hover/pill:text-highlight-strong
+												motion-reduce:transition-none
+											"
+											aria-hidden="true"
+										/>
+									</a>
+								</div>
+							</article>
+
+							<ul class="
+								grid gap-3
+								@lg/page:grid-cols-3
+							"
+							>
+								{selectedProjects.map(project => (
+									<li class="min-w-0">
+										<a
+											class="
+												group/project flex h-full flex-col gap-2 rounded-xl border border-border bg-popover p-3.5
+												text-left transition-[border-color,box-shadow] duration-150 ease-out
+												hover:border-highlight-soft hover:shadow-halo
+												focus-visible:rounded-xl
+												dark:hover:border-foreground/22 dark:hover:shadow-black/35
+											"
+											href={project.link}
+											rel="noreferrer"
+											target="_blank"
+										>
+											<div class="flex h-5 items-center justify-between gap-2">
+												{project.title === 'Dash' && (
+													<span class="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+														<SiSwift aria-hidden="true" class="size-3.5" />
+														<span>iOS</span>
+													</span>
+												)}
+												{project.title === 'Mikan' && (
+													<span aria-hidden="true" class="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+														<span class="inline-flex w-4 flex-col gap-[2px] rounded-[3px] border border-border p-[2px]">
+															<span class="block h-[2px] w-1.5 rounded-full bg-highlight-brand" />
+															<span class="block h-[2px] w-full rounded-full bg-muted-foreground/50" />
+															<span class="block h-[2px] w-2 rounded-full bg-muted-foreground/50" />
+														</span>
+														<span>Astro</span>
+													</span>
+												)}
+												{project.title === 'Rehype-Fluent-Emoji' && (
+													<span class="rounded-sm border border-border bg-muted/60 px-1.5 py-0.5 font-mono text-xs/none text-muted-foreground">
+														U+1F600
+													</span>
+												)}
+												<ArrowUpRight aria-hidden="true" class={cardArrowClass} />
+											</div>
+											<span
+												class="
+													mt-0.5 text-sm font-medium wrap-break-word text-foreground transition-colors duration-150
+													group-hover/project:text-highlight-strong
+												"
+											>
+												{project.title}
+											</span>
+											<span class="text-xs/5 text-muted-foreground">
+												{project.description}
+											</span>
+										</a>
+									</li>
+								))}
+							</ul>
+
+							{toolProjects.length > 0 && (
+								<div class="flex flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-border pt-3.5">
+									<span class="font-ui text-xs text-muted-foreground">{m.home.toolsShelfLabel}</span>
+									<ul class="flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
+										{toolProjects.map(project => (
+											<li>
 												<a
 													class="
-														group/project flex flex-col gap-1 py-3.5 text-left transition-colors
+														group/tool inline-flex items-baseline gap-1 font-ui text-sm text-foreground transition-colors duration-150
+														hover:text-highlight-strong
 														focus-visible:rounded-sm
-														@lg/page:grid @lg/page:grid-cols-[12rem_minmax(0,1fr)_auto] @lg/page:items-baseline @lg/page:gap-x-6
 													"
 													href={project.link}
-													rel={project.link.startsWith('/') ? undefined : 'noreferrer'}
-													target={project.link.startsWith('/') ? undefined : '_blank'}
+													rel="noreferrer"
+													target="_blank"
+													title={project.description}
 												>
 													<span class="
-														text-sm font-medium text-foreground transition-colors duration-150
-														group-hover/project:text-highlight-strong
+														text-link-muted
+														group-hover/tool:text-highlight-strong
 													"
 													>
 														{project.title}
 													</span>
-													<span class="min-w-0 text-sm text-muted-foreground">{project.description}</span>
 													<ArrowUpRight
-														class={`
-															hidden
-															@lg/page:block
-															${projectIconClass}
-														`}
+														class="
+															size-3 shrink-0 translate-y-px text-muted-foreground/70 transition-transform duration-150 ease-out
+															group-hover/tool:translate-x-0.5 group-hover/tool:-translate-y-0.5 group-hover/tool:text-highlight-strong
+															motion-reduce:transition-none
+														"
 														aria-hidden="true"
 													/>
 												</a>
-											)
-										: (
-												<div class="
-													flex flex-col gap-1 py-3.5 text-left
-													@lg/page:grid @lg/page:grid-cols-[12rem_minmax(0,1fr)] @lg/page:items-baseline @lg/page:gap-x-6
-												"
-												>
-													<span class="text-sm font-medium text-foreground">{project.title}</span>
-													<span class="min-w-0 text-sm text-muted-foreground">{project.description}</span>
-												</div>
-											)}
-								</li>
-							))}
-						</ul>
+											</li>
+										))}
+									</ul>
+								</div>
+							)}
+						</div>
 					</Reveal>
 				</section>
 			</div>

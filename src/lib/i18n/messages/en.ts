@@ -30,7 +30,7 @@ const en: Messages = {
 		{
 			items: [
 				{
-					description: '🍤 TypeScript monorepo template',
+					description: 'TypeScript monorepo starter template',
 					title: 'Monorepo-Template',
 				},
 			],
@@ -39,11 +39,11 @@ const en: Messages = {
 		{
 			items: [
 				{
-					description: '📒 A strict TypeScript configuration for modern projects',
+					description: 'My strict TypeScript config preset',
 					title: 'TSConfig',
 				},
 				{
-					description: '🧃 Xat\'s own slightly obsessive ESLint config',
+					description: 'Xat\'s own slightly obsessive ESLint config',
 					title: 'ESLint-Config',
 				},
 			],
@@ -52,15 +52,19 @@ const en: Messages = {
 		{
 			items: [
 				{
-					description: '😀 A Rehype plugin that renders Unicode Emoji as Fluent Emoji',
+					description: 'Renders Unicode as Fluent Emoji while copying back as Unicode',
 					title: 'Rehype-Fluent-Emoji',
 				},
 				{
-					description: '🍊 A warm, minimal Astro blog template',
+					description: 'A minimal Astro blog template extracted from this site',
 					title: 'Mikan',
 				},
 				{
-					description: '🫧 My personal website and digital garden',
+					description: 'A SwiftUI Cloudflare client for iPhone, with widgets and Live Activities',
+					title: 'Dash',
+				},
+				{
+					description: 'My personal website',
 					title: 'ImI',
 				},
 			],
@@ -182,7 +186,6 @@ const en: Messages = {
 	},
 	home: {
 		bioLead: 'I love polishing interfaces and exploring what AI can do.',
-		designProject: '📐 The spec for this site, every value read from the live CSS',
 		introAfterProducts: '.',
 		introBeforeSystems: 'A ',
 		introBetweenBadges: ' taught me to balance design, engineering, and real needs while building ',
@@ -204,8 +207,14 @@ const en: Messages = {
 		},
 		projectsEyebrow: 'Projects',
 		role: 'Design Engineer',
+		spotlight: {
+			description: 'The site you\'re reading. Built with Astro 7 on Cloudflare Workers, with prefix-free trilingual copy, hand-matched CJK weights, subset fonts, and a live spec at /design.',
+			source: 'Source on GitHub',
+			title: 'This site & its design system',
+		},
 		tagline: 'Xat - Design Engineer',
 		title: 'Xat - Design Engineer',
+		toolsShelfLabel: 'Configs & templates',
 		viewAllPosts: 'View all',
 		writingEyebrow: 'Writing',
 	},
