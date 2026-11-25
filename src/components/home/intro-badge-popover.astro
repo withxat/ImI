@@ -12,10 +12,11 @@ import { HoverCard, HoverCardContent } from '@/components/ui/hover-card'
 interface Props {
 	kind: IntroBadgeKind
 	label: string
+	leading?: boolean
 	locale: Locale
 }
 
-const { kind, label, locale } = Astro.props as Props
+const { kind, label, leading = false, locale } = Astro.props as Props
 const Icon = kind === 'products' ? Suitcase : GraduationCap
 // The systems badge comes first in every locale; opening its card upward keeps it off the products badge that follows.
 const side = kind === 'systems' ? 'top' : 'bottom'
@@ -28,9 +29,10 @@ const side = kind === 'systems' ? 'top' : 'bottom'
 	data-intro-badge-root
 >
 	<Button
-		class="
-			mx-0.5 inline-flex h-auto translate-y-[0.08em] gap-[0.25em] rounded-md highlight-surface bg-popover px-[0.35em] py-[0.16em]
-			align-baseline text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong
+		class={`
+			${leading ? 'me-0.5' : 'mx-0.5'}
+			inline-flex h-auto translate-y-[0.08em] gap-[0.25em] rounded-md highlight-surface bg-popover px-[0.35em] py-[0.16em] align-baseline
+			text-sm leading-[1.1] font-semibold whitespace-nowrap text-highlight-strong
 			hover:bg-popover hover:text-highlight-strong
 			has-[>svg]:px-[0.35em]
 			aria-expanded:bg-popover aria-expanded:text-highlight-strong
@@ -38,7 +40,7 @@ const side = kind === 'systems' ? 'top' : 'bottom'
 			dark:hover:bg-input/32
 			dark:aria-expanded:bg-input/32
 			[&_svg]:block [&_svg]:size-[1em] [&_svg]:shrink-0 [&_svg]:translate-y-[-0.04em] [&_svg]:text-highlight-icon
-		"
+		`}
 		data-slot="hover-card-trigger"
 		type="button"
 		variant="outline"

@@ -4,6 +4,7 @@ import type { Locale } from '@/lib/i18n/constants'
 import { getImage, Image } from 'astro:assets'
 import ArrowRight from '~icons/local/arrow-right'
 import ArrowUpRight from '~icons/local/arrow-up-right'
+import Smile from '~icons/lucide/smile'
 import SiSwift from '~icons/simple-icons/swift'
 
 import shinyImi from '@/assets/shiny-imi.png'
@@ -107,7 +108,7 @@ const avatarImage = await getImage({ height: 128, src: PROFILE_AVATAR_SRC, width
 					<StaggerReveal delayChildren={0.03} staggerChildren={0.045}>
 						<div class="home-intro max-w-prose text-base/7 text-muted-foreground">
 							{m.home.introBeforeSystems}
-							<IntroBadgePopover kind="systems" label={systemsLabel} locale={locale} />
+							<IntroBadgePopover kind="systems" label={systemsLabel} leading={!m.home.introBeforeSystems} locale={locale} />
 							{m.home.introBetweenBadges}
 							<span class="whitespace-nowrap"><IntroBadgePopover kind="products" label={productsLabel} locale={locale} />{introAfterProducts[0]}</span>{introAfterProducts.slice(1).join('')}
 						</div>
@@ -149,7 +150,7 @@ const avatarImage = await getImage({ height: 128, src: PROFILE_AVATAR_SRC, width
 								class="
 									rounded-xl highlight-surface bg-popover p-4
 									sm:p-5
-									dark:border-highlight-brand/25
+									dark:border-highlight-brand/35 dark:bg-highlight-brand/4
 								"
 							>
 								<div class="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -255,8 +256,9 @@ const avatarImage = await getImage({ height: 128, src: PROFILE_AVATAR_SRC, width
 													</span>
 												)}
 												{project.title === 'Rehype-Fluent-Emoji' && (
-													<span class="rounded-sm border border-border bg-muted/60 px-1.5 py-0.5 font-mono text-xs/none text-muted-foreground">
-														U+1F600
+													<span class="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+														<Smile aria-hidden="true" class="size-3.5" />
+														<span>U+1F600</span>
 													</span>
 												)}
 												<ArrowUpRight aria-hidden="true" class={cardArrowClass} />
@@ -278,32 +280,28 @@ const avatarImage = await getImage({ height: 128, src: PROFILE_AVATAR_SRC, width
 							</ul>
 
 							{toolProjects.length > 0 && (
-								<div class="flex flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-border pt-3.5">
+								<div class="flex flex-wrap items-center gap-x-3 gap-y-2 pt-2">
 									<span class="font-ui text-xs text-muted-foreground">{m.home.toolsShelfLabel}</span>
-									<ul class="flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
+									<ul class="flex flex-wrap items-center gap-2">
 										{toolProjects.map(project => (
 											<li>
 												<a
 													class="
-														group/tool inline-flex items-baseline gap-1 font-ui text-sm text-foreground transition-colors duration-150
-														hover:text-highlight-strong
-														focus-visible:rounded-sm
+														group/tool inline-flex items-center gap-1.5 rounded-full border border-border bg-popover px-3 py-1
+														font-ui text-xs text-foreground/85 transition-[border-color,color] duration-150
+														hover:border-highlight-soft hover:text-highlight-strong
+														focus-visible:rounded-full
+														dark:hover:border-foreground/22
 													"
 													href={project.link}
 													rel="noreferrer"
 													target="_blank"
 													title={project.description}
 												>
-													<span class="
-														text-link-muted
-														group-hover/tool:text-highlight-strong
-													"
-													>
-														{project.title}
-													</span>
+													<span>{project.title}</span>
 													<ArrowUpRight
 														class="
-															size-3 shrink-0 translate-y-px text-muted-foreground/70 transition-transform duration-150 ease-out
+															size-3 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out
 															group-hover/tool:translate-x-0.5 group-hover/tool:-translate-y-0.5 group-hover/tool:text-highlight-strong
 															motion-reduce:transition-none
 														"
