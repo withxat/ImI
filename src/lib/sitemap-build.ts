@@ -96,6 +96,8 @@ export async function buildSitemapData(): Promise<SitemapBuildData> {
 	const metaByPathname = new Map<string, SitemapPageMeta>([
 		['/', { changefreq: 'monthly', lastmod: latestPostDate, priority: 1 }],
 		['/post', { changefreq: 'weekly', lastmod: latestPostDate, priority: 0.8 }],
+		['/design', { changefreq: 'monthly', priority: 0.6 }],
+		['/resume', { changefreq: 'monthly', priority: 0.7 }],
 		...posts.map(post => [
 			`/post/${post.slug}`,
 			{ changefreq: 'yearly' as const, lastmod: post.date, priority: 0.7 },

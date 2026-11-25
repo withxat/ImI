@@ -56,7 +56,9 @@ const suggestion = closest && closest.distance <= Math.max(1, Math.floor(closest
 		locale={locale}
 		slot="head"
 		title={`${notFound.title} - Xat`}
-	/>
+	>
+		<meta content="noindex" name="robots" />
+	</Seo>
 
 	<section>
 		<Container class="page-shell">
