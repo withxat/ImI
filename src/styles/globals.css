@@ -1792,3 +1792,73 @@ html[data-astro-transition] .highlight-surface {
 		--sidebar-ring: var(--color-neutral-400);
 	}
 }
+
+/* Global print: always print on light paper, reveal every unscrolled block, and drop interactive chrome. */
+@media print {
+	:root,
+	html.dark,
+	html:not(.light) {
+		color-scheme: light;
+		--background: oklch(1 0 0);
+		--foreground: oklch(0.17 0.003 260);
+		--card: oklch(1 0 0);
+		--card-foreground: oklch(0.17 0.003 260);
+		--popover: oklch(1 0 0);
+		--popover-foreground: oklch(0.17 0.003 260);
+		--muted: oklch(0 0 0 / 0.04);
+		--muted-foreground: oklch(0.45 0.004 260);
+		--accent: oklch(0 0 0 / 0.04);
+		--accent-foreground: oklch(0.17 0.003 260);
+		--border: oklch(0 0 0 / 0.12);
+		--surface: oklch(1 0 0);
+		--surface-foreground: oklch(0.18 0.004 260);
+		--highlight-soft: oklch(0.85654 0.06125 10.83);
+		--highlight-brand: oklch(0.67303 0.11669 3.08);
+		--highlight-text: oklch(0.56 0.13 3);
+		--highlight-icon: color-mix(in oklab, var(--foreground) 36%, var(--highlight-soft));
+	}
+
+	body,
+	body > div,
+	main {
+		min-height: 0 !important;
+	}
+
+	body > div {
+		padding-top: 0 !important;
+	}
+
+	footer,
+	.custom-scrollbar,
+	.custom-scrollbar-tooltip,
+	.custom-scrollbar-scrim,
+	.bubble,
+	.article-body .expressive-code .copy,
+	.article-body :is(h2, h3):has(> a[href^='#'])::before {
+		display: none !important;
+	}
+
+	[data-reveal],
+	[data-stagger-reveal] > *,
+	[data-article-reveal] > *,
+	.article-body > * {
+		opacity: 1 !important;
+		filter: none !important;
+		transform: none !important;
+		animation: none !important;
+		transition: none !important;
+	}
+
+	.article-body .expressive-code .frame {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	.article-body :is(h2, h3, h4) {
+		break-after: avoid;
+	}
+
+	.article-body :is(pre, blockquote, figure, img, table) {
+		break-inside: avoid;
+	}
+}

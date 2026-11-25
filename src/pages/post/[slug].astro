@@ -121,11 +121,12 @@ const neighbors = index < 0
 									<span>{m.blog.readingTime(readingMinutes(post))}</span>
 									{hasOutline && (
 										<>
-											<span aria-hidden="true">·</span>
+											<span aria-hidden="true" class="print:hidden">·</span>
 											<button
 												class="
 													text-link-muted cursor-pointer
 													aria-expanded:text-foreground
+													print:hidden
 												"
 												aria-controls="post-sections"
 												aria-expanded="false"
@@ -141,6 +142,7 @@ const neighbors = index < 0
 									class="
 										-m-1.5 shrink-0 rounded-md p-1.5 transition-colors duration-150
 										hover:text-foreground
+										print:hidden
 									"
 									aria-label={m.blog.viewSource}
 									href={sourceUrl}
@@ -152,7 +154,15 @@ const neighbors = index < 0
 								</a>
 							</div>
 							{hasOutline && (
-								<nav aria-label={m.blog.toc} class="mt-4 font-ui text-sm" id="post-sections" hidden>
+								<nav
+									class="
+										mt-4 font-ui text-sm
+										print:hidden
+									"
+									aria-label={m.blog.toc}
+									id="post-sections"
+									hidden
+								>
 									<ol class="space-y-1.5">
 										{sections.map(section => (
 											<li>
@@ -188,7 +198,13 @@ const neighbors = index < 0
 						</time>
 					</div>
 
-					<nav aria-label={m.blog.moreWriting} class="mt-8 space-y-4">
+					<nav
+						class="
+							mt-8 space-y-4
+							print:hidden
+						"
+						aria-label={m.blog.moreWriting}
+					>
 						<div class="flex items-baseline justify-between gap-6">
 							<Eyebrow as="h2" class="font-semibold">{m.blog.moreWriting}</Eyebrow>
 							<a class="text-link font-ui text-sm" href="/post" data-astro-prefetch>
