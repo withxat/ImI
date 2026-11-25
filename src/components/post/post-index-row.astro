@@ -29,18 +29,18 @@ const transitionName = postCardTransitionName(slug)
 		class="
 			group flex flex-col gap-1 py-3.5 text-left transition-colors
 			focus-visible:rounded-sm
-			@lg/page:grid @lg/page:grid-cols-[4.75rem_minmax(0,1fr)] @lg/page:items-baseline @lg/page:gap-x-6
+			@lg/page:grid @lg/page:grid-cols-[3.75rem_minmax(0,1fr)] @lg/page:items-baseline @lg/page:gap-x-4
 		"
 		data-astro-prefetch={prefetchOnView ? 'viewport' : undefined}
 		data-post-card-vt="source"
 		href={href}
 		transition:name={transitionName}
 	>
-		<span class="font-mono text-xs text-muted-foreground tabular-nums">{dateLabel}</span>
+		<span class="font-mono text-xs whitespace-nowrap text-muted-foreground tabular-nums">{dateLabel}</span>
 		<span class="min-w-0 space-y-1">
 			<span class="flex items-baseline justify-between gap-4">
 				<span class="
-					text-sm font-medium text-foreground transition-colors duration-150
+					text-[15px] font-medium text-foreground transition-colors duration-150
 					group-hover:text-highlight-strong
 				"
 				>
