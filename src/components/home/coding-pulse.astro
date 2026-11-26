@@ -1,0 +1,185 @@
+---
+import type { Messages } from '@/lib/i18n/messages'
+import type { CodingPulseData } from '@/lib/tokens-ci/format'
+
+import MoonStar from 'kubai-icons/duotone/icons/moon-star'
+import Sparkles from 'kubai-icons/duotone/icons/sparkles'
+import ArrowUpRight from '~icons/local/arrow-up-right'
+
+import KubaiIcon from '@/components/icons/kubai-icon.astro'
+import Eyebrow from '@/components/layout/eyebrow.astro'
+import {
+	formatCost,
+	formatPercent,
+	formatRoundsCount,
+	formatTokens,
+	TOKENS_CI_PROFILE_URL,
+} from '@/lib/tokens-ci/format'
+
+interface Props {
+	copy: Messages['home']['codingPulse']
+	data: CodingPulseData
+}
+
+const { copy, data } = Astro.props as Props
+const todayIdx = data.days.length - 1
+const today = data.days[todayIdx]
+const isActiveToday = (today?.t ?? 0) > 0
+
+const monthTicks = data.days
+	.map((day, idx) => {
+		if (day.d.slice(8) !== '01')
+			return null
+		const monthIndex = Number(day.d.slice(5, 7)) - 1
+		return {
+			isLate: idx > data.days.length * 0.8,
+			label: copy.months[monthIndex] ?? '',
+			left: `${(idx / data.days.length) * 100}%`,
+		}
+	})
+	.filter((tick): tick is NonNullable<typeof tick> => tick !== null)
+
+function colorClassFor(index: number, other?: true): string {
+	if (other)
+		return 'coding-pulse-c3'
+	return `coding-pulse-c${Math.min(index, 2)}`
+}
+
+const initialSlices = Array.from({ length: 4 }, (_, idx) => data.all.md[idx] ?? null)
+const allClients = data.all.cl
+const firstClient = allClients[0] ?? ''
+const secondClient = allClients[1] ?? ''
+const moreWide = allClients.length > 2 ? `+${allClients.length - 2}` : ''
+const moreNarrow = allClients.length > 1 ? `+${allClients.length - 1}` : ''
+
+const clientPayload = JSON.stringify({ copy, data }).replace(/</g, '\\u003c')
+---
+
+<div class="coding-pulse" data-coding-pulse>
+	<div class="mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+		<div class="inline-flex min-w-0 items-center gap-2">
+			<Eyebrow as="h2" class="font-semibold whitespace-nowrap">{copy.eyebrow}</Eyebrow>
+			<button
+				aria-pressed="false"
+				class="coding-pulse-mood"
+				type="button"
+				data-pulse-mood
+			>
+				{isActiveToday
+					? <KubaiIcon class="coding-pulse-spark size-3.5 shrink-0" icon={Sparkles} />
+					: <KubaiIcon class="size-3.5 shrink-0" icon={MoonStar} />}
+				<span>{isActiveToday ? copy.moodActive : copy.moodIdle}</span>
+			</button>
+		</div>
+		<a
+			class="text-link font-ui text-sm whitespace-nowrap"
+			href={TOKENS_CI_PROFILE_URL}
+			rel="noreferrer"
+			target="_blank"
+		>
+			tokens.ci<ArrowUpRight aria-hidden="true" class="ml-0.5 inline-block size-3.5 align-[-0.18em]" />
+		</a>
+	</div>
+
+	<div class="coding-pulse-instrument">
+		<div class="coding-pulse-readout">
+			<div class="coding-pulse-ctx font-mono tabular-nums" data-pulse-ctx>
+				<span data-ctx-primary>{copy.overviewLabel}</span><span class="coding-pulse-sep" data-ctx-sep-1>·</span><span data-ctx-badge><KubaiIcon attrs={{ 'data-ctx-icon': 'spark', 'data-hidden': '' }} class="coding-pulse-ctx-icon" icon={Sparkles} /><KubaiIcon attrs={{ 'data-ctx-icon': 'rest', 'data-hidden': '' }} class="coding-pulse-ctx-icon" icon={MoonStar} /><span data-ctx-badge-text>{data.all.activeDays}{copy.activeDaysSuffix}</span></span><span class="coding-pulse-sep" hidden={!data.all.m} data-ctx-sep-2>·</span><span hidden={!data.all.m} data-ctx-rounds>{formatRoundsCount(data.all.m)}{copy.roundsSuffix}</span>
+			</div>
+
+			<div aria-label={copy.scopeAriaLabel} class="coding-pulse-scope" role="group">
+				<button aria-pressed="true" class="coding-pulse-scope-btn" data-scope="all" type="button">
+					{copy.scopeAll}
+				</button>
+				<button aria-pressed="false" class="coding-pulse-scope-btn" data-scope="today" type="button">
+					{copy.scopeToday}
+				</button>
+			</div>
+
+			<div aria-live="polite" class="coding-pulse-num font-mono tabular-nums" data-pulse-num>
+				<span class="coding-pulse-tokens" data-pulse-tokens>{formatTokens(data.all.t)}</span>
+				<span class="coding-pulse-unit">tokens</span>
+				<span class="coding-pulse-cost" data-pulse-cost>{formatCost(data.all.c)}</span>
+				<span class="coding-pulse-cost" data-idle data-pulse-cost-idle hidden>{copy.charging}</span>
+			</div>
+
+			<div class="coding-pulse-tools font-mono tabular-nums" hidden={allClients.length === 0} data-pulse-tools>
+				<span class="coding-pulse-via">via</span><span data-tools-first>{firstClient}</span><span class="coding-pulse-tools-wide"><span data-tools-second>{secondClient ? ` · ${secondClient}` : ''}</span><span class="coding-pulse-more" hidden={!moreWide} data-tools-more-wide>{moreWide}</span></span><span class="coding-pulse-tools-narrow"><span class="coding-pulse-more" hidden={!moreNarrow} data-tools-more-narrow>{moreNarrow}</span></span>
+			</div>
+		</div>
+
+		<div
+			aria-label={copy.rulerAriaLabel}
+			aria-valuemax={todayIdx}
+			aria-valuemin={0}
+			aria-valuenow={todayIdx}
+			aria-valuetext={copy.overviewLabel}
+			class="coding-pulse-ruler"
+			role="slider"
+			tabindex="0"
+			data-pulse-ruler
+		>
+			{data.days.map((day, idx) => (
+				<div
+					class:list={['coding-pulse-tick', idx === todayIdx && isActiveToday && 'is-today']}
+					data-tier={day.tier}
+					style={`--h:${day.h}%`}
+					data-pulse-tick
+				>
+					<span class="coding-pulse-bar" />
+					<span class:list={['coding-pulse-bead', idx === todayIdx && isActiveToday && 'is-halo']} />
+				</div>
+			))}
+		</div>
+
+		<div aria-hidden="true" class="coding-pulse-axis font-mono tabular-nums">
+			{monthTicks.map(tick => (
+				<span class:list={[tick.isLate && 'is-late']} style={`left:${tick.left}`}>{tick.label}</span>
+			))}
+			<span class="is-today">{copy.axisToday}</span>
+		</div>
+
+		<div class="coding-pulse-models">
+			<div aria-hidden="true" class="coding-pulse-track">
+				{initialSlices.map((slice, idx) => (
+					<span
+						class:list={['coding-pulse-seg', slice ? colorClassFor(idx, slice.other) : 'coding-pulse-c0']}
+						hidden={!slice}
+						style={slice ? `flex-grow:${Math.max(slice.p, 2.5)}` : undefined}
+						data-pulse-seg
+					/>
+				))}
+				<span class="coding-pulse-seg is-empty" data-pulse-seg-empty hidden />
+			</div>
+
+			<ul class="coding-pulse-legend font-mono tabular-nums">
+				{initialSlices.map((slice, idx) => {
+					const label = slice ? (slice.other ? copy.other : slice.n) : ''
+					return (
+						<li
+							class="coding-pulse-model"
+							data-blank={slice ? undefined : ''}
+							title={label || undefined}
+							data-pulse-slot
+						>
+							<span class:list={['coding-pulse-dot', slice ? colorClassFor(idx, slice.other) : 'coding-pulse-c0']} data-slot-dot />
+							<span class="coding-pulse-m-name" data-slot-name>{label}</span>
+							<span aria-hidden="true" class="coding-pulse-m-lead" />
+							<span class="coding-pulse-m-pct" data-slot-pct>{slice ? formatPercent(slice.p) : ''}</span>
+							<span class="coding-pulse-m-cost" data-slot-cost>{slice ? formatCost(slice.c) : ''}</span>
+						</li>
+					)
+				})}
+				<li class="coding-pulse-rest" data-pulse-rest hidden>
+					<span class="coding-pulse-rest-title inline-flex items-center gap-1.5">
+						<KubaiIcon class="size-4 shrink-0 text-highlight-icon" icon={MoonStar} />
+						<span>{copy.restHeadline}</span>
+					</span>
+					<span class="coding-pulse-rest-sub">{copy.restSubBefore}{data.restDays}{copy.restSubAfter}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<script set:html={clientPayload} type="application/json" data-coding-pulse-data is:inline />
+</div>

@@ -208,6 +208,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      kubai-icons:
+        specifier: ^0.15.0
+        version: 0.15.0
       motion:
         specifier: ^14.14.0
         version: 14.14.0
@@ -4221,6 +4224,9 @@ packages:
 
   koffi@2.10.0:
     resolution: {integrity: sha512-TkCU8t2KE/ZcWGh87nRvqMPg0p2t+MXCz/6zAmQohf2UKyVPjGnx0suY88EeQbrP9aIMDVqgUu2j9phy/srqng==}
+
+  kubai-icons@0.15.0:
+    resolution: {integrity: sha512-qBnt+/hUwfA3Q//ECZMitcWbA3740Zdte3QH+858rOIQmDz/aGUlPAAllCx+dFBPnP7jeszErKiaUmhHfUopYQ==}
 
   lefthook-darwin-arm64@2.2.1:
     resolution: {integrity: sha512-SyuDBT5HqNQfi607vMHrYJu45bRN7JoIFdyxLjEPVe34UnZJCesmeYBODEYTyCfRZjPOaTbton4Padu+qvqfCQ==}
@@ -10554,6 +10560,8 @@ snapshots:
   known-css-properties@0.37.0: {}
 
   koffi@2.10.0: {}
+
+  kubai-icons@0.15.0: {}
 
   lefthook-darwin-arm64@2.2.1:
     optional: true

@@ -2,11 +2,12 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { getEntry } from 'astro:content'
+import List from 'kubai-icons/duotone/icons/list'
+import Printer from 'kubai-icons/duotone/icons/printer'
 import ArrowUpRight from '~icons/local/arrow-up-right'
 import Dot from '~icons/lucide/dot'
-import List from '~icons/lucide/list'
-import Printer from '~icons/lucide/printer'
 
+import KubaiIcon from '@/components/icons/kubai-icon.astro'
 import Container from '@/components/layout/container.astro'
 import EmailCopyLink from '@/components/layout/email-copy-link.astro'
 import Eyebrow from '@/components/layout/eyebrow.astro'
@@ -165,7 +166,7 @@ const listClass = 'divide-y divide-border border-y border-border'
 									type="button"
 									data-section-outline-trigger
 								>
-									<List aria-hidden="true" class="size-3.5 shrink-0 opacity-75" />
+									<KubaiIcon class="size-3.5 shrink-0 opacity-75" icon={List} />
 									<span>{m.blog.sectionCount(resumeSections.length)}</span>
 								</button>
 								<button
@@ -177,7 +178,7 @@ const listClass = 'divide-y divide-border border-y border-border'
 									type="button"
 									data-resume-print
 								>
-									<Printer aria-hidden="true" class="size-3.5 text-muted-foreground" />
+									<KubaiIcon class="size-3.5 text-muted-foreground" icon={Printer} />
 									<span>{m.resume.print}</span>
 								</button>
 							</div>
