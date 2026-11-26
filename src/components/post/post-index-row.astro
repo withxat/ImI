@@ -5,7 +5,7 @@ interface Props {
 	dateLabel: string
 	href: string
 	meta?: string
-	prefetchOnView?: boolean
+	navDirection?: 'newer' | 'older'
 	slug: string
 	summary?: string
 	title: string
@@ -15,7 +15,7 @@ const {
 	dateLabel,
 	href,
 	meta,
-	prefetchOnView = false,
+	navDirection,
 	slug,
 	summary,
 	title,
@@ -31,10 +31,11 @@ const transitionName = postCardTransitionName(slug)
 			focus-visible:rounded-sm
 			@lg/page:grid @lg/page:grid-cols-[3.75rem_minmax(0,1fr)] @lg/page:items-baseline @lg/page:gap-x-4
 		"
-		data-astro-prefetch={prefetchOnView ? 'viewport' : undefined}
 		data-post-card-vt="source"
+		data-post-nav={navDirection}
 		href={href}
 		transition:name={transitionName}
+		data-astro-prefetch
 	>
 		<span class="font-mono text-xs whitespace-nowrap text-muted-foreground tabular-nums">{dateLabel}</span>
 		<span class="min-w-0 space-y-1">

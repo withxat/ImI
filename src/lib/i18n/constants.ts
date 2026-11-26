@@ -29,7 +29,13 @@ export function htmlLangFor(locale: Locale): string {
 	return locale
 }
 
-/** Open Graph locale follows the site's primary locale keys. */
+const OG_LOCALE_MAP: Record<Locale, string> = {
+	en: 'en_US',
+	ja: 'ja_JP',
+	zh: 'zh_CN',
+}
+
+/** Open Graph locale tag (`language_TERRITORY` per OGP spec). */
 export function ogLocaleFor(locale: Locale): string {
-	return locale
+	return OG_LOCALE_MAP[locale]
 }

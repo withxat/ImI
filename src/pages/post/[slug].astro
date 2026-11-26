@@ -60,20 +60,25 @@ const index = allPosts.findIndex(entry => entry.slug === post.slug)
 const neighbors = index < 0
 	? []
 	: [
-			{ label: m.blog.newer, post: allPosts[index - 1] },
-			{ label: m.blog.older, post: allPosts[index + 1] },
-		].flatMap(({ label, post: entry }) => (entry ? [{ label, post: entry }] : []))
+			{ direction: 'newer' as const, label: m.blog.newer, post: allPosts[index - 1] },
+			{ direction: 'older' as const, label: m.blog.older, post: allPosts[index + 1] },
+		].flatMap(({ direction, label, post: entry }) => (entry ? [{ direction, label, post: entry }] : []))
 ---
 
 <RootLayout>
 	<Seo
+		article={{
+			publishedTime: post.date.toISOString(),
+			section: articleSection,
+			tags: post.tags,
+		}}
 		jsonLd={[
 			blogPostingJsonLd({
 				articleSection,
 				canonicalPath,
 				date: post.date,
 				description: seoDescription,
-				image: postOgImageUrl(slug),
+				image: postOgImageUrl(post.slug, post.locale),
 				locale,
 				tags: post.tags,
 				title: post.title,
@@ -86,9 +91,10 @@ const neighbors = index < 0
 		]}
 		canonicalPath={canonicalPath}
 		description={seoDescription}
-		image={postOgImageUrl(slug)}
+		image={postOgImageUrl(post.slug, post.locale)}
 		imageAlt={`${post.title} - Xat`}
 		locale={locale}
+		markdownPath={`/post/${post.slug}.md`}
 		slot="head"
 		title={`${post.title} - Xat`}
 		type="article"
@@ -219,11 +225,12 @@ const neighbors = index < 0
 						</div>
 						{neighbors.length > 0 && (
 							<ul class="divide-y divide-border border-y border-border">
-								{neighbors.map(({ label, post: neighbor }) => (
+								{neighbors.map(({ direction, label, post: neighbor }) => (
 									<PostIndexRow
 										dateLabel={formatPostMonth(neighbor.date)}
 										href={`/post/${neighbor.slug}`}
 										meta={label}
+										navDirection={direction}
 										slug={neighbor.slug}
 										summary={neighbor.summary}
 										title={neighbor.title}

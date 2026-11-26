@@ -1,5 +1,21 @@
 // Mirrors the `/*` block in public/_headers, which only covers static assets.
+const CONTENT_SECURITY_POLICY = [
+	'default-src \'self\'',
+	'script-src \'self\' \'unsafe-inline\'',
+	'style-src \'self\' \'unsafe-inline\'',
+	'img-src \'self\' data: https://assets.xat.sh https://avatars.githubusercontent.com',
+	'font-src \'self\'',
+	'media-src \'self\'',
+	'connect-src \'self\'',
+	'worker-src \'self\'',
+	'object-src \'none\'',
+	'base-uri \'self\'',
+	'form-action \'self\'',
+	'frame-ancestors \'self\'',
+].join('; ')
+
 const SECURITY_HEADERS = {
+	'Content-Security-Policy': CONTENT_SECURITY_POLICY,
 	'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
 	'Referrer-Policy': 'strict-origin-when-cross-origin',
 	'Strict-Transport-Security': 'max-age=31536000',

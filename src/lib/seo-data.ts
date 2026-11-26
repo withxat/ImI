@@ -14,10 +14,10 @@ export const DEFAULT_DESCRIPTION
 /** Direct CDN URL avoids `github.com/...png` redirect and improves LCP discovery. */
 export const PROFILE_AVATAR_SRC = 'https://avatars.githubusercontent.com/u/54651817?s=128&v=4'
 
-/** Build-time Satori PNG (`pnpm og:generate`), Chinese copy. */
+/** Build-time Satori PNG (`pnpm og:generate`), default locale fallback. */
 export const DEFAULT_OG_IMAGE = defaultOgImageUrl()
 
-export { pageOgImageUrl, postOgImageUrl }
+export { defaultOgImageUrl, pageOgImageUrl, postOgImageUrl }
 
 /** Twitter handle for `twitter:site` / `twitter:creator` (with leading @). */
 export const TWITTER_SITE = '@withxat'

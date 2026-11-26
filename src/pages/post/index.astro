@@ -26,8 +26,9 @@ const feedUrl = { en: RSS_FEED_URL_EN, ja: RSS_FEED_URL_JA, zh: RSS_FEED_URL }[l
 	<Seo
 		canonicalPath="/post"
 		description={m.blog.pageDescription}
-		image={pageOgImageUrl('post')}
+		image={pageOgImageUrl('post', locale)}
 		locale={locale}
+		markdownPath="/post.md"
 		slot="head"
 		title={m.blog.pageTitle}
 	/>
@@ -63,7 +64,6 @@ const feedUrl = { en: RSS_FEED_URL_EN, ja: RSS_FEED_URL_JA, zh: RSS_FEED_URL }[l
 													slug={post.slug}
 													summary={post.summary}
 													title={post.title}
-													prefetchOnView
 												/>
 											)
 										})}

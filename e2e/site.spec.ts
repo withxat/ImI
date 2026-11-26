@@ -123,3 +123,104 @@ for (const shot of SHOTS) {
 		}
 	})
 }
+
+test.describe('content negotiation, metadata, runtime, and shortcuts', () => {
+	test('serves Markdown via Accept negotiation and explicit endpoints', async ({ request }) => {
+		const homeMd = await request.get('/', {
+			headers: { 'Accept': 'text/markdown', 'Accept-Language': 'zh-CN' },
+		})
+		expect(homeMd.status()).toBe(200)
+		expect(homeMd.headers()['content-type']).toContain('text/markdown')
+		expect(homeMd.headers().vary?.toLowerCase()).toContain('accept')
+		expect(Number(homeMd.headers()['x-markdown-tokens'])).toBeGreaterThan(0)
+		expect(await homeMd.text()).toContain('# Xat — Design Engineer')
+
+		const llms = await request.get('/llms.txt')
+		expect(llms.status()).toBe(200)
+		expect(llms.headers()['content-type']).toContain('text/markdown')
+		expect(await llms.text()).toContain('## Writing')
+
+		const postMd = await request.get('/post/vite-and-more.md', {
+			headers: { 'Accept-Language': 'zh-CN' },
+		})
+		expect(postMd.status()).toBe(200)
+		const postBody = await postMd.text()
+		expect(postBody).toContain('> **顺便一提，相关的争议也并不少**')
+		expect(postBody).not.toContain('<Accordion')
+
+		const resumeMd = await request.get('/resume', {
+			headers: { Accept: 'text/markdown' },
+		})
+		expect(resumeMd.status()).toBe(200)
+		expect(await resumeMd.text()).toContain('# Xat — Résumé')
+
+		const missingMd = await request.get('/post/does-not-exist', {
+			headers: { Accept: 'text/markdown' },
+		})
+		expect(missingMd.status()).toBe(404)
+		expect(missingMd.headers()['content-type']).toContain('text/markdown')
+	})
+
+	test('emits locale-matched OG images, OGP locale tags, article meta, and markdown alternates', async ({ page, request }) => {
+		await open(page, '/post/how-i-access-the-internet-in-2026', 'ja')
+		await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'ja_JP')
+		const ogImage = await page.locator('meta[property="og:image"]').getAttribute('content')
+		expect(ogImage).toMatch(/\/og\/ja\/post\/how-i-access-the-internet-in-2026\.png$/)
+		await expect(page.locator('meta[property="article:published_time"]')).toHaveAttribute('content', '2026-06-16T00:00:00.000Z')
+		await expect(page.locator('meta[property="article:section"]')).toHaveAttribute('content', 'テック')
+		await expect(page.locator('link[rel="alternate"][type="text/markdown"]')).toHaveAttribute('href', /\/post\/how-i-access-the-internet-in-2026\.md$/)
+
+		const imgRes = await request.get('/og/ja/post/how-i-access-the-internet-in-2026.png')
+		expect(imgRes.status()).toBe(200)
+	})
+
+	test('avoids redundant presence heartbeat and eager viewport post prefetch across navigation', async ({ page }) => {
+		const presenceRequests: string[] = []
+		const prefetchedPosts: string[] = []
+
+		page.on('request', (req) => {
+			const pathname = new URL(req.url()).pathname
+			if (pathname === '/api/presence.json')
+				presenceRequests.push(pathname)
+			if (pathname.startsWith('/post/') && req.headers()['x-imi-prefetch'] === '1')
+				prefetchedPosts.push(pathname)
+		})
+
+		await open(page, '/', 'en')
+		await page.waitForTimeout(300)
+		expect(presenceRequests.length).toBe(1)
+		expect(prefetchedPosts).toEqual([])
+
+		// Same-locale view transition to /post keeps persisted footer stats without re-heartbeating.
+		await page.locator('a[href="/post"]').first().click()
+		await expect(page).toHaveURL(/\/post$/)
+		await page.waitForTimeout(300)
+		expect(presenceRequests.length).toBe(1)
+		expect(prefetchedPosts).toEqual([])
+	})
+
+	test('supports article keyboard shortcuts (t, j, k, [, ])', async ({ page }) => {
+		await page.setViewportSize(DESKTOP.viewport)
+		await open(page, '/post/how-i-access-the-internet-in-2026', 'en')
+		await page.waitForTimeout(200)
+
+		// `t` toggles the section outline trigger.
+		const outlineTrigger = page.locator('[data-section-outline-trigger]')
+		await expect(outlineTrigger).toHaveAttribute('aria-expanded', 'false')
+		await page.keyboard.press('t')
+		await expect(outlineTrigger).toHaveAttribute('aria-expanded', 'true')
+		await page.keyboard.press('t')
+		await expect(outlineTrigger).toHaveAttribute('aria-expanded', 'false')
+
+		// `j` jumps to the first h2 and focuses it; `]` navigates to the older neighbor post.
+		await page.keyboard.press('j')
+		const firstH2 = page.locator('.article-body h2[id]').first()
+		const firstId = await firstH2.getAttribute('id')
+		await expect(page.locator(`#${firstId} a[href]`)).toBeFocused()
+
+		const olderHref = await page.locator('a[data-post-nav="older"]').getAttribute('href')
+		expect(olderHref).toBeTruthy()
+		await page.keyboard.press(']')
+		await expect(page).toHaveURL(new RegExp(`${olderHref}$`))
+	})
+})

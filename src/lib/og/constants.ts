@@ -41,14 +41,4 @@ export const OG_TYPE = {
 	wordmark: 54,
 } as const
 
-export const ZH_CATEGORY_NAMES: Record<string, string> = {
-	design: '设计',
-	life: '生活',
-	tech: '技术',
-}
-
-export const OG_SITE_DEFAULT = {
-	eyebrow: 'Design Engineer',
-	summary: '喜欢把界面磨顺手，也爱拿 AI 做些真正好用的东西。',
-	title: 'Xat',
-} as const
+export const OG_SITE_BRAND = 'Xat' as const

@@ -3,16 +3,15 @@ import {
 	OG_COLORS,
 	OG_FONT_FAMILY,
 	OG_HEIGHT,
-	OG_SITE_DEFAULT,
+	OG_SITE_BRAND,
 	OG_TYPE,
 	OG_WIDTH,
-	ZH_CATEGORY_NAMES,
 } from '@/lib/og/constants'
 import { truncate } from '@/lib/og/truncate'
 
 export interface PostOgInput {
 	avatarSrc: string
-	category: string
+	categoryLabel: string
 	dateLabel: string
 	summary: string
 	title: string
@@ -81,7 +80,7 @@ function brandCorner(avatarSrc: string) {
 				},
 				{
 					props: {
-						children: OG_SITE_DEFAULT.title,
+						children: OG_SITE_BRAND,
 						style: {
 							color: OG_COLORS.accent,
 							fontFamily: OG_FONT_FAMILY.wordmark,
@@ -147,7 +146,7 @@ export function siteOgTemplate(input: SiteOgInput) {
 							},
 							{
 								props: {
-									children: truncate(input.summary, 50),
+									children: truncate(input.summary, 110),
 									style: {
 										display: 'flex',
 										flexDirection: 'column',
@@ -186,7 +185,7 @@ function pageTitleBlock(title: string, summary: string) {
 			children: [
 				{
 					props: {
-						children: truncate(title, 64),
+						children: truncate(title, 96),
 						style: {
 							display: 'flex',
 							fontSize: OG_TYPE.headline,
@@ -201,7 +200,7 @@ function pageTitleBlock(title: string, summary: string) {
 				},
 				{
 					props: {
-						children: truncate(summary, 88),
+						children: truncate(summary, 150),
 						style: {
 							color: OG_COLORS.muted,
 							display: 'flex',
@@ -253,8 +252,6 @@ export function pageOgTemplate(input: PageOgInput) {
 }
 
 export function postOgTemplate(input: PostOgInput) {
-	const categoryLabel = ZH_CATEGORY_NAMES[input.category] ?? input.category
-
 	return {
 		props: {
 			children: [
@@ -262,7 +259,7 @@ export function postOgTemplate(input: PostOgInput) {
 				{
 					props: {
 						children: [
-							categoryPill(categoryLabel),
+							categoryPill(input.categoryLabel),
 							pageTitleBlock(input.title, input.summary),
 						],
 						style: {

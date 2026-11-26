@@ -17,6 +17,13 @@ import {
 } from '@/lib/i18n/locale-switch'
 import { resolveLocaleFromHeaders } from '@/lib/i18n/request-locale'
 import { localeCookieOptions } from '@/lib/i18n/set-locale-cookie'
+import {
+	appendVaryHeader,
+	isMarkdownNegotiablePath,
+	markdownResponse,
+	renderMarkdownForPath,
+	wantsMarkdown,
+} from '@/lib/markdown'
 import { withSecurityHeaders } from '@/lib/security-headers'
 import { heartbeatSitePresence, recordSiteView } from '@/lib/site-stats/server.ts'
 import {
@@ -65,6 +72,22 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 	// 4) Visitor geo (Cloudflare headers/cf).
 	context.locals.visitorGeo = readVisitorGeoFromRequest(request)
 
+	// 4.5) Content negotiation: serve Markdown to agents requesting `Accept: text/markdown`.
+	const isNegotiable = !context.isPrerendered && isMarkdownNegotiablePath(url.pathname)
+	if (isNegotiable && wantsMarkdown(request)) {
+		const markdown = await renderMarkdownForPath(url.pathname, context.locals.locale)
+		if (markdown !== null) {
+			return withSecurityHeaders(markdownResponse(markdown, { varyAccept: true }))
+		}
+		return withSecurityHeaders(new Response('Not found\n', {
+			headers: {
+				'Content-Type': 'text/markdown; charset=utf-8',
+				'Vary': 'Accept, Cookie, Accept-Language',
+			},
+			status: 404,
+		}))
+	}
+
 	// 5) Edge HTML cache. Hits still fall through to stats tracking and cookies below.
 	const waitUntil = context.locals.cfContext?.waitUntil.bind(context.locals.cfContext)
 	const cacheKey = !context.isPrerendered && isEdgeCacheableRequest(request, url)
@@ -76,7 +99,10 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
 		: null
 
 	const cached = cacheKey ? await matchEdgeCache(cacheKey).catch(() => null) : null
-	const response = cached ?? (cacheKey ? putEdgeCache(cacheKey, await next(), waitUntil) : await next())
+	let response = cached ?? (cacheKey ? putEdgeCache(cacheKey, await next(), waitUntil) : await next())
+
+	if (isNegotiable)
+		response = appendVaryHeader(response, 'Accept')
 
 	if (shouldTrackSiteVisit(request, url.pathname)) {
 		const sessionId = getOrCreateVisitorSessionId(context.cookies)

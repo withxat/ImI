@@ -12,7 +12,7 @@ import { disposePageReveals, initPageReveals } from '@/client/page-reveal'
 import { destroyPhotoSwipe, initPhotoSwipe } from '@/client/photoswipe-gallery'
 import { disposePostOutline, initPostOutline } from '@/client/post-outline'
 import { disposePrimeBindings, initPrimeBindings } from '@/client/prime-bindings'
-import { disposeSiteStatsModule, runSiteStatsModule } from '@/client/site-stats'
+import { runSiteStatsModule } from '@/client/site-stats'
 import { initThemeSwitcher } from '@/client/theme-switcher'
 import { initWordmarkHops } from '@/client/wordmark-hop'
 
@@ -107,8 +107,24 @@ registerModule('design-specimens', {
 	},
 })
 
+// Only article pages need keyboard reading shortcuts.
+let articleShortcuts: typeof import('@/client/article-shortcuts') | undefined
+
+registerModule('article-shortcuts', {
+	dispose: () => articleShortcuts?.disposeArticleShortcuts(),
+	init: () => {
+		if (!document.querySelector('.article-body'))
+			return
+		void import('@/client/article-shortcuts').then((mod) => {
+			articleShortcuts = mod
+			mod.initArticleShortcuts()
+		})
+	},
+})
+
+// Footer is `transition:persist` per locale; `runSiteStatsModule` reconciles against the live DOM
+// without tearing down polling on same-locale navigations.
 registerModule('site-stats', {
-	dispose: () => disposeSiteStatsModule(),
 	init: () => runSiteStatsModule(),
 })
 
