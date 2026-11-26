@@ -1,5 +1,30 @@
 import type { CodeBlockCopy } from '@/lib/i18n/code-block-copy.ts'
 
+export interface CodingPulseCopy {
+	activeDaysSuffix: string
+	axisToday: string
+	badgeHigh: string
+	badgePeak: string
+	badgeRest: string
+	badgeToday: string
+	charging: string
+	eyebrow: string
+	months: readonly [string, string, string, string, string, string, string, string, string, string, string, string]
+	moodActive: string
+	moodIdle: string
+	other: string
+	overviewLabel: string
+	restHeadline: string
+	restSubAfter: string
+	restSubBefore: string
+	roundsSuffix: string
+	rulerAriaLabel: string
+	scopeAll: string
+	scopeAriaLabel: string
+	scopeToday: string
+	weekdays: readonly [string, string, string, string, string, string, string]
+}
+
 export interface CategoryCopy {
 	name: string
 }
@@ -179,6 +204,7 @@ export interface Messages {
 	}
 	home: {
 		bioLead: string
+		codingPulse: CodingPulseCopy
 		introAfterProducts: string
 		introBeforeSystems: string
 		introBetweenBadges: string

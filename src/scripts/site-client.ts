@@ -122,6 +122,21 @@ registerModule('article-shortcuts', {
 	},
 })
 
+// Only the home page renders the tokens.ci pulse instrument.
+let codingPulse: typeof import('@/client/coding-pulse') | undefined
+
+registerModule('coding-pulse', {
+	dispose: () => codingPulse?.disposeCodingPulse(),
+	init: () => {
+		if (!document.querySelector('[data-coding-pulse]'))
+			return
+		void import('@/client/coding-pulse').then((mod) => {
+			codingPulse = mod
+			mod.initCodingPulse()
+		})
+	},
+})
+
 // Footer is `transition:persist` per locale; `runSiteStatsModule` reconciles against the live DOM
 // without tearing down polling on same-locale navigations.
 registerModule('site-stats', {

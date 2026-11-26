@@ -213,7 +213,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 
 ### Core Pages
 
-- Home (`/`) — profile, bio, recent posts, projects list
+- Home (`/`) — profile, bio, recent posts, projects list, AI coding pulse
 - Blog list (`/post`) — grouped by year, with dates; the header shows the post count and links the reader's locale feed (RSS)
 - Blog detail (`/post/[slug]`) — MDX; a "Home / Writing" breadcrumb in the header; under the title, the date, an estimated reading time, an "N sections" button (3+ h2s) that opens the custom scrollbar's section outline, and a link to the post's MDX on GitHub (new tab); a "Xat" sign-off with the post date, newer/older links and a link to the archive at the end, translator info
 - Design system (`/design`) — typography (including the Hanken ↔ MiSans weight pairing from `CJK_WEIGHTS`), colors with contrast and click-to-copy CSS variable / OKLCH values, trilingual wrapping, shape & shadow, motion, plus section anchors and the section-outline trigger; every value read from the running CSS (`src/client/design-specimens.ts`)
@@ -253,6 +253,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Intro badges with popover descriptions (systems / products)
 - Recent posts (4 latest) as date-led index rows
 - Projects showcase sourced from `content/config.json`: an ImI spotlight card (linking to `/design` and GitHub), three selected project cards (`Dash`, `Mikan`, `Rehype-Fluent-Emoji`), and a bottom shelf row for config presets (`ESLint-Config`, `TSConfig`, `Monorepo-Template`)
+- AI coding pulse (`src/components/home/coding-pulse.astro`, `src/client/coding-pulse.ts`, `src/lib/tokens-ci/`): 180-day usage ruler sourced from `https://tokens.ci/api/users/withxat?period=all` (10 min isolate + Workers `caches.default` cache with `waitUntil` stale refresh and 1.8s cold timeout; silently omitted on error); pointer scrubbing, click-to-pin, keyboard navigation, and All/Today toggles update the fixed-height readout (`number-flow`), client summary, and 4-slot model breakdown without layout shift; client script lazy-loaded only on `/` and hidden from pixel-diff baselines in `e2e/screenshot.css`
 
 ---
 
@@ -349,7 +350,7 @@ Micro interactions: encouraged.
   /client        # browser-only modules registered by src/scripts/site-client.ts
   /components
     /fonts       # font loading / subset side-effect components
-    /home        # intro badges, name pronunciation button
+    /home        # intro badges, name pronunciation button, avatar poke, AI coding pulse
     /icons       # Kubai two-tone SSR icon wrapper
     /layout      # header, footer, container, text-link, locale/theme switchers
     /mdx         # MDX element overrides (a, h1-h6, img, table, etc.)
@@ -367,6 +368,7 @@ Micro interactions: encouraged.
     /og          # OG image templates, fonts, paths (rendered at build by scripts/)
     /site-stats  # view/presence tracking helpers + Durable Object client
     /theme       # theme bootstrap + constants
+    /tokens-ci   # tokens.ci API client, 10m cache, and 180-day formatting
     *.ts         # SSR/shared helpers (blog, seo-data, rss, view-transition, etc.)
   /pages
     index.astro

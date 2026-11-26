@@ -1,8 +1,10 @@
-/* Applied to every screenshot (playwright.config.ts): footer parts that change with the visitor, the
- * time, or the commit. The greeting names the visitor's country, the stats count views and readers,
- * and the commit link changes on every push, so it keeps its width but not its text. */
+/* Applied to every screenshot (playwright.config.ts): parts that change with the visitor, the
+ * time, live external APIs (tokens.ci), or the commit. The greeting names the visitor's country,
+ * the stats count views and readers, the coding pulse tracks live daily usage, and the commit
+ * link changes on every push, so it keeps its width but not its text. */
 footer p:has(.wanderer-gradient-text),
-[data-site-stats] {
+[data-site-stats],
+section:has(> [data-reveal] > [data-coding-pulse]) {
 	display: none !important;
 }
 

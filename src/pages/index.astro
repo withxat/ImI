@@ -9,6 +9,7 @@ import SiSwift from '~icons/simple-icons/swift'
 
 import shinyImi from '@/assets/shiny-imi.png'
 import AvatarPoke from '@/components/home/avatar-poke.astro'
+import CodingPulse from '@/components/home/coding-pulse.astro'
 import IntroBadgePopover from '@/components/home/intro-badge-popover.astro'
 import NameAudioButton from '@/components/home/name-audio-button.astro'
 import Container from '@/components/layout/container.astro'
@@ -27,6 +28,7 @@ import { getMessages } from '@/lib/i18n/messages'
 import { getCapabilities } from '@/lib/projects'
 import { REPO_URL } from '@/lib/repo'
 import { defaultOgImageUrl, personJsonLd, PROFILE_AVATAR_SRC, websiteJsonLd } from '@/lib/seo-data'
+import { fetchCodingPulse } from '@/lib/tokens-ci/server'
 
 const locale = (Astro.locals.locale ?? 'en') as Locale
 const m = getMessages(locale)
@@ -56,7 +58,11 @@ const selectedProjects = allProjects.filter(project => SELECTED_TITLES.has(proje
 const toolProjects = allProjects.filter(project => project.title !== 'ImI' && !SELECTED_TITLES.has(project.title))
 
 const cardArrowClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out group-hover/project:translate-x-0.5 group-hover/project:-translate-y-0.5 group-hover/project:text-highlight-strong motion-reduce:transition-none'
-const avatarImage = await getImage({ height: 128, src: PROFILE_AVATAR_SRC, width: 128 })
+const waitUntil = Astro.locals.cfContext?.waitUntil.bind(Astro.locals.cfContext)
+const [avatarImage, codingPulse] = await Promise.all([
+	getImage({ height: 128, src: PROFILE_AVATAR_SRC, width: 128 }),
+	fetchCodingPulse(waitUntil),
+])
 ---
 
 <RootLayout>
@@ -316,6 +322,14 @@ const avatarImage = await getImage({ height: 128, src: PROFILE_AVATAR_SRC, width
 						</div>
 					</Reveal>
 				</section>
+
+				{codingPulse && (
+					<section class="mt-20">
+						<Reveal staggerIndex={0}>
+							<CodingPulse copy={m.home.codingPulse} data={codingPulse} />
+						</Reveal>
+					</section>
+				)}
 			</div>
 		</Container>
 	</section>
