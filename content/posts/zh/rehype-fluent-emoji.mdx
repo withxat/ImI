@@ -40,6 +40,22 @@ tags:
 - 视觉层负责显示 Fluent Emoji。
 - 选中状态通过共享 CSS 继续让 Unicode 字形保持透明，但不抢页面自己的选区背景。
 
+同一句话可以这样对照。第一行的默认外观截自 Linux 上的 Noto Color Emoji，不是所有平台的系统原貌。
+
+**默认外观（Noto Color Emoji，Linux）**
+
+<EmojiCompareShot alt="今天也要继续做点东西 ✨ 🔥 🚀 🌈，Linux 上的 Noto Color Emoji" />
+
+**Fluent 外观**
+
+今天也要继续做点东西 ✨ 🔥 🚀 🌈
+
+**粘贴结果（原始字符，可直接选中）**
+
+<samp class="emoji-source">今天也要继续做点东西 ✨ 🔥 🚀 🌈</samp>
+
+在 Linux 桌面版 Chrome 里，[渲染测试页](https://xat.sh/post/emoji-render-test)里的 9 个 Emoji，以及含肤色、组合、国旗和变体选择符的样例，复制出的纯文本都保留了原始字符。上面四个 Emoji 只做外观对照，不是这次逐字符核验的对象。Firefox、Safari 和手机还没有对等核验。
+
 ## 图片从哪来
 
 解决了布局设计上，接着就是 Fluent Emoji 的图片从哪来的问题。
