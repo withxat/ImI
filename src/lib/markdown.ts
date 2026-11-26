@@ -165,8 +165,6 @@ export function cleanMdxBody(body: string): string {
 			return part
 
 		return convertAccordionBlocks(part)
-			.replace(/<EmojiCompareShot[^>]*alt="([^"]*)"[^/]*\/>/g, (_, alt: string) => `![${alt}](/images/noto-color-emoji-linux-sentence.png)`)
-			.replace(/<samp[^>]*emoji-source[^>]*>([\s\S]*?)<\/samp>/gi, (_, inner: string) => inner)
 			.replace(/^(?:import|export)\b.*$/gm, '')
 			.replace(/\n{3,}/g, '\n\n')
 	})

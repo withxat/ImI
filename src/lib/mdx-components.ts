@@ -14,7 +14,6 @@ import MdxOl from '@/components/mdx/mdx-ol.astro'
 import MdxP from '@/components/mdx/mdx-p.astro'
 import MdxStrong from '@/components/mdx/mdx-strong.astro'
 import MdxUl from '@/components/mdx/mdx-ul.astro'
-import EmojiCompareShot from '@/components/post/emoji-compare-shot.astro'
 import {
 	Accordion,
 	AccordionContent,
@@ -39,7 +38,6 @@ export const mdxComponents = {
 	AccordionTrigger,
 	blockquote: MdxBlockquote,
 	code: MdxCode,
-	EmojiCompareShot,
 	h1: MdxH1,
 	h2: MdxH2,
 	h3: MdxH3,
