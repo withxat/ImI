@@ -18,6 +18,13 @@ type NumberFlowElement = HTMLElement & {
 	update: (value: number) => void
 }
 
+let activeRoot: HTMLElement | null = null
+let lastStats: null | SiteStatsPayload = null
+let lastFetchedAt = 0
+let pollTimer: number | undefined
+let inFlight = false
+let visibilityController: AbortController | null = null
+
 function numberFlows(root: Element) {
 	return [...root.querySelectorAll<NumberFlowElement>('number-flow[data-site-stats-flow]')]
 }
@@ -90,71 +97,78 @@ function upgradeDigits(root: HTMLElement) {
 	group.appendChild(root)
 }
 
-export function initSiteStats() {
-	const footer = document.querySelector<HTMLElement>('[data-site-stats]')
-	if (!footer)
-		return () => {}
+async function refresh() {
+	if (inFlight || document.hidden || !activeRoot?.isConnected)
+		return
+	inFlight = true
+	try {
+		const stats = (await sendPresence()) ?? (await fetchStats())
+		if (stats) {
+			lastStats = stats
+			lastFetchedAt = Date.now()
+			if (activeRoot?.isConnected)
+				applyStats(activeRoot, stats)
+		}
+	}
+	catch {}
+	finally {
+		inFlight = false
+	}
+}
 
+function stopPolling() {
+	if (pollTimer !== undefined) {
+		window.clearInterval(pollTimer)
+		pollTimer = undefined
+	}
+}
+
+function startPolling(forceRefresh = false) {
+	stopPolling()
+	const stale = lastFetchedAt === 0 || Date.now() - lastFetchedAt >= POLL_MS
+	if (forceRefresh || stale)
+		void refresh()
+	pollTimer = window.setInterval(() => void refresh(), POLL_MS)
+}
+
+export function disposeSiteStatsModule() {
+	stopPolling()
+	visibilityController?.abort()
+	visibilityController = null
+	activeRoot = null
+}
+
+/**
+ * Reconciles the footer stats widget across Astro view transitions. Because the footer
+ * is `transition:persist` per locale, same-locale navigation keeps the same root node
+ * and reuses the running poll timer without firing a redundant heartbeat on every click.
+ */
+export function runSiteStatsModule() {
+	const footer = document.querySelector<HTMLElement>('[data-site-stats]')
+	if (!footer) {
+		disposeSiteStatsModule()
+		return
+	}
+
+	if (footer === activeRoot && pollTimer !== undefined)
+		return
+
+	activeRoot = footer
 	upgradeDigits(footer)
 
-	const ac = new AbortController()
-	let pollTimer: number | undefined
-	let inFlight = false
-	let disposed = false
+	if (lastStats)
+		applyStats(footer, lastStats)
 
-	const refresh = async () => {
-		if (inFlight || disposed || document.hidden)
-			return
-		inFlight = true
-		try {
-			const stats = (await sendPresence()) ?? (await fetchStats())
-			if (stats && !disposed)
-				applyStats(footer, stats)
-		}
-		catch {}
-		finally {
-			inFlight = false
-		}
-	}
-
-	const stopPolling = () => {
-		if (pollTimer !== undefined) {
-			window.clearInterval(pollTimer)
-			pollTimer = undefined
-		}
-	}
-
-	const startPolling = () => {
-		stopPolling()
-		void refresh()
-		pollTimer = window.setInterval(() => void refresh(), POLL_MS)
+	if (!visibilityController) {
+		visibilityController = new AbortController()
+		document.addEventListener('visibilitychange', () => {
+			if (document.hidden)
+				stopPolling()
+			else if (activeRoot?.isConnected)
+				startPolling(true)
+		}, { signal: visibilityController.signal })
 	}
 
 	if (!document.hidden)
 		startPolling()
-
-	document.addEventListener('visibilitychange', () => {
-		if (document.hidden)
-			stopPolling()
-		else
-			startPolling()
-	}, { signal: ac.signal })
-
-	return () => {
-		disposed = true
-		stopPolling()
-		ac.abort()
-	}
-}
-
-let disposeSiteStats: (() => void) | undefined
-
-export function disposeSiteStatsModule() {
-	disposeSiteStats?.()
-	disposeSiteStats = undefined
-}
-
-export function runSiteStatsModule() {
-	disposeSiteStatsModule()
-	disposeSiteStats = initSiteStats()
 }

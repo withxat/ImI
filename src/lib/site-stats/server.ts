@@ -36,6 +36,13 @@ const FALLBACK_STATS: SiteStatsSnapshot = {
 	totalViews: SITE_STATS_INITIAL_TOTAL,
 }
 
+const ISOLATE_CACHE_TTL_MS = 60_000
+let cachedSnapshot: null | { at: number, stats: SiteStatsSnapshot } = null
+
+function updateIsolateCache(stats: SiteStatsSnapshot) {
+	cachedSnapshot = { at: Date.now(), stats }
+}
+
 async function withTimeout<T>(promise: Promise<T>, timeoutMs?: number): Promise<null | T> {
 	if (!timeoutMs)
 		return promise
@@ -57,17 +64,23 @@ async function withTimeout<T>(promise: Promise<T>, timeoutMs?: number): Promise<
 
 export async function fetchSiteStats(
 	env: Env,
-	options?: { timeoutMs?: number },
+	options?: { timeoutMs?: number, useIsolateCache?: boolean },
 ): Promise<SiteStatsSnapshot> {
+	if (options?.useIsolateCache && cachedSnapshot && Date.now() - cachedSnapshot.at < ISOLATE_CACHE_TTL_MS) {
+		return cachedSnapshot.stats
+	}
+
 	try {
 		const response = await withTimeout(siteStatsRequest(env, '/stats'), options?.timeoutMs)
 		if (!response?.ok)
-			return FALLBACK_STATS
+			return options?.useIsolateCache && cachedSnapshot ? cachedSnapshot.stats : FALLBACK_STATS
 
-		return await response.json() as SiteStatsSnapshot
+		const stats = await response.json() as SiteStatsSnapshot
+		updateIsolateCache(stats)
+		return stats
 	}
 	catch {
-		return FALLBACK_STATS
+		return options?.useIsolateCache && cachedSnapshot ? cachedSnapshot.stats : FALLBACK_STATS
 	}
 }
 
@@ -94,7 +107,9 @@ export async function heartbeatSitePresence(env: Env, sessionId: string): Promis
 		if (!response?.ok)
 			return null
 
-		return await response.json() as SiteStatsSnapshot
+		const stats = await response.json() as SiteStatsSnapshot
+		updateIsolateCache(stats)
+		return stats
 	}
 	catch {
 		// Stats are best-effort; never block page rendering.

@@ -38,7 +38,7 @@ export function shouldTrackSiteVisit(request: Request, pathname: string) {
 	if (pathname.startsWith('/api/'))
 		return false
 
-	if (pathname.endsWith('.xml'))
+	if (pathname.endsWith('.xml') || pathname.endsWith('.md') || pathname.endsWith('.txt'))
 		return false
 
 	if (!TRACKED_PATH_PREFIXES.some(prefix => pathname === prefix || pathname.startsWith(`${prefix}/`)))

@@ -1,5 +1,6 @@
 interface WarmMessage {
 	href: string
+	locale: string
 	type: 'warm'
 }
 
@@ -8,8 +9,14 @@ interface FontMessage {
 	type: 'fonts'
 }
 
+interface ParsedFontFace {
+	family: string
+	href: string
+	ranges: Array<readonly [number, number]> | null
+}
+
 const warmedPages = new Set<string>()
-const warmedStylesheets = new Set<string>()
+const stylesheetRulesCache = new Map<string, Promise<ParsedFontFace[]>>()
 
 const FONT_FACE_RE = /@font-face\s*\{[^}]*\}/gi
 const FONT_URL_RE = /url\((['"]?)([^)'"]+\.(?:woff2?|ttf|otf)(?:\?[^)'"]*)?)\1\)/i
@@ -57,13 +64,15 @@ function unicodeTokenToRange(token: string): null | readonly [number, number] {
 	return Number.isFinite(start) && Number.isFinite(end) ? [start, end] : null
 }
 
-function unicodeRangeMatchesText(unicodeRange: string, codePoints: Set<number>) {
-	const ranges = unicodeRange
+function parseUnicodeRanges(unicodeRange: string): Array<readonly [number, number]> {
+	return unicodeRange
 		.split(',')
 		.map(unicodeTokenToRange)
 		.filter((range): range is readonly [number, number] => range !== null)
+}
 
-	if (!ranges.length)
+function rangesMatchCodePoints(ranges: Array<readonly [number, number]>, codePoints: Set<number>) {
+	if (ranges.length === 0)
 		return true
 
 	for (const codePoint of codePoints) {
@@ -104,9 +113,7 @@ function collectStylesheetHrefs(html: string, pageUrl: string) {
 	return hrefs
 }
 
-function shouldPrefetchUnrangedFont(fontFace: string, documentText: string, hasCode: boolean) {
-	const family = unquoteCssValue(fontFace.match(FONT_FAMILY_RE)?.[1] ?? '')
-
+function shouldPrefetchUnrangedFont(family: string, documentText: string, hasCode: boolean) {
 	if (family === 'Hanken Grotesk' || family === 'Fugaz One')
 		return true
 
@@ -116,43 +123,64 @@ function shouldPrefetchUnrangedFont(fontFace: string, documentText: string, hasC
 	return documentText.trim().length > 0
 }
 
-function resolveFontHref(rawHref: string, stylesheetUrl: string) {
-	return new URL(rawHref, stylesheetUrl).href
+function loadStylesheetFontRules(stylesheetUrl: string): Promise<ParsedFontFace[]> {
+	const cached = stylesheetRulesCache.get(stylesheetUrl)
+	if (cached)
+		return cached
+
+	const promise = (async () => {
+		const response = await fetch(stylesheetUrl, { credentials: 'same-origin', priority: 'low' })
+		if (!response.ok)
+			return []
+
+		const rules: ParsedFontFace[] = []
+		const css = await response.text()
+		for (const fontFace of css.match(FONT_FACE_RE) ?? []) {
+			const rawFontHref = fontFace.match(FONT_URL_RE)?.[2]
+			if (!rawFontHref)
+				continue
+
+			const family = unquoteCssValue(fontFace.match(FONT_FAMILY_RE)?.[1] ?? '')
+			const unicodeRange = fontFace.match(UNICODE_RANGE_RE)?.[1]
+			rules.push({
+				family,
+				href: new URL(rawFontHref, stylesheetUrl).href,
+				ranges: unicodeRange ? parseUnicodeRanges(unicodeRange) : null,
+			})
+		}
+
+		return rules
+	})().catch(() => [])
+
+	stylesheetRulesCache.set(stylesheetUrl, promise)
+	return promise
 }
 
 async function warmStylesheetFonts(stylesheetUrl: string, documentText: string, codePoints: Set<number>, hasCode: boolean) {
-	if (warmedStylesheets.has(stylesheetUrl))
-		return []
-	warmedStylesheets.add(stylesheetUrl)
-
-	const response = await fetch(stylesheetUrl, { credentials: 'same-origin', priority: 'low' })
-	if (!response.ok)
-		return []
-
+	const rules = await loadStylesheetFontRules(stylesheetUrl)
 	const fonts: string[] = []
-	const css = await response.text()
-	for (const fontFace of css.match(FONT_FACE_RE) ?? []) {
-		const rawFontHref = fontFace.match(FONT_URL_RE)?.[2]
-		if (!rawFontHref)
-			continue
 
-		const unicodeRange = fontFace.match(UNICODE_RANGE_RE)?.[1]
-		const shouldPrefetch = unicodeRange
-			? unicodeRangeMatchesText(unicodeRange, codePoints)
-			: shouldPrefetchUnrangedFont(fontFace, documentText, hasCode)
+	for (const rule of rules) {
+		const shouldPrefetch = rule.ranges
+			? rangesMatchCodePoints(rule.ranges, codePoints)
+			: shouldPrefetchUnrangedFont(rule.family, documentText, hasCode)
 
 		if (shouldPrefetch)
-			fonts.push(resolveFontHref(rawFontHref, stylesheetUrl))
+			fonts.push(rule.href)
 	}
 
 	return fonts
 }
 
-async function warmLinkedPageFonts(href: string) {
+async function warmLinkedPageFonts(href: string, locale: string) {
 	const pageUrl = sameOriginUrl(href)
-	if (!pageUrl || warmedPages.has(pageUrl.href))
+	if (!pageUrl)
 		return
-	warmedPages.add(pageUrl.href)
+
+	const key = `${locale}:${pageUrl.pathname}`
+	if (warmedPages.has(key))
+		return
+	warmedPages.add(key)
 
 	try {
 		const response = await fetch(pageUrl.href, {
@@ -178,5 +206,5 @@ async function warmLinkedPageFonts(href: string) {
 
 globalThis.addEventListener('message', (event: MessageEvent<WarmMessage>) => {
 	if (event.data.type === 'warm')
-		void warmLinkedPageFonts(event.data.href)
+		void warmLinkedPageFonts(event.data.href, event.data.locale)
 })
