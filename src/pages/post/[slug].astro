@@ -2,10 +2,11 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { render } from 'astro:content'
-import CodeXml from '~icons/lucide/code-xml'
-import List from '~icons/lucide/list'
+import Code from 'kubai-icons/duotone/icons/code'
+import List from 'kubai-icons/duotone/icons/list'
 
 import MiSansContentFont from '@/components/fonts/mi-sans-content-font.astro'
+import KubaiIcon from '@/components/icons/kubai-icon.astro'
 import Container from '@/components/layout/container.astro'
 import Eyebrow from '@/components/layout/eyebrow.astro'
 import SiteHeader from '@/components/layout/site-header.astro'
@@ -144,7 +145,7 @@ const neighbors = index < 0
 												type="button"
 												data-section-outline-trigger
 											>
-												<List aria-hidden="true" class="size-3.5 shrink-0 opacity-75" />
+												<KubaiIcon class="size-3.5 shrink-0 opacity-75" icon={List} />
 												<span>{m.blog.sectionCount(sections.length)}</span>
 											</button>
 										</>
@@ -162,7 +163,7 @@ const neighbors = index < 0
 									target="_blank"
 									title={m.blog.viewSource}
 								>
-									<CodeXml aria-hidden="true" class="size-4" />
+									<KubaiIcon class="size-4" icon={Code} />
 								</a>
 							</div>
 							{hasOutline && (

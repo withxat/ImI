@@ -1,5 +1,7 @@
 ---
-import Copy from '~icons/lucide/copy'
+import Copy from 'kubai-icons/duotone/icons/copy'
+
+import KubaiIcon from '@/components/icons/kubai-icon.astro'
 
 interface Props {
 	address: string
@@ -23,7 +25,7 @@ const { address, copiedLabel, copyLabel, label = address } = Astro.props as Prop
 		data-email-copy-slot
 	>
 		<button aria-label={copyLabel} class="email-copy-button" type="button" data-email-copy-button>
-			<Copy aria-hidden="true" class="size-3.5" />
+			<KubaiIcon class="size-3.5" icon={Copy} />
 		</button>
 		<span
 			aria-live="polite"

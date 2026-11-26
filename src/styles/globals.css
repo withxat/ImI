@@ -1245,6 +1245,11 @@
 		}
 	}
 
+	/* Kubai two-tone icons: match our local duotone SVGs (40% alpha body) so icons stay legible on elevated dark surfaces too. */
+	.kubai-duotone {
+		--kd-b: color-mix(in oklab, currentColor 44%, transparent);
+	}
+
 	/* Home intro (ja): it holds the badges, so it is a div rather than a p. Give it the body copy's
 	 * strict breaks, and break between phrases so a narrow screen never splits a word. */
 	.home-intro:lang(ja) {

@@ -3,10 +3,11 @@ import type { Locale } from '@/lib/i18n/constants'
 import type { ColorGroupKey, ColorRoleKey, TypefaceKey, TypographyScaleRoleKey } from '@/lib/i18n/messages/types'
 
 import { Image } from 'astro:assets'
-import List from '~icons/lucide/list'
+import List from 'kubai-icons/duotone/icons/list'
 
 import shinyImi from '@/assets/shiny-imi.png'
 import shinyTf from '@/assets/shiny-tf.png'
+import KubaiIcon from '@/components/icons/kubai-icon.astro'
 import Container from '@/components/layout/container.astro'
 import SiteHeader from '@/components/layout/site-header.astro'
 import Seo from '@/components/meta/seo.astro'
@@ -215,7 +216,7 @@ const colorGrid = 'grid grid-cols-2 items-center gap-x-4 gap-y-3 @lg/page:grid-c
 								type="button"
 								data-section-outline-trigger
 							>
-								<List aria-hidden="true" class="size-3.5 shrink-0 opacity-75" />
+								<KubaiIcon class="size-3.5 shrink-0 opacity-75" icon={List} />
 								<span>{m.blog.sectionCount(designSections.length)}</span>
 							</button>
 						</div>

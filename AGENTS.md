@@ -68,7 +68,8 @@ Styling:
 
 Icons:
 
-- `@iconify-json/lucide` via `unplugin-icons`
+- `kubai-icons` (`kubai-icons/duotone/icons/*`) via zero-JS SSR wrapper `src/components/icons/kubai-icon.astro` for navigation and main action icons (`.kubai-duotone` `--kd-b` alpha tint in `src/styles/globals.css`)
+- `@iconify-json/lucide` via `unplugin-icons` (separator dots, decorative icons)
 - `@iconify-json/simple-icons` for brand marks (resume tech lists, `src/components/resume/tech-list.astro`)
 - Local SVG icons via `FileSystemIconLoader` from `./src/assets/icons`
 - Usage: `import Icon from '~icons/local/arrow-up-right'`
@@ -349,6 +350,7 @@ Micro interactions: encouraged.
   /components
     /fonts       # font loading / subset side-effect components
     /home        # intro badges, name pronunciation button
+    /icons       # Kubai two-tone SSR icon wrapper
     /layout      # header, footer, container, text-link, locale/theme switchers
     /mdx         # MDX element overrides (a, h1-h6, img, table, etc.)
     /meta        # seo
