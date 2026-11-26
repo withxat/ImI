@@ -28,6 +28,9 @@ const jiti = createJiti(import.meta.url, {
 const { getExpressiveCodeBlockLocale } = await jiti.import<typeof import('./src/lib/expressive-code.ts')>(
 	'./src/lib/expressive-code.ts',
 )
+const { default: rehypePlainSamp } = await jiti.import<typeof import('./src/lib/rehype-plain-samp.ts')>(
+	'./src/lib/rehype-plain-samp.ts',
+)
 const { default: cjkFontPolish } = await jiti.import<typeof import('./src/lib/fonts/cjk-font-polish.ts')>(
 	'./src/lib/fonts/cjk-font-polish.ts',
 )
@@ -125,6 +128,7 @@ export default defineConfig({
 	markdown: {
 		processor: unified({
 			rehypePlugins: [
+				rehypePlainSamp,
 				[rehypeFluentEmoji, {
 					assetBase: '/emoji',
 					className: 'fluent-emoji',
