@@ -126,7 +126,7 @@ Blog posts live in `content/posts/{locale}/*.mdx`. A post with `unlisted: true` 
 
 No database, no D1, no comments system, no third-party analytics.
 
-The one piece of server state is the footer view / presence counter: a single SQLite-backed Durable Object (`SiteStats`, `src/worker/site-stats.ts`) holding a total view count, a 24h per-session dedup table and in-memory online sessions. Middleware records views (bots and font-prefetch requests filtered in `src/lib/site-stats/tracking.ts`); the client sends `POST /api/presence.json` (which returns updated stats in the same round-trip, falling back to `GET /api/stats.json` when needed) and pauses while the tab is hidden. Stats are best-effort (400ms SSR timeout) and must never block rendering.
+The one piece of server state is the footer view / presence counter: a single SQLite-backed Durable Object (`SiteStats`, `src/worker/site-stats.ts`) holding a total view count, a 24h per-session dedup table and in-memory online sessions. Middleware records views (bots, `.md`/`.txt`/`.xml`, and font-prefetch requests filtered in `src/lib/site-stats/tracking.ts`); the client sends `POST /api/presence.json` (which returns updated stats in the same round-trip, falling back to `GET /api/stats.json` when needed), reuses the running poll timer across same-locale view transitions on the persisted footer, and pauses while the tab is hidden. SSR reads use a 60s isolate-local cache (`src/lib/site-stats/server.ts`) and a 120ms DO timeout so stats never block rendering.
 
 Site-level structured data (capabilities, categories) lives in `content/config.json`.
 
@@ -145,12 +145,13 @@ Current pages:
 
 | Route | Prerendered | Notes |
 |---|---|---|
-| `/` (home) | SSR | locale-dependent |
-| `/post` (list) | SSR | locale-dependent |
-| `/post/[slug]` | SSR | locale-dependent; unknown slugs rewrite to `/404` |
+| `/` (home) | SSR | locale-dependent; supports `Accept: text/markdown` |
+| `/post` (list) | SSR | locale-dependent; supports `Accept: text/markdown` |
+| `/post/[slug]` | SSR | locale-dependent; supports `Accept: text/markdown`; unknown slugs rewrite to `/404` |
 | `/design` | SSR | living design spec, values read from running CSS |
-| `/resume` | SSR | locale-dependent; content from `content/resume/{locale}.yaml`; A4 print stylesheet |
+| `/resume` | SSR | locale-dependent; content from `content/resume/{locale}.yaml`; A4 print stylesheet; supports `Accept: text/markdown` |
 | `/404` | SSR | locale-dependent: copy and latest posts follow the visitor's locale |
+| `/llms.txt`, `/post.md`, `/post/[slug].md`, `/resume.md` | SSR | locale-dependent `text/markdown` endpoints with `x-markdown-tokens` |
 | `feed.xml`, `feed.en.xml`, `feed.ja.xml` | static (build) | prerendered RSS feeds (`export const prerender = true`) |
 | `/api/stats.json` (GET), `/api/presence.json` (POST) | SSR | site stats, `no-store` |
 | `/sitemap-index.xml`, `/sitemap-0.xml` | static (build) | `@astrojs/sitemap`, zh canonical URLs |
@@ -179,8 +180,9 @@ Middleware (`src/middleware.ts`):
 2. Normalizes trailing slashes (308 redirect)
 3. Resolves locale from cookie, then `Accept-Language` header
 4. Reads Cloudflare visitor geo from `request.cf.country`
-5. Serves SSR HTML from the edge cache (`src/lib/edge-cache.ts`) when possible
-6. After rendering (or a cache hit), records a site view / presence heartbeat for tracked HTML GETs (via `waitUntil`)
+5. Content negotiation: serves Markdown (`src/lib/markdown.ts`, `x-markdown-tokens`, `Vary: Accept, Cookie, Accept-Language`) on `/`, `/post`, `/post/[slug]`, and `/resume` when the request explicitly prefers `Accept: text/markdown` over `text/html`; appends `Vary: Accept` to HTML responses on those routes
+6. Serves SSR HTML from the edge cache (`src/lib/edge-cache.ts`) when possible
+7. After rendering (or a cache hit), records a site view / presence heartbeat for tracked HTML GETs (via `waitUntil`)
 
 Edge HTML cache: Workers Cache API (`caches.default`), 10 min TTL, keyed by path + locale + visitor country + commit SHA (so each deploy starts cold). Only query-less, non-`/api/` GETs that return 200 `text/html` without `Set-Cookie` or `no-store`/`private` are stored. Per-visitor cookies are added after the cache lookup and never stored. Responses carry `X-Imi-Cache: HIT|MISS`. Disabled in `astro dev`. Anything new that renders per-request data into HTML (beyond locale and country) must either join the cache key or opt out with `Cache-Control: private`.
 
@@ -226,6 +228,7 @@ Palette defined in CSS custom properties (`:root` / `.dark` / `@media prefers-co
 - Heading anchor links; hovering or focusing an h2/h3 on wide screens reveals a quiet `#` in the left gutter, and clicking one still jumps to it while copying its URL with a "link copied" bubble (`src/client/mdx-copy.ts`); each h2 ends in a hairline to the column edge
 - Reading time (characters per minute for zh/ja, words for en; `readingMinutes` in `src/lib/blog.ts`)
 - Section outline: the custom scrollbar's markers with their titles, opened from the "N sections" button; a jump tints the heading (`src/client/section-jump.ts`)
+- Keyboard shortcuts (lazy-loaded only on article pages via `src/client/article-shortcuts.ts`): `t` toggles the section outline, `j` / `k` jump between `h2` sections, `[` / `]` navigate to newer / older posts
 - External links in posts end with ↗
 - Tags and categories
 - Previous / next navigation
@@ -296,14 +299,16 @@ Micro interactions: encouraged.
 - SSR-first HTML
 - Font preload for critical faces
 - View transitions (fade, 320ms) via Astro ClientRouter
-- Edge-cached SSR HTML (see middleware step 5)
+- Intent-based prefetch: post index rows use hover prefetch (`data-astro-prefetch`) and `src/client/linked-page-font-prefetch.ts` lazily spawns a worker on hover/focus/touchstart, caching parsed stylesheet `@font-face` rules
+- Edge-cached SSR HTML (see middleware step 6)
 
 ---
 
 ## SEO
 
 - Metadata per page via `<Seo>` component
-- OG tags + Twitter cards
+- OG tags + Twitter cards: localized Satori PNGs generated per locale under `public/og/{en,zh,ja}/` (`pnpm og:generate`), `og:locale` (`en_US`/`zh_CN`/`ja_JP`) + alternates, and `article:published_time` / `article:author` / `article:section` / `article:tag` on posts
+- `<link rel="alternate" type="text/markdown">` on `/`, `/post`, `/post/[slug]`, and `/resume`, plus `/llms.txt`
 - Canonical URLs
 - Sitemap (`/sitemap-index.xml`, `/sitemap-0.xml` via `@astrojs/sitemap`)
 - RSS per locale (`/feed.xml`, `/feed.en.xml`, `/feed.ja.xml`)
@@ -315,6 +320,7 @@ Micro interactions: encouraged.
 
 ## Security
 
+- Synced security headers including `Content-Security-Policy` in `src/lib/security-headers.ts` (SSR) and `public/_headers` (static assets)
 - Sanitize user content (if/when added)
 - Validate payloads
 - Prevent XSS
@@ -364,13 +370,17 @@ Micro interactions: encouraged.
     index.astro
     404.astro
     design.astro
+    llms.txt.ts
+    post.md.ts
     resume.astro
+    resume.md.ts
     /api
       stats.json.ts
       presence.json.ts
     /post
       index.astro
       [slug].astro
+      [slug].md.ts
     feed.xml.ts
     feed.en.xml.ts
     feed.ja.xml.ts
