@@ -59,6 +59,10 @@ experience:
         stack: [Python, Flask, OpenCV, Bun, Chart.js, Plate.js]
 
 openSource:
+  - project: missuo/tokens
+    date: 2026-11
+    href: https://github.com/missuo/tokens/pull/141
+    summary: CLI に Amp のクラウドスレッド同期を追加し、ampcode.com からエクスポートした利用量を計測できるようにした。
   - project: npmx-dev/vscode-npmx
     date: 2026-06
     href: https://github.com/npmx-dev/vscode-npmx/pull/125
@@ -71,14 +75,60 @@ openSource:
     date: 2025-12
     href: https://github.com/lovasoa/jsonjoy-builder/pull/20
     summary: React の Stale Closure が原因でトグルが元に戻る不具合を修正し、中国語訳を追加。
-  - project: walinejs/waline
-    date: 2025-04
-    href: https://github.com/walinejs/waline/pull/3044
-    summary: コメント欄の画像アップロード設定を壊していた null チェックを修正。
   - project: waylybaye/opencat.app
     date: 2023-10
     href: https://github.com/waylybaye/opencat.app/pull/29
     summary: OpenCat の公式サイトをデザインから作り直し、中国語と英語に対応。ダウンロードリンクは OS のバージョンに合わせて切り替わる。
+  - project: Runeicons/runeicons
+    date: 2026-09
+    href: https://github.com/Runeicons/runeicons/pull/56
+    webOnly: true
+    summary: アイコン切り替え時に新しい SVG の読み込みを待たず前のグリフで登場アニメーションが再生される不具合を修正。
+  - project: marvellousPtc/ink-and-code
+    date: 2026-07
+    href: https://github.com/marvellousPtc/ink-and-code/pull/5
+    webOnly: true
+    summary: EPUB リーダーのページめくり領域をタップした際、イベント伝播でツールバーまで開閉してしまう不具合を修正。
+  - project: fwqaaq/telegram-to-r2
+    date: 2026-05
+    href: https://github.com/fwqaaq/telegram-to-r2/pull/1
+    webOnly: true
+    summary: 画像アップロード後にタップでコピーできる Markdown スニペットを返し、ファイル名の URL エンコードを修正。
+  - project: vitejs/docs-cn
+    date: 2026-03
+    href: https://github.com/vitejs/docs-cn/pull/1575
+    webOnly: true
+    summary: Vite 8 リリース発表記事（announcing-vite8.md）の中国語訳を追加。
+  - project: radishzzz/astro-theme-retypeset
+    date: 2025-06
+    href: https://github.com/radishzzz/astro-theme-retypeset/pull/60
+    webOnly: true
+    summary: Partytown のグローバル定数をリネームし、ビルド時の名前衝突を解消。
+  - project: typed-sigterm/eslint-plugin-autocorrect
+    date: 2025-06
+    href: https://github.com/typed-sigterm/eslint-plugin-autocorrect/pull/4
+    webOnly: true
+    summary: 診断メッセージの表示を公式 VS Code 拡張と同じ形式に揃えた。
+  - project: walinejs/waline
+    date: 2025-04
+    href: https://github.com/walinejs/waline/pull/3044
+    webOnly: true
+    summary: コメント欄の画像アップロード設定を壊していた null チェックを修正。
+  - project: swc-project/swc
+    date: 2025-03
+    href: https://github.com/swc-project/swc/pull/10265
+    webOnly: true
+    summary: TypeScript の型定義に outFileExtension オプションのドキュメントを追加。
+  - project: CherryHQ/cherry-studio
+    date: 2025-03
+    href: https://github.com/CherryHQ/cherry-studio/pull/3287
+    webOnly: true
+    summary: 設定画面のヘルプリンクの余白を修正し、padding を margin に変更。
+  - project: RSSNext/Folo
+    date: 2025-01
+    href: https://github.com/RSSNext/Folo/pull/2425
+    webOnly: true
+    summary: Tailwind のスキャン対象から node_modules を除外。
 
 projects:
   - name: Mikan

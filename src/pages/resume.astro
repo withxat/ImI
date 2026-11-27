@@ -25,6 +25,8 @@ const entry = await getEntry('resume', locale)
 if (!entry)
 	throw new Error(`Missing content/resume/${locale}.yaml`)
 const { contact, education, experience, openSource, projects, role, skills, summary } = entry.data
+const featuredOpenSource = openSource.filter(item => !item.webOnly)
+const moreOpenSource = openSource.filter(item => item.webOnly)
 
 const resumeSections = [
 	{ id: 'experience', label: m.resume.sections.experience },
@@ -358,7 +360,7 @@ const listClass = 'divide-y divide-border border-y border-border'
 					<section class={sectionClass}>
 						<Eyebrow as="h2" class={headingClass} id="open-source" tabindex="-1">{m.resume.sections.openSource}</Eyebrow>
 						<ul class={listClass}>
-							{openSource.map(item => (
+							{featuredOpenSource.map(item => (
 								<li>
 									<a class={linkRowClass} href={item.href} rel="noreferrer" target="_blank">
 										<span class={railClass}>{month(item.date)}</span>
@@ -371,6 +373,62 @@ const listClass = 'divide-y divide-border border-y border-border'
 								</li>
 							))}
 						</ul>
+						{moreOpenSource.length > 0 && (
+							<div
+								class="
+									space-y-2.5 pt-2
+									print:hidden
+								"
+							>
+								<p class="font-ui text-xs text-muted-foreground">
+									{m.resume.moreOpenSource(moreOpenSource.length)}
+								</p>
+								<ul
+									class="
+										grid grid-cols-1 border-t border-border
+										@lg/page:grid-cols-2 @lg/page:gap-x-8
+									"
+								>
+									{moreOpenSource.map(item => (
+										<li class="border-b border-border">
+											<a
+												class="
+													group/more flex h-full flex-col gap-1 py-3 transition-colors
+													focus-visible:rounded-sm
+												"
+												href={item.href}
+												rel="noreferrer"
+												target="_blank"
+											>
+												<span class="flex items-baseline justify-between gap-2">
+													<span
+														class="
+															min-w-0 truncate text-sm font-medium text-foreground transition-colors duration-150
+															group-hover/more:text-highlight-strong
+														"
+														title={item.project}
+													>
+														{item.project}
+													</span>
+													<span class="inline-flex shrink-0 items-center gap-1 font-mono text-xs text-muted-foreground tabular-nums">
+														<span>{month(item.date)}</span>
+														<ArrowUpRight
+															class="
+																size-3 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out
+																group-hover/more:translate-x-0.5 group-hover/more:-translate-y-0.5 group-hover/more:text-highlight-strong
+																motion-reduce:transition-none
+															"
+															aria-hidden="true"
+														/>
+													</span>
+												</span>
+												<span class="text-xs/5 text-muted-foreground">{item.summary}</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							</div>
+						)}
 					</section>
 
 					<section class={sectionClass}>

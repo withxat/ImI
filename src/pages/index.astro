@@ -2,6 +2,7 @@
 import type { Locale } from '@/lib/i18n/constants'
 
 import { getImage, Image } from 'astro:assets'
+import { getEntry } from 'astro:content'
 import ArrowRight from '~icons/local/arrow-right'
 import ArrowUpRight from '~icons/local/arrow-up-right'
 import Smile from '~icons/lucide/smile'
@@ -58,11 +59,16 @@ const selectedProjects = allProjects.filter(project => SELECTED_TITLES.has(proje
 const toolProjects = allProjects.filter(project => project.title !== 'ImI' && !SELECTED_TITLES.has(project.title))
 
 const cardArrowClass = 'size-3.5 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out group-hover/project:translate-x-0.5 group-hover/project:-translate-y-0.5 group-hover/project:text-highlight-strong motion-reduce:transition-none'
+const openSourceArrowClass = 'hidden size-3.5 shrink-0 text-muted-foreground/70 transition-transform duration-150 ease-out group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-highlight-strong motion-reduce:transition-none @lg/page:block'
 const waitUntil = Astro.locals.cfContext?.waitUntil.bind(Astro.locals.cfContext)
-const [avatarImage, codingPulse] = await Promise.all([
+const [avatarImage, codingPulse, resumeEntry] = await Promise.all([
 	getImage({ height: 128, src: PROFILE_AVATAR_SRC, width: 128 }),
 	fetchCodingPulse(waitUntil),
+	getEntry('resume', locale),
 ])
+const allOpenSource = resumeEntry?.data.openSource ?? []
+const featuredOpenSource = allOpenSource.filter(item => !item.webOnly)
+const formatMonth = (value: string) => value.replace('-', '·')
 ---
 
 <RootLayout>
@@ -81,6 +87,7 @@ const [avatarImage, codingPulse] = await Promise.all([
 		type="profile"
 	>
 		<link as="font" crossorigin="anonymous" href="/fonts/fugaz-one-regular-subset.woff2" rel="preload" type="font/woff2" />
+		<link as="font" crossorigin="anonymous" href="/fonts/fusion-pixel-12px-subset.woff2" rel="prefetch" type="font/woff2" />
 		<link as="image" href={avatarImage.src} rel="preload" />
 	</Seo>
 
@@ -322,6 +329,53 @@ const [avatarImage, codingPulse] = await Promise.all([
 						</div>
 					</Reveal>
 				</section>
+
+				{featuredOpenSource.length > 0 && (
+					<section class="mt-20 space-y-4">
+						<Reveal staggerIndex={0}>
+							<div class="flex items-baseline justify-between gap-6">
+								<Eyebrow as="h2" class="font-semibold">{m.home.openSourceEyebrow}</Eyebrow>
+								<a class="text-link font-ui text-sm" href="/resume#open-source" data-astro-prefetch>
+									{m.home.viewAllOpenSource(allOpenSource.length)}
+								</a>
+							</div>
+						</Reveal>
+						<Reveal staggerIndex={1}>
+							<ul class="divide-y divide-border border-y border-border">
+								{featuredOpenSource.map(item => (
+									<li>
+										<a
+											class="
+												group/row flex flex-col gap-1 py-3.5 text-left transition-colors
+												focus-visible:rounded-sm
+												@lg/page:grid @lg/page:grid-cols-[4.5rem_minmax(0,1fr)_auto] @lg/page:items-baseline @lg/page:gap-x-4
+											"
+											href={item.href}
+											rel="noreferrer"
+											target="_blank"
+										>
+											<span class="font-mono text-xs whitespace-nowrap text-muted-foreground tabular-nums">
+												{formatMonth(item.date)}
+											</span>
+											<span class="min-w-0 space-y-1">
+												<span
+													class="
+														block text-[15px] font-medium text-foreground transition-colors duration-150
+														group-hover/row:text-highlight-strong
+													"
+												>
+													{item.project}
+												</span>
+												<span class="block text-sm text-muted-foreground">{item.summary}</span>
+											</span>
+											<ArrowUpRight aria-hidden="true" class={openSourceArrowClass} />
+										</a>
+									</li>
+								))}
+							</ul>
+						</Reveal>
+					</section>
+				)}
 
 				{codingPulse && (
 					<section class="mt-20">

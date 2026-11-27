@@ -143,6 +143,11 @@ export default defineConfig({
 	session: false,
 	site: 'https://xat.sh',
 	vite: {
+		build: {
+			// Keep font subsets as external /_astro/*.woff2 files so strict CSP `font-src 'self'`
+			// never blocks sub-4KB `cn-font-split` slices inlined as `data:font/woff2`.
+			assetsInlineLimit: filePath => (filePath.endsWith('.woff2') ? false : undefined),
+		},
 		define: {
 			'import.meta.env.PUBLIC_IMI_COMMIT_SHA': JSON.stringify(commitSha),
 		},

@@ -219,12 +219,18 @@ export interface Messages {
 			}
 			title: string
 		}
+		openSourceEyebrow: string
 		playName: string
-		/** The home avatar answers a poke with `lines` in turn; poked past them, it sulks for a moment. */
+		/** The home avatar answers a poke with `lines` in turn; poked past them, it unlocks a retro RPG résumé Easter egg. */
 		poke: {
 			label: string
 			lines: string[]
-			sulk: string
+			secret: {
+				badge: string
+				close: string
+				cta: string
+				line: string
+			}
 		}
 		projectsEyebrow: string
 		role: string
@@ -238,6 +244,7 @@ export interface Messages {
 		title: string
 		/** Label for the compact bottom shelf of config presets and templates. */
 		toolsShelfLabel: string
+		viewAllOpenSource: (count: number) => string
 		viewAllPosts: string
 		writingEyebrow: string
 	}
@@ -246,6 +253,8 @@ export interface Messages {
 	}
 	/** Chrome around `content/resume/{locale}.yaml`; the resume text itself lives there. */
 	resume: {
+		/** Label above the web-only open-source PR grid on /resume. */
+		moreOpenSource: (count: number) => string
 		pageDescription: string
 		pageTitle: string
 		/** End label of a current role. */

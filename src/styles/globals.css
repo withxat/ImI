@@ -58,6 +58,19 @@
 }
 
 /*
+ * Fusion Pixel 12px Proportional (SIL OFL 1.1) cut down to the trilingual glyphs
+ * used by the home avatar's retro pixel RPG résumé Easter egg. Lazy-loaded only
+ * when a visitor pokes the avatar.
+ */
+@font-face {
+	font-family: 'Fusion Pixel 12px';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/fusion-pixel-12px-subset.woff2') format('woff2');
+}
+
+/*
  * MiSans VF cut down to the /design weight-scale glyphs (设计系统デザインシステム字).
  * Only that demo uses it: there `font-weight` drives `wght` directly, so it can
  * show MiSans both at Hanken's raw numbers and at the matched CJK_WEIGHTS.
@@ -1188,7 +1201,7 @@
 	}
 
 	/* Home avatar (src/client/avatar-poke.ts): it leans in under a hovering mouse, squishes when
-	 * poked, and turns away, greyed, while it sulks. */
+	 * poked, and hops into a retro RPG résumé Easter egg when poked past its lines. */
 	.avatar-poke-body {
 		transform-origin: 50% 100%;
 		transition:
@@ -1196,8 +1209,192 @@
 			filter 320ms ease-out;
 	}
 
-	.avatar-poke[data-sulking] .avatar-poke-body {
-		filter: saturate(0.4);
+	/* Classic 8-bit/16-bit RPG pixel window: stepped 2px notched corners, recessed inner pixel
+	 * bevel, crisp pixel pointer SVGs, and a hard brand-tinted pixel shadow. */
+	.avatar-poke-rpg {
+		--px: 2px;
+		position: absolute;
+		top: calc(100% + 0.875rem);
+		left: var(--px);
+		z-index: 30;
+		width: max-content;
+		max-width: min(19rem, calc(100vw - 3.25rem));
+		padding: 0.75rem 0.875rem 0.6875rem;
+		border: 0;
+		border-radius: 0;
+		background: var(--popover);
+		box-shadow:
+			0 calc(var(--px) * -1) 0 0 var(--foreground),
+			0 var(--px) 0 0 var(--foreground),
+			calc(var(--px) * -1) 0 0 0 var(--foreground),
+			var(--px) 0 0 0 var(--foreground),
+			inset 0 0 0 2px var(--popover),
+			inset 0 0 0 4px color-mix(in oklab, var(--foreground) 14%, transparent),
+			4px 4px 0 0 color-mix(in oklab, var(--highlight-brand) 46%, transparent),
+			4px 2px 0 0 color-mix(in oklab, var(--highlight-brand) 46%, transparent),
+			2px 4px 0 0 color-mix(in oklab, var(--highlight-brand) 46%, transparent);
+		color: var(--popover-foreground);
+		font-family: 'Fusion Pixel 12px', var(--font-mono);
+		font-size: 12px;
+		font-weight: 400;
+		-webkit-font-smoothing: none;
+		font-smooth: never;
+		opacity: 0;
+		pointer-events: none;
+		transform: translateY(-4px) scale(0.96);
+		transform-origin: 1.75rem 0%;
+		transition:
+			opacity 140ms steps(3, end),
+			transform 180ms steps(4, end);
+	}
+
+	.avatar-poke-rpg-tail {
+		position: absolute;
+		pointer-events: none;
+	}
+
+	.avatar-poke-rpg-tail-up {
+		top: -8px;
+		left: 1.25rem;
+	}
+
+	.avatar-poke-rpg-tail-left {
+		display: none;
+	}
+
+	@media (min-width: 640px) {
+		.avatar-poke-rpg {
+			top: -2.25rem;
+			left: calc(100% + 1.125rem);
+			max-width: 20rem;
+			transform: translateX(-4px) scale(0.96);
+			transform-origin: 0% 3.75rem;
+		}
+
+		.avatar-poke-rpg-tail-up {
+			display: none;
+		}
+
+		.avatar-poke-rpg-tail-left {
+			display: block;
+			top: 3.625rem;
+			left: -8px;
+		}
+	}
+
+	.avatar-poke-rpg[data-shown] {
+		opacity: 1;
+		pointer-events: auto;
+		transform: none;
+	}
+
+	.avatar-poke-rpg-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		margin-bottom: 0.5rem;
+		font-size: 12px;
+		line-height: 1;
+	}
+
+	.avatar-poke-rpg-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		color: var(--highlight-text);
+		letter-spacing: 0.04em;
+	}
+
+	.avatar-poke-rpg-star {
+		flex-shrink: 0;
+		transform: translateY(-1px);
+	}
+
+	.avatar-poke-rpg-count {
+		color: var(--muted-foreground);
+		font-size: 12px;
+	}
+
+	.avatar-poke-rpg-copy {
+		position: relative;
+		display: grid;
+		font-size: 12px;
+		line-height: 1.8;
+		white-space: pre-line;
+	}
+
+	.avatar-poke-rpg-copy > * {
+		grid-area: 1 / 1;
+	}
+
+	.avatar-poke-rpg-typed[data-typing]::after {
+		content: '';
+		display: inline-block;
+		width: 6px;
+		height: 10px;
+		margin-left: 3px;
+		vertical-align: -1px;
+		background: var(--highlight-text);
+		animation: avatar-poke-blink 0.6s steps(2, end) infinite;
+	}
+
+	.avatar-poke-rpg-divider {
+		height: 2px;
+		margin: 0.5625rem 0 0.5rem;
+		background-image: repeating-linear-gradient(
+			to right,
+			color-mix(in oklab, var(--foreground) 22%, transparent) 0 4px,
+			transparent 4px 8px
+		);
+	}
+
+	.avatar-poke-rpg-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.25rem 0.75rem;
+		font-size: 12px;
+		line-height: 1.3;
+	}
+
+	.avatar-poke-rpg-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		margin-left: -0.25rem;
+		padding: 0.1875rem 0.375rem 0.1875rem 0.25rem;
+		color: var(--foreground);
+		text-decoration: none;
+		transition:
+			background-color 120ms steps(2, end),
+			color 120ms steps(2, end);
+	}
+
+	.avatar-poke-rpg-cta:hover,
+	.avatar-poke-rpg-cta:focus-visible {
+		background: color-mix(in oklab, var(--highlight-soft) 32%, transparent);
+		color: var(--highlight-text);
+	}
+
+	.avatar-poke-rpg-cursor {
+		color: var(--highlight-text);
+		animation: avatar-poke-blink 0.85s steps(2, end) infinite;
+	}
+
+	.avatar-poke-rpg-close {
+		padding: 0.1875rem 0.25rem;
+		border: 0;
+		background: transparent;
+		color: var(--muted-foreground);
+		font: inherit;
+		cursor: pointer;
+		transition: color 120ms steps(2, end);
+	}
+
+	.avatar-poke-rpg-close:hover,
+	.avatar-poke-rpg-close:focus-visible {
+		color: var(--foreground);
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
@@ -1207,12 +1404,12 @@
 			}
 		}
 
-		.avatar-poke[data-poke]:not([data-sulking]) .avatar-poke-body {
+		.avatar-poke[data-poke]:not([data-secret]) .avatar-poke-body {
 			animation: avatar-poke-squish 520ms cubic-bezier(0.33, 1, 0.68, 1);
 		}
 
-		.avatar-poke[data-sulking] .avatar-poke-body {
-			transform: rotate(-12deg) translateX(-3px) scale(0.94);
+		.avatar-poke[data-secret] .avatar-poke-body {
+			animation: avatar-poke-unlock 520ms cubic-bezier(0.22, 1, 0.36, 1);
 		}
 	}
 
@@ -1220,6 +1417,49 @@
 		.bubble,
 		.bubble[data-shown] {
 			transform: var(--bubble-at);
+		}
+
+		.avatar-poke-rpg,
+		.avatar-poke-rpg[data-shown] {
+			transform: none;
+		}
+
+		.avatar-poke-rpg-cursor,
+		.avatar-poke-rpg-typed[data-typing]::after {
+			animation: none;
+		}
+	}
+
+	@keyframes avatar-poke-blink {
+		0%,
+		100% {
+			opacity: 1;
+		}
+
+		50% {
+			opacity: 0;
+		}
+	}
+
+	@keyframes avatar-poke-unlock {
+		0% {
+			transform: translateY(0) scale(1);
+		}
+
+		22% {
+			transform: translateY(-7px) scale(1.04, 0.96);
+		}
+
+		44% {
+			transform: translateY(0) scale(0.97, 1.03);
+		}
+
+		68% {
+			transform: translateY(-4px) scale(1.02, 0.99);
+		}
+
+		100% {
+			transform: translateY(0) scale(1);
 		}
 	}
 
