@@ -10,11 +10,14 @@ playwright=$(node -p "require('@playwright/test/package.json').version")
 pnpm_version=$(node -p "require('./package.json').packageManager.split('+')[0]")
 
 # The container keeps its own node_modules and pnpm store in volumes, since native packages differ
-# from the host's. CI=1 also keeps lefthook from rewriting the host's git hooks. Files the
+# from the host's. It also gets a fresh .wrangler: the webServer deletes .wrangler/state/v3/cache,
+# which would break the Cache API (and so /_image) of an `astro dev` running on the host.
+# CI=1 also keeps lefthook from rewriting the host's git hooks. Files the
 # container creates in the checkout are handed back to the host user when it exits.
 docker run --rm --init --ipc=host --platform linux/amd64 \
 	--volume "$PWD:/work" --workdir /work \
 	--volume imi-e2e-node-modules:/work/node_modules \
+	--volume /work/.wrangler \
 	--volume imi-e2e-pnpm-store:/pnpm-store \
 	--env CI=1 --env HOST_IDS="$(id -u):$(id -g)" --env PNPM_VERSION="$pnpm_version" \
 	"mcr.microsoft.com/playwright:v$playwright-noble" \

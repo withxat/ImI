@@ -1604,7 +1604,8 @@
 		align-items: baseline;
 		gap: 7px;
 		white-space: nowrap;
-		overflow-x: hidden;
+		/* clip, not hidden: hidden turns overflow-y into auto, and number-flow's spinning digits then show a scrollbar. */
+		overflow-x: clip;
 		overflow-y: visible;
 	}
 
