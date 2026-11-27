@@ -61,6 +61,10 @@ experience:
         stack: [Python, Flask, OpenCV, Bun, Chart.js, Plate.js]
 
 openSource:
+  - project: missuo/tokens
+    date: 2026-11
+    href: https://github.com/missuo/tokens/pull/141
+    summary: Added cloud thread syncing for Amp in the CLI, parsing exported ampcode.com threads for usage tracking.
   - project: npmx-dev/vscode-npmx
     date: 2026-06
     href: https://github.com/npmx-dev/vscode-npmx/pull/125
@@ -73,14 +77,60 @@ openSource:
     date: 2025-12
     href: https://github.com/lovasoa/jsonjoy-builder/pull/20
     summary: Fixed a toggle that flipped back because of a stale React closure, and added a Chinese translation.
-  - project: walinejs/waline
-    date: 2025-04
-    href: https://github.com/walinejs/waline/pull/3044
-    summary: Fixed a null check that broke the comment box image upload setting.
   - project: waylybaye/opencat.app
     date: 2023-10
     href: https://github.com/waylybaye/opencat.app/pull/29
     summary: Redesigned and rebuilt the OpenCat website, bilingual in Chinese and English, with download links that follow the OS version.
+  - project: Runeicons/runeicons
+    date: 2026-09
+    href: https://github.com/Runeicons/runeicons/pull/56
+    webOnly: true
+    summary: Fixed icon previews running the enter animation on the previous glyph before the newly selected SVG finished loading.
+  - project: marvellousPtc/ink-and-code
+    date: 2026-07
+    href: https://github.com/marvellousPtc/ink-and-code/pull/5
+    webOnly: true
+    summary: Prevented taps on EPUB page-flip zones from bubbling up and toggling the reader toolbar.
+  - project: fwqaaq/telegram-to-r2
+    date: 2026-05
+    href: https://github.com/fwqaaq/telegram-to-r2/pull/1
+    webOnly: true
+    summary: Appended a tap-to-copy Markdown snippet after image uploads and fixed URL encoding for filenames.
+  - project: vitejs/docs-cn
+    date: 2026-03
+    href: https://github.com/vitejs/docs-cn/pull/1575
+    webOnly: true
+    summary: Translated and added the Chinese Vite 8 announcement post (announcing-vite8.md).
+  - project: radishzzz/astro-theme-retypeset
+    date: 2025-06
+    href: https://github.com/radishzzz/astro-theme-retypeset/pull/60
+    webOnly: true
+    summary: Renamed Partytown's global constant to avoid a naming collision.
+  - project: typed-sigterm/eslint-plugin-autocorrect
+    date: 2025-06
+    href: https://github.com/typed-sigterm/eslint-plugin-autocorrect/pull/4
+    webOnly: true
+    summary: Aligned diagnostic message formatting with the official VS Code extension.
+  - project: walinejs/waline
+    date: 2025-04
+    href: https://github.com/walinejs/waline/pull/3044
+    webOnly: true
+    summary: Fixed a null check that broke the comment box image upload setting.
+  - project: swc-project/swc
+    date: 2025-03
+    href: https://github.com/swc-project/swc/pull/10265
+    webOnly: true
+    summary: Documented the outFileExtension option in the TypeScript configuration types.
+  - project: CherryHQ/cherry-studio
+    date: 2025-03
+    href: https://github.com/CherryHQ/cherry-studio/pull/3287
+    webOnly: true
+    summary: Fixed spacing on the settings help link by switching padding to margin.
+  - project: RSSNext/Folo
+    date: 2025-01
+    href: https://github.com/RSSNext/Folo/pull/2425
+    webOnly: true
+    summary: Excluded node_modules from Tailwind's content scanning.
 
 projects:
   - name: Mikan

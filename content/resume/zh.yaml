@@ -59,6 +59,10 @@ experience:
         stack: [Python, Flask, OpenCV, Bun, Chart.js, Plate.js]
 
 openSource:
+  - project: missuo/tokens
+    date: 2026-11
+    href: https://github.com/missuo/tokens/pull/141
+    summary: 为 CLI 新增 Amp 云端会话同步，解析 ampcode.com 导出的线程以统计用量。
   - project: npmx-dev/vscode-npmx
     date: 2026-06
     href: https://github.com/npmx-dev/vscode-npmx/pull/125
@@ -71,14 +75,60 @@ openSource:
     date: 2025-12
     href: https://github.com/lovasoa/jsonjoy-builder/pull/20
     summary: 修复 React 闭包陷阱（Stale Closure）导致的开关状态反转，并补充中文翻译。
-  - project: walinejs/waline
-    date: 2025-04
-    href: https://github.com/walinejs/waline/pull/3044
-    summary: 修复评论框图片上传配置的判空错误。
   - project: waylybaye/opencat.app
     date: 2023-10
     href: https://github.com/waylybaye/opencat.app/pull/29
     summary: 重新设计并重写 OpenCat 官网，支持中英双语，下载链接按系统版本跳转。
+  - project: Runeicons/runeicons
+    date: 2026-09
+    href: https://github.com/Runeicons/runeicons/pull/56
+    webOnly: true
+    summary: 修复切换图标时画布提前播放入场动画的问题，等待新 SVG 加载完成后再触发过渡。
+  - project: marvellousPtc/ink-and-code
+    date: 2026-07
+    href: https://github.com/marvellousPtc/ink-and-code/pull/5
+    webOnly: true
+    summary: 修复 EPUB 阅读器点击翻页热区时事件冒泡误触工具栏显隐的问题。
+  - project: fwqaaq/telegram-to-r2
+    date: 2026-05
+    href: https://github.com/fwqaaq/telegram-to-r2/pull/1
+    webOnly: true
+    summary: 图片上传后自动附上可点击复制的 Markdown 链接代码块，并修复文件名 URL 编码。
+  - project: vitejs/docs-cn
+    date: 2026-03
+    href: https://github.com/vitejs/docs-cn/pull/1575
+    webOnly: true
+    summary: 翻译并补充 Vite 8 发布公告的中文文档（announcing-vite8.md）。
+  - project: radishzzz/astro-theme-retypeset
+    date: 2025-06
+    href: https://github.com/radishzzz/astro-theme-retypeset/pull/60
+    webOnly: true
+    summary: 重命名 Partytown 全局常量，解决构建时的命名冲突。
+  - project: typed-sigterm/eslint-plugin-autocorrect
+    date: 2025-06
+    href: https://github.com/typed-sigterm/eslint-plugin-autocorrect/pull/4
+    webOnly: true
+    summary: 调整诊断报错样式，使其与官方 VS Code 扩展的提示体验保持一致。
+  - project: walinejs/waline
+    date: 2025-04
+    href: https://github.com/walinejs/waline/pull/3044
+    webOnly: true
+    summary: 修复评论框图片上传配置的判空错误。
+  - project: swc-project/swc
+    date: 2025-03
+    href: https://github.com/swc-project/swc/pull/10265
+    webOnly: true
+    summary: 为 TypeScript 类型定义补全 outFileExtension 配置文档。
+  - project: CherryHQ/cherry-studio
+    date: 2025-03
+    href: https://github.com/CherryHQ/cherry-studio/pull/3287
+    webOnly: true
+    summary: 修复设置页帮助链接的间距样式，将误用的 padding 改为 margin。
+  - project: RSSNext/Folo
+    date: 2025-01
+    href: https://github.com/RSSNext/Folo/pull/2425
+    webOnly: true
+    summary: 配置 Tailwind 扫描规则排除 node_modules，减少无关样式扫描。
 
 projects:
   - name: Mikan

@@ -71,6 +71,8 @@ const resume = defineCollection({
 			href: z.url(),
 			project: z.string(),
 			summary: z.string(),
+			/** Shown on the web and in Markdown, omitted from compact A4 print. */
+			webOnly: z.boolean().optional(),
 		})),
 		projects: z.array(z.object({
 			date: month,
